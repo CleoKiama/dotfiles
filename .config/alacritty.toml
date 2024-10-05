@@ -1,0 +1,34 @@
+import = [
+    "~/.config/alacritty/themes/themes/night_owl.toml"
+]
+[env]
+ LC_CTYPE = "en_US.UTF-8"
+ LANG = "en_US.UTF-8"
+
+TERM = "xterm-256color"
+
+[font]
+
+normal = { family = "0xProto Nerd Font Mono", style = "Regular" }
+bold = { family = "0xProto Nerd Font Mono", style = "Regular" }
+italic = { family = "0xProto Nerd Font Mono", style = "Regular" }
+bold_italic  = { family = "0xProto Nerd Font Mono", style = "Regular" }
+
+size = 11.00
+
+[window] 
+
+padding = { x = 0, y = 0 }
+decorations =  "None"
+startup_mode = "Maximized"
+opacity = 0.77
+
+[colors]
+
+draw_bold_text_with_bright_colors = true
+
+[debug]
+
+renderer = "glsl3" 
+[mouse]
+hide_when_typing = true
