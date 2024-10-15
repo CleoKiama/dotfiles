@@ -1,3 +1,5 @@
+local leet_arg = "leetcode.nvim"
+
 return {
   {
     "Vigemus/iron.nvim",
@@ -18,7 +20,13 @@ return {
       }
     end,
   },
-  { "wakatime/vim-wakatime", event = "VeryLazy" },
+  {
+    "ptdewey/pendulum-nvim",
+    event = "VeryLazy",
+    config = function()
+      require("pendulum").setup()
+    end,
+  },
   {
     "folke/todo-comments.nvim",
     event = "BufRead",
@@ -91,5 +99,23 @@ return {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
       },
     },
+  },
+  {
+    "kawre/leetcode.nvim",
+    build = ":TSUpdate html",
+    cmd = "Leet",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim", -- required by telescope
+      "MunifTanjim/nui.nvim",
+
+      -- optional
+      "nvim-treesitter/nvim-treesitter",
+      "rcarriga/nvim-notify",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require "configs.leetcode"
+    end,
   },
 }

@@ -18,7 +18,7 @@ M.ui = {
   tabufline = {
     enabled = true,
     lazyload = true,
-    order = { "treeOffset", "buffers", "tabs", "navic", "Separator", "btns" },
+    order = { "treeOffset", "buffers", "tabs", "navic", "Separator" },
     modules = {
       navic = function()
         return require("nvim-navic").get_location()

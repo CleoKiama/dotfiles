@@ -3,14 +3,34 @@ local view = require "iron.view"
 
 iron.setup {
   config = {
-    -- Whether a repl should be discarded or not
+    -- whether a repl should be discarded or not
     scratch_repl = true,
-    -- Your repl definitions come here
+    -- your repl definitions come here
     repl_definition = {
       sh = {
-        -- Can be a table or a function that
+        -- can be a table or a function that
         -- returns a table (see below)
         command = { "zsh" },
+      },
+      javascript = {
+        command = function()
+          local input = vim.fn.input "are you working with mongosh? (y/n): "
+          if input == "y" then
+            local useLocalHost = vim.fn.input "Do you want to connect to localhost? (y/n): "
+            if useLocalHost == "y" then
+              return {
+                "mongosh",
+              }
+            else
+              return {
+                "mongosh",
+                "--nodb",
+              }
+            end
+          else
+            return { "node" }
+          end
+        end,
       },
       python = {
         command = { "python3" }, -- or { "ipython", "--no-autoindent" }
@@ -18,11 +38,11 @@ iron.setup {
       },
       elixir = {
         command = function()
-          local input = vim.fn.input "Are you working with Phoenix? (y/n): "
+          local input = vim.fn.input "are you working with phoenix? (y/n): "
           if input == "y" then
-            return { "iex", "-S", "mix", "phx.server" }
+            return { "iex", "-s", "mix", "phx.server" }
           else
-            return { "iex", "-S", "mix" }
+            return { "iex", "-s", "mix" }
           end
         end,
       },
@@ -33,11 +53,11 @@ iron.setup {
       winfixheight = false,
       -- any window-local configuration can be used here
       number = true,
-    }), -- How the repl window will be displayed
-    -- See below for more information
+    }), -- how the repl window will be displayed
+    -- see below for more information
   },
 
-  -- Iron doesn't set keymaps by default anymore.
+  -- iron doesn't set keymaps by default anymore.
   -- You can set them here or manually add keymaps to the functions in iron.core
   keymaps = {
     visual_send = "<space>sc",

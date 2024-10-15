@@ -90,23 +90,14 @@ return {
   },
   {
     "simeji/winresizer",
-    keys = {
-      { "<leader>e", "<cmd>WinResizerStartResize<cr>", desc = "winresizer" },
-    },
+    cmd = "WinResizerStartResize",
   },
   {
-    "folke/flash.nvim",
-    opts = {},
-  -- stylua: ignore
-  keys = {
-    { "<localleader>s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-    { "<localleader>S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    { "<localleader>r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    { "<localleader>R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    "ggandor/leap.nvim",
+    keys = {
+      { "s", "<Plug>(leap)", desc = "Leap" },
+    },
   },
-  },
-
   {
     "vhyrro/luarocks.nvim",
     priority = 1000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
@@ -180,11 +171,48 @@ return {
     dev = true,
     name = "CleoKiama/ObsidianTracker.nvim",
     dir = "/home/cleo/plugins/ObsidianTracker.nvim",
-    -- event = "VeryLazy",
-    disabled = true,
+    event = {
+      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+      -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+      "BufReadPre /media/Library/obsidian-vaults/**.md",
+      "BufNewFile /media/Library/obsidian-vaults/**.md",
+      "BufWritePost /media/Library/obsidian-vaults/**.md",
+    },
+
     dependencies = { "nvim-lua/plenary.nvim", "3rd/image.nvim" },
     opts = {
       pathToVault = "/media/Library/obsidian-vaults/10xGoals/Journal/Dailies",
+    },
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+    keys = {
+      {
+        "zR",
+        function()
+          require("ufo").openAllFolds()
+        end,
+        desc = "Open all folds",
+      },
+      {
+        "zM",
+        function()
+          require("ufo").closeAllFolds()
+        end,
+        desc = "Close all folds",
+      },
+      {
+        "zp",
+        function()
+          local winid = require("ufo").peekFoldedLinesUnderCursor()
+          if not winid then
+            -- choose one of coc.nvim and nvim lsp
+            vim.lsp.buf.hover()
+          end
+        end,
+        desc = "Peek folded lines under cursor",
+      },
     },
   },
 }

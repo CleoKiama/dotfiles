@@ -10,9 +10,12 @@ local nomap = vim.keymap.del
 
 nomap("i", "<C-k>")
 nomap("n", "<C-k>")
+nomap("n", "<leader>e")
 
 -- oil.nvim
 map("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+-- winresizer
+map("n", "<leader>e", "<CMD>WinResizerStartResize<CR>", { desc = "Start window resize" })
 
 -- Neotest keybindings
 --run current file
@@ -66,12 +69,13 @@ map({ "n" }, "<c-k>", "<cmd> TmuxNavigateUp<Cr>", { desc = "Tmux navigate Up" })
 map({ "n" }, "<c-l>", "<cmd> TmuxNavigateRight<Cr>", { desc = "Tmux navigate Right" })
 
 --The primeagen helpful keymaps
-map("n", "<leader>u", vim.cmd.UndotreeToggle)
-map("n", "<leader>y", '"+y')
-map("v", "<leader>y", '"+y')
+map("n", "<leader>u", vim.cmd.UndotreeToggle, { noremap = true, silent = true })
+map("n", "<leader>y", '"+y', { noremap = true, silent = true })
+map("v", "<leader>y", '"+y', { noremap = true, silent = true })
 map("n", "n", "nzzzv", { desc = "Move to next search item and center it" })
 map("x", "<leader>p", '"_dp', { noremap = true, silent = true }, { desc = "Paste without yanking" })
 map("n", "J", "mzJ`z", { noremap = true, silent = true }, { desc = "Join lines and keep cursor position" })
+map("n", "<leader>sf", "<cmd>:normal! ggvG$<CR>", { noremap = true, silent = true }, { desc = "Select whole file" })
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true

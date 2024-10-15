@@ -10,9 +10,9 @@ TERM = "xterm-256color"
 [font]
 
 normal = { family = "0xProto Nerd Font Mono", style = "Regular" }
-bold = { family = "0xProto Nerd Font Mono", style = "Regular" }
-italic = { family = "0xProto Nerd Font Mono", style = "Regular" }
-bold_italic  = { family = "0xProto Nerd Font Mono", style = "Regular" }
+bold = { family = "Jet ", style = "Regular" }
+italic = { family = "JetBrainsMono Nerd Font Mono, Thin Italic", style = "Regular" }
+bold_italic  = { family = "JetBrainsMono Nerd Font Mono, Thin Italic", style = "Regular" }
 
 size = 11.00
 

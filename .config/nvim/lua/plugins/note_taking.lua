@@ -1,23 +1,12 @@
 return {
   {
-    "MeanderingProgrammer/render-markdown.nvim",
-    opts = {
-      file_types = { "markdown", "Avante" },
+    "OXY2DEV/markview.nvim",
+    -- lazy = false, -- Recommended
+    ft = { "markdown", "Avante" }, -- If you decide to lazy-load anyway
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
     },
-    event = {
-      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-      -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-      "BufReadPre /media/Library/obsidian-vaults/**.md",
-      "BufNewFile /media/Library/obsidian-vaults/**.md",
-      "BufWritePost /media/Library/obsidian-vaults/**.md",
-    },
-    ft = { "Avante" },
-    dependencies = { "nvim-treesitter/nvim-treesitter" }, -- if you use the mini.nvim suite
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-    config = function()
-      require("render-markdown").setup {}
-    end,
   },
   {
     "epwalsh/obsidian.nvim",

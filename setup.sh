@@ -28,6 +28,7 @@ configs=(
     ".bashrc"
     ".tmux.conf"
     ".config/fontconfig"
+    ".config/emacs"
 )
 
 # Create symlinks

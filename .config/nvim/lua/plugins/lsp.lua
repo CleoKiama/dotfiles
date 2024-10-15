@@ -4,6 +4,15 @@ return {
     event = "LspAttach",
   },
   {
+    "kosayoda/nvim-lightbulb",
+    event = "LspAttach",
+    config = function()
+      require("nvim-lightbulb").setup {
+        autocmd = { enabled = true },
+      }
+    end,
+  },
+  {
     "pmizio/typescript-tools.nvim",
     ft = { "typescript", "javascript", "typescriptreact" },
     dependencies = {
