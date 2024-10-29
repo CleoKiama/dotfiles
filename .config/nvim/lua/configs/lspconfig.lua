@@ -9,10 +9,13 @@ local servers = {
   "cssls",
   "marksman",
   "lua_ls",
+  "gopls",
   "sqlls",
   "gleam",
-  "vuels",
+"golangci_lint_ls",
+  "vuels"
 }
+
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config

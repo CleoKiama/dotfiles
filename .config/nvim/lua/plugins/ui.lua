@@ -1,7 +1,7 @@
 return {
   {
     "folke/noice.nvim",
-    event = "InsertEnter",
+    event = "VeryLazy",
     config = function()
       require "configs.noice"
     end,
@@ -187,6 +187,22 @@ return {
   {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async" },
+    opts = {
+      -- Add filetypes to exclude
+      filetype_exclude = { "help","NeogitStatus", "neo-tree", "Trouble", "lazy", "mason" },
+      -- Or use provider_selector to disable for specific filetypes
+      provider_selector = function(bufnr, filetype, buftype)
+        -- Disable for specific filetypes
+        if
+          vim.tbl_contains({ "help","NeogitStatus", "dashboard", "neo-tree", "Trouble", "lazy" }, filetype)
+        then
+          return ""
+        end
+
+        -- Return default providers for other filetypes
+        return { "lsp", "indent" }
+      end,
+    },
     keys = {
       {
         "zR",

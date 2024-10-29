@@ -1,6 +1,20 @@
 local iron = require "iron.core"
 local view = require "iron.view"
 
+local function get_js_ts_repl_command(default_command)
+  local input = vim.fn.input "are you working with mongosh? (y/n): "
+  if input == "y" then
+    local useLocalHost = vim.fn.input "Do you want to connect to localhost? (y/n): "
+    if useLocalHost == "y" then
+      return { "mongosh" }
+    else
+      return { "mongosh", "--nodb" }
+    end
+  else
+    return { default_command }
+  end
+end
+
 iron.setup {
   config = {
     -- whether a repl should be discarded or not
@@ -14,22 +28,12 @@ iron.setup {
       },
       javascript = {
         command = function()
-          local input = vim.fn.input "are you working with mongosh? (y/n): "
-          if input == "y" then
-            local useLocalHost = vim.fn.input "Do you want to connect to localhost? (y/n): "
-            if useLocalHost == "y" then
-              return {
-                "mongosh",
-              }
-            else
-              return {
-                "mongosh",
-                "--nodb",
-              }
-            end
-          else
-            return { "node" }
-          end
+          return get_js_ts_repl_command "node"
+        end,
+      },
+      typescript = {
+        command = function()
+          return get_js_ts_repl_command "ts-node"
         end,
       },
       python = {

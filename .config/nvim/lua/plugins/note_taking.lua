@@ -31,7 +31,6 @@ return {
   {
     "3rd/image.nvim",
     dependencies = { "luarocks.nvim" },
-    cmd = "Leet",
     ft = { "png", "jpg", "jpeg", "gif" },
     event = {
       -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.

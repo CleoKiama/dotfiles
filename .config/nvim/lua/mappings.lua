@@ -213,7 +213,8 @@ map("n", "<localleader>trf", "<cmd>TSToolsRenameFile<CR>", { desc = "Rename file
 -- Find files that reference the current file
 map("n", "<localleader>tfr", "<cmd>TSToolsFileReferences<CR>", { desc = "Find file references" })
 
-map("n", "<localleader>ra", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename symbol" })
+-- for working with ts-tools in js
+map("n", "<leader>ra", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename symbol" })
 
 -- toggle line numbers
 map("n", "<leader>nn", "<cmd>set nu!<CR>", { desc = "Toggle line number" })

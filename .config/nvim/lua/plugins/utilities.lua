@@ -1,5 +1,3 @@
-local leet_arg = "leetcode.nvim"
-
 return {
   {
     "Vigemus/iron.nvim",
@@ -24,7 +22,27 @@ return {
     "ptdewey/pendulum-nvim",
     event = "VeryLazy",
     config = function()
-      require("pendulum").setup()
+      require("pendulum").setup {
+        top_n = 7,
+        report_excludes = {
+          filetype = {
+            -- This table controls what to be excluded from `filetype` section
+            -- Excluce Neotree from being reported
+            "NvimTree",
+            "copilot-chat",
+            "avante",
+            "NeogitStatus",
+            "undotree",
+            "oil",
+            "checkhealth",
+            "NeogitConsole",
+            "nvdash",
+            "neotest-summary",
+            "dbui",
+            "image_nvim"
+          },
+        },
+      }
     end,
   },
   {
@@ -108,7 +126,6 @@ return {
       "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim", -- required by telescope
       "MunifTanjim/nui.nvim",
-
       -- optional
       "nvim-treesitter/nvim-treesitter",
       "rcarriga/nvim-notify",
