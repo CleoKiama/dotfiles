@@ -37,7 +37,6 @@ require("obsidian").setup {
       suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
     else
       for _ = 1, 4 do
-        suffix = suffix .. string.char(math.random(65, 90))
       end
     end
     return os.date "%Y-%m-%d" .. "-" .. suffix
@@ -200,18 +199,37 @@ require("obsidian").setup {
       return string.format("![%s](%s)", path.name, path)
     end,
   },
-  ui = { enable = true },
+  ui = { enable = false },
 }
 
 function run_rclone_sync()
-  require("nvchad.term").toggle {
+  vim.notify("Starting Obsidian sync...", vim.log.levels.INFO)
+  local term = require "nvchad.term"
+  local Terminal = term.toggle {
     pos = "vsp",
-    cmd = "rclone sync /media/Library/obsidian-vaults cleo:/Obsidian_vault",
+    cmd = "rclone sync /media/Library/obsidian-vaults gdrive:/Obsidian_vault",
     id = "rclone_sync",
     clear_cmd = false,
   }
-end
 
+  -- Get the job ID of the terminal
+  local job_id = vim.b[Terminal.buf].terminal_job_id
+
+  -- Set up autocmd to detect job completion
+  vim.api.nvim_create_autocmd("TermClose", {
+    pattern = "*",
+    callback = function(args)
+      if args.buf == Terminal.buf then
+        local success = vim.v.event.status == 0
+        if success then
+          vim.notify("Obsidian sync completed successfully!", vim.log.levels.INFO)
+        else
+          vim.notify("Obsidian sync failed!", vim.log.levels.ERROR)
+        end
+      end
+    end,
+  })
+end
 -- Obsidian sync to GDrive
 
 vim.keymap.set(

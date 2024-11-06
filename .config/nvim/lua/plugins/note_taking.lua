@@ -1,12 +1,9 @@
 return {
   {
-    "OXY2DEV/markview.nvim",
-    -- lazy = false, -- Recommended
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
     ft = { "markdown", "Avante" }, -- If you decide to lazy-load anyway
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
+    opts = {},
   },
   {
     "epwalsh/obsidian.nvim",

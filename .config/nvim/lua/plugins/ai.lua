@@ -4,6 +4,7 @@ return {
     build = "make",
     opts = {
       provider = "copilot", -- Recommend using Claude
+      auto_suggestions_provider = "copilot",
     },
     keys = {
       {
