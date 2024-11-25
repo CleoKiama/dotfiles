@@ -44,9 +44,9 @@ iron.setup {
         command = function()
           local input = vim.fn.input "are you working with phoenix? (y/n): "
           if input == "y" then
-            return { "iex", "-s", "mix", "phx.server" }
+            return { "iex", "-S", "mix", "phx.server" }
           else
-            return { "iex", "-s", "mix" }
+            return { "iex", "-S", "mix" }
           end
         end,
       },

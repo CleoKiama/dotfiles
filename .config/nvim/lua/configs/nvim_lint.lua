@@ -31,6 +31,7 @@ require("lint").linters_by_ft = {
   gleam = { "cspell" },
   dotenv = { "cspell", "dotenv_linter" }, -- Assuming dotenv-linter is the linter you want to use
   gitcommit = { "gitlint" },
+  go = { "cspell" },
 }
 
 local js_ts_patterns = {
@@ -51,35 +52,22 @@ local other_patterns = {
   "*.lua",
   "*.ex",
   "*.heex",
+  "*.go",
 }
 
 local lint_augroup = vim.api.nvim_create_augroup("Linting", { clear = true })
-local lint_timeout = 1500 -- ms
-
-local function debounced_lint()
-  local timer = vim.loop.new_timer()
-  return function()
-    timer:start(
-      lint_timeout,
-      0,
-      vim.schedule_wrap(function()
-        require("lint").try_lint()
-      end)
-    )
-  end
-end
-
-local lint_callback = debounced_lint()
 
 -- Run linters on InsertLeave for JS/TS files only
-vim.api.nvim_create_autocmd("InsertLeave", {
+vim.api.nvim_create_autocmd("BufWritePre", {
   group = lint_augroup,
-  callback = lint_callback,
+  callback = function()
+    require("lint").try_lint()
+  end,
   pattern = js_ts_patterns,
 })
 
 -- Run linters on BufWritePost for all files
-vim.api.nvim_create_autocmd("BufWritePost", {
+vim.api.nvim_create_autocmd("BufWritePre", {
   group = lint_augroup,
   callback = function()
     require("lint").try_lint()

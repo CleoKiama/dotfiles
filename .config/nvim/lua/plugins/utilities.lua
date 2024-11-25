@@ -27,7 +27,6 @@ return {
         report_excludes = {
           filetype = {
             -- This table controls what to be excluded from `filetype` section
-            -- Excluce Neotree from being reported
             "NvimTree",
             "copilot-chat",
             "avante",
@@ -39,7 +38,7 @@ return {
             "nvdash",
             "neotest-summary",
             "dbui",
-            "image_nvim"
+            "image_nvim",
           },
         },
       }
@@ -94,18 +93,6 @@ return {
     config = function()
       require "configs.nvim-ts-autotag"
     end,
-  },
-  {
-    "ThePrimeagen/refactoring.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    config = function()
-      require("telescope").load_extension "refactoring"
-    end,
-    keys = require("configs.refactoring_keymaps").keys,
-    opts = require("configs.refactoring_keymaps").opts,
   },
   {
     "folke/lazydev.nvim",

@@ -103,6 +103,7 @@ dap.adapters["pwa-node"] = {
     command = "js-debug-adapter",
   },
 }
+
 local supported_filetypes = {
   "javascript",
   "typescript",
@@ -115,7 +116,7 @@ for _, language in ipairs(supported_filetypes) do
     {
       type = "pwa-node",
       request = "launch",
-      name = "nodejs",
+      name = "debug with nodejs",
       program = "${file}",
       cwd = "${workspaceFolder}",
       sourceMaps = true,

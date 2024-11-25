@@ -70,6 +70,7 @@ return {
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
       debug = true, -- Enable debugging
+      model = "claude-3.5-sonnet", -- GPT model to use, see ':CopilotChatModels' for available models
       window = {
         layout = "float", -- 'vertical', 'horizontal', 'float', 'replace'
         width = 0.7, -- fractional width of parent, or absolute width in columns when > 1

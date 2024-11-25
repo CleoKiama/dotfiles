@@ -72,22 +72,6 @@ return {
       },
     },
   },
-
-  {
-    {
-      "stevearc/aerial.nvim",
-      cmd = "Telescope aerial",
-      config = function()
-        require("telescope").load_extension "aerial"
-        require("aerial").setup {
-          backends = { "lsp", "treesitter", "markdown", "man" },
-        }
-      end,
-      keys = {
-        { "<leader>cs", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
-      },
-    },
-  },
   {
     "simeji/winresizer",
     cmd = "WinResizerStartResize",
@@ -103,7 +87,6 @@ return {
     priority = 1000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
     config = true,
   },
-
   {
     "stevearc/dressing.nvim",
     event = "VeryLazy",
@@ -122,7 +105,7 @@ return {
           "vue",
           "svelte",
           "python",
-        }, -- filetypes where the plugin is active
+        },
         jsx_brackets = true, -- must add brackets to JSX attributes
         remove_template_string = false, -- remove backticks when there are no template strings
         restore_quotes = {
@@ -185,17 +168,24 @@ return {
     },
   },
   {
+    "CleoKiama/vizpendulum.nvim",
+    dev = true,
+    event = "VeryLazy",
+    name = "CleoKiama/vizpendulum-nvim",
+    dir = "/home/cleo/plugins/vizpendulum.nvim/",
+    config = function()
+      require("vizpendulum").setup()
+    end,
+    dependencies = { "nvim-lua/plenary.nvim", "3rd/image.nvim" },
+  },
+  {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async" },
     opts = {
       -- Add filetypes to exclude
-      filetype_exclude = { "help","NeogitStatus", "neo-tree", "Trouble", "lazy", "mason" },
-      -- Or use provider_selector to disable for specific filetypes
-      provider_selector = function(bufnr, filetype, buftype)
-        -- Disable for specific filetypes
-        if
-          vim.tbl_contains({ "help","NeogitStatus", "dashboard", "neo-tree", "Trouble", "lazy" }, filetype)
-        then
+      filetype_exclude = { "help", "NeogitStatus", "neo-tree", "Trouble", "lazy", "mason" },
+      provider_selector = function(_, filetype, buftype)
+        if vim.tbl_contains({ "help", "NeogitStatus", "neo-tree", "Trouble", "lazy" }, filetype) then
           return ""
         end
 

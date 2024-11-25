@@ -199,7 +199,7 @@ require("obsidian").setup {
       return string.format("![%s](%s)", path.name, path)
     end,
   },
-  ui = { enable = false },
+  ui = { enable = true },
 }
 
 function run_rclone_sync()

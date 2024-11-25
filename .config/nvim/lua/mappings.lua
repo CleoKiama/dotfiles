@@ -178,12 +178,11 @@ vim.keymap.set("n", "<space>rt", "<cmd>IronHide<cr>")
 map("n", "<localleader>lm", "<cmd>Leet<CR>", { desc = "open Leet menu/dashboard" })
 map("n", "<localleader>lr", "<cmd>Leet run<CR>", { desc = "Leet code run" })
 map("n", "<localleader>ls", "<cmd>Leet submit<CR>", { desc = "Leet code submit" })
-map(
-  "n",
-  "<localleader>li",
-  "<cmd>Leet list status=todo difficulty=easy,medium,hard tag=top-interview-questions<CR>",
-  { desc = "leet top interview questions" }
-)
+map("n", "<localleader>le", "<cmd>Leet exit<CR>", { desc = "Leet exit" })
+map("n", "<localleader>lc", "<cmd>Leet console<CR>", { desc = "Leet console" })
+map("n", "<localleader>lp", "<cmd>Leet last_submit<CR>", { desc = "Leet code last_submit" })
+map("n", "<localleader>li", "<cmd>Leet info<CR>", { desc = "Leet code info" })
+map("n", "<localleader>lo", "<cmd>Leet open<CR>", { desc = "leet open in browser" })
 
 -- Tstools
 -- Sort and remove unused imports
@@ -236,6 +235,30 @@ map("n", "<localleader>cm", "<cmd>CopilotChatCommit<CR>", { desc = "Write commit
 map("n", "<localleader>cs", "<cmd>CopilotChatCommitStaged<CR>", { desc = "Write commit message for staged changes" })
 
 -- plugin dev mappings
+map("n", "<localleader>rf", "<cmd>source % <CR>", { desc = "run current File" })
+-- Convert filepath to module name
+-- e.g. /home/user/.config/nvim/lua/mymodule.lua -> mymodule
+local function get_current_module_name()
+  local filepath = vim.fn.expand "%:p"
+  -- Get everything after /lua/ directory
+  local module = filepath:match "/lua/(.+)$"
+  if module then
+    -- Remove .lua extension and convert / to .
+    return module:gsub("%.lua$", ""):gsub("/", ".")
+  end
+end
+
+-- Create the mapping
+map("n", "<localleader>rl", function()
+  local module_name = get_current_module_name()
+  if module_name then
+    R(module_name)
+    print("Reloaded module: " .. module_name)
+  else
+    print "Not a valid lua module path"
+  end
+end, { desc = "Reload current lua file as module" })
+
 P = function(v)
   print(vim.inspect(v))
   return v
@@ -243,11 +266,8 @@ end
 RELOAD = function(...)
   return require("plenary.reload").reload_module(...)
 end
+
 R = function(name)
   RELOAD(name)
   return require(name)
 end
-
-map("n", "<localleader>rf", function()
-  R(vim.fn.expand "%:t:r")
-end, { desc = "Reload current file module" })

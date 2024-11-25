@@ -1,27 +1,33 @@
+local js_formatter = { "biome", "prettier", stop_after_first = true }
+
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    css = { "biome", "prettier" },
-    html = { "biome", "prettier" },
-    typescript = { "biome", "prettier", stop_after_first = true },
-    typescriptreact = { "biome", "prettier", stop_after_first = true },
-    javascripttreact = { "biome", "prettier", stop_after_first = true },
-    javascipt = { "biome", "prettier", stop_after_first = true },
-    jsx = { "biome", "prettier", stop_after_first = true },
-    json = { "biome", "prettier" },
+    css = js_formatter,
+    html = js_formatter,
+    typescript = js_formatter,
+    typescriptreact = js_formatter,
+    javascriptreact = js_formatter,
+    javascript = js_formatter,
+    jsx = js_formatter,
+    json = js_formatter,
     yaml = { "prettier" },
     graphql = { "prettier" },
     markdown = { "prettier" },
     elixir = { "lsp" },
     gleam = { "lsp" },
     sql = { "sql_formatter" },
-  },
-
-  format_on_save = {
-    -- These options will be passed to conform.format()
-    timeout_ms = 500,
-    lsp_fallback = true,
+    go = { "goimports", "lsp" },
+    ["*"] = { "codespell" },
   },
 }
 
 require("conform").setup(options)
+-- and
+---format on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function(args)
+    require("conform").format { bufnr = args.buf }
+  end,
+})

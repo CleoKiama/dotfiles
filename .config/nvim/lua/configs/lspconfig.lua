@@ -12,8 +12,8 @@ local servers = {
   "gopls",
   "sqlls",
   "gleam",
-"golangci_lint_ls",
-  "vuels"
+  "golangci_lint_ls",
+  "jsonls",
 }
 
 local nvlsp = require "nvchad.configs.lspconfig"
@@ -31,18 +31,13 @@ lspconfig.elixirls.setup {
   -- Unix
   cmd = { "/home/cleo/.local/share/nvim/mason/packages/elixir-ls/language_server.sh" },
 }
--- configuring single server, example: typescript
--- lspconfig.ts_ls.setup {
---   on_attach = nvlsp.on_attach,
---   on_init = nvlsp.on_init,
---   capabilities = nvlsp.capabilities,
--- }
 
 require "nvchad.mappings"
 
 local map = vim.keymap.set
 
--- I have some issues with go to definition in elixirls so I am rebinding it to the call to the lsp
+-- I have some issues with go to definition in typescript-tools so I am rebinding it to the call to the lsp
+
 map(
   "n",
   "gd",
@@ -50,6 +45,7 @@ map(
   { noremap = true, silent = true },
   { desc = "Go to definition" }
 )
+
 map(
   "n",
   "gr",
