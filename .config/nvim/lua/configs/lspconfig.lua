@@ -7,6 +7,7 @@ local lspconfig = require "lspconfig"
 local servers = {
   "html",
   "cssls",
+  "bashls",
   "marksman",
   "lua_ls",
   "gopls",

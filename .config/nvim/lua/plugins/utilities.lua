@@ -122,4 +122,17 @@ return {
       require "configs.leetcode"
     end,
   },
+  {
+    "lambdalisue/vim-suda",
+    cmd = { "SudaRead", "SudaWrite" },
+    keys = {
+      { "<leader>sw", "<cmd>SudaWrite<CR>", desc = "Sudo write" },
+      { "<leader>sr", "<cmd>SudaRead<CR>", desc = "Sudo Read" },
+    },
+  },
+  {
+    "nvzone/timerly",
+    cmd = "TimerlyToggle",
+    keys = { { "<leader>mt", "<cmd>TimerlyToggle<CR>", desc = "TimerlyToggle" } },
+  },
 }

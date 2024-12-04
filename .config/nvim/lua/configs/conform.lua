@@ -4,7 +4,7 @@ local options = {
   formatters_by_ft = {
     lua = { "stylua" },
     css = js_formatter,
-    html = js_formatter,
+    html = { "prettier" },
     typescript = js_formatter,
     typescriptreact = js_formatter,
     javascriptreact = js_formatter,
@@ -17,6 +17,7 @@ local options = {
     elixir = { "lsp" },
     gleam = { "lsp" },
     sql = { "sql_formatter" },
+    bash = { "beautysh" },
     go = { "goimports", "lsp" },
     ["*"] = { "codespell" },
   },

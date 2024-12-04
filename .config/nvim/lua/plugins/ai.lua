@@ -84,6 +84,10 @@ return {
         footer = nil, -- footer of chat window
         zindex = 1, -- determines if window is on top or below other floating windows
       },
+      -- for render-markdown.nvim
+      highlight_headers = false,
+      separator = "---",
+      error_header = "> [!ERROR] Error",
     },
     -- See Commands section for default commands if you want to lazy load on them
   },

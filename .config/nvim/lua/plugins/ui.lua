@@ -1,3 +1,31 @@
+local ufo_handler = function(virtText, lnum, endLnum, width, truncate)
+  local newVirtText = {}
+  local suffix = (" 󰁂 %d "):format(endLnum - lnum)
+  local sufWidth = vim.fn.strdisplaywidth(suffix)
+  local targetWidth = width - sufWidth
+  local curWidth = 0
+  for _, chunk in ipairs(virtText) do
+    local chunkText = chunk[1]
+    local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+    if targetWidth > curWidth + chunkWidth then
+      table.insert(newVirtText, chunk)
+    else
+      chunkText = truncate(chunkText, targetWidth - curWidth)
+      local hlGroup = chunk[2]
+      table.insert(newVirtText, { chunkText, hlGroup })
+      chunkWidth = vim.fn.strdisplaywidth(chunkText)
+      -- str width returned from truncate() may less than 2nd argument, need padding
+      if curWidth + chunkWidth < targetWidth then
+        suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+      end
+      break
+    end
+    curWidth = curWidth + chunkWidth
+  end
+  table.insert(newVirtText, { suffix, "MoreMsg" })
+  return newVirtTextend
+end
+
 return {
   {
     "folke/noice.nvim",
@@ -184,15 +212,17 @@ return {
     opts = {
       -- Add filetypes to exclude
       filetype_exclude = { "help", "NeogitStatus", "neo-tree", "Trouble", "lazy", "mason" },
-      provider_selector = function(_, filetype, buftype)
+      fold_virt_text_handler = ufo_handler,
+      provider_selector = function(_, filetype, _)
         if vim.tbl_contains({ "help", "NeogitStatus", "neo-tree", "Trouble", "lazy" }, filetype) then
           return ""
         end
 
         -- Return default providers for other filetypes
-        return { "lsp", "indent" }
+        return { "lsp", "treesitter" }
       end,
     },
+    lazy = true, -- Add this line
     keys = {
       {
         "zR",

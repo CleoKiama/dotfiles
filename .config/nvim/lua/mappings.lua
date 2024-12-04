@@ -75,7 +75,7 @@ map("v", "<leader>y", '"+y', { noremap = true, silent = true })
 map("n", "n", "nzzzv", { desc = "Move to next search item and center it" })
 map("x", "<leader>p", '"_dp', { noremap = true, silent = true }, { desc = "Paste without yanking" })
 map("n", "J", "mzJ`z", { noremap = true, silent = true }, { desc = "Join lines and keep cursor position" })
-map("n", "<leader>sf", "<cmd>:normal! ggvG$<CR>", { noremap = true, silent = true }, { desc = "Select whole file" })
+map("n", "<leader>sf", "<cmd>normal! ggVG<CR>", { noremap = true, silent = true, desc = "Select whole file" })
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
@@ -111,51 +111,25 @@ map(
   { silent = true, noremap = true, desc = "Telescope Noice messages" }
 )
 
--- Show dependency versions
-map({ "n" }, "<leader>ns", function()
-  require("package-info").show()
-end, { silent = true, noremap = true, desc = "Show dependency versions" })
-
--- Update dependency on the line
-map({ "n" }, "<leader>nu", function()
-  require("package-info").update()
-end, { silent = true, noremap = true, desc = "Update dependency on the line" })
-
--- Delete dependency on the line
-map({ "n" }, "<leader>nd", function()
-  require("package-info").delete()
-end, { silent = true, noremap = true, desc = "Delete dependency on the line" })
-
--- Install a new dependency
-map({ "n" }, "<leader>ni", function()
-  require("package-info").install()
-end, { silent = true, noremap = true, desc = "Install a new dependency" })
-
--- Install a different dependency version
-map({ "n" }, "<leader>np", function()
-  require("package-info").change_version()
-end, { silent = true, noremap = true, desc = "Install a different dependency version" })
-
--- Aerial find symbols
-map("n", "<leader>fs", "<cmd>Telescope aerial<CR>", { desc = "Telescope aerial" })
-
 -- diffview.nvim
 map("n", "<leader>dh", "<cmd>:DiffviewFileHistory %<CR>", { desc = "TagbarToggle" })
 
 -- tailwind tools
 map("n", "<leader>tlc", "<cmd>Telescope tailwind classes<CR>", { desc = "Telescope tailwind classes picker" })
 map("n", "<leader>tlu", "<cmd>Telescope tailwind utilities<CR>", { desc = "Telescope tailwind utilities picker" })
-map("n", "<leader>tls", "<cmd>TailwindSort<CR>", { desc = "Tailwind classses sort" })
-map("v", "<leader>tls", "<cmd>TailwindSortSelection<CR>", { desc = "Tailwind classses sort" })
+map("n", "<leader>tls", "<cmd>TailwindSort<CR>", { desc = "Tailwind classes sort" })
+map("v", "<leader>tls", "<cmd>TailwindSortSelection<CR>", { desc = "Tailwind classes sort" })
 map("n", "<leader>tlf", "<cmd>TailwindConcealToggle<CR>", { desc = "toggle tailwind fold classes" })
 
 -- Neogit
 map("n", "<leader>gs", function()
   require("neogit").open()
+  require "custom.commit_hook"
 end, { desc = "git status" })
 
 map("n", "<leader>gc", function()
   require("neogit").open { "commit" }
+  require "custom.commit_hook"
 end, { desc = "git commit" })
 
 map("n", "<leader>gP", function()
@@ -233,6 +207,14 @@ map("n", "<localleader>ct", "<cmd>CopilotChatTests<CR>", { desc = "Add tests to 
 map("n", "<localleader>cd", "<cmd>CopilotChatFixDiagnostic<CR>", { desc = "Fix diagnostic issue" })
 map("n", "<localleader>cm", "<cmd>CopilotChatCommit<CR>", { desc = "Write commit message" })
 map("n", "<localleader>cs", "<cmd>CopilotChatCommitStaged<CR>", { desc = "Write commit message for staged changes" })
+map("n", "<localleader>cq", function()
+  local input = vim.fn.input "Quick Chat: "
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end, {
+  desc = "CopilotChat - Quick chat",
+})
 
 -- plugin dev mappings
 map("n", "<localleader>rf", "<cmd>source % <CR>", { desc = "run current File" })
