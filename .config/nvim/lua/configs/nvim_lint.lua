@@ -29,7 +29,7 @@ require("lint").linters_by_ft = {
   python = { "cspell" },
   elixir = { "cspell", "credo" },
   gleam = { "cspell" },
-  dotenv = { "cspell", "dotenv_linter" }, -- Assuming dotenv-linter is the linter you want to use
+  dotenv = { "cspell", "dotenv_linter" },
   gitcommit = { "gitlint" },
   go = { "cspell" },
 }

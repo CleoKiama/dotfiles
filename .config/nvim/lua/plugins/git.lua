@@ -57,6 +57,7 @@ return {
   {
     "akinsho/git-conflict.nvim",
     -- lazy = false,
+    disabled = true,
     config = function()
       require "configs.git_conflict"
     end,

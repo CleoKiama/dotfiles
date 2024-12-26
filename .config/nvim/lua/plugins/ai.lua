@@ -12,7 +12,7 @@ return {
         function()
           require("avante.api").ask()
         end,
-        desc = "avante: ask",
+        desc = "Avante: ask",
         mode = { "n", "v" },
       },
       {
@@ -20,14 +20,14 @@ return {
         function()
           require("avante.api").refresh()
         end,
-        desc = "avante: refresh",
+        desc = "Avante: refresh",
       },
       {
         "<leader>ae",
         function()
           require("avante.api").edit()
         end,
-        desc = "avante: edit",
+        desc = "Avante: edit",
         mode = "v",
       },
     },
@@ -35,8 +35,7 @@ return {
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "nvim-tree/nvim-web-devicons",
       "zbirenbaum/copilot.lua", -- for providers='copilot'
     },
   },
@@ -62,7 +61,6 @@ return {
       "CopilotChatCommit",
       "CopilotChatCommitStaged",
     },
-    branch = "canary",
     dependencies = {
       { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper

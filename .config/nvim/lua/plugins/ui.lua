@@ -206,49 +206,4 @@ return {
     end,
     dependencies = { "nvim-lua/plenary.nvim", "3rd/image.nvim" },
   },
-  {
-    "kevinhwang91/nvim-ufo",
-    dependencies = { "kevinhwang91/promise-async" },
-    opts = {
-      -- Add filetypes to exclude
-      filetype_exclude = { "help", "NeogitStatus", "neo-tree", "Trouble", "lazy", "mason" },
-      fold_virt_text_handler = ufo_handler,
-      provider_selector = function(_, filetype, _)
-        if vim.tbl_contains({ "help", "NeogitStatus", "neo-tree", "Trouble", "lazy" }, filetype) then
-          return ""
-        end
-
-        -- Return default providers for other filetypes
-        return { "lsp", "treesitter" }
-      end,
-    },
-    lazy = true, -- Add this line
-    keys = {
-      {
-        "zR",
-        function()
-          require("ufo").openAllFolds()
-        end,
-        desc = "Open all folds",
-      },
-      {
-        "zM",
-        function()
-          require("ufo").closeAllFolds()
-        end,
-        desc = "Close all folds",
-      },
-      {
-        "zp",
-        function()
-          local winid = require("ufo").peekFoldedLinesUnderCursor()
-          if not winid then
-            -- choose one of coc.nvim and nvim lsp
-            vim.lsp.buf.hover()
-          end
-        end,
-        desc = "Peek folded lines under cursor",
-      },
-    },
-  },
 }

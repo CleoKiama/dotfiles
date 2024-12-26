@@ -1,3 +1,4 @@
+local leet_arg = "leetcode.nvim"
 return {
   {
     "Vigemus/iron.nvim",
@@ -108,7 +109,8 @@ return {
   {
     "kawre/leetcode.nvim",
     build = ":TSUpdate html",
-    cmd = "Leet",
+    lazy = leet_arg ~= vim.fn.argv(0, -1),
+    -- cmd = "Leet",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim", -- required by telescope
@@ -134,5 +136,15 @@ return {
     "nvzone/timerly",
     cmd = "TimerlyToggle",
     keys = { { "<leader>mt", "<cmd>TimerlyToggle<CR>", desc = "TimerlyToggle" } },
+  },
+  {
+    "Goose97/timber.nvim",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = { "BufReadPre" },
+    config = function()
+      require("timber").setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
   },
 }

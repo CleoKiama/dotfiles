@@ -12,5 +12,6 @@ require("code_runner").setup {
     typescript = "bun run",
     gleam = "gleam run",
     go = "go run",
+    rust = "cargo run",
   },
 }

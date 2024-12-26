@@ -9,6 +9,7 @@ require("neotest").setup {
       end,
     },
     require "neotest-elixir",
+    require "rustaceanvim.neotest",
   },
   discovery = {
     enabled = false,

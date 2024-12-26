@@ -36,7 +36,7 @@ map("n", "<leader>ta", function()
 end, { desc = "Attach to nearest test" })
 
 map("n", "<leader>to", function()
-  require("neotest").output.open()
+  require("neotest").output.open { enter = true }
 end, { desc = "Open output window" })
 
 map("n", "<leader>tc", function()
@@ -192,18 +192,15 @@ map("n", "<leader>ra", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename sym
 -- toggle line numbers
 map("n", "<leader>nn", "<cmd>set nu!<CR>", { desc = "Toggle line number" })
 
--- avante.nvim
-map("n", "<leader>ac", "<cmd>AvanteClear<CR>", { desc = "Avante clear" })
-
 -- copilot chat
-map("n", "<localleader>co", "<cmd>CopilotChatOpen<CR>", { desc = "Open Copilot Chat" })
-map("n", "<A-c>", "<cmd>CopilotChatToggle<CR>", { desc = "CopilotChatToggle" })
-map("n", "<localleader>ce", "<cmd>CopilotChatExplain<CR>", { desc = "Explain the active selection" })
-map("n", "<localleader>cr", "<cmd>CopilotChatReview<CR>", { desc = "Review the selected code" })
-map("n", "<localleader>cf", "<cmd>CopilotChatFix<CR>", { desc = "Fix the selected code" })
-map("n", "<localleader>cz", "<cmd>CopilotChatOptimize<CR>", { desc = "Optimize the selected code" })
-map("n", "<localleader>cgd", "<cmd>CopilotChatDocs<CR>", { desc = "Add documentation comment" })
-map("n", "<localleader>ct", "<cmd>CopilotChatTests<CR>", { desc = "Add tests to this code" })
+map({ "n", "v" }, "<localleader>co", "<cmd>CopilotChatOpen<CR>", { desc = "Open Copilot Chat" })
+map({ "n", "v" }, "<A-c>", "<cmd>CopilotChatToggle<CR>", { desc = "CopilotChatToggle" })
+map({ "n", "v" }, "<localleader>ce", "<cmd>CopilotChatExplain<CR>", { desc = "Explain the active selection" })
+map({ "n", "v" }, "<localleader>cr", "<cmd>CopilotChatReview<CR>", { desc = "Review the selected code" })
+map({ "n", "v" }, "<localleader>cf", "<cmd>CopilotChatFix<CR>", { desc = "Fix the selected code" })
+map({ "n", "v" }, "<localleader>cz", "<cmd>CopilotChatOptimize<CR>", { desc = "Optimize the selected code" })
+map({ "n", "v" }, "<localleader>cgd", "<cmd>CopilotChatDocs<CR>", { desc = "Add documentation comment" })
+map({ "n", "v" }, "<localleader>ct", "<cmd>CopilotChatTests<CR>", { desc = "Add tests to this code" })
 map("n", "<localleader>cd", "<cmd>CopilotChatFixDiagnostic<CR>", { desc = "Fix diagnostic issue" })
 map("n", "<localleader>cm", "<cmd>CopilotChatCommit<CR>", { desc = "Write commit message" })
 map("n", "<localleader>cs", "<cmd>CopilotChatCommitStaged<CR>", { desc = "Write commit message for staged changes" })

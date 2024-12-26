@@ -3,7 +3,7 @@ local js_formatter = { "biome", "prettier", stop_after_first = true }
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    css = js_formatter,
+    css = { "prettier" },
     html = { "prettier" },
     typescript = js_formatter,
     typescriptreact = js_formatter,
@@ -19,12 +19,13 @@ local options = {
     sql = { "sql_formatter" },
     bash = { "beautysh" },
     go = { "goimports", "lsp" },
-    ["*"] = { "codespell" },
+    rust = { "rustfmt" },
+    -- ["*"] = { "codespell" },
   },
 }
 
 require("conform").setup(options)
--- and
+
 ---format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
