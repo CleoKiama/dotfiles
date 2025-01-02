@@ -29,6 +29,7 @@ configs=(
     ".tmux.conf"
     ".config/fontconfig"
     ".config/emacs"
+    ".config/yazi"
 )
 
 # Create symlinks

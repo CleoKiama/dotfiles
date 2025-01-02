@@ -22,3 +22,9 @@ autocmd("BufReadPost", {
     end
   end,
 })
+
+vim.opt.spelllang = "en_us"
+vim.opt.spell = true
+
+vim.opt.hlsearch = false
+vim.opt.incsearch = true

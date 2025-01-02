@@ -76,7 +76,6 @@ require("obsidian").setup {
     -- Open the URL in the default web browser.
     vim.fn.jobstart { "xdg-open", url } -- linux
   end,
-
   mappings = {
     -- "Obsidian follow"
     ["<leader>of"] = {
@@ -84,7 +83,7 @@ require("obsidian").setup {
         return require("obsidian").util.gf_passthrough()
       end,
       opts = { noremap = false, expr = true, buffer = true },
-      { desc = "obsidian follow link" },
+      { desc = "[p] obsidian follow link" },
     },
     -- Toggle check-boxes "obsidian done"
     ["<leader>od"] = {
@@ -92,28 +91,28 @@ require("obsidian").setup {
         return require("obsidian").util.toggle_checkbox()
       end,
       opts = { buffer = true },
-      { desc = "obsidian toggle checkbox" },
+      { desc = "[p] obsidian toggle checkbox" },
     },
     ["<leader>oc"] = {
       action = function()
         vim.cmd " ObsidianToggleCheckbox"
       end,
       opts = { buffer = true },
-      { desc = "obsidian cycle checkbox" },
+      { desc = "[p] obsidian cycle checkbox" },
     },
     ["<leader>or"] = {
       action = function()
         vim.cmd "ObsidianTomorrow"
       end,
       opts = { buffer = true },
-      { desc = "obsidian jump to tomorrow" },
+      { desc = "[p] obsidian jump to tomorrow" },
     },
     ["<leader>on"] = {
       action = function()
         vim.cmd "ObsidianNew"
       end,
       opts = { buffer = true },
-      { desc = "obsidian new note" },
+      { desc = "[p] obsidian new note" },
     },
 
     ["<leader>oy"] = {
@@ -121,28 +120,28 @@ require("obsidian").setup {
         vim.cmd "ObsidianYesterday"
       end,
       opts = { buffer = true },
-      { desc = "obsidian Yesterday" },
+      { desc = "[p] obsidian Yesterday" },
     },
     ["<leader>oj"] = {
       action = function()
         vim.cmd "ObsidianToday"
       end,
       opts = { buffer = true },
-      { desc = "obsidian jump to today" },
+      { desc = "[p] obsidian jump to today" },
     },
     ["<leader>ot"] = {
       action = function()
         vim.cmd "ObsidianTemplate"
       end,
       opts = { buffer = true },
-      { desc = "obsidian insert template" },
+      { desc = "[p] obsidian insert template" },
     },
     ["<leader>oi"] = {
       action = function()
         vim.cmd "ObsidianPasteImg"
       end,
       opts = { buffer = true },
-      { desc = "obsidian paste image to default image path" },
+      { desc = "[p] obsidian paste image to default image path" },
     },
 
     ["<leader>oo"] = {
@@ -150,14 +149,14 @@ require("obsidian").setup {
         vim.cmd "ObsidianOpen"
       end,
       opts = { buffer = true },
-      { desc = "obsidian open note in app" },
+      { desc = "[p] obsidian open note in app" },
     },
     ["<leader>ob"] = {
       action = function()
         vim.cmd "ObsidianBacklinks"
       end,
       opts = { buffer = true },
-      { desc = "obsidian open note in app" },
+      { desc = "[p] obsidian open note in app" },
     },
   },
   picker = {
@@ -230,98 +229,44 @@ function run_rclone_sync()
     end,
   })
 end
+
 -- Obsidian sync to GDrive
 
-vim.keymap.set(
-  "n",
-  "<Leader>os",
-  ":lua run_rclone_sync()<CR>",
-  { noremap = true, silent = true },
-  { desc = "Sync Obsidian to GDrive" }
-)
+vim.keymap.set("n", "<Leader>os", ":lua run_rclone_sync()<CR>", { desc = "Sync Obsidian to GDrive" })
 
 local wk = require "which-key"
 
-wk.register({
-  of = {
-    function()
-      return require("obsidian").util.gf_passthrough()
-    end,
-    "obsidian follow link",
+wk.add {
+  {
+    mode = { "n" },
+    {
+      "<leader>o",
+      {
+        f = {
+          function()
+            return require("obsidian").util.gf_passthrough()
+          end,
+          "obsidian follow link",
+        },
+        d = {
+          function()
+            return require("obsidian").util.toggle_checkbox()
+          end,
+          "obsidian toggle checkbox",
+        },
+        c = { ":ObsidianToggleCheckbox<CR>", "obsidian cycle checkbox" },
+        n = { ":ObsidianNew<CR>", "obsidian new note" },
+        y = { ":ObsidianYesterday<CR>", "obsidian Yesterday" },
+        j = { ":ObsidianToday<CR>", "obsidian jump to today" },
+        t = { ":ObsidianTemplate<CR>", "obsidian insert template" },
+        i = { ":ObsidianPasteImg<CR>", "obsidian paste image to default image path" },
+        o = { ":ObsidianOpen<CR>", "obsidian open note in app" },
+        b = { ":ObsidianBacklinks<CR>", "obsidian open note in app" },
+        s = { ":lua run_rclone_sync()<CR>", "Sync Obsidian to GDrive" },
+      },
+      group = "Obsidian",
+    },
   },
-  od = {
-    function()
-      return require("obsidian").util.toggle_checkbox()
-    end,
-    "obsidian toggle checkbox",
-  },
-  oc = { ":ObsidianToggleCheckbox<CR>", "obsidian cycle checkbox" },
-  on = { ":ObsidianNew<CR>", "obsidian new note" },
-  oy = { ":ObsidianYesterday<CR>", "obsidian Yesterday" },
-  oj = { ":ObsidianToday<CR>", "obsidian jump to today" },
-  ot = { ":ObsidianTemplate<CR>", "obsidian insert template" },
-  oi = { ":ObsidianPasteImg<CR>", "obsidian paste image to default image path" },
-  oo = { ":ObsidianOpen<CR>", "obsidian open note in app" },
-  ob = { ":ObsidianBacklinks<CR>", "obsidian open note in app" },
-  os = { ":lua run_rclone_sync()<CR>", "Sync Obsidian to GDrive" },
-}, { prefix = "<leader>", noremap = true, silent = true })
+}
 
-local api = require "image"
-local Job = require "plenary.job"
-local M = {}
-
-function M.testRender(year, month, metric)
-  print("received", year, month, metric)
-  local tmp_file = "/tmp/test.png"
-  -- Display the image using image.nvim
-  local image = api.hijack_buffer(tmp_file, 0, 0, {
-    id = "my_image_id", -- optional, defaults to a random string
-    buffer = 500, -- optional, binds image to a buffer (paired with window binding)
-    with_virtual_padding = true, -- optional, pads vertically with extmarks, defaults to false
-
-    -- optional, binds image to an extmark which it follows. Forced to be true when
-    -- `with_virtual_padding` is true. defaults to false.
-    inline = true,
-    -- geometry (optional)
-    x = 1,
-    y = 1,
-    width = 50,
-    height = 50,
-  })
-  image:render() -- render image
-end
-
-function M.display_habit_tracker(year, month, metric)
-  Job:new({
-    command = "node",
-    args = { "/media/DevDrive/VaultCharts/dist/main.js", year, month, metric },
-    on_exit = function(j, _)
-      -- Create a temporary file to store the image
-      local tmp_file = "/tmp/test.png"
-
-      -- Display the image using image.nvim
-      local image = api.from_file(tmp_file, {
-        window = 0, -- current window
-        inline = true,
-        with_virtual_padding = true,
-      })
-
-      if image then
-        image:render()
-      else
-        print "Error: Failed to load image from file"
-      end
-    end,
-  }):start()
-end
-
--- Command to call the function
-vim.api.nvim_create_user_command("DisplayHabitTracker", function(opts)
-  local year = tonumber(opts.args) or os.date "%Y"
-  local month = tonumber(opts.fargs[2]) or os.date "%m"
-  local metric = opts.fargs[3] or "did_journal?"
-  M.testRender(year, month, metric)
-  -- M.display_habit_tracker(year, month, metric)
-end, { nargs = "*" })
-
-return M
+require "configs.task_manager"

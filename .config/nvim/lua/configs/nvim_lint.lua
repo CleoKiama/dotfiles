@@ -32,6 +32,7 @@ require("lint").linters_by_ft = {
   dotenv = { "cspell", "dotenv_linter" },
   gitcommit = { "gitlint" },
   go = { "cspell" },
+  rust = { "clippy", "cspell" },
 }
 
 local js_ts_patterns = {
@@ -53,6 +54,7 @@ local other_patterns = {
   "*.ex",
   "*.heex",
   "*.go",
+  "*.rs",
 }
 
 local lint_augroup = vim.api.nvim_create_augroup("Linting", { clear = true })

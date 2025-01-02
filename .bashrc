@@ -13,7 +13,9 @@ export COLORTERM=truecolor
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-eval "$(zoxide init --cmd cd bash)"
+
+
+alias ..="cd .."
 
 # Created by `pipx` on 2024-05-27 20:49:08
 export PATH="$PATH:/home/cleo/.local/bin"
@@ -21,4 +23,31 @@ export PATH="$PATH:/home/cleo/.local/bin"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
+
+
+#yazi 
+export EDITOR="nvim"
+
+# cd back to the prev dir on exit
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
+eval "$(zoxide init --cmd cd bash)"
+
+# pnpm
+export PNPM_HOME="/home/cleo/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+. "$HOME/.cargo/env"
+
+alias nvim-leet="nvim leetcode.nvim"
 
