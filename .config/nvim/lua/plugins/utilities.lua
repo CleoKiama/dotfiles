@@ -20,32 +20,6 @@ return {
     end,
   },
   {
-    "ptdewey/pendulum-nvim",
-    event = "VeryLazy",
-    config = function()
-      require("pendulum").setup {
-        top_n = 7,
-        report_excludes = {
-          filetype = {
-            -- This table controls what to be excluded from `filetype` section
-            "NvimTree",
-            "copilot-chat",
-            "avante",
-            "NeogitStatus",
-            "undotree",
-            "oil",
-            "checkhealth",
-            "NeogitConsole",
-            "nvdash",
-            "neotest-summary",
-            "dbui",
-            "image_nvim",
-          },
-        },
-      }
-    end,
-  },
-  {
     "folke/todo-comments.nvim",
     event = "BufRead",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -125,14 +99,6 @@ return {
     end,
   },
   {
-    "lambdalisue/vim-suda",
-    cmd = { "SudaRead", "SudaWrite" },
-    keys = {
-      { "<leader>sw", "<cmd>SudaWrite<CR>", desc = "Sudo write" },
-      { "<leader>sr", "<cmd>SudaRead<CR>", desc = "Sudo Read" },
-    },
-  },
-  {
     "nvzone/timerly",
     cmd = "TimerlyToggle",
     keys = { { "<leader>mt", "<cmd>TimerlyToggle<CR>", desc = "TimerlyToggle" } },
@@ -147,4 +113,5 @@ return {
       }
     end,
   },
+  { "wakatime/vim-wakatime", event = "VeryLazy" },
 }

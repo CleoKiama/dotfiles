@@ -196,14 +196,7 @@ return {
     },
   },
   {
-    "CleoKiama/vizpendulum.nvim",
-    dev = true,
-    event = "VeryLazy",
-    name = "CleoKiama/vizpendulum-nvim",
-    dir = "/home/cleo/plugins/vizpendulum.nvim/",
-    config = function()
-      require("vizpendulum").setup()
-    end,
-    dependencies = { "nvim-lua/plenary.nvim", "3rd/image.nvim" },
+    "tzachar/highlight-undo.nvim",
+    keys = { { "u" }, { "<C-r>" } },
   },
 }

@@ -17,6 +17,14 @@ require("tailwind-tools").setup {
       fg = "#38BDF8",
     },
   },
+  server = {
+    override = true, -- setup the server from the plugin if true
+    settings = {}, -- shortcut for `settings.tailwindCSS`
+    on_attach = function(client, bufnr) end, -- callback triggered when the server attaches to a buffer
+  },
+  cmp = {
+    highlight = "foreground", -- color preview style, "foreground" | "background"
+  },
   telescope = {
     utilities = {
       -- the function used when selecting an utility class in telescope
@@ -37,6 +45,7 @@ require("tailwind-tools").setup {
 -- first set up lspking
 cmp.setup {
   formatting = {
+    expandable_indicator = true,
     format = lspkind.cmp_format {
       mode = "symbol", -- show only symbol annotations
       maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
@@ -57,6 +66,7 @@ cmp.setup {
 -- then setup tailwind_tools
 cmp.setup {
   formatting = {
+    expandable_indicator = true,
     format = lspkind.cmp_format {
       before = tailwind_tools.lspkind_format,
     },

@@ -32,7 +32,7 @@ require("lint").linters_by_ft = {
   dotenv = { "cspell", "dotenv_linter" },
   gitcommit = { "gitlint" },
   go = { "cspell" },
-  rust = { "clippy", "cspell" },
+  rust = { "cspell" },
 }
 
 local js_ts_patterns = {

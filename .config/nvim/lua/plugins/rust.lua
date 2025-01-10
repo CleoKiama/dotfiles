@@ -135,9 +135,10 @@ return {
       }
     end,
     ["rust-analyzer"] = {
-      cargo = {
-        allFeatures = true,
-      },
+      cargo = { allFeatures = true },
+      checkOnSave = true,
+      check = { command = "clippy", features = "all" },
+      procMacro = { enable = true },
     },
   },
 }
