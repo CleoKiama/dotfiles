@@ -190,8 +190,10 @@ end, { desc = "[P]Toggle task and move it to 'done'" })
 -- Crate task or checkbox lamw25wmal
 -- These are marked with <leader>x using bullets.vim
 -- I used <C-l> before, but that is used for pane navigation
+
 vim.keymap.set({ "n", "v", "i" }, "<M-l>", function()
   -- Get the current line and cursor position
+  local timestamp = os.date "%Y-%m-%d"
   local line = vim.api.nvim_get_current_line()
   local cursor = vim.api.nvim_win_get_cursor(0)
   -- Check if the line starts with a bullet or "- ", and remove it
@@ -201,13 +203,15 @@ vim.keymap.set({ "n", "v", "i" }, "<M-l>", function()
   -- Move the cursor back to its original position
   vim.api.nvim_win_set_cursor(0, { cursor[1], #updated_line })
   -- Insert the checkbox
-  vim.api.nvim_put({ "- [ ] " }, "c", true, true)
+  -- vim.api.nvim_put({ "- [ ] " }, "c", true, true)
+  -- with time stamp
+  vim.api.nvim_put({ "- [ ] `created: " .. timestamp .. "` " }, "c", true, true)
 end, { desc = "[P]Toggle checkbox" })
 
 -- Iterate through incomplete tasks in telescope
 -- You can confirm in your teminal lamw25wmal with:
 -- rg "^\s*-\s\[ \]" test-markdown.md
-vim.keymap.set("n", "<localleader>tt", function()
+vim.keymap.set("n", "<leader>tf", function()
   require("telescope.builtin").grep_string(require("telescope.themes").get_ivy {
     prompt_title = "Incomplete Tasks",
     -- search = "- \\[ \\]", -- Fixed search term for tasks
