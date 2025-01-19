@@ -114,4 +114,28 @@ return {
     end,
   },
   { "wakatime/vim-wakatime", event = "VeryLazy" },
+  {
+    "danielfalk/smart-open.nvim",
+    branch = "0.2.x",
+    config = function()
+      require("telescope").load_extension "smart_open"
+    end,
+    dependencies = {
+      { "kkharji/sqlite.lua" },
+      -- Optional.  If installed, native fzy will be used when match_algorithm is fzy
+      { "nvim-telescope/telescope-fzy-native.nvim" },
+    },
+    keys = {
+      {
+        "<leader>ff",
+        function()
+          require("telescope").extensions.smart_open.smart_open {
+            cwd_only = true,
+            filename_first = true,
+          }
+        end,
+        desc = "[p] find files (smart open)",
+      },
+    },
+  },
 }

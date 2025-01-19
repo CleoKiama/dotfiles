@@ -20,6 +20,7 @@ return {
       "neovim/nvim-lspconfig",
     },
     config = function()
+      require "configs.js_ts_setup"
       require("typescript-tools").setup {}
     end,
   },

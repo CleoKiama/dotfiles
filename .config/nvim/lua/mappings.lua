@@ -12,6 +12,10 @@ nomap("i", "<C-k>")
 nomap("n", "<C-k>")
 nomap("n", "<leader>e")
 nomap("n", "<leader>n")
+nomap("n", "<leader>ff")
+map("n", "<leader>ff", function()
+  require("telescope").extensions.smart_open.smart_open()
+end, { desc = "[p] find files (smart open)" })
 
 -- oil.nvim
 map("n", "-", "<CMD>Oil<CR>", { desc = "[p] Open parent directory" })
@@ -130,7 +134,7 @@ map("n", "<leader>gp", function()
   require("neogit").open { "pull" }
 end, { desc = "[p] git pull" })
 
-map("n", "<leader>gB", "<CMD>Telescope git_branches<CR>", { desc = "[p] git branches" })
+map("n", "<leader>gb", "<CMD>Telescope git_branches<CR>", { desc = "[p] git branches" })
 
 -- iron repl
 vim.keymap.set("n", "<space>rs", "<cmd>IronRepl<cr>", {})

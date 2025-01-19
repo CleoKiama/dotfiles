@@ -14,7 +14,7 @@ return {
       "DBUIAddConnection",
       "DBUIFindBuffer",
     },
-    init = function()
+    config = function()
       -- Your DBUI configuration
       vim.g.db_ui_use_nerd_fonts = 1
       require "configs.dad-bod-completion"

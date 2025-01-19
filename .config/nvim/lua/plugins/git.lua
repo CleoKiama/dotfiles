@@ -56,8 +56,7 @@ return {
   },
   {
     "akinsho/git-conflict.nvim",
-    -- lazy = false,
-    disabled = true,
+    event = "VeryLazy",
     config = function()
       require "configs.git_conflict"
     end,
@@ -69,4 +68,10 @@ return {
     --   { "<Leader>gci", "<cmd>GitConflictChooseTheirs<CR>", desc = "choose incoming" },
     -- },
   },
+  "petertriho/cmp-git",
+  dependencies = { "hrsh7th/nvim-cmp" },
+  filetypes = { "gitcommit", "octo", "NeogitCommitMessage" },
+  config = function()
+    table.insert(require("cmp").get_config().sources, { name = "git" })
+  end,
 }

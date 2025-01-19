@@ -28,3 +28,5 @@ vim.opt.spell = true
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
+
+vim.g.snippets_path = vim.fn.stdpath "config" .. "/snippets"

@@ -27,7 +27,6 @@ return {
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "jfpedroza/neotest-elixir",
       "nvim-neotest/neotest-jest",
     },
     config = function()

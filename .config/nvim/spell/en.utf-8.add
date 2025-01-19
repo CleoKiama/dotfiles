@@ -5,3 +5,5 @@ run_rclone_sync
 keymap
 nvchad
 kubernetes
+memoization
+Todo

@@ -1,7 +1,3 @@
-require "nvchad.mappings"
-
-local map = vim.keymap.set
-
 require("obsidian").setup {
   workspaces = {
     {
@@ -80,7 +76,89 @@ require("obsidian").setup {
     -- Open the URL in the default web browser.
     vim.fn.jobstart { "xdg-open", url } -- linux
   end,
-  mappings = {},
+  mappings = {
+    -- "Obsidian follow"
+    ["<leader>of"] = {
+      action = function()
+        return require("obsidian").util.gf_passthrough()
+      end,
+      opts = { noremap = false, expr = true, buffer = true },
+      { desc = "[p] obsidian follow link" },
+    },
+    -- Toggle check-boxes "obsidian done"
+    ["<leader>od"] = {
+      action = function()
+        return require("obsidian").util.toggle_checkbox()
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian toggle checkbox" },
+    },
+    ["<leader>oc"] = {
+      action = function()
+        vim.cmd " ObsidianToggleCheckbox"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian cycle checkbox" },
+    },
+    ["<leader>or"] = {
+      action = function()
+        vim.cmd "ObsidianTomorrow"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian jump to tomorrow" },
+    },
+    ["<leader>on"] = {
+      action = function()
+        vim.cmd "ObsidianNew"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian new note" },
+    },
+
+    ["<leader>oy"] = {
+      action = function()
+        vim.cmd "ObsidianYesterday"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian Yesterday" },
+    },
+    ["<leader>oj"] = {
+      action = function()
+        vim.cmd "ObsidianToday"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian jump to today" },
+    },
+    ["<leader>ot"] = {
+      action = function()
+        vim.cmd "ObsidianTemplate"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian insert template" },
+    },
+    ["<leader>oi"] = {
+      action = function()
+        vim.cmd "ObsidianPasteImg"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian paste image to default image path" },
+    },
+
+    ["<leader>oo"] = {
+      action = function()
+        vim.cmd "ObsidianOpen"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian open note in app" },
+    },
+    ["<leader>ob"] = {
+      action = function()
+        vim.cmd "ObsidianBacklinks"
+      end,
+      opts = { buffer = true },
+      { desc = "[p] obsidian open note in app" },
+    },
+  },
   picker = {
     -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
     name = "telescope.nvim",
@@ -101,6 +179,7 @@ require("obsidian").setup {
     -- If this is a relative path it will be interpreted as relative to the vault root.
     -- You can always override this per image by passing a full path to the command instead of just a filename.
     img_folder = "assets/imgs", -- This is the default
+
     -- Optional, customize the default name or prefix when pasting images via `:ObsidianPasteImg`.
     ---@return string
     img_name_func = function()
@@ -130,64 +209,46 @@ function run_rclone_sync()
     cmd = "rclone sync /media/Library/obsidian-vaults gdrive:/Obsidian_vault",
     id = "rclone_sync",
     clear_cmd = false,
-    focus = false,
   }
 end
 
---
--- Register all the keymaps with descriptions
-map("n", "gf", function()
-  if require("obsidian").util.cursor_on_markdown_link() then
-    return "<cmd>ObsidianFollowLink<CR>"
-  else
-    return "gf"
-  end
-end, { noremap = false, expr = true, buffer = true, desc = "[p] obsidian follow link" })
+-- Obsidian sync to GDrive
 
-map("n", "<leader>od", function()
-  return require("obsidian").util.toggle_checkbox()
-end, { buffer = true, desc = "[p] obsidian toggle checkbox" })
-
-map("n", "<leader>oc", function()
-  vim.cmd " ObsidianToggleCheckbox"
-end, { buffer = true, desc = "[p] obsidian cycle checkbox" })
-
-map("n", "<leader>or", function()
-  vim.cmd "ObsidianTomorrow"
-end, { buffer = true, desc = "[p] obsidian jump to tomorrow" })
-
-map("n", "<leader>on", function()
-  vim.cmd "ObsidianNew"
-end, { buffer = true, desc = "[p] obsidian new note" })
-
-map("n", "<leader>oy", function()
-  vim.cmd "ObsidianYesterday"
-end, { buffer = true, desc = "[p] obsidian Yesterday" })
-
-map("n", "<leader>oj", function()
-  vim.cmd "ObsidianToday"
-end, { buffer = true, desc = "[p] obsidian jump to today" })
-
-map("n", "<leader>ot", function()
-  vim.cmd "ObsidianTemplate"
-end, { buffer = true, desc = "[p] obsidian insert template" })
-
-map("n", "<leader>oi", function()
-  vim.cmd "ObsidianPasteImg"
-end, { buffer = true, desc = "[p] obsidian paste image to default image path" })
-
-map("n", "<leader>oo", function()
-  vim.cmd "ObsidianOpen"
-end, { buffer = true, desc = "[p] obsidian open note in app" })
-
-map("n", "<leader>ob", function()
-  vim.cmd "ObsidianBacklinks"
-end, { buffer = true, desc = "[p] obsidian open backlinks" })
-
-map("n", "<leader>os", function()
-  run_rclone_sync()
-end, { noremap = true, silent = true, desc = "[p] Sync Obsidian to GDrive" })
 vim.keymap.set("n", "<Leader>os", ":lua run_rclone_sync()<CR>", { desc = "Sync Obsidian to GDrive" })
 
--- setup the task_manager mappings
+local wk = require "which-key"
+
+wk.add {
+  {
+    mode = { "n" },
+    {
+      "<leader>o",
+      {
+        f = {
+          function()
+            return require("obsidian").util.gf_passthrough()
+          end,
+          "obsidian follow link",
+        },
+        d = {
+          function()
+            return require("obsidian").util.toggle_checkbox()
+          end,
+          "obsidian toggle checkbox",
+        },
+        c = { ":[p]ObsidianToggleCheckbox<CR>", "obsidian cycle checkbox" },
+        n = { ":[p]ObsidianNew<CR>", "obsidian new note" },
+        y = { ":[p]ObsidianYesterday<CR>", "obsidian Yesterday" },
+        j = { ":[p]ObsidianToday<CR>", "obsidian jump to today" },
+        t = { ":[p]ObsidianTemplate<CR>", "obsidian insert template" },
+        i = { ":[p]ObsidianPasteImg<CR>", "obsidian paste image to default image path" },
+        o = { ":[p]ObsidianOpen<CR>", "obsidian open note in app" },
+        b = { ":[p]ObsidianBacklinks<CR>", "obsidian open note in app" },
+        s = { ":[p]lua run_rclone_sync()<CR>", "Sync Obsidian to GDrive" },
+      },
+      group = "Obsidian",
+    },
+  },
+}
+
 require "configs.task_manager"
