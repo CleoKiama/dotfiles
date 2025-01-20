@@ -90,5 +90,6 @@ M.nvdash = {
 
 -- Enable indent_blankline highlighting
 require "configs.indent_blankline"
+require "configs.luasnip"
 
 return M

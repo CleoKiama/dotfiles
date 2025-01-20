@@ -28,7 +28,7 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-lspconfig.elixirls.setup {
-  -- Unix
-  cmd = { "/home/cleo/.local/share/nvim/mason/packages/elixir-ls/language_server.sh" },
-}
+-- lspconfig.elixirls.setup {
+--   -- Unix
+--   cmd = { "/home/cleo/.local/share/nvim/mason/packages/elixir-ls/language_server.sh" },
+-- }
