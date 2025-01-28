@@ -128,17 +128,21 @@ return {
       local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
       local cfg = require "rustaceanvim.config"
 
+      local nvlsp = require "nvchad.configs.lspconfig"
+      local navic = require "nvim-navic"
+
       vim.g.rustaceanvim = {
         dap = {
           adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
         },
+        server = {
+          on_attach = function(client, bufnr)
+            navic.attach(client, bufnr)
+            nvlsp.on_attach(client, bufnr) -- Attach nvchad's LSP config
+          end,
+          capabilities = nvlsp.capabilities, -- Use nvchad's capabilities
+        },
       }
     end,
-    ["rust-analyzer"] = {
-      cargo = { allFeatures = true },
-      checkOnSave = true,
-      check = { command = "clippy", features = "all" },
-      procMacro = { enable = true },
-    },
   },
 }

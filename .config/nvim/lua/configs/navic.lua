@@ -29,51 +29,6 @@ require("nvim-navic").setup {
   },
 }
 
-local lspconfig = require "lspconfig"
-
--- JavaScript (tsserver)
-lspconfig.tsserver.setup {
-  on_attach = function(client, bufnr)
-    require("nvim-navic").attach(client, bufnr)
-  end,
-}
-
--- Elixir (elixirls)
-lspconfig.elixirls.setup {
-  on_attach = function(client, bufnr)
-    require("nvim-navic").attach(client, bufnr)
-  end,
-  cmd = { "/home/cleo/.local/share/nvim/mason/packages/elixir-ls/language_server.sh" },
-}
-
--- HTML (html)
-lspconfig.html.setup {
-  on_attach = function(client, bufnr)
-    require("nvim-navic").attach(client, bufnr)
-  end,
-}
-
--- CSS (cssls)
-lspconfig.cssls.setup {
-  on_attach = function(client, bufnr)
-    require("nvim-navic").attach(client, bufnr)
-  end,
-}
-
--- Lua (sumneko_lua)
-lspconfig["lua_ls"].setup {
-  on_attach = function(client, bufnr)
-    require("nvim-navic").attach(client, bufnr)
-  end,
-}
-
---gleam
-lspconfig.gleam.setup {
-  on_attach = function(client, bufnr)
-    require("nvim-navic").attach(client, bufnr)
-  end,
-}
-
 -- Case the highlights are not defined in Kanagawa
 vim.api.nvim_set_hl(0, "NavicIconsFile", { default = true, bg = "#000000", fg = "#ffffff" })
 vim.api.nvim_set_hl(0, "NavicIconsModule", { default = true, bg = "#000000", fg = "#ffffff" })

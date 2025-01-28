@@ -175,6 +175,20 @@ return {
   },
   {
     "tzachar/highlight-undo.nvim",
+    config = function()
+      require("highlight-undo").setup {
+        keymaps = {
+          paste = {
+            desc = "paste",
+            hlgroup = "HighlightUndo",
+            mode = "n",
+            lhs = "p",
+            rhs = "p",
+            opts = {},
+          },
+        },
+      }
+    end,
     keys = { { "u" }, { "<C-r>" } },
   },
 }

@@ -14,14 +14,22 @@ return {
   },
   {
     "pmizio/typescript-tools.nvim",
-    ft = { "typescript", "javascript", "typescriptreact" },
+    ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "neovim/nvim-lspconfig",
     },
     config = function()
-      require "configs.js_ts_setup"
-      require("typescript-tools").setup {}
+      local nvlsp = require "nvchad.configs.lspconfig"
+      local navic = require "nvim-navic"
+
+      require("typescript-tools").setup {
+        on_attach = function(client, bufnr)
+          navic.attach(client, bufnr)
+          nvlsp.on_attach(client, bufnr) -- Attach nvchad's LSP config
+        end,
+        capabilities = nvlsp.capabilities, -- Use nvchad's capabilities
+      }
     end,
   },
   {

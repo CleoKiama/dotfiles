@@ -1,7 +1,6 @@
 return {
   --defaults
   "vim",
-  "asm",
   "lua",
   "vimdoc",
   "html",
@@ -10,19 +9,16 @@ return {
   "typescript",
   "markdown",
   "markdown_inline",
-  "svelte",
   "tsx",
+  "prisma",
   "json",
   "yaml",
   "toml",
   "jsonc",
-  "graphql",
   "python",
   "sql",
-  "go",
   "regex",
   "elixir",
-  "heex",
   "gleam",
   "rust",
 }

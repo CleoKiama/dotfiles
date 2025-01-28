@@ -26,6 +26,7 @@ configs=(
     ".config/kitty"
     ".config/alacritty.toml"
     ".bashrc"
+    ".zshrc"
     ".tmux.conf"
     ".config/fontconfig"
     ".config/emacs"

@@ -41,6 +41,7 @@ local languages = {
   "csv",
   "java",
   "javascript",
+  "typescript",
   "python",
   "dockerfile",
   "html",

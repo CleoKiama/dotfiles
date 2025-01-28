@@ -6,6 +6,7 @@ local function has_eslint_config()
   local eslint_configs = {
     ".eslintrc.js",
     ".eslintrc.cjs",
+    " eslint.config.js",
     ".eslintrc.yaml",
     ".eslintrc.yml",
     ".eslintrc.json",
@@ -31,10 +32,8 @@ local function select_linters_for_js_ts()
   -- Check for ESLint first
   if is_executable "eslint" and has_eslint_config() then
     primary_linter_cache = "eslint"
-    vim.notify("using linter: eslint", vim.log.levels.INFO)
   -- Fall back to Biome if available
   elseif is_executable "biome" then
-    vim.notify("using linter: biomejs", vim.log.levels.INFO)
     primary_linter_cache = "biomejs"
   end
 
@@ -84,16 +83,33 @@ local other_patterns = {
 
 local lint_augroup = vim.api.nvim_create_augroup("Linting", { clear = true })
 
--- Run linters on InsertLeave for JS/TS files only
-vim.api.nvim_create_autocmd("BufWritePre", {
+-- Timer for debouncing
+local lint_timer = nil
+
+-- Function to handle debounced linting
+local function debounced_lint()
+  if lint_timer then
+    lint_timer:stop()
+  end
+  lint_timer = vim.defer_fn(function()
+    require("lint").try_lint()
+  end, 3000) -- 3 second delay
+end
+
+-- Run linters on InsertLeave for JS/TS files
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
   group = lint_augroup,
   callback = function()
-    require("lint").try_lint()
+    if vim.fn.mode() == "n" then
+      debounced_lint()
+    else
+      require("lint").try_lint()
+    end
   end,
   pattern = js_ts_patterns,
 })
 
--- Run linters on BufWritePost for all files
+-- Run linters on BufWritePre for all other files
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = lint_augroup,
   callback = function()

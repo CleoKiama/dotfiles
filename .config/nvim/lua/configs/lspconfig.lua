@@ -9,20 +9,25 @@ local servers = {
   "cssls",
   "bashls",
   "marksman",
-  "lua_ls",
-  "gopls",
+  "prismals",
   "sqlls",
   "gleam",
-  "golangci_lint_ls",
   "jsonls",
 }
 
 local nvlsp = require "nvchad.configs.lspconfig"
 
+--setup navic
+local navic = require "nvim-navic"
+
 -- lsps with default config
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
-    on_attach = nvlsp.on_attach,
+    on_attach = function(client, bufnr)
+      navic.attach(client, bufnr)
+      nvlsp.on_attach(client, bufnr)
+    end,
+    -- on_attach = nvlsp.on_attach,
     on_init = nvlsp.on_init,
     capabilities = nvlsp.capabilities,
   }
