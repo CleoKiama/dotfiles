@@ -1,31 +1,3 @@
-local ufo_handler = function(virtText, lnum, endLnum, width, truncate)
-  local newVirtText = {}
-  local suffix = (" 󰁂 %d "):format(endLnum - lnum)
-  local sufWidth = vim.fn.strdisplaywidth(suffix)
-  local targetWidth = width - sufWidth
-  local curWidth = 0
-  for _, chunk in ipairs(virtText) do
-    local chunkText = chunk[1]
-    local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-    if targetWidth > curWidth + chunkWidth then
-      table.insert(newVirtText, chunk)
-    else
-      chunkText = truncate(chunkText, targetWidth - curWidth)
-      local hlGroup = chunk[2]
-      table.insert(newVirtText, { chunkText, hlGroup })
-      chunkWidth = vim.fn.strdisplaywidth(chunkText)
-      -- str width returned from truncate() may less than 2nd argument, need padding
-      if curWidth + chunkWidth < targetWidth then
-        suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
-      end
-      break
-    end
-    curWidth = curWidth + chunkWidth
-  end
-  table.insert(newVirtText, { suffix, "MoreMsg" })
-  return newVirtTextend
-end
-
 return {
   {
     "folke/noice.nvim",
@@ -36,7 +8,6 @@ return {
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
     },
   },
   {
@@ -190,5 +161,114 @@ return {
       }
     end,
     keys = { { "u" }, { "<C-r>" } },
+  },
+  {
+    "folke/snacks.nvim",
+    event = { "BufWritePost" },
+    ---@type snacks.Config
+    opts = {
+      picker = {
+        -- your picker configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      },
+      notifier = {
+        -- your notifier configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+        zindex = 600,
+      },
+    },
+    keys = {
+      {
+        "<leader>fs",
+        function()
+          Snacks.picker.lsp_symbols()
+        end,
+        desc = "[p] snacks  LSP Symbols",
+      },
+      {
+        "<leader>fg",
+        function()
+          Snacks.picker.files()
+        end,
+        desc = "[p] Snacks Find Git Files",
+      },
+      {
+        "<leader>sk",
+        function()
+          Snacks.picker.keymaps()
+        end,
+        desc = "Keymaps",
+      },
+      {
+        "<M-b>",
+        function()
+          Snacks.picker.git_branches {
+            layout = "select",
+          }
+        end,
+        desc = "[p] git branch",
+      },
+      {
+        -- -- You can confirm in your teminal lamw26wmal with:
+        -- -- rg "^\s*-\s\[ \]" test-markdown.md
+        "<leader>ti",
+        function()
+          Snacks.picker.grep {
+            prompt = " ",
+            -- pass your desired search as a static pattern
+            search = "^\\s*- \\[ \\]",
+            -- we enable regex so the pattern is interpreted as a regex
+            regex = true,
+            -- no “live grep” needed here since we have a fixed pattern
+            live = false,
+            -- restrict search to the current working directory
+            dirs = { vim.fn.getcwd() },
+            -- include files ignored by .gitignore
+            args = { "--no-ignore" },
+            -- Start in normal mode
+            on_show = function()
+              vim.cmd.stopinsert()
+            end,
+            finder = "grep",
+            format = "file",
+            show_empty = true,
+            supports_live = false,
+            layout = "ivy",
+          }
+        end,
+        desc = "[P]Search for incomplete tasks",
+      },
+      -- -- Iterate throuth completed tasks in Snacks_picker lamw26wmal
+      {
+        "<leader>tc",
+        function()
+          Snacks.picker.grep {
+            prompt = " ",
+            -- pass your desired search as a static pattern
+            search = "^\\s*- \\[x\\] `done:",
+            -- we enable regex so the pattern is interpreted as a regex
+            regex = true,
+            -- no “live grep” needed here since we have a fixed pattern
+            live = false,
+            -- restrict search to the current working directory
+            dirs = { vim.fn.getcwd() },
+            -- include files ignored by .gitignore
+            args = { "--no-ignore" },
+            -- Start in normal mode
+            on_show = function()
+              vim.cmd.stopinsert()
+            end,
+            finder = "grep",
+            format = "file",
+            show_empty = true,
+            supports_live = false,
+            layout = "ivy",
+          }
+        end,
+        desc = "[P]Search for incomplete tasks",
+      },
+    },
   },
 }

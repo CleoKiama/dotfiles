@@ -5,6 +5,7 @@ local function has_prettier_config()
     ".prettierrc.yml",
     ".prettierrc.yaml",
     ".prettierrc.json5",
+    ".prettierrc.cjs",
     ".prettierrc.js",
     ".prettier.config.js",
     "prettier.config.js",

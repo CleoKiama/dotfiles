@@ -35,9 +35,6 @@ require("obsidian").setup {
     local suffix = ""
     if title ~= nil then
       suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-    else
-      for _ = 1, 4 do
-      end
     end
     return os.date "%Y-%m-%d" .. "-" .. suffix
   end,

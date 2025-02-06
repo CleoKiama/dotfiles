@@ -1,7 +1,4 @@
 local cmp = require "cmp"
-local existing_sources = cmp.get_config().sources or {}
-table.insert(existing_sources, { name = "ecolog" })
-cmp.setup { sources = existing_sources }
 
 return {
   {
@@ -15,6 +12,11 @@ return {
       { "<localleader>ep", "<cmd>EcologPeek<cr>", desc = "Ecolog peek variable" },
       { "<localleader>es", "<cmd>EcologSelect<cr>", desc = "Switch env file" },
     },
+    config = function()
+      local existing_sources = cmp.get_config().sources or {}
+      table.insert(existing_sources, { name = "ecolog" })
+      cmp.setup { sources = existing_sources }
+    end,
     -- Lazy loading is done internally
     event = "VeryLazy",
     opts = {

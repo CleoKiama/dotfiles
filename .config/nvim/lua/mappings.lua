@@ -97,13 +97,12 @@ map("n", "<leader>tt", "<cmd>TodoTrouble<CR>", { noremap = true, silent = true }
 map("n", "<leader>du", "<cmd>DBUIToggle<CR>", { noremap = true, silent = true }, { desc = "[p] Toggle DBUI" })
 
 -- noice.nivm
-map({ "n" }, "<leader>nc", "<cmd>Noice dismiss<CR>", { silent = true, noremap = true, desc = "[p] Noice dismiss all" })
-map(
-  { "n" },
-  "<leader>nt",
-  "<cmd>Noice telescope<CR>",
-  { silent = true, noremap = true, desc = "[p] Telescope Noice messages" }
-)
+map({ "n" }, "<leader>nc", function()
+  Snacks.notifier.hide()
+end, { silent = true, noremap = true, desc = "[p] Noice dismiss all" })
+map({ "n" }, "<leader>nh", function()
+  Snacks.notifier.show_history()
+end, { silent = true, noremap = true, desc = "[p] Telescope Noice messages" })
 
 -- diffview.nvim
 map("n", "<leader>dh", "<cmd>:DiffviewFileHistory %<CR>", { desc = "[p] TagbarToggle" })
@@ -133,8 +132,6 @@ end, { desc = "[p] git push" })
 map("n", "<leader>gp", function()
   require("neogit").open { "pull" }
 end, { desc = "[p] git pull" })
-
-map("n", "<leader>gb", "<CMD>Telescope git_branches<CR>", { desc = "[p] git branches" })
 
 -- iron repl
 vim.keymap.set("n", "<space>rs", "<cmd>IronRepl<cr>", {})

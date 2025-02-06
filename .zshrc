@@ -92,6 +92,10 @@ alias mkdir='mkdir -p'
 #better cd
 eval "$(zoxide init zsh --cmd cd)"
 
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
+
 # pnpm
 export PNPM_HOME="/home/cleo/.local/share/pnpm"
 case ":$PATH:" in
