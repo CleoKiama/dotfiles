@@ -1,5 +1,5 @@
 require "nvchad.mappings"
-
+local map = vim.keymap.set
 --
 --j
 -- If there is no `untoggled` or `done` label on an item, mark it as done
@@ -8,7 +8,7 @@ require "nvchad.mappings"
 -- appended to it at the top lamw25wmal
 --
 -- If an item is moved to that heading, it will be added the `done` label
-vim.keymap.set("n", "<M-x>", function()
+map("n", "<M-x>", function()
   -- Customizable variables
   -- NOTE: Customize the completion label
   local label_done = "done:"
@@ -191,7 +191,7 @@ end, { desc = "[P]Toggle task and move it to 'done'" })
 -- These are marked with <leader>x using bullets.vim
 -- I used <C-l> before, but that is used for pane navigation
 
-vim.keymap.set({ "n", "v", "i" }, "<M-l>", function()
+map({ "n", "v", "i" }, "<M-l>", function()
   -- Get the current line and cursor position
   local timestamp = os.date "%Y-%m-%d"
   local line = vim.api.nvim_get_current_line()
@@ -207,3 +207,29 @@ vim.keymap.set({ "n", "v", "i" }, "<M-l>", function()
   -- with time stamp
   vim.api.nvim_put({ "- [ ] `created: " .. timestamp .. "` " }, "c", true, true)
 end, { desc = "[P]Toggle checkbox" })
+
+map("n", "<leader>ti", function()
+  require("telescope.builtin").grep_string {
+    prompt_title = "Incomplete Tasks",
+    search = "^\\s*- \\[ \\]",
+    use_regex = true,
+    additional_args = function()
+      return { "--no-ignore" }
+    end,
+    layout_strategy = "horizontal",
+  }
+end, { desc = "Search for incomplete tasks" })
+
+map("n", "<leader>tc", function()
+  require("telescope.builtin").grep_string {
+    prompt_title = "Completed Tasks",
+    search = "^\\s*- \\[x\\] `done:",
+    use_regex = true,
+    additional_args = function()
+      return { "--no-ignore" }
+    end,
+    layout_strategy = "horizontal",
+  }
+end, {
+  desc = "Search for completed tasks",
+})

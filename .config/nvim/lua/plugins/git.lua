@@ -43,31 +43,6 @@ return {
       },
     },
   },
-  {
-    "ThePrimeagen/git-worktree.nvim",
-    -- lazy = false,
-    config = function()
-      require "configs.worktree"
-    end,
-    keys = {
-      { "<Leader>gww", desc = "worktrees" },
-      { "<Leader>gwc", desc = "create worktree" },
-    },
-  },
-  {
-    "akinsho/git-conflict.nvim",
-    event = "VeryLazy",
-    config = function()
-      require "configs.git_conflict"
-    end,
-    -- keys = {
-    --   { "<Leader>gcb", "<cmd>GitConflictChooseBoth<CR>", desc = "choose both" },
-    --   { "<Leader>gcn", "<cmd>GitConflictNextConflict<CR>", desc = "move to next conflict" },
-    --   { "<Leader>gcc", "<cmd>GitConflictChooseOurs<CR>", desc = "choose current" },
-    --   { "<Leader>gcp", "<cmd>GitConflictPrevConflict<CR>", desc = "move to prev conflict" },
-    --   { "<Leader>gci", "<cmd>GitConflictChooseTheirs<CR>", desc = "choose incoming" },
-    -- },
-  },
   "petertriho/cmp-git",
   dependencies = { "hrsh7th/nvim-cmp" },
   filetypes = { "gitcommit", "octo", "NeogitCommitMessage" },

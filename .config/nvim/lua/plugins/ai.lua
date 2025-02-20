@@ -21,6 +21,7 @@ return {
           require("avante.api").refresh()
         end,
         desc = "Avante: refresh",
+        mode = { "n", "v", "i" },
       },
       {
         "<leader>ae",

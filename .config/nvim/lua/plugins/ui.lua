@@ -8,6 +8,7 @@ return {
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
     },
   },
   {
@@ -36,13 +37,6 @@ return {
     },
   },
   {
-    "karb94/neoscroll.nvim",
-    event = { "BufRead", "BufNewFile", "BufWritePost" },
-    config = function()
-      require("neoscroll").setup {}
-    end,
-  },
-  {
     "SmiteshP/nvim-navic",
     event = "LspAttach",
     config = function()
@@ -61,7 +55,7 @@ return {
   },
   {
     "vhyrro/luarocks.nvim",
-    priority = 1000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
+    priority = 1000,
     config = true,
   },
   {
@@ -116,17 +110,6 @@ return {
     end,
   },
   {
-    "RRethy/vim-illuminate",
-    event = { "BufRead", "BufNewFile", "BufWritePost" },
-    config = function()
-      vim.cmd [[
-      hi IlluminatedWordText guibg=#264f78 gui=none
-      hi IlluminatedWordRead guibg=#264f78 gui=none
-      hi IlluminatedWordWrite guibg=#264f78 gui=none
-    ]]
-    end,
-  },
-  {
     "CleoKiama/ObsidianTracker.nvim",
     dev = true,
     name = "CleoKiama/ObsidianTracker.nvim",
@@ -161,114 +144,5 @@ return {
       }
     end,
     keys = { { "u" }, { "<C-r>" } },
-  },
-  {
-    "folke/snacks.nvim",
-    event = { "BufWritePost" },
-    ---@type snacks.Config
-    opts = {
-      picker = {
-        -- your picker configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      },
-      notifier = {
-        -- your notifier configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-        zindex = 600,
-      },
-    },
-    keys = {
-      {
-        "<leader>fs",
-        function()
-          Snacks.picker.lsp_symbols()
-        end,
-        desc = "[p] snacks  LSP Symbols",
-      },
-      {
-        "<leader>fg",
-        function()
-          Snacks.picker.files()
-        end,
-        desc = "[p] Snacks Find Git Files",
-      },
-      {
-        "<leader>sk",
-        function()
-          Snacks.picker.keymaps()
-        end,
-        desc = "Keymaps",
-      },
-      {
-        "<M-b>",
-        function()
-          Snacks.picker.git_branches {
-            layout = "select",
-          }
-        end,
-        desc = "[p] git branch",
-      },
-      {
-        -- -- You can confirm in your teminal lamw26wmal with:
-        -- -- rg "^\s*-\s\[ \]" test-markdown.md
-        "<leader>ti",
-        function()
-          Snacks.picker.grep {
-            prompt = " ",
-            -- pass your desired search as a static pattern
-            search = "^\\s*- \\[ \\]",
-            -- we enable regex so the pattern is interpreted as a regex
-            regex = true,
-            -- no “live grep” needed here since we have a fixed pattern
-            live = false,
-            -- restrict search to the current working directory
-            dirs = { vim.fn.getcwd() },
-            -- include files ignored by .gitignore
-            args = { "--no-ignore" },
-            -- Start in normal mode
-            on_show = function()
-              vim.cmd.stopinsert()
-            end,
-            finder = "grep",
-            format = "file",
-            show_empty = true,
-            supports_live = false,
-            layout = "ivy",
-          }
-        end,
-        desc = "[P]Search for incomplete tasks",
-      },
-      -- -- Iterate throuth completed tasks in Snacks_picker lamw26wmal
-      {
-        "<leader>tc",
-        function()
-          Snacks.picker.grep {
-            prompt = " ",
-            -- pass your desired search as a static pattern
-            search = "^\\s*- \\[x\\] `done:",
-            -- we enable regex so the pattern is interpreted as a regex
-            regex = true,
-            -- no “live grep” needed here since we have a fixed pattern
-            live = false,
-            -- restrict search to the current working directory
-            dirs = { vim.fn.getcwd() },
-            -- include files ignored by .gitignore
-            args = { "--no-ignore" },
-            -- Start in normal mode
-            on_show = function()
-              vim.cmd.stopinsert()
-            end,
-            finder = "grep",
-            format = "file",
-            show_empty = true,
-            supports_live = false,
-            layout = "ivy",
-          }
-        end,
-        desc = "[P]Search for incomplete tasks",
-      },
-    },
   },
 }

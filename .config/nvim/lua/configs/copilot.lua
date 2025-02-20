@@ -33,8 +33,9 @@ require("copilot").setup {
     markdown = true,
     help = false,
     gitcommit = true,
+    ["copilot-chat"] = true,
     gitrebase = false,
-    hgcommit = false,
+    hgcommit = true,
     svn = false,
     cvs = false,
     ["."] = false,
@@ -42,4 +43,3 @@ require("copilot").setup {
   copilot_node_command = "node", -- Node.js version must be > 18.x
   server_opts_overrides = {},
 }
-

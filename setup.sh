@@ -32,8 +32,8 @@ configs=(
     ".config/emacs"
     ".config/yazi"
     ".config/hyprshade"
+    ".config/rofimoji.rc"
     ".config/hypr/shaders/blue-light-filter.glsl"
-    ".config/hypr/userprefs.conf"
 )
 
 # Create symlinks

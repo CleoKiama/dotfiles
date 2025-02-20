@@ -74,34 +74,36 @@ map("n", "<leader>u", vim.cmd.UndotreeToggle, { noremap = true, silent = true, d
 map("n", "<leader>y", '"+y', { noremap = true, silent = true, desc = "[p] Yank to clipboard" })
 map("v", "<leader>y", '"+y', { noremap = true, silent = true })
 map("n", "n", "nzzzv", { desc = "[p] Move to next search item and center it" })
-map("x", "<leader>p", '"_dp', { noremap = true, silent = true }, { desc = "[p] Paste without yanking" })
-map("n", "J", "mzJz", { noremap = true, silent = true }, { desc = "[p] Join lines and keep cursor position" })
+map("x", "<leader>p", '"_dp', { noremap = true, silent = true, desc = "[p] Paste without yanking" })
+map("n", "J", "mzJ`z", { noremap = true, silent = true, desc = "[p] Join lines and keep cursor position" })
 map("n", "<leader>sf", "<cmd>normal! ggVG<CR>", { noremap = true, silent = true, desc = "[p] Select whole file" })
+map("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true, desc = "[p] Scroll down and center" })
+map("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true, desc = "[p] Scroll up and center" })
 
 -- Code Runner
-map("n", "<leader>cr", ":RunCode<CR>", { noremap = true, silent = false }, { desc = "[p] Run code" })
+map("n", "<leader>cr", ":RunCode<CR>", { noremap = true, silent = false, desc = "[p] Run code" })
 
 -- Trouble.nvim
-map(
-  "n",
-  "<leader>tx",
-  "<cmd>Trouble diagnostics toggle<cr>",
-  { noremap = true, silent = true },
-  { desc = "[p] Diagnostics (Trouble)" }
-)
+map("n", "<leader>tx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "[p] Diagnostics (Trouble)" })
 
 -- Todo comments
-map("n", "<leader>tt", "<cmd>TodoTrouble<CR>", { noremap = true, silent = true }, { desc = "[p] Search TODO comments" })
+map("n", "<leader>tt", "<cmd>TodoTrouble<CR>", { noremap = true, silent = false, desc = "[p] Search TODO comments" })
 
 -- vim dadbob ui
-map("n", "<leader>du", "<cmd>DBUIToggle<CR>", { noremap = true, silent = true }, { desc = "[p] Toggle DBUI" })
+map("n", "<leader>du", "<cmd>DBUIToggle<CR>", { noremap = true, silent = false, desc = "[p] Toggle DBUI" })
 
 -- noice.nivm
 map({ "n" }, "<leader>nc", function()
-  Snacks.notifier.hide()
+  vim.cmd ":Noice dismiss"
 end, { silent = true, noremap = true, desc = "[p] Noice dismiss all" })
 map({ "n" }, "<leader>nh", function()
-  Snacks.notifier.show_history()
+  vim.cmd ":Noice telescope"
+end, { silent = true, noremap = true, desc = "[p] Telescope Noice messages" })
+map({ "n" }, "<leader>ne", function()
+  vim.cmd ":Noice errors"
+end, { silent = true, noremap = true, desc = "[p] Telescope Noice messages" })
+map({ "n" }, "<leader>nl", function()
+  vim.cmd ":Noice last"
 end, { silent = true, noremap = true, desc = "[p] Telescope Noice messages" })
 
 -- diffview.nvim
