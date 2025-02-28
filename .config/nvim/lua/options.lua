@@ -30,3 +30,7 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
 vim.g.snippets_path = vim.fn.stdpath "config" .. "/snippets"
+
+--- neogit diff colors
+vim.cmd "highlight NeogitDiffDelete guibg=#2d4f67 guifg=#c0caf5"
+vim.cmd "highlight NeogitDiffDeleteHighlight guibg=#334e68 guifg=#c0caf5"
