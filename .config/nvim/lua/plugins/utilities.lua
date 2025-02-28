@@ -148,37 +148,4 @@ return {
       },
     },
   },
-  {
-    "bassamsdata/namu.nvim",
-    config = function()
-      require("namu").setup {
-        -- Enable the modules you want
-        namu_symbols = {
-          enable = true,
-          options = {}, -- here you can configure namu
-        },
-        movement = {
-          next = { "<C-n>", "<DOWN>", "<Tab>" }, -- Note the correct syntax "<Tab>"
-          previous = { "<C-p>", "<UP>", "<S-Tab>" }, -- Note the correct syntax "<S-Tab>"
-          close = { "<ESC>" },
-          select = { "<CR>" },
-          delete_word = {},
-          clear_line = {},
-        },
-        custom_keymaps = {
-          vertical_split = {
-            keys = { "<C-v>" },
-            desc = "Open in vertical split",
-          },
-          horizontal_split = {
-            keys = { "<C-w>s" },
-            desc = "Open in horizontal split",
-          },
-        },
-      }
-    end,
-    keys = {
-      { "<leader>fs", "<cmd>Namu symbols<CR>", desc = "find symbols" },
-    },
-  },
 }

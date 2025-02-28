@@ -16,6 +16,11 @@ nomap("n", "<leader>ff")
 map("n", "<leader>ff", function()
   require("telescope").extensions.smart_open.smart_open()
 end, { desc = "[p] find files (smart open)" })
+-- LSP Symbol search in current buffer
+map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "[p] Find LSP symbols in buffer" })
+
+-- LSP Symbol search in workspace
+map("n", "<leader>fS", "<cmd>Telescope lsp_workspace_symbols<CR>", { desc = "[p] Find LSP symbols in workspace" })
 
 -- oil.nvim
 map("n", "-", "<CMD>Oil<CR>", { desc = "[p] Open parent directory" })
