@@ -1,10 +1,11 @@
 local cmp = require "cmp"
 local lspkind = require "lspkind"
 local tailwind_tools = require "tailwind-tools.cmp"
+local nvlsp = require "nvchad.configs.lspconfig"
 
 require("tailwind-tools").setup {
   document_color = {
-    enabled = true, -- can be toggled by commands
+    enabled = false, -- can be toggled by commands
     kind = "inline", -- "inline" | "foreground" | "background"
     inline_symbol = "󰝤 ", -- only used in inline mode
     debounce = 200, -- in milliseconds, only applied in insert mode
@@ -20,7 +21,9 @@ require("tailwind-tools").setup {
   server = {
     override = true, -- setup the server from the plugin if true
     settings = {}, -- shortcut for `settings.tailwindCSS`
-    on_attach = function(client, bufnr) end, -- callback triggered when the server attaches to a buffer
+    on_attach = function(client, bufnr)
+      nvlsp.on_attach(client, bufnr)
+    end,
   },
   cmp = {
     highlight = "foreground", -- color preview style, "foreground" | "background"

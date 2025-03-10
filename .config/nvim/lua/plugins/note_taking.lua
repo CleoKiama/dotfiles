@@ -2,7 +2,7 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-    ft = { "markdown", "Avante", "copilot-chat" },
+    ft = { "markdown", "Avante", "codecompanion" },
     opts = {
       checkbox = {
         -- Turn on / off checkbox state rendering

@@ -12,13 +12,16 @@ nomap("i", "<C-k>")
 nomap("n", "<C-k>")
 nomap("n", "<leader>e")
 nomap("n", "<leader>n")
-nomap("n", "<leader>ff")
-map("n", "<leader>ff", function()
-  require("telescope").extensions.smart_open.smart_open()
-end, { desc = "[p] find files (smart open)" })
+-- nomap("n", "<leader>ff")
+
+-- map("n", "<leader>ff", function()
+--   require("telescope").extensions.smart_open.smart_open()
+-- end, { desc = "[p] find files (smart open)" })
 -- LSP Symbol search in current buffer
 map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "[p] Find LSP symbols in buffer" })
 
+-- telescope git branches
+map("n", "<leader>gb", "<cmd>Telescope git_branches<CR>", { desc = "[p] Git branches" })
 -- LSP Symbol search in workspace
 map("n", "<leader>fS", "<cmd>Telescope lsp_workspace_symbols<CR>", { desc = "[p] Find LSP symbols in workspace" })
 
@@ -141,10 +144,10 @@ map("n", "<leader>gp", function()
 end, { desc = "[p] git pull" })
 
 -- iron repl
-vim.keymap.set("n", "<space>rs", "<cmd>IronRepl<cr>", {})
-vim.keymap.set("n", "<space>rr", "<cmd>IronRestart<cr>")
-vim.keymap.set("n", "<space>rf", "<cmd>IronFocus<cr>")
-vim.keymap.set("n", "<space>rt", "<cmd>IronHide<cr>")
+map("n", "<space>rs", "<cmd>IronRepl<cr>", {})
+map("n", "<space>rr", "<cmd>IronRestart<cr>")
+map("n", "<space>rf", "<cmd>IronFocus<cr>")
+map("n", "<space>rt", "<cmd>IronHide<cr>")
 
 -- Leet code
 map("n", "<localleader>lm", "<cmd>Leet<CR>", { desc = "[p] open Leet menu/dashboard" })
@@ -179,32 +182,6 @@ map("n", "<localleader>tfr", "<cmd>TSToolsFileReferences<CR>", { desc = "[p] Fin
 map("n", "<leader>ra", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "[p] Rename symbol" })
 
 map("n", "<leader>nn", "<cmd>set nu!<CR>", { desc = "[p] Toggle line number" })
-
--- copilot chat
-map({ "n", "v" }, "<localleader>co", "<cmd>CopilotChatOpen<CR>", { desc = "[p] Open Copilot Chat" })
-map({ "n", "v" }, "<A-c>", "<cmd>CopilotChatToggle<CR>", { desc = "[p] CopilotChatToggle" })
-map({ "n", "v" }, "<localleader>ce", "<cmd>CopilotChatExplain<CR>", { desc = "[p] Explain the active selection" })
-map({ "n", "v" }, "<localleader>cr", "<cmd>CopilotChatReview<CR>", { desc = "[p] Review the selected code" })
-map({ "n", "v" }, "<localleader>cf", "<cmd>CopilotChatFix<CR>", { desc = "[p] Fix the selected code" })
-map({ "n", "v" }, "<localleader>cz", "<cmd>CopilotChatOptimize<CR>", { desc = "[p] Optimize the selected code" })
-map({ "n", "v" }, "<localleader>cgd", "<cmd>CopilotChatDocs<CR>", { desc = "[p] Add documentation comment" })
-map({ "n", "v" }, "<localleader>ct", "<cmd>CopilotChatTests<CR>", { desc = "[p] Add tests to this code" })
-map("n", "<localleader>cd", "<cmd>CopilotChatFixDiagnostic<CR>", { desc = "[p] Fix diagnostic issue" })
-map("n", "<localleader>cm", "<cmd>CopilotChatCommit<CR>", { desc = "[p] Write commit message" })
-map(
-  "n",
-  "<localleader>cs",
-  "<cmd>CopilotChatCommitStaged<CR>",
-  { desc = "[p] Write commit message for staged changes" }
-)
-map("n", "<localleader>cq", function()
-  local input = vim.fn.input "Quick Chat: "
-  if input ~= "" then
-    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-  end
-end, {
-  desc = "[p] CopilotChat - Quick chat",
-})
 
 -- plugin dev mappings
 map("n", "<localleader>rf", "<cmd>source % <CR>", { desc = "[p] run current File" })
