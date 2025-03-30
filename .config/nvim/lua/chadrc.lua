@@ -14,15 +14,37 @@ M.base46 = {
   },
 }
 
+local function navic_location_with_icon()
+  local navic = require "nvim-navic"
+  local devicons = require "nvim-web-devicons"
+  local location = navic.get_location()
+
+  if location ~= "" then
+    local filepath = vim.fn.expand "%:p:~:."
+    local filename = vim.fn.expand "%:t"
+    local ext = vim.fn.expand "%:e"
+
+    -- Get the icon for the file type
+    local icon = devicons.get_icon(filename, ext, { default = true }) or ""
+
+    -- Replace "/" with ">" except for the last part (filename)
+    local path_parts = vim.split(filepath, "/")
+    local file_with_icon = icon .. " " .. table.remove(path_parts) -- Add icon before filename
+    local formatted_path = table.concat(path_parts, " > ")
+
+    return formatted_path .. " > " .. file_with_icon .. " > " .. location
+  else
+    return location
+  end
+end
+
 M.ui = {
   tabufline = {
     enabled = true,
     lazyload = true,
-    order = { "treeOffset", "tabs", "navic", "Separator" },
+    order = { "tabs", "navic", "Separator" },
     modules = {
-      navic = function()
-        return require("nvim-navic").get_location()
-      end,
+      navic = navic_location_with_icon,
       Separator = function()
         return " "
       end,
@@ -49,13 +71,10 @@ M.ui = {
     separator_style = "default", -- default, round, block or arrow
   },
 }
+
 M.nvdash = {
   load_on_startup = true,
   header = {
-    [[                                                                       ]],
-    [[                                                                       ]],
-    [[                                                                       ]],
-    [[                                                                       ]],
     [[                                                                     ]],
     [[       ████ ██████           █████      ██                     ]],
     [[      ███████████             █████                             ]],
@@ -64,9 +83,7 @@ M.nvdash = {
     [[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
     [[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
     [[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
-    [[                            🚀🚀                                       ]],
-    [[                                                                       ]],
-    [[                                                                       ]],
+    [[                           🚀🚀                                      ]],
   },
   buttons = {
     { txt = "  Find File", keys = "Spc f f", cmd = "Telescope find_files" },
@@ -91,7 +108,7 @@ M.nvdash = {
   },
 }
 
--- Enable indent_blankline highlighting
+-- Enable indent_blankline highlighting on bufReadPost
 vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
     require "configs.indent_blankline"
