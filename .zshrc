@@ -1,13 +1,10 @@
-# Oh-my-zsh installation path
-ZSH=/usr/share/oh-my-zsh/
 alias grep='grep --color=auto'
 export COLORTERM=truecolor
-# Powerlevel10k theme path
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
-# List of plugins used
-plugins=()
-source $ZSH/oh-my-zsh.sh
+# INFO: experimental
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
 
 # In case a command is not found, try to find the package that has it
 function command_not_found_handler {
@@ -28,6 +25,11 @@ function command_not_found_handler {
     fi
     return 127
 }
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 
 # Detect AUR wrapper
 if pacman -Qi yay &>/dev/null; then
@@ -86,8 +88,6 @@ alias mkdir='mkdir -p'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Display Pokemon
-# pokemon-colorscripts --no-title -r 1,3,6
 
 #better cd
 eval "$(zoxide init zsh --cmd cd)"
@@ -104,6 +104,7 @@ case ":$PATH:" in
 esac
 # pnpm end
 . "$HOME/.cargo/env"
+
 #setup rust env
 . "$HOME/.cargo/env"
 export EDITOR="nvim"
