@@ -87,16 +87,13 @@ vim.cmd("highlight NeogitDiffDeleteHighlight guibg=#334e68 guifg=#c0caf5")
 -- Configure diagnostics to show virtual text
 vim.diagnostic.config({
 	virtual_text = {
-		-- Show the diagnostic text after the line
-		prefix = "●", -- You can use icons like "●", "■", or "▎"
-		spacing = 4, -- Number of spaces between the end of line and diagnostic message
-		source = "if_many", -- Show source of diagnostic if there are multiple sources
+		severity = {
+			max = vim.diagnostic.severity.WARN,
+		},
 	},
-	-- Keep other diagnostic features enabled
-	signs = true,
-	underline = true,
-	update_in_insert = false,
-	severity_sort = true,
+	virtual_lines = {
+		severity = {
+			min = vim.diagnostic.severity.ERROR,
+		},
+	},
 })
-
-vim.g.use_blink_cmp = true
