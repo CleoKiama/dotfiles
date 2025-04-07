@@ -138,7 +138,6 @@ map("n", "<localleader>tsd", "<cmd>TSToolsGoToSourceDefinition<CR>", { desc = "[
 map("n", "<localleader>trf", "<cmd>TSToolsRenameFile<CR>", { desc = "[p] Rename file and update references" })
 
 map("n", "<localleader>tfr", "<cmd>TSToolsFileReferences<CR>", { desc = "[p] Find file references" })
--- map("n", "<leader>ra", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "[p] Rename symbol" })
 
 map("n", "<leader>nn", "<cmd>set nu!<CR>", { desc = "[p] Toggle line number" })
 

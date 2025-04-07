@@ -42,12 +42,12 @@ return {
 	{
 		"CleoKiama/ObsidianTracker.nvim",
 		dir = "/home/cleo/plugins/ObsidianTracker.nvim",
-		event = {
-			-- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-		},
 		dependencies = { "nvim-lua/plenary.nvim", "3rd/image.nvim" },
 		opts = {
 			pathToVault = "/media/Library/obsidian-vaults/10xGoals/Journal/Dailies",
+		},
+		keys = {
+			{ "<localleader>ot", "<cmd>ToggleTracker<cr>", desc = "Obsidian Tracker" },
 		},
 	},
 }

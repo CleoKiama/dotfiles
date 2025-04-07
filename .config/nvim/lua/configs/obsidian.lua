@@ -130,7 +130,7 @@ map("n", "<leader>ost", ":ObsidianTags ")
 map("n", "<leader>o", "<Cmd>ObsidianQuickSwitch<CR>")
 map("n", "<leader>od", "<Cmd>ObsidianDailies<CR>")
 map("v", "<leader>oe", ":ObsidianExtractNote ")
-map("n", "<leader>op", "<Cmd>ObsidianPasteImg<CR>")
+map("n", "<leader>opt", "<Cmd>ObsidianTemplate<CR>")
 map("n", "<leader>or", ":ObsidianRename ")
 map("n", "<leader>oi", ":ObsidianPasteImg<CR> ")
 
@@ -146,7 +146,7 @@ function run_rclone_sync()
 end
 
 -- Obsidian sync to GDrive
-vim.keymap.set("n", "<Leader>os", ":lua run_rclone_sync()<CR>", { desc = "Sync Obsidian to GDrive" })
+map("n", "<Leader>osg", ":lua run_rclone_sync()<CR>", { desc = "Sync Obsidian to GDrive" })
 
 local blink = require("blink.cmp")
 blink.add_source_provider("obsidian", {
