@@ -91,9 +91,4 @@ vim.diagnostic.config({
 			max = vim.diagnostic.severity.WARN,
 		},
 	},
-	virtual_lines = {
-		severity = {
-			min = vim.diagnostic.severity.ERROR,
-		},
-	},
 })

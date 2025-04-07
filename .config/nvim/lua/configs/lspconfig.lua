@@ -1,4 +1,3 @@
--- lua/configs/lspconfig.lua
 local M = {}
 local map = vim.keymap.set
 local navic = require("nvim-navic")
@@ -11,16 +10,17 @@ local delim = is_windows and ";" or ":"
 vim.env.PATH = table.concat({ vim.fn.stdpath("data"), "mason", "bin" }, sep) .. delim .. vim.env.PATH
 
 -- Common attach function for all LSP servers
-M.on_attach = function(client, bufnr)
+M.on_attach = function(_, bufnr)
 	local function opts(desc)
 		return { buffer = bufnr, desc = "LSP: " .. desc }
 	end
-
 	-- Key mappings
 	map("n", "gD", vim.lsp.buf.declaration, opts("Go to declaration"))
 	map("n", "gd", vim.lsp.buf.definition, opts("Go to definition"))
 	map("n", "gi", vim.lsp.buf.implementation, opts("Go to implementation"))
-	map("n", "gr", vim.lsp.buf.references, opts("Show references"))
+	map("n", "gr", function()
+		Snacks.picker.lsp_references()
+	end, opts("Show references"))
 	map("n", "K", vim.lsp.buf.hover, opts("Show hover documentation"))
 	map("n", "<leader>sh", vim.lsp.buf.signature_help, opts("Show signature help"))
 	map("n", "<leader>ra", function()
@@ -34,11 +34,6 @@ M.on_attach = function(client, bufnr)
 	map("n", "<leader>wl", function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, opts("List workspace folders"))
-
-	-- Add navic attachment
-	if client.server_capabilities.documentSymbolProvider then
-		navic.attach(client, bufnr)
-	end
 end
 
 -- Disable semantic tokens (optional)
@@ -49,12 +44,17 @@ M.on_init = function(client, _)
 end
 
 M.capabilities = require("blink.cmp").get_lsp_capabilities()
-
 -- Setup default configurations
 M.setup = function()
 	-- Configure lua_ls with some defaults
+	-- use nvchad for pretty virtual text diagnostic messages
+	dofile(vim.g.base46_cache .. "lsp")
+	require("nvchad.lsp").diagnostic_config()
 	lspconfig.lua_ls.setup({
-		on_attach = M.on_attach,
+		on_attach = function(client, bufnr)
+			M.on_attach(client, bufnr)
+			navic.attach(client, bufnr)
+		end,
 		capabilities = M.capabilities,
 		on_init = M.on_init,
 		settings = {
@@ -65,7 +65,7 @@ M.setup = function()
 				workspace = {
 					library = {
 						vim.fn.expand("$VIMRUNTIME/lua"),
-						vim.fn.stdpath("config") .. "/lua",
+						vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
 					},
 					maxPreload = 100000,
 					preloadFileSize = 10000,
@@ -96,7 +96,6 @@ M.setup = function()
 			on_init = M.on_init,
 		})
 	end
-
 	-- Configure harper_ls for Obsidian vault markdown files only
 	lspconfig.harper_ls.setup({
 		filetypes = { "markdown" },
