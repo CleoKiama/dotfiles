@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-require("tailwind-tools.cmp")
+-- require("tailwind-tools.cmp")
 local lsp = require("configs.lspconfig")
 
 require("tailwind-tools").setup({

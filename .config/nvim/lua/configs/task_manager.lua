@@ -10,7 +10,7 @@ local map = vim.keymap.set
 map("n", "<M-x>", function()
 	-- Customizable variables
 	-- NOTE: Customize the completion label
-	local label_done = "done:"
+	local label_done = "completed:"
 	-- NOTE: Customize the timestamp format
 	local timestamp = os.date("%Y-%m-%d")
 	-- local timestamp = os.date("%y%m%d")

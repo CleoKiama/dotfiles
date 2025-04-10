@@ -3,6 +3,9 @@ local map = vim.keymap.set
 -- oil.nvim
 map("n", "-", "<CMD>Oil<CR>", { desc = "[p] Open parent directory" })
 
+-- terminal mode
+map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
+
 -- winresizer
 map("n", "<leader>e", "<CMD>WinResizerStartResize<CR>", { desc = "[p] Start window resize" })
 

@@ -31,29 +31,49 @@ return {
 			snippets = { preset = "luasnip" },
 			sources = {
 				default = {
-					"snippets",
 					"lsp",
+					"snippets",
 					"path",
 					"buffer",
 					"emoji",
+					"lazydev",
 				},
 				per_filetype = {
 					sql = { "dadbod" },
-					lua = { "lazydev" },
 					git = { "conventional_commits" },
 					NeogitCommitMessage = { "conventional_commits" },
 				},
 				providers = {
+					lsp = {
+						name = "LSP",
+						module = "blink.cmp.sources.lsp",
+						opts = {}, -- Passed to the source directly, varies by source
+
+						--- NOTE: All of these options may be functions to get dynamic behavior
+						--- See the type definitions for more information
+						enabled = true, -- Whether or not to enable the provider
+						async = false, -- Whether we should show the completions before this provider returns, without waiting for it
+						timeout_ms = 2000, -- How long to wait for the provider to return before showing completions and treating it as asynchronous
+						transform_items = nil, -- Function to transform the items before they're returned
+						should_show_items = true, -- Whether or not to show the items
+						max_items = nil, -- Maximum number of items to display in the menu
+						min_keyword_length = 0, -- Minimum number of characters in the keyword to trigger the provider
+						-- If this provider returns 0 items, it will fallback to these providers.
+						-- If multiple providers fallback to the same provider, all of the providers must return 0 items for it to fallback
+						fallbacks = {},
+						score_offset = 100, -- Boost/penalize the score of the items
+						override = nil, -- Override the source's functions
+					},
 					lazydev = {
 						name = "LazyDev",
 						module = "lazydev.integrations.blink",
-						score_offset = 100,
+						score_offset = 85,
 					},
 					dadbod = {
 						name = "Dadbod",
 						module = "vim_dadbod_completion.blink",
 						min_keyword_length = 2,
-						score_offset = 85,
+						score_offset = 80,
 					},
 					snippets = {
 						name = "snippets",
@@ -61,7 +81,7 @@ return {
 						max_items = 30,
 						min_keyword_length = 1,
 						module = "blink.cmp.sources.snippets",
-						score_offset = 80,
+						score_offset = 95,
 					},
 					conventional_commits = {
 						name = "Conventional Commits",
@@ -76,8 +96,8 @@ return {
 					emoji = {
 						module = "blink-emoji",
 						name = "Emoji",
-						score_offset = 15, -- Tune by preference
-						opts = { insert = true }, -- Insert emoji (default) or complete its name
+						score_offset = 15,
+						opts = { insert = true },
 						should_show_items = function()
 							return vim.tbl_contains(
 								-- Enable emoji completion only for git commits and markdown.
@@ -90,8 +110,8 @@ return {
 				},
 			},
 			keymap = {
-				["<Tab>"] = { "snippet_forward", "fallback" },
-				["<S-Tab>"] = { "snippet_backward", "fallback" },
+				["C-u"] = { "snippet_forward", "fallback" },
+				["C-d"] = { "snippet_backward", "fallback" },
 				["<Up>"] = { "select_prev", "fallback" },
 				["<Down>"] = { "select_next", "fallback" },
 				["<C-p>"] = { "select_prev", "fallback" },
