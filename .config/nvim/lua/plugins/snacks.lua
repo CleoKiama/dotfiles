@@ -11,8 +11,8 @@ return {
 				timeout = 3000,
 			},
 			picker = {
+				cwd = vim.fn.getcwd(),
 				files = {
-					cwd = vim.fn.getcwd(),
 					hidden = true,
 					ignored = false,
 				},
@@ -88,6 +88,14 @@ return {
 					Snacks.picker.smart()
 				end,
 				desc = "Find Files",
+			},
+
+			{
+				"<leader>fa",
+				function()
+					Snacks.picker.files()
+				end,
+				desc = "Find all Files",
 			},
 			{
 				"<leader>fw",
