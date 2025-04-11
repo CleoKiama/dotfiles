@@ -12,6 +12,8 @@ return {
 			},
 		},
 		event = { "InsertEnter" },
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
 		opts = {
 			cmdline = {
 				keymap = {

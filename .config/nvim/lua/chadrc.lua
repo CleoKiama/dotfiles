@@ -4,10 +4,6 @@ local M = {}
 M.base46 = {
 	theme = "onedark",
 	transparency = false,
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
 }
 
 local function navic_location_with_icon()
@@ -74,6 +70,10 @@ M.ui = {
 		theme = "default",
 		separator_style = "default",
 	},
+}
+
+M.lsp = {
+	signature = false,
 }
 
 M.nvdash = {

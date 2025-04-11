@@ -4,8 +4,8 @@ return {
 	{
 		"saecki/crates.nvim",
 		event = { "BufRead Cargo.toml" },
-		config = function()
-			require("crates").setup()
+		config = function(_, opts)
+			require("crates").setup(opts)
 		end,
 		keys = {
 			{
@@ -109,8 +109,8 @@ return {
 	},
 	{
 		"mrcjkb/rustaceanvim",
-		version = "^5", -- Recommended
-		ft = "rust", -- only load on rust files
+		version = "^6",
+		ft = "rust",
 		config = function()
 			local mason_registry = require("mason-registry")
 			local codelldb = mason_registry.get_package("codelldb")
@@ -121,6 +121,9 @@ return {
 
 			local lsp = require("configs.lspconfig")
 			local navic = require("nvim-navic")
+			-- use nvchad for pretty virtual text diagnostic messages
+			dofile(vim.g.base46_cache .. "lsp")
+			require("nvchad.lsp").diagnostic_config()
 
 			vim.g.rustaceanvim = {
 				dap = {
@@ -141,5 +144,11 @@ return {
 				},
 			}
 		end,
+	},
+	{
+		"cordx56/rustowl",
+		cmd = "Rustowl",
+		build = "cd rustowl && cargo install --path . --locked",
+		opts = {},
 	},
 }
