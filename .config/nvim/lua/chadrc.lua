@@ -77,7 +77,19 @@ M.lsp = {
 }
 
 M.nvdash = {
-	load_on_startup = true,
+	load_on_startup = (function()
+		-- Get the arguments passed to nvim
+		local args = vim.v.argv
+		-- Check if leetcode.nvim is in the arguments
+		for _, arg in ipairs(args) do
+			if arg:find("leetcode.nvim") then
+				return false -- Don't load nvdash for leetcode
+			end
+		end
+
+		return true -- Load nvdash for other cases
+	end)(),
+
 	header = {
 		[[                                                                     ]],
 		[[       ████ ██████           █████      ██                     ]],
