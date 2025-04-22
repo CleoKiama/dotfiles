@@ -1,7 +1,7 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 # -------------------------
 # Zinit plugin manager setup
@@ -14,7 +14,8 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 # Add in Powerlevel10k
-zinit ice depth=1; zinit light romkatv/powerlevel10k
+# zinit ice depth=1; zinit light romkatv/powerlevel10k
+
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
@@ -90,10 +91,6 @@ alias .5='cd ../../../../..'
 
 # Always mkdir a path (this doesn't inhibit functionality to make a single dir)
 alias mkdir='mkdir -p'
-
-# Application launch aliases
-alias vencord="flatpak run --socket=wayland --share=ipc dev.vencord.Vesktop --ozone-platform=wayland --enable-features=WaylandWindowDecorations >/dev/null 2>&1 & disown"
-alias brave="flatpak run --socket=wayland --share=ipc com.brave.Browser --ozone-platform=wayland --enable-features=WaylandWindowDecorations  >/dev/null 2>&1 & disown"
 
 # -------------------------
 # Keybindings
@@ -178,9 +175,11 @@ ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 # -------------------------
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)" #better cd
+eval "$(starship init zsh)" #starship
 
 # -------------------------
 # Powerlevel10k theme configuration
 # -------------------------
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+

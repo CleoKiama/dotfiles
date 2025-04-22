@@ -34,6 +34,7 @@ configs=(
     ".config/hyprshade"
     ".config/rofimoji.rc"
     ".config/hypr/shaders/blue-light-filter.glsl"
+    ".config/starship.toml"
 )
 
 # Create symlinks
