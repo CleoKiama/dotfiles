@@ -145,10 +145,4 @@ return {
 			}
 		end,
 	},
-	{
-		"cordx56/rustowl",
-		cmd = "Rustowl",
-		build = "cd rustowl && cargo install --path . --locked",
-		opts = {},
-	},
 }
