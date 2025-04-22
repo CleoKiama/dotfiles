@@ -13,6 +13,7 @@ return {
 		version = "v2.*",
 		build = "make install_jsregexp",
 		dependencies = { "rafamadriz/friendly-snippets" },
+		opts = { history = true, updateevents = "TextChanged,TextChangedI" },
 		config = function(_, opts)
 			require("luasnip").config.set_config(opts)
 			require("configs.luasnip")
@@ -21,7 +22,7 @@ return {
 	{
 		"nvchad/ui",
 		lazy = false,
-		priority = 1000, -- Load with high priority
+		priority = 1000,
 		config = function()
 			require("nvchad")
 		end,
@@ -100,7 +101,7 @@ return {
 	},
 	{
 		"folke/which-key.nvim",
-		keys = { "<leader>", "<c-w>", '"', "'", "`", "c", "v", "g" },
+		keys = { "<leader>", "<c-w>", '"', "'", "`", "c", "v", "g", "," },
 		cmd = "WhichKey",
 	},
 }

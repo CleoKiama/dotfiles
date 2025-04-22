@@ -112,7 +112,23 @@ return {
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		config = true,
+		config = function()
+			local npairs = require("nvim-autopairs")
+			local Rule = require("nvim-autopairs.rule")
+			local conds = require("nvim-autopairs.conds")
+
+			npairs.setup()
+
+			-- Autoclosing angle-brackets.
+			npairs.add_rule(Rule("<", ">", {
+				-- Avoid conflicts with nvim-ts-autotag.
+				"-html",
+				"-javascriptreact",
+				"-typescriptreact",
+			}):with_pair(conds.before_regex("%a+:?:?$", 3)):with_move(function(opts)
+				return opts.char == ">"
+			end))
+		end,
 	},
 	{
 		"stevearc/oil.nvim",
@@ -131,8 +147,8 @@ return {
 				width = 40, -- Width of the vertical split
 			},
 		},
-		config = function(_, opts)
-			dofile(vim.g.base46_cache .. "trouble")
+		confg = function(_, opts)
+			-- dofile(vim.g.base46_cache .. "trouble")
 			require("trouble").setup(opts)
 		end,
 	},
