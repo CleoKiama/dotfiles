@@ -18,7 +18,6 @@ return {
 			cmdline = {
 				keymap = {
 					["<Tab>"] = { "accept" },
-					-- ["<CR>"] = { "accept_and_enter", "fallback" },
 				},
 				completion = {
 					menu = { auto_show = true },
@@ -37,20 +36,19 @@ return {
 					"snippets",
 					"path",
 					"buffer",
-					"emoji",
 					"lazydev",
 				},
 				per_filetype = {
 					sql = { "dadbod" },
 					git = { "conventional_commits" },
 					NeogitCommitMessage = { "conventional_commits" },
+					markdown = { "emoji", "snippets" },
 				},
 				providers = {
 					lsp = {
 						name = "LSP",
 						module = "blink.cmp.sources.lsp",
 						opts = {}, -- Passed to the source directly, varies by source
-
 						--- NOTE: All of these options may be functions to get dynamic behavior
 						--- See the type definitions for more information
 						enabled = true, -- Whether or not to enable the provider
@@ -58,7 +56,7 @@ return {
 						timeout_ms = 2000, -- How long to wait for the provider to return before showing completions and treating it as asynchronous
 						transform_items = nil, -- Function to transform the items before they're returned
 						should_show_items = true, -- Whether or not to show the items
-						max_items = nil, -- Maximum number of items to display in the menu
+						max_items = 10, -- Maximum number of items to display in the menu
 						min_keyword_length = 0, -- Minimum number of characters in the keyword to trigger the provider
 						-- If this provider returns 0 items, it will fallback to these providers.
 						-- If multiple providers fallback to the same provider, all of the providers must return 0 items for it to fallback
@@ -70,6 +68,9 @@ return {
 						name = "LazyDev",
 						module = "lazydev.integrations.blink",
 						score_offset = 85,
+						enabled = function()
+							return vim.bo.filetype == "lua"
+						end,
 					},
 					dadbod = {
 						name = "Dadbod",

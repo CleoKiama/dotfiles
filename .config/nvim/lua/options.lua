@@ -43,7 +43,6 @@ o.updatetime = 250
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
 opt.whichwrap:append("<>[]hl")
-
 -- disable some default providers
 g.loaded_node_provider = 0
 g.loaded_python3_provider = 0
@@ -83,6 +82,8 @@ opt.incsearch = true
 --- neogit diff colors
 vim.cmd("highlight NeogitDiffDelete guibg=#2d4f67 guifg=#c0caf5")
 vim.cmd("highlight NeogitDiffDeleteHighlight guibg=#334e68 guifg=#c0caf5")
+
+opt.scrolloff = 10
 
 -- Configure diagnostics to show virtual text
 vim.diagnostic.config({
