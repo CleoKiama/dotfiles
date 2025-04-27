@@ -133,6 +133,14 @@ return {
 				desc = "LSP Symbols",
 			},
 			{
+				"<leader>sw",
+				function()
+					Snacks.picker.grep_word()
+				end,
+				desc = "Visual selection or word",
+				mode = { "n", "x" },
+			},
+			{
 				"<leader>fS",
 				function()
 					Snacks.picker.lsp_workspace_symbols()
