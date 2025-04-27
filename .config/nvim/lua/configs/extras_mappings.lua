@@ -59,11 +59,26 @@ map({ "n" }, "<c-l>", "<cmd> TmuxNavigateRight<Cr>", { desc = "[p] Tmux navigate
 map("n", "<leader>y", '"+y', { noremap = true, silent = true, desc = "[p] Yank to clipboard" })
 map("v", "<leader>y", '"+y', { noremap = true, silent = true })
 map("n", "n", "nzzzv", { desc = "[p] Move to next search item and center it" })
-map("x", "<leader>p", '"_dp', { noremap = true, silent = true, desc = "[p] Paste without yanking" })
+map("x", "<leader>p", [["_dP]])
+map({ "n", "v" }, "<leader>d", [["_d]])
 map("n", "J", "mzJ`z", { noremap = true, silent = true, desc = "[p] Join lines and keep cursor position" })
-map("n", "<leader>sf", "<cmd>normal! ggVG<CR>", { noremap = true, silent = true, desc = "[p] Select whole file" })
 map("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true, desc = "[p] Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true, desc = "[p] Scroll up and center" })
+map("n", "Q", "<nop>")
+map("v", "J", ":m '>+1<CR>gv=gv") -- move the current line up or down in visual mode
+map("v", "K", ":m '<-2<CR>gv=gv")
+map(
+	"n",
+	"<leader>ss",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "search and replace word under cursor" }
+)
+
+-- hi there
+-- hi again
+
+-- custom
+map("n", "<leader>sf", "<cmd>normal! ggVG<CR>", { noremap = true, silent = true, desc = "[p] Select whole file" })
 
 -- Code Runner
 map("n", "<leader>cr", ":RunCode<CR>", { desc = "[p] Run code" })
