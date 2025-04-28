@@ -31,7 +31,7 @@ return {
 					default = {
 						layout = {
 							box = "horizontal",
-							width = 0.6,
+							width = 0.9,
 							min_width = 120,
 							height = 0.8,
 							{
