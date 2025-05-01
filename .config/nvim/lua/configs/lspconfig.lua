@@ -84,6 +84,7 @@ M.setup = function()
 		"sqlls",
 		"gleam",
 		"jsonls",
+		"yamlls",
 	}
 
 	for _, server in ipairs(servers) do

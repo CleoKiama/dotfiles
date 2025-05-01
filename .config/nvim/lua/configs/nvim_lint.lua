@@ -51,14 +51,9 @@ require("lint").linters_by_ft = {
 	css = { "biomejs", "stylelint" },
 	html = { "biomejs" },
 	json = { "biomejs", "jsonlint" },
-	lua = {},
-	python = {},
-	elixir = { "credo" },
-	gleam = {},
 	dotenv = { "dotenv_linter" },
 	gitcommit = { "gitlint" },
-	go = {},
-	rust = {},
+	yaml = { "yamllint" },
 }
 
 local js_ts_patterns = {
