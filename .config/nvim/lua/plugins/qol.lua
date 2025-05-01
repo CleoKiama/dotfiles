@@ -104,7 +104,8 @@ return {
 	},
 	{
 		"CRAG666/code_runner.nvim",
-		cmd = "RunCode", -- The plugin will be loaded when the RunCode command is called
+		dependencies = { "preservim/vimux" },
+		cmd = "RunCode",
 		config = function()
 			require("configs.code_runner")
 		end,
