@@ -1,5 +1,8 @@
 local leetcode = require("leetcode")
 
+-- disable copilot for leet code
+vim.cmd("Copilot disable")
+
 leetcode.setup({
 	lang = "typescript",
 	plugins = {
