@@ -18,7 +18,7 @@ export NVM_DIR="$HOME/.nvm"
 alias ..="cd .."
 
 # Created by `pipx` on 2024-05-27 20:49:08
-export PATH="$PATH:/home/cleo/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -40,7 +40,7 @@ function y() {
 
 
 # pnpm
-export PNPM_HOME="/home/cleo/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
     *":$PNPM_HOME:"*) ;;
     *) export PATH="$PNPM_HOME:$PATH" ;;
