@@ -1,0 +1,280 @@
+// -*- mode: jsonc -*-
+{
+  // "layer": "top", // Waybar at top layer
+  // "position": "bottom", // Waybar position (top|bottom|left|right)
+  "height": 30, // Waybar height (to be removed for auto height)
+  // "width": 1280, // Waybar width
+  // Choose the order of the modules
+  "modules-left": [
+    "custom/padd",
+    "custom/l_end",
+    "custom/appMenu",
+    "custom/r_end",
+    "custom/padd",
+    "custom/l_end",
+    "cpu",
+    "memory",
+    "custom/r_end",
+    "custom/l_end",
+    "clock",
+    "idle_inhibitor",
+    "custom/r_end",
+    "custom/padd"
+  ],
+  "modules-center": [
+    "custom/padd",
+    "hyprland/workspaces",
+    "custom/l_end",
+    "hyprland/window",
+    "custom/r_end",
+    "custom/padd"
+  ],
+  "modules-right": [
+    "custom/padd",
+    "custom/l_end",
+    "backlight",
+    "network",
+    "pulseaudio",
+    "pulseaudio#microphone",
+    "custom/r_end",
+    "custom/l_end",
+    "battery",
+    "tray",
+    "power-profiles-daemon",
+    "custom/r_end",
+    "custom/l_end",
+    "custom/clipboard",
+    "custom/power",
+    "custom/r_end",
+    "custom/padd"
+  ],
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": " ",
+      "deactivated": " "
+    }
+  },
+  "tray": {
+    // "icon-size": 21,
+    "spacing": 5,
+    "icons": {
+      "blueman": "bluetooth",
+      // "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+    }
+  },
+  "clock": {
+    // "timezone": "America/New_York",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%Y-%m-%d}"
+  },
+  "cpu": {
+    "interval": 2,
+    "format": "{usage}%  ",
+    "tooltip": true
+  },
+  "memory": {
+    "interval": 2,
+    "format": "{}%  "
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{percent}% {icon}",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 20
+    },
+    "format": "{icon} {capacity}%",
+    "rotate": 0,
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-alt": "{time} {icon}",
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ]
+  },
+  "battery#bat2": {
+    "bat": "BAT2"
+  },
+  "custom/appMenu": {
+    "format": "󰣇 ",
+    "tooltip-format": "Apps menu",
+    "tooltip": true,
+    "on-click": "$HOME/.config/rofi/rofilaunch.sh"
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": " ",
+      "performance": " ",
+      "balanced": "  ",
+      "power-saver": "  "
+    }
+  },
+  "network": {
+    // "interface": "wlp2*", // (Optional) To force the use of this interface
+    "format-wifi": " ",
+    "format-ethernet": "{ipaddr}/{cidr} ",
+    "tooltip-format": "{ifname} via {gwaddr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "󰖪 ⚠",
+    "on-click-right": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
+    "on-click": "nm-connection-editor"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}",
+    "rotate": 0,
+    "format-muted": "婢",
+    "on-click": "pavucontrol -t 3",
+    // "on-click-right": "volumecontrol.sh -s ''",
+    // "on-click-middle": "volumecontrol.sh -o m",
+    // "on-scroll-up": "volumecontrol.sh -o i",
+    // "on-scroll-down": "volumecontrol.sh -o d",
+    "tooltip-format": "{icon} {desc} // {volume}%",
+    "scroll-step": 5,
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "pulseaudio#microphone": {
+    "format": "{format_source}",
+    "rotate": 0,
+    "format-source": "󰍯",
+    "format-source-muted": " ",
+    "on-click": "pavucontrol -t 4",
+    // "on-click-middle": "volumecontrol.sh -i m",
+    // "on-scroll-up": "volumecontrol.sh -i i",
+    // "on-scroll-down": "volumecontrol.sh -i d",
+    "tooltip-format": "{format_source} {source_desc} // {source_volume}%",
+    "scroll-step": 5
+  },
+  "custom/media": {
+    "format": "{icon} {text}",
+    "return-type": "json",
+    "max-length": 40,
+    "format-icons": {
+      "spotify": "",
+      "default": "🎜"
+    },
+    "escape": true,
+    "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+    // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+  },
+  "custom/clipboard": {
+    "format": "󰅇 ",
+    "tooltip-format": "clipboard history",
+    "on-click": "cliphist list | rofi -dmenu | cliphist decode | wl-copy"
+  },
+  "custom/power": {
+    "format": "⏻ ",
+    "tooltip": false,
+    "on-click": "wlogout"
+  },
+  "hyprland/workspaces": {
+    "all-outputs": true,
+    "active-only": false,
+    "on-click": "activate",
+    "disable-scroll": false,
+    "on-scroll-up": "hyprctl dispatch workspace -1",
+    "on-scroll-down": "hyprctl dispatch workspace +1",
+    "persistent-workspaces": {}
+  },
+  "hyprland/window": {
+    "format": "  {}",
+    "rotate": 0,
+    "separate-outputs": true,
+    "rewrite": {
+      "khing@archlinux:(.*)": "$1 ",
+      "(.*) — Mozilla Firefox": "$1 󰈹",
+      "(.*)Mozilla Firefox": "Firefox 󰈹",
+      "(.*) - Visual Studio Code": "$1 󰨞",
+      "(.*)Visual Studio Code": "Code 󰨞",
+      "(.*) - Code - OSS": "$1 󰨞",
+      "(.*)Code - OSS": "Code 󰨞",
+      "(.*) — Dolphin": "$1 󰉋",
+      "(.*)Spotify": "Spotify 󰓇",
+      "(.*)Steam": "Steam 󰓓",
+      "(.*) - Discord": "$1  ",
+      "(.*)Netflix": "Netflix 󰝆 ",
+      "(.*) — Google chrome": "$1  ",
+      "(.*)Google chrome": "Google chrome  ",
+      "(.*) — Github": "$1  ",
+      "(.*)Github": "Github ",
+      "(.*)Spotify Free": "Spotify 󰓇",
+      "(.*)Spotify Premiun": "Spotify 󰓇",
+    },
+    "max-length": 50
+  },
+  // modules for padding //
+  "custom/l_end": {
+    "format": " ",
+    "interval": "once",
+    "tooltip": false
+  },
+  "custom/r_end": {
+    "format": " ",
+    "interval": "once",
+    "tooltip": false
+  },
+  "custom/sl_end": {
+    "format": " ",
+    "interval": "once",
+    "tooltip": false
+  },
+  "custom/sr_end": {
+    "format": " ",
+    "interval": "once",
+    "tooltip": false
+  },
+  "custom/rl_end": {
+    "format": " ",
+    "interval": "once",
+    "tooltip": false
+  },
+  "custom/rr_end": {
+    "format": " ",
+    "interval": "once",
+    "tooltip": false
+  },
+  "custom/padd": {
+    "format": "  ",
+    "interval": "once",
+    "tooltip": false
+  }
+}
