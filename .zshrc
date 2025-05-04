@@ -98,6 +98,9 @@ alias mkdir='mkdir -p'
 # bindkey -e  #emacs keybinds
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
+# Accept autosuggestion with alt+l
+bindkey '^[j' autosuggest-accept
+
 
 # -------------------------
 # History configuration
