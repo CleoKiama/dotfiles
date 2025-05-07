@@ -41,6 +41,7 @@
     "battery",
     "tray",
     "power-profiles-daemon",
+    "custom/updates",
     "custom/r_end",
     "custom/l_end",
     "custom/clipboard",
@@ -64,9 +65,28 @@
     }
   },
   "clock": {
-    // "timezone": "America/New_York",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "{:%Y-%m-%d}"
+    "format-alt": "{:%I:%M %p}",
+    "rotate": "${r_deg}",
+    "format": "{:%R 󰃭 %d·%m·%y}",
+    "tooltip-format": "<span>{calendar}</span>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "on-scroll": 1,
+      "on-click-right": "mode",
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b>{}</b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-click-forward": "tz_up",
+      "on-click-backward": "tz_down",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    }
   },
   "cpu": {
     "interval": 2,
@@ -141,7 +161,6 @@
     // "interface": "wlp2*", // (Optional) To force the use of this interface
     "format-wifi": " ",
     "format-ethernet": "{ipaddr}/{cidr} ",
-    "tooltip-format": "{ifname} via {gwaddr} ",
     "format-linked": "{ifname} (No IP) ",
     "format-disconnected": "󰖪 ⚠",
     "on-click-right": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
@@ -276,5 +295,13 @@
     "format": "  ",
     "interval": "once",
     "tooltip": false
+  },
+  "custom/updates": {
+    "format": "  {}",
+    "escape": true,
+    "return-type": "json",
+    "exec": "$HOME/dotfiles/scripts/updates.sh",
+    "interval": 86400, // once every day
+    "on-click": "$HOME/dotfiles/scripts/install.sh"
   }
 }
