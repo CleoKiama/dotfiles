@@ -164,7 +164,10 @@
     "format-linked": "{ifname} (No IP) ",
     "format-disconnected": "󰖪 ⚠",
     "on-click-right": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
-    "on-click": "nm-connection-editor"
+    "on-click": "nm-connection-editor",
+    "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
+    "interval": 2,
+    "tooltip-format-disconnected": "Disconnected"
   },
   "pulseaudio": {
     "format": "{icon} {volume}",
