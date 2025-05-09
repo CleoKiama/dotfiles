@@ -98,9 +98,6 @@ alias mkdir='mkdir -p'
 # bindkey -e  #emacs keybinds
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
-# Accept autosuggestion with alt+l
-bindkey '^[j' autosuggest-accept
-
 
 # -------------------------
 # History configuration
@@ -138,7 +135,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
 # PNPM package manager
-export PNPM_HOME="/home/cleo/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
