@@ -5,6 +5,7 @@ return {
 		dependencies = {
 			{ "L3MON4D3/LuaSnip", version = "v2.*" },
 			"disrupted/blink-cmp-conventional-commits",
+			"Kaiser-Yang/blink-cmp-avante",
 			"moyiz/blink-emoji.nvim",
 			{
 				"saghen/blink.compat",
@@ -37,6 +38,7 @@ return {
 					"path",
 					"buffer",
 					"lazydev",
+					"avante",
 				},
 				per_filetype = {
 					sql = { "dadbod" },
@@ -63,6 +65,13 @@ return {
 						fallbacks = {},
 						score_offset = 100, -- Boost/penalize the score of the items
 						override = nil, -- Override the source's functions
+					},
+					avante = {
+						module = "blink-cmp-avante",
+						name = "Avante",
+						opts = {
+							-- options for blink-cmp-avante
+						},
 					},
 					lazydev = {
 						name = "LazyDev",

@@ -4,7 +4,14 @@ return {
 		build = "make",
 		opts = {
 			provider = "copilot", -- Recommend using Claude
+			copilot = {
+				-- model = "claude-3.7-sonnet",
+				model = "claude-3.5-sonnet",
+			},
 			auto_suggestions_provider = "copilot",
+			selector = {
+				exclude_auto_select = { "NvimTree" },
+			},
 		},
 		keys = {
 			{
@@ -16,20 +23,22 @@ return {
 				mode = { "n", "v" },
 			},
 			{
-				"<leader>ar",
+				"<leader>a+",
 				function()
-					require("avante.api").refresh()
+					local tree_ext = require("avante.extensions.nvim_tree")
+					tree_ext.add_file()
 				end,
-				desc = "Avante: refresh",
-				mode = { "n", "v", "i" },
+				desc = "Select file in NvimTree",
+				ft = "NvimTree",
 			},
 			{
-				"<leader>ae",
+				"<leader>a-",
 				function()
-					require("avante.api").edit()
+					local tree_ext = require("avante.extensions.nvim_tree")
+					tree_ext.remove_file()
 				end,
-				desc = "Avante: edit",
-				mode = "v",
+				desc = "Deselect file in NvimTree",
+				ft = "NvimTree",
 			},
 		},
 		dependencies = {
