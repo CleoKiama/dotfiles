@@ -54,7 +54,7 @@ return {
 		opts = require("configs.treesitter"),
 	},
 	{
-		"williamboman/mason.nvim",
+		"mason-org/mason.nvim",
 		cmd = { "Mason", "MasonInstall", "MasonUpdate" },
 		opts = function()
 			dofile(vim.g.base46_cache .. "mason")

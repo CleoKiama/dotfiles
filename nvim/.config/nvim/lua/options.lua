@@ -58,18 +58,18 @@ vim.env.PATH = table.concat({ vim.fn.stdpath("data"), "mason", "bin" }, sep) .. 
 local autocmd = vim.api.nvim_create_autocmd
 
 autocmd("BufReadPost", {
-	pattern = "*",
-	callback = function()
-		local line = vim.fn.line("'\"")
-		if
-			line > 1
-			and line <= vim.fn.line("$")
-			and vim.bo.filetype ~= "commit"
-			and vim.fn.index({ "xxd", "gitrebase" }, vim.bo.filetype) == -1
-		then
-			vim.cmd('normal! g`"')
-		end
-	end,
+  pattern = "*",
+  callback = function()
+    local line = vim.fn.line("'\"")
+    if
+        line > 1
+        and line <= vim.fn.line("$")
+        and vim.bo.filetype ~= "commit"
+        and vim.fn.index({ "xxd", "gitrebase" }, vim.bo.filetype) == -1
+    then
+      vim.cmd('normal! g`"')
+    end
+  end,
 })
 
 -- custom
@@ -85,11 +85,19 @@ vim.cmd("highlight NeogitDiffDeleteHighlight guibg=#334e68 guifg=#c0caf5")
 
 opt.scrolloff = 10
 
--- Configure diagnostics to show virtual text
-vim.diagnostic.config({
-	virtual_text = {
-		severity = {
-			max = vim.diagnostic.severity.WARN,
-		},
-	},
-})
+-- Configure diagnostics to show virtual text from NvChad
+local x = vim.diagnostic.severity
+
+vim.diagnostic.config {
+  virtual_text = { prefix = "" },
+  signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } }, underline = true,
+  float = { border = "single" },
+}
+
+-- Default border style
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+  opts = opts or {}
+  opts.border = "rounded"
+  return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
