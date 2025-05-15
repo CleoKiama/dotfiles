@@ -18,6 +18,7 @@
     "custom/l_end",
     "clock",
     "idle_inhibitor",
+    "custom/screen-record",
     "custom/r_end",
     "custom/padd"
   ],
@@ -209,12 +210,17 @@
   "custom/clipboard": {
     "format": "󰅇 ",
     "tooltip-format": "clipboard history",
-    "on-click": "cliphist list | rofi -dmenu | cliphist decode | wl-copy"
+    "on-click": "rofi -modi \"clipboard:greenclip print\" -show clipboard -run-command '{cmd}'"
   },
   "custom/power": {
     "format": "⏻ ",
     "tooltip": false,
     "on-click": "wlogout"
+  },
+  "custom/screen-record": {
+    "format": " ",
+    "tooltip-format": "record screen section",
+    "on-click": "$HOME/.config/hypr/scripts/record.sh"
   },
   "hyprland/workspaces": {
     "all-outputs": true,
