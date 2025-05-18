@@ -1,36 +1,41 @@
 {
-    "label" : "lock",
+    "label": "lock",
     "action" : "loginctl lock-session",
-    "text" : "lock",
-    "keybind" : "l"
+    "text": "Lock",
+    "keybind": "l"
 }
+
 {
-    "label" : "hibernate",
-    "action" : "systemctl hibernate || loginctl hibernate",
-    "text" : "save",
-    "keybind" : "h"
-}
-{
-    "label" : "logout",
+    "label": "logout",
     "action" : "pkill Hyprland || pkill sway || pkill niri || loginctl terminate-user $USER",
-    "text" : "logout",
-    "keybind" : "e"
+    "text": "Logout",
+    "keybind": "e"
 }
+
 {
-    "label" : "shutdown",
-    "action" : "systemctl poweroff || loginctl poweroff",
-    "text" : "power_settings_new",
-    "keybind" : "s"
-}
-{
-    "label" : "suspend",
+    "label": "suspend",
     "action" : "systemctl suspend || loginctl suspend",
-    "text" : "bedtime",
-    "keybind" : "u"
+    "text": "Suspend",
+    "keybind": "u"
 }
+
 {
-    "label" : "reboot",
+    "label": "shutdown",
+    "action": "systemctl poweroff",
+    "text": "Shutdown",
+    "keybind": "s"
+}
+
+{
+    "label": "hibernate",
+    "action" : "systemctl hibernate || loginctl hibernate",
+    "text": "Hibernate",
+    "keybind": "h"
+}
+
+{
+    "label": "reboot",
     "action" : "systemctl reboot || loginctl reboot",
-    "text" : "restart_alt",
-    "keybind" : "r"
+    "text": "Reboot",
+    "keybind": "r"
 }
