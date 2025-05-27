@@ -22,7 +22,7 @@ end
 
 local function get_js_formatter()
 	if has_prettier_config() then
-		return { "prettier" }
+		return { "prettierd" }
 	else
 		return { "biome" }
 	end
@@ -41,7 +41,7 @@ local options = {
 		json = get_js_formatter(),
 		yaml = { "prettier" },
 		graphql = { "prettier" },
-		markdown = { "prettier" },
+		markdown = { "prettierd" },
 		elixir = { "lsp" },
 		gleam = { "lsp" },
 		sql = { "sql_formatter" },
