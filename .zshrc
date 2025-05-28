@@ -1,8 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
 # -------------------------
 # Zinit plugin manager setup
 # -------------------------
@@ -13,8 +8,6 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 #source/load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Add in Powerlevel10k
-# zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
@@ -162,7 +155,7 @@ alias y="yazi_cd"  # Keep the short alias but use descriptive function name
 # Completions
 # -------------------------
 # Bun completions
-[ -s "/home/cleo/.bun/_bun" ] && source "/home/cleo/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # -------------------------
 # ZSH Vi Mode Configuration
@@ -177,9 +170,4 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)" #better cd
 eval "$(starship init zsh)" #starship
 
-# -------------------------
-# Powerlevel10k theme configuration
-# -------------------------
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
