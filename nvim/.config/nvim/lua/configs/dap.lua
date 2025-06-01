@@ -10,20 +10,20 @@ end
 
 -- DAP Virtual Text Setup
 dap_vt.setup {
-  enabled = true, -- Enable plugin (default)
-  enabled_commands = true, -- Create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did not notify its termination)
-  highlight_changed_variables = true, -- Highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
-  highlight_new_as_changed = false, -- Highlight new variables in the same way as changed variables (if highlight_changed_variables)
-  show_stop_reason = true, -- Show stop reason when stopped for exceptions
-  commented = false, -- Prefix virtual text with comment string
-  only_first_definition = true, -- Only show virtual text at first definition (if there are multiple)
-  all_references = false, -- Show virtual text on all references of the variable (not only definitions)
+  enabled = true,                        -- Enable plugin (default)
+  enabled_commands = true,               -- Create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did not notify its termination)
+  highlight_changed_variables = true,    -- Highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
+  highlight_new_as_changed = false,      -- Highlight new variables in the same way as changed variables (if highlight_changed_variables)
+  show_stop_reason = true,               -- Show stop reason when stopped for exceptions
+  commented = false,                     -- Prefix virtual text with comment string
+  only_first_definition = true,          -- Only show virtual text at first definition (if there are multiple)
+  all_references = false,                -- Show virtual text on all references of the variable (not only definitions)
   filter_references_pattern = "<module", -- Filter references (not definitions) pattern when all_references is activated (Lua gmatch pattern, default filters out Python modules)
   -- Experimental Features:
-  virt_text_pos = "eol", -- Position of virtual text, see `:h nvim_buf_set_extmark()`
-  all_frames = false, -- Show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-  virt_lines = false, -- Show virtual lines instead of virtual text (will flicker!)
-  virt_text_win_col = nil, -- Position the virtual text at a fixed window column (starting from the first text column)
+  virt_text_pos = "eol",                 -- Position of virtual text, see `:h nvim_buf_set_extmark()`
+  all_frames = false,                    -- Show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+  virt_lines = false,                    -- Show virtual lines instead of virtual text (will flicker!)
+  virt_text_win_col = nil,               -- Position the virtual text at a fixed window column (starting from the first text column)
 }
 
 -- DAP UI Setup
@@ -59,8 +59,8 @@ dapui.setup {
     },
   },
   floating = {
-    max_height = nil, -- These can be integers or a float between 0 and 1.
-    max_width = nil, -- Floats will be treated as percentage of your screen.
+    max_height = nil,   -- These can be integers or a float between 0 and 1.
+    max_width = nil,    -- Floats will be treated as percentage of your screen.
     border = "rounded", -- Border style: "single", "double", "rounded"
     mappings = {
       close = { "q", "<Esc>" },

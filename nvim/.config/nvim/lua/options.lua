@@ -7,6 +7,7 @@ local g = vim.g
 o.laststatus = 3
 o.showmode = false
 
+o.termguicolors = true
 o.clipboard = "unnamedplus"
 o.cursorline = true
 o.cursorlineopt = "number"
@@ -57,6 +58,7 @@ vim.env.PATH = table.concat({ vim.fn.stdpath("data"), "mason", "bin" }, sep) .. 
 
 local autocmd = vim.api.nvim_create_autocmd
 
+-- restore cursor position
 autocmd("BufReadPost", {
   pattern = "*",
   callback = function()
@@ -75,6 +77,8 @@ autocmd("BufReadPost", {
 -- custom
 opt.spelllang = "en_us"
 opt.spell = true
+opt.scrolloff = 10
+
 
 opt.hlsearch = false
 opt.incsearch = true
@@ -83,16 +87,15 @@ opt.incsearch = true
 vim.cmd("highlight NeogitDiffDelete guibg=#2d4f67 guifg=#c0caf5")
 vim.cmd("highlight NeogitDiffDeleteHighlight guibg=#334e68 guifg=#c0caf5")
 
-opt.scrolloff = 10
-
 -- Configure diagnostics to show virtual text from NvChad
 local x = vim.diagnostic.severity
 
-vim.diagnostic.config {
+vim.diagnostic.config({
   virtual_text = { prefix = "" },
-  signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } }, underline = true,
+  signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
+  underline = true,
   float = { border = "single" },
-}
+})
 
 -- Default border style
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
@@ -101,3 +104,11 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts.border = "rounded"
   return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
+
+-- Disable the scrolloff 10 for my notes
+vim.api.nvim_create_autocmd("BufRead", {
+  pattern = vault_root_path .. "*",
+  callback = function()
+    opt.scrolloff = 0
+  end,
+})

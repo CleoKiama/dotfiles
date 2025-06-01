@@ -47,8 +47,6 @@ M.capabilities = require("blink.cmp").get_lsp_capabilities()
 -- Setup default configurations
 M.setup = function()
   -- Configure lua_ls with some defaults
-  -- use nvchad for pretty virtual text diagnostic messages
-  dofile(vim.g.base46_cache .. "lsp")
   lspconfig.lua_ls.setup({
     on_attach = function(client, bufnr)
       M.on_attach(client, bufnr)
@@ -101,8 +99,9 @@ M.setup = function()
     filetypes = { "markdown" },
     root_dir = function(fname)
       -- Only activate on markdown files in the Obsidian vault
-      if string.match(fname, "^/media/Library/obsidian%-vaults/.+%.md$") then
-        return fname:match("(/media/Library/obsidian%-vaults/.+)/")
+      local vault_pattern = "^" .. _G.vault_config.vault_path:gsub("%-", "%%-") .. "/.+%.md$"
+      if string.match(fname, vault_pattern) then
+        return _G.vault_config.vault_path
       end
       return nil
     end,
