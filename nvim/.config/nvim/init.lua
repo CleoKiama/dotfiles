@@ -10,8 +10,8 @@ if home_dir:match("^/home/cleo2$") then
   vault_path = home_dir .. "/vault/10xGoals"
   vault_root_path = home_dir .. "/vault"
 else
-  vault_path = "/media/Library2/Obsidian-Vaults/10xGoals"
-  vault_root_path = "/media/Library2/Obsidian-Vaults/"
+  vault_path = "/media/Obsidian_Vaults/10xGoals"
+  vault_root_path = "/media/Obsidian_Vaults"
 end
 
 -- Export vault configuration globally

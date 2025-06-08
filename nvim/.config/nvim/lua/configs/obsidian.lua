@@ -135,7 +135,7 @@ function run_rclone_sync()
   local term = require("nvchad.term")
   term.toggle({
     pos = "vsp",
-    cmd = "rclone sync " .. _G.vault_config.vault_root_path .. "gdrive:/Obsidian_vault",
+    cmd = "rclone sync " .. _G.vault_config.vault_root_path .. "/" .. " gdrive:/Obsidian_vault",
     id = "rclone_sync",
     clear_cmd = false,
   })
