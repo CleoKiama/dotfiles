@@ -190,7 +190,7 @@ end, { desc = "[P]Toggle task and move it to 'done'" })
 -- These are marked with <leader>x using bullets.vim
 -- I used <C-l> before, but that is used for pane navigation
 
-map({ "n", "v", "i" }, "<M-j>", function()
+map({ "n", "v", "i" }, "<M-h>", function()
   -- Get the current line and cursor position
   local timestamp = os.date("%Y-%m-%d")
   local line = vim.api.nvim_get_current_line()

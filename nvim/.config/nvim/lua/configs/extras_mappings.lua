@@ -41,7 +41,11 @@ end, { desc = "[p] Show test summary" })
 -- dap key mappings
 map("n", "<leader>dr", function()
   require("dapui").setup()
-  require("dap").continue()
+  if vim.bo.filetype == "rust" then
+    vim.cmd.RustLsp('debug')
+  else
+    require("dap").continue()
+  end
 end, { desc = "[p] DAP continue" })
 
 map("n", "<leader>db", function()
@@ -197,3 +201,6 @@ R = function(name)
   RELOAD(name)
   return require(name)
 end
+
+map("n", "j", "gj", { silent = true })
+map("n", "k", "gk", { silent = true })
