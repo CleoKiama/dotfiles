@@ -105,10 +105,24 @@ return {
   {
     "CRAG666/code_runner.nvim",
     dependencies = { "preservim/vimux" },
-    cmd = "RunCode",
     config = function()
       require("configs.code_runner")
     end,
+    keys = {
+      {
+        "<leader>cr",
+        function()
+          vim.cmd("VimuxClearTerminalScreen")
+          vim.cmd("RunCode")
+        end,
+        desc = "[p] Run code",
+      },
+      {
+        "<leader>ci",
+        "<cmd>VimuxInspectRunner<CR>",
+        desc = "Inspect the code in the terminal",
+      },
+    }
   },
   {
     "echasnovski/mini.pairs",
@@ -132,7 +146,7 @@ return {
     opts = {
       win = {
         position = "right", -- Opens Trouble in a vertical split on the right
-        width = 40,     -- Width of the vertical split
+        width = 40,         -- Width of the vertical split
       },
     },
     confg = function(_, opts)
@@ -180,7 +194,7 @@ return {
           "svelte",
           "python",
         },
-        jsx_brackets = true,        -- must add brackets to JSX attributes
+        jsx_brackets = true,            -- must add brackets to JSX attributes
         remove_template_string = false, -- remove backticks when there are no template strings
         restore_quotes = {
           -- quotes used when "remove_template_string" option is enabled

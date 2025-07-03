@@ -78,14 +78,8 @@ map(
   { desc = "search and replace word under cursor" }
 )
 
--- hi there
--- hi again
-
 -- custom
 map("n", "<leader>sf", "<cmd>normal! ggVG<CR>", { noremap = true, silent = true, desc = "[p] Select whole file" })
-
--- Code Runner
-map("n", "<leader>cr", ":RunCode<CR>", { desc = "[p] Run code" })
 
 -- Trouble.nvim
 map("n", "<leader>tx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "[p] Diagnostics (Trouble)" })
