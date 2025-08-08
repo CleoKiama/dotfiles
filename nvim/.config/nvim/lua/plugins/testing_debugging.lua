@@ -12,7 +12,6 @@ return {
     dependencies = {
       "theHamsta/nvim-dap-virtual-text",
       "rcarriga/nvim-dap-ui",
-      "stevearc/dressing.nvim",
     },
     config = function()
       require("configs.dap")
