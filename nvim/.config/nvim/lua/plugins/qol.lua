@@ -1,4 +1,5 @@
 local leet_arg = "leetcode.nvim"
+vim.g.cord_defer_startup = true
 
 return {
   {
@@ -101,6 +102,9 @@ return {
     config = function()
       require("configs.harpoon")
     end,
+  },
+  {
+    "preservim/vimux",
   },
   {
     "CRAG666/code_runner.nvim",
@@ -251,6 +255,9 @@ return {
       "handlebars",
       "html",
       "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
       "jsx",
       "markdown",
       "php",
@@ -258,7 +265,6 @@ return {
       "svelte",
       "tsx",
       "twig",
-      "typescript",
       "vue",
       "xml",
     },
@@ -280,9 +286,7 @@ return {
     "kawre/leetcode.nvim",
     build = ":TSUpdate html",
     lazy = leet_arg ~= vim.fn.argv(0, -1),
-    -- cmd = "Leet",
     dependencies = {
-      "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim", -- required by telescope
       "MunifTanjim/nui.nvim",
       -- optional
@@ -320,4 +324,127 @@ return {
     "wakatime/vim-wakatime",
     event = "VeryLazy",
   },
+  {
+    "jellydn/hurl.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown" },
+        },
+        ft = { "markdown" },
+      },
+    },
+    ft = "hurl",
+    opts = {
+      debug = false,
+      show_notification = false,
+      mode = "split",
+      formatters = {
+        json = { 'jq' }, -- Make sure you have install jq in your system, e.g: brew install jq
+        html = {
+          'prettier',    -- Make sure you have install prettier in your system, e.g: npm install -g prettier
+          '--parser',
+          'html',
+        },
+        xml = {
+          'tidy', -- Make sure you have installed tidy in your system, e.g: brew install tidy-html5
+          '-xml',
+          '-i',
+          '-q',
+        },
+      },
+      mappings = {
+        close = 'q',
+        next_panel = '<M-n>',
+        prev_panel = '<M-p>',
+      },
+    },
+    keys = {
+      { "<leader>A",  "<cmd>HurlRunner<CR>",           desc = "Run All requests" },
+      { "<leader>a",  "<cmd>HurlRunnerAt<CR>",         desc = "Run Api request" },
+      { "<leader>te", "<cmd>HurlRunnerToEntry<CR>",    desc = "Run Api request to entry" },
+      { "<leader>tE", "<cmd>HurlRunnerToEnd<CR>",      desc = "Run Api request from current entry to end" },
+      { "<leader>tm", "<cmd>HurlToggleMode<CR>",       desc = "Hurl Toggle Mode" },
+      { "<leader>tv", "<cmd>HurlVerbose<CR>",          desc = "Run Api in verbose mode" },
+      { "<leader>hl", "<cmd>HurlShowLastResponse<CR>", desc = "Hurl last response" },
+      { "<leader>tV", "<cmd>HurlVeryVerbose<CR>",      desc = "Run Api in very verbose mode" },
+      { "<leader>h",  ":HurlRunner<CR>",               desc = "Hurl Runner",                              mode = "v" },
+    },
+  },
+  {
+    "jake-stewart/multicursor.nvim",
+    event = "BufRead",
+    branch = "1.0",
+    config = function()
+      local mc = require("multicursor-nvim")
+      mc.setup()
+
+      local set = vim.keymap.set
+
+      -- Add or skip cursor above/below the main cursor.
+      set({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
+      set({ "n", "x" }, "<down>", function() mc.lineAddCursor(1) end)
+      set({ "n", "x" }, "<leader><up>", function() mc.lineSkipCursor(-1) end)
+      set({ "n", "x" }, "<leader><down>", function() mc.lineSkipCursor(1) end)
+
+      -- Add or skip adding a new cursor by matching word/selection
+      set({ "n", "x" }, "<localleader>n", function() mc.matchAddCursor(1) end)
+      set({ "n", "x" }, "<localleader>s", function() mc.matchSkipCursor(1) end)
+      set({ "n", "x" }, "<localleader>N", function() mc.matchAddCursor(-1) end)
+      set({ "n", "x" }, "<localleader>S", function() mc.matchSkipCursor(-1) end)
+
+      -- Add and remove cursors with control + left click.
+      set("n", "<c-leftmouse>", mc.handleMouse)
+      set("n", "<c-leftdrag>", mc.handleMouseDrag)
+      set("n", "<c-leftrelease>", mc.handleMouseRelease)
+
+      -- Disable and enable cursors.
+      set({ "n", "x" }, "<c-q>", mc.toggleCursor)
+
+      -- Mappings defined in a keymap layer only apply when there are
+      -- multiple cursors. This lets you have overlapping mappings.
+      mc.addKeymapLayer(function(layerSet)
+        -- Select a different cursor as the main one.
+        layerSet({ "n", "x" }, "<left>", mc.prevCursor)
+        layerSet({ "n", "x" }, "<right>", mc.nextCursor)
+
+        -- Delete the main cursor.
+        layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor)
+
+        -- Enable and clear cursors using escape.
+        layerSet("n", "<esc>", function()
+          if not mc.cursorsEnabled() then
+            mc.enableCursors()
+          else
+            mc.clearCursors()
+          end
+        end)
+      end)
+
+      -- Customize how cursors look.
+      local hl = vim.api.nvim_set_hl
+      hl(0, "MultiCursorCursor", { reverse = true })
+      hl(0, "MultiCursorVisual", { link = "Visual" })
+      hl(0, "MultiCursorSign", { link = "SignColumn" })
+      hl(0, "MultiCursorMatchPreview", { link = "Search" })
+      hl(0, "MultiCursorDisabledCursor", { reverse = true })
+      hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
+      hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
+    end
+  },
+  {
+    'vyfor/cord.nvim',
+    event = 'VeryLazy',
+    config = function()
+      require('cord').setup({
+        -- Configuration here, or leave empty to use defaults
+        -- For more options, see:
+      })
+    end,
+    build = ':Cord update',
+  }
 }
