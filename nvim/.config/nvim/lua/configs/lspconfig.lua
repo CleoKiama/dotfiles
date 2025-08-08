@@ -95,7 +95,9 @@ M.setup = function()
     lspconfig[server].setup({
       on_attach = function(client, bufnr)
         M.on_attach(client, bufnr)
-        navic.attach(client, bufnr)
+        if client.name ~= "postgres_lsp" then
+          navic.attach(client, bufnr) -- Attach navic for all servers except postgres_lsp postgres_lsp not support
+        end
       end,
       capabilities = M.capabilities,
       on_init = M.on_init,
