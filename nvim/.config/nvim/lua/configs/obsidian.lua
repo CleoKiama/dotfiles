@@ -89,23 +89,15 @@ require("obsidian").setup({
     -- If this is a relative path it will be interpreted as relative to the vault root.
     -- You can always override this per image by passing a full path to the command instead of just a filename.
     img_folder = "assets/imgs", -- This is the default
-
-    -- Optional, customize the default name or prefix when pasting images via `:ObsidianPasteImg`.
-    ---@return string
     img_name_func = function()
-      -- Prefix image names with timestamp.
-      return string.format("%s-", os.time())
+      return ""
     end,
+    img_text_func = function(path)
+      local vault_path = vim.g.vault_path
+      local abs_path = tostring(path)
+      local rel_path = abs_path:gsub("^" .. vim.pesc(vault_path .. "/"), "")
 
-    -- A function that determines the text to insert in the note when pasting an image.
-    -- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
-    -- This is the default implementation.
-    -- -@param client obsidian.Client
-    -- -@param path obsidian.Path the absolute path to the image file
-    ---@return string
-    img_text_func = function(client, path)
-      path = client:vault_relative_path(path) or path
-      return string.format("![%s](%s)", path.name, path)
+      return string.format("![%s](%s)", path.name, rel_path)
     end,
   },
   ui = { enable = false },
@@ -138,6 +130,5 @@ end
 
 -- Obsidian sync to GDrive
 map("n", "<Leader>osg", ":lua run_rclone_sync()<CR>", { desc = "Sync Obsidian to GDrive" })
-
 
 require("configs.task_manager")
