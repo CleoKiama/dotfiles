@@ -2,7 +2,7 @@ require("obsidian").setup({
   workspaces = {
     {
       name = "personal",
-      path = _G.vault_config.vault_path,
+      path = vim.g.vault_path,
     },
   },
   daily_notes = {
@@ -74,8 +74,8 @@ require("obsidian").setup({
     vim.fn.jobstart({ "xdg-open", url }) -- linux
   end,
   picker = {
-    -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
-    name = "telescope.nvim",
+    -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', 'mini.pick' or 'snacks.pick'.
+    name = "snacks.pick",
     -- Optional, configure key mappings for the picker. These are the defaults.
     -- Not all pickers support all mappings.
     mappings = {
@@ -135,7 +135,7 @@ function run_rclone_sync()
   local term = require("nvchad.term")
   term.toggle({
     pos = "vsp",
-    cmd = "rclone sync " .. _G.vault_config.vault_root_path .. "/" .. " gdrive:/Obsidian_vault",
+    cmd = "rclone sync " .. vim.g.vault_root_path .. "/" .. " gdrive:/Obsidian_vault",
     id = "rclone_sync",
     clear_cmd = false,
   })

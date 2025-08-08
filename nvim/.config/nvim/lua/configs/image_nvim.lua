@@ -8,17 +8,18 @@ require("image").setup({
       only_render_image_at_cursor = true,
       filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
       resolve_image_path = function(document_path, image_path, fallback)
-        local base_path = _G.vault_config.vault_path .. "/"
-        print("base_path", base_path)
+        local base_path = vim.g.vault_path .. "/"
 
         -- Expand paths to handle special characters
         local expanded_document_path = vim.fn.expand(document_path)
         local expanded_image_path = vim.fn.expand(image_path)
 
+
         -- Check if the document is in the specific vault directory
         if vim.fn.fnamemodify(expanded_document_path, ":p"):find(base_path, 1, true) then
           -- If the document is in the vault, use the custom base path
-          return base_path .. expanded_image_path
+          local finalPath = base_path .. expanded_image_path
+          return finalPath
         else
           -- Otherwise, use the default fallback behavior
           return fallback(document_path, image_path)

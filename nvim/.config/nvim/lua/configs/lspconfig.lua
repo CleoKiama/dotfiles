@@ -15,8 +15,14 @@ M.on_attach = function(_, bufnr)
     return { buffer = bufnr, desc = "LSP: " .. desc }
   end
   -- Key mappings
-  map("n", "gD", vim.lsp.buf.declaration, opts("Go to declaration"))
-  map("n", "gd", vim.lsp.buf.definition, opts("Go to definition"))
+  map("n", "gD", function()
+    Snacks.picker.lsp_declarations()
+  end, opts("Go to declaration"))
+  map("n", "gd",
+    function()
+      Snacks.picker.lsp_definitions()
+    end
+    , opts("Go to definition"))
   map("n", "gi", vim.lsp.buf.implementation, opts("Go to implementation"))
   map("n", "gr", function()
     Snacks.picker.lsp_references()
@@ -100,9 +106,9 @@ M.setup = function()
     filetypes = { "markdown" },
     root_dir = function(fname)
       -- Only activate on markdown files in the Obsidian vault
-      local vault_pattern = "^" .. _G.vault_config.vault_path:gsub("%-", "%%-") .. "/.+%.md$"
+      local vault_pattern = "^" .. vim.g.vault_path:gsub("%-", "%%-") .. "/.+%.md$"
       if string.match(fname, vault_pattern) then
-        return _G.vault_config.vault_path
+        return vim.g.vault_path
       end
       return nil
     end,

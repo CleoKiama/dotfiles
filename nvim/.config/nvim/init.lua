@@ -3,7 +3,7 @@ vim.g.maplocalleader = ","
 
 vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46_cache/"
 
--- Vault configuration
+-- Obsidian Vault configuration
 local home_dir = vim.fn.expand("~")
 local vault_path
 if home_dir:match("^/home/cleo2$") then
@@ -14,13 +14,8 @@ else
   vault_root_path = "/media/Obsidian_Vaults"
 end
 
--- Export vault configuration globally
-_G.vault_config = {
-  vault_path = vault_path,
-  home_dir = home_dir,
-  vault_root_path = vault_root_path
-}
-
+vim.g.vault_path = vault_path
+vim.g.vault_root_path = vault_root_path
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

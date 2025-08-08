@@ -5,23 +5,22 @@ return {
     ft = { "markdown", "Avante", "codecompanion" },
   },
   {
-    "epwalsh/obsidian.nvim",
+    "obsidian-nvim/obsidian.nvim",
     version = "*", -- recommended, use latest release instead of latest commit
     event = {
       -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
       -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
       "BufReadPre " ..
-      _G.vault_config.vault_root_path .. "**.md",
+      vim.g.vault_root_path .. "**.md",
       "BufNewFile " ..
-      _G.vault_config.vault_root_path .. "**.md",
+      vim.g.vault_root_path .. "**.md",
       "BufWritePost " ..
-      _G.vault_config.vault_root_path .. "**.md",
+      vim.g.vault_root_path .. "**.md",
     },
     dependencies = {
       -- Required.
       "nvim-lua/plenary.nvim",
       "3rd/image.nvim",
-      "hamidi-dev/org-list.nvim",
     },
     config = function()
       vim.cmd("set conceallevel=2")
@@ -30,6 +29,7 @@ return {
   },
   {
     "3rd/image.nvim",
+    enabled = false,
     ft = { "png", "jpg", "jpeg", "gif" },
     config = function()
       require("configs.image_nvim")
