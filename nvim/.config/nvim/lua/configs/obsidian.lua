@@ -76,14 +76,6 @@ require("obsidian").setup({
   picker = {
     -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', 'mini.pick' or 'snacks.pick'.
     name = "snacks.pick",
-    -- Optional, configure key mappings for the picker. These are the defaults.
-    -- Not all pickers support all mappings.
-    mappings = {
-      -- Create a new note from your query.
-      new = "<C-x>",
-      -- Insert a link to the selected note.
-      insert_link = "<C-l>",
-    },
   },
   completion = {
     nvim_cmp = false,
@@ -121,18 +113,17 @@ require("obsidian").setup({
 
 local map = vim.keymap.set
 
-map("n", "<leader>ont", "<Cmd>ObsidianNewFromTemplate<CR>")
-map("n", "<leader>of", "<Cmd>ObsidianFollowLink<CR>")
-map("n", "<leader>ot", "<Cmd>ObsidianToday<CR>")
-map("n", "<leader>oy", "<Cmd>ObsidianYesterday<CR>")
-map("n", "<leader>o/", "<Cmd>ObsidianSearch<CR>")
-map("n", "<leader>ost", ":ObsidianTags ")
-map("n", "<leader>o", "<Cmd>ObsidianQuickSwitch<CR>")
-map("n", "<leader>od", "<Cmd>ObsidianDailies<CR>")
-map("v", "<leader>oe", ":ObsidianExtractNote ")
-map("n", "<leader>opt", "<Cmd>ObsidianTemplate<CR>")
-map("n", "<leader>or", ":ObsidianRename ")
-map("n", "<leader>oi", ":ObsidianPasteImg<CR> ")
+map("n", "<leader>ont", "<Cmd>Obsidian new_from_template<CR>")
+map("n", "<leader>of", "<Cmd>Obsidian follow_link<CR>")
+map("n", "<leader>ot", "<Cmd>Obsidian today<CR>")
+map("n", "<leader>oy", "<Cmd>Obsidian yesterday<CR>")
+map("n", "<leader>o/", "<Cmd>Obsidian search<CR>")
+map("n", "<leader>ost", ":Obsidian tags ")
+map("n", "<leader>od", "<Cmd>Obsidian dailies<CR>")
+map("v", "<leader>oe", ":Obsidian extract_note")
+map("n", "<leader>opt", "<Cmd>Obsidian template<CR>")
+map("n", "<leader>or", ":Obsidian rename ")
+map("n", "<leader>oi", ":Obsidian paste_img<CR> ")
 
 function run_rclone_sync()
   vim.notify("Starting Obsidian sync...", vim.log.levels.INFO)
