@@ -85,6 +85,10 @@ require("obsidian").setup({
       insert_link = "<C-l>",
     },
   },
+  completion = {
+    nvim_cmp = false,
+    blink = true,
+  },
   -- Optional, configure additional syntax highlighting / extmarks.
   -- This requires you have `conceallevel` set to 1 or 2. See `:help conceallevel` for more details.
   -- Specify how to handle attachments.
@@ -144,22 +148,5 @@ end
 -- Obsidian sync to GDrive
 map("n", "<Leader>osg", ":lua run_rclone_sync()<CR>", { desc = "Sync Obsidian to GDrive" })
 
-local blink = require("blink.cmp")
-blink.add_source_provider("obsidian", {
-  name = "obsidian",
-  module = "blink.compat.source",
-})
-blink.add_source_provider("obsidian_new", {
-  name = "obsidian_new",
-  module = "blink.compat.source",
-})
-blink.add_source_provider("obsidian_tags", {
-  name = "obsidian_tags",
-  module = "blink.compat.source",
-})
-
-blink.add_filetype_source("markdown", "obsidian")
-blink.add_filetype_source("markdown", "obsidian_new")
-blink.add_filetype_source("markdown", "obsidian_tags")
 
 require("configs.task_manager")
