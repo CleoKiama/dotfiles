@@ -1,0 +1,26 @@
+/* Catppuccin Mocha color scheme for swaync */
+
+/* Base colors */
+@define-color background #1e1e2e;
+@define-color foreground #cdd6f4;
+
+/* Color palette (wal-style) */
+@define-color color0 #1e1e2e;  /* base */
+@define-color color1 #45475a;  /* surface1 */
+@define-color color2 #f38ba8;  /* red */
+@define-color color3 #a6e3a1;  /* green */
+@define-color color4 #f9e2af;  /* yellow */
+@define-color color5 #89b4fa;  /* blue */
+@define-color color6 #cba6f7;  /* mauve */
+@define-color color7 #cdd6f4;  /* text */
+@define-color color8 #585b70;  /* surface2 */
+@define-color color9 #f38ba8;  /* red */
+@define-color color10 #a6e3a1; /* green */
+@define-color color11 #f9e2af; /* yellow */
+@define-color color12 #89b4fa; /* blue */
+@define-color color13 #cba6f7; /* mauve */
+@define-color color14 #94e2d5; /* teal */
+@define-color color15 #bac2de; /* subtext1 */
+
+/* Additional colors used in themes */
+@define-color background-sec #313244; /* surface0 */

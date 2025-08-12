@@ -97,36 +97,21 @@ tooltip {
 #backlight,
 #battery,
 #bluetooth,
-#custom-cava,
-#custom-cliphist,
 #clock,
-#custom-cpuinfo,
 #cpu,
 #custom-appMenu,
-#custom-updates,
 #bluetooth,
+#custom-updates,
 #power-profiles-daemon,
 #custom-screen-record,
 #custom-clipboard,
+#custom-notification,
 #idle_inhibitor,
 #memory,
 #network,
-#custom-notifications,
 #custom-power,
-#privacy,
 #pulseaudio,
-#custom-sensorsinfo,
-#custom-spotify,
-#taskbar,
-#taskbar,
-#taskbar,
-#taskbar#windows,
-#custom-theme,
 #tray,
-#custom-updates,
-#custom-wallchange,
-#custom-wbar,
-#custom-weather,
 #window,
 #workspaces,
 #custom-l_end,
@@ -182,4 +167,8 @@ tooltip {
   border-radius: 7px 0px 0px 7px;
   margin-left: 9px;
   padding-left: 3px;
+}
+
+#custom-notification {
+  font-family: "NotoSansMono Nerd Font";
 }
