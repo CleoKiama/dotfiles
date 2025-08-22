@@ -12,7 +12,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- require("tailwind-tools.cmp")
-local lsp = require("configs.lspconfig")
 
 require("tailwind-tools").setup({
 	document_color = {
@@ -33,8 +32,9 @@ require("tailwind-tools").setup({
 		override = true, -- setup the server from the plugin if true
 		settings = {}, -- shortcut for `settings.tailwindCSS`
 		on_attach = function(client, bufnr)
-			lsp.on_attach(client, bufnr)
+			-- Add your custom on_attach logic here if needed
 		end,
+		capabilities = require("blink.cmp").get_lsp_capabilities(),
 	},
 	cmp = {
 		highlight = "foreground", -- color preview style, "foreground" | "background"
