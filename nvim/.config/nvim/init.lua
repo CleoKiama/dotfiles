@@ -14,7 +14,7 @@ else
   vault_root_path = "/media/Obsidian_Vaults"
 end
 
-vim.g.vault_path = vault_path
+vim.g.vault_path = vault_path --INFO: Should match the one in obsidian
 vim.g.vault_root_path = vault_root_path
 
 -- Bootstrap lazy.nvim
