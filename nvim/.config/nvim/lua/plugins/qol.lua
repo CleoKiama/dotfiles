@@ -126,7 +126,7 @@ return {
         "<cmd>VimuxInspectRunner<CR>",
         desc = "Inspect the code in the terminal",
       },
-    }
+    },
   },
   {
     "echasnovski/mini.pairs",
@@ -272,7 +272,6 @@ return {
       require("configs.nvim-ts-autotag")
     end,
   },
-
   {
     "folke/lazydev.nvim",
     ft = "lua",
@@ -331,7 +330,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       {
-        'MeanderingProgrammer/render-markdown.nvim',
+        "MeanderingProgrammer/render-markdown.nvim",
         opts = {
           file_types = { "markdown" },
         },
@@ -344,23 +343,23 @@ return {
       show_notification = false,
       mode = "split",
       formatters = {
-        json = { 'jq' }, -- Make sure you have install jq in your system, e.g: brew install jq
+        json = { "jq" }, -- Make sure you have install jq in your system, e.g: brew install jq
         html = {
-          'prettier',    -- Make sure you have install prettier in your system, e.g: npm install -g prettier
-          '--parser',
-          'html',
+          "prettier",    -- Make sure you have install prettier in your system, e.g: npm install -g prettier
+          "--parser",
+          "html",
         },
         xml = {
-          'tidy', -- Make sure you have installed tidy in your system, e.g: brew install tidy-html5
-          '-xml',
-          '-i',
-          '-q',
+          "tidy", -- Make sure you have installed tidy in your system, e.g: brew install tidy-html5
+          "-xml",
+          "-i",
+          "-q",
         },
       },
       mappings = {
-        close = 'q',
-        next_panel = '<M-n>',
-        prev_panel = '<M-p>',
+        close = "q",
+        next_panel = "<M-n>",
+        prev_panel = "<M-p>",
       },
     },
     keys = {
@@ -372,7 +371,12 @@ return {
       { "<leader>tv", "<cmd>HurlVerbose<CR>",          desc = "Run Api in verbose mode" },
       { "<leader>hl", "<cmd>HurlShowLastResponse<CR>", desc = "Hurl last response" },
       { "<leader>tV", "<cmd>HurlVeryVerbose<CR>",      desc = "Run Api in very verbose mode" },
-      { "<leader>h",  ":HurlRunner<CR>",               desc = "Hurl Runner",                              mode = "v" },
+      {
+        "<leader>h",
+        ":HurlRunner<CR>",
+        desc = "Hurl Runner",
+        mode = "v",
+      },
     },
   },
   {
@@ -386,16 +390,32 @@ return {
       local set = vim.keymap.set
 
       -- Add or skip cursor above/below the main cursor.
-      set({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
-      set({ "n", "x" }, "<down>", function() mc.lineAddCursor(1) end)
-      set({ "n", "x" }, "<leader><up>", function() mc.lineSkipCursor(-1) end)
-      set({ "n", "x" }, "<leader><down>", function() mc.lineSkipCursor(1) end)
+      set({ "n", "x" }, "<up>", function()
+        mc.lineAddCursor(-1)
+      end)
+      set({ "n", "x" }, "<down>", function()
+        mc.lineAddCursor(1)
+      end)
+      set({ "n", "x" }, "<leader><up>", function()
+        mc.lineSkipCursor(-1)
+      end)
+      set({ "n", "x" }, "<leader><down>", function()
+        mc.lineSkipCursor(1)
+      end)
 
       -- Add or skip adding a new cursor by matching word/selection
-      set({ "n", "x" }, "<localleader>n", function() mc.matchAddCursor(1) end)
-      set({ "n", "x" }, "<localleader>s", function() mc.matchSkipCursor(1) end)
-      set({ "n", "x" }, "<localleader>N", function() mc.matchAddCursor(-1) end)
-      set({ "n", "x" }, "<localleader>S", function() mc.matchSkipCursor(-1) end)
+      set({ "n", "x" }, "<localleader>n", function()
+        mc.matchAddCursor(1)
+      end)
+      set({ "n", "x" }, "<localleader>s", function()
+        mc.matchSkipCursor(1)
+      end)
+      set({ "n", "x" }, "<localleader>N", function()
+        mc.matchAddCursor(-1)
+      end)
+      set({ "n", "x" }, "<localleader>S", function()
+        mc.matchSkipCursor(-1)
+      end)
 
       -- Add and remove cursors with control + left click.
       set("n", "<c-leftmouse>", mc.handleMouse)
@@ -434,17 +454,22 @@ return {
       hl(0, "MultiCursorDisabledCursor", { reverse = true })
       hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
       hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
-    end
+    end,
   },
   {
-    'vyfor/cord.nvim',
-    event = 'VeryLazy',
-    config = function()
-      require('cord').setup({
-        -- Configuration here, or leave empty to use defaults
-        -- For more options, see:
-      })
-    end,
-    build = ':Cord update',
+    "vyfor/cord.nvim",
+    build = ":Cord update",
+    keys = {
+      {
+        "<leader>dp",
+        function()
+          require("cord").setup({
+            -- Configuration here, or leave empty to use defaults
+            -- For more options, see:
+          })
+        end,
+        desc = "start discord rich presence"
+      }
+    }
   }
 }
