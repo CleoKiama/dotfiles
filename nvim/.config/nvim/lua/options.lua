@@ -1,12 +1,14 @@
 local opt = vim.opt
-vim.g.use_blink_cmp = true
 local o = vim.o
 local g = vim.g
+
+if vim.env.SSH_CONNECTION and vim.env.TMUX then
+  g.clipboard = 'tmux'
+end
 
 -------------------------------------- options ------------------------------------------
 o.laststatus = 3
 o.showmode = false
-
 o.termguicolors = true
 o.clipboard = "unnamedplus"
 o.cursorline = true
@@ -79,7 +81,6 @@ opt.spelllang = "en_us"
 opt.spell = true
 opt.scrolloff = 10
 
-
 opt.hlsearch = false
 opt.incsearch = true
 
@@ -112,3 +113,7 @@ vim.api.nvim_create_autocmd("BufRead", {
     opt.scrolloff = 0
   end,
 })
+
+-- vimux settings
+g.VimuxHeight = "40%"
+g.VimuxOrientation = "h"
