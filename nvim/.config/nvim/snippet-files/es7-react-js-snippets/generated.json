@@ -1,0 +1,543 @@
+{
+  "exportType": {
+    "body": ["export type ${1:first} = {${2:second}}"],
+    "key": "exportType",
+    "prefix": "exptp",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "exportInterface": {
+    "key": "exportInterface",
+    "prefix": "expint",
+    "body": ["export interface ${1:first} {${2:second}}"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "typescriptReactFunctionalExportComponent": {
+    "key": "typescriptReactFunctionalExportComponent",
+    "prefix": "tsrfce",
+    "body": [
+      "import React from 'react'",
+      "",
+      "type Props = {}",
+      "",
+      "function ${1:${TM_FILENAME_BASE}}({}: Props) {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "}",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}}"
+    ],
+    "description": "Creates a React Functional Component with ES7 module system and TypeScript interface",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "typescriptReactFunctionalComponent": {
+    "key": "typescriptReactFunctionalComponent",
+    "prefix": "tsrfc",
+    "body": [
+      "import React from 'react'",
+      "",
+      "type Props = {}",
+      "",
+      "export default function ${1:${TM_FILENAME_BASE}}({}: Props) {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "}"
+    ],
+    "description": "Creates a React Functional Component with ES7 module system and TypeScript interface",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "typescriptReactArrowFunctionExportComponent": {
+    "key": "typescriptReactArrowFunctionExportComponent",
+    "prefix": "tsrafce",
+    "body": [
+      "import React from 'react'",
+      "",
+      "type Props = {}",
+      "",
+      "const ${1:${TM_FILENAME_BASE}} = (props: Props) => {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "}",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}}"
+    ],
+    "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "typescriptReactArrowFunctionComponent": {
+    "key": "typescriptReactArrowFunctionComponent",
+    "prefix": "tsrafc",
+    "body": [
+      "import React from 'react'",
+      "",
+      "type Props = {}",
+      "",
+      "const ${1:${TM_FILENAME_BASE}} = (props: Props) => {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "}"
+    ],
+    "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "reactArrowFunctionComponent": {
+    "key": "reactArrowFunctionComponent",
+    "prefix": "rafc",
+    "body": [
+      "import React from 'react'",
+      "",
+      "export const ${1:${TM_FILENAME_BASE}} = () => {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "}",
+      ""
+    ],
+    "description": "Creates a React Arrow Function Component with ES7 module system",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "reactArrowFunctionExportComponent": {
+    "key": "reactArrowFunctionExportComponent",
+    "prefix": "rafce",
+    "body": [
+      "import React from 'react'",
+      "",
+      "const ${1:${TM_FILENAME_BASE}} = () => {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "}",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}}"
+    ],
+    "description": "Creates a React Arrow Function Component with ES7 module system",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "reactFunctionMemoComponent": {
+    "key": "reactFunctionMemoComponent",
+    "prefix": "rmc",
+    "body": [
+      "import React, { memo } from 'react'",
+      "",
+      "const ${1:${TM_FILENAME_BASE}} = memo(() => {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "})",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}}"
+    ],
+    "description": "Creates a React Memo Function Component with ES7 module system",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "reactFunctionalComponent": {
+    "key": "reactFunctionalComponent",
+    "prefix": "rfc",
+    "body": [
+      "import React from 'react'",
+      "",
+      "export default function ${1:${TM_FILENAME_BASE}}() {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "}",
+      ""
+    ],
+    "description": "Creates a React Functional Component with ES7 module system",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "reactFunctionalExportComponent": {
+    "key": "reactFunctionalExportComponent",
+    "prefix": "rfce",
+    "body": [
+      "import React from 'react'",
+      "",
+      "function ${1:${TM_FILENAME_BASE}}() {",
+      "  return (",
+      "    <div>${1:first}</div>",
+      "  )",
+      "}",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}}"
+    ],
+    "description": "Creates a React Functional Component with ES7 module system",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleAssert": {
+    "key": "consoleAssert",
+    "prefix": "cas",
+    "body": ["console.assert(${1:first}, ${2:second})"],
+    "description": "If the specified expression is false, the message is written to the console along with a stack trace",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleClear": {
+    "key": "consoleClear",
+    "prefix": "ccl",
+    "body": ["console.clear()"],
+    "description": "Clears the console",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleCount": {
+    "key": "consoleCount",
+    "prefix": "cco",
+    "body": ["console.count(${1:first})"],
+    "description": "Writes the the number of times that count() has been invoked at the same line and with the same label",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleDir": {
+    "key": "consoleDir",
+    "prefix": "cdi",
+    "body": ["console.dir(${1:first})"],
+    "description": "Prints a JavaScript representation of the specified object",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleError": {
+    "key": "consoleError",
+    "prefix": "cer",
+    "body": ["console.error(${1:first})"],
+    "description": "Displays a message in the console and also includes a stack trace from where the method was called",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleGroup": {
+    "key": "consoleGroup",
+    "prefix": "cgr",
+    "body": ["console.group('${1:first}')"],
+    "description": "Groups and indents all following output by an additional level, until console.groupEnd() is called.",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleGroupEnd": {
+    "key": "consoleGroupEnd",
+    "prefix": "cge",
+    "body": ["console.groupEnd()"],
+    "description": "Closes out the corresponding console.group().",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleLog": {
+    "key": "consoleLog",
+    "prefix": "clg",
+    "body": ["console.log(${1:first})"],
+    "description": "Displays a message in the console",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleTrace": {
+    "key": "consoleTrace",
+    "prefix": "ctr",
+    "body": ["console.trace(${1:first})"],
+    "description": "Prints a stack trace from the point where the method was called",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleLogObject": {
+    "key": "consoleLogObject",
+    "prefix": "clo",
+    "body": ["console.log('${1:first}', ${1:first})"],
+    "description": "Logs property with name.",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleLogJson": {
+    "key": "consoleLogJson",
+    "prefix": "clj",
+    "body": ["console.log('${1:first}', JSON.stringify(${1:first}, null, 2))"],
+    "description": "Logs stringified JSON property with name.",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleTime": {
+    "key": "consoleTime",
+    "prefix": "ctm",
+    "body": ["console.time('${1:first}')"],
+    "description": "Console time wrapper",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleTimeEnd": {
+    "key": "consoleTimeEnd",
+    "prefix": "cte",
+    "body": ["console.timeEnd('${1:first}')"],
+    "description": "Console time end wrapper",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleWarn": {
+    "key": "consoleWarn",
+    "prefix": "cwa",
+    "body": ["console.warn(${1:first})"],
+    "description": "Displays a message in the console but also displays a yellow warning icon along with the logged message",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleInfo": {
+    "key": "consoleInfo",
+    "prefix": "cin",
+    "body": ["console.info(${1:first})"],
+    "description": "Displays a message in the console but also displays a blue information icon along with the logged message",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "consoleTable": {
+    "key": "consoleTable",
+    "prefix": "ctl",
+    "body": ["console.table([${1:first}])"],
+    "description": "Logs table to console",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useCallback": {
+    "key": "useCallback",
+    "prefix": "useCallbackSnippet",
+    "body": [
+      "useCallback(",
+      "  () => {",
+      "    ${1:first}",
+      "  },",
+      "  [${2:second}],",
+      ")",
+      ""
+    ],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useContext": {
+    "key": "useContext",
+    "prefix": "useContextSnippet",
+    "body": ["const ${1:first} = useContext(${2:second})"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useEffect": {
+    "key": "useEffect",
+    "prefix": "useEffectSnippet",
+    "body": [
+      "useEffect(() => {",
+      "  ${1:first}",
+      "",
+      "  return () => {",
+      "    ${2:second}",
+      "  }",
+      "}, [${3:third}])",
+      ""
+    ],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useImperativeHandle": {
+    "key": "useImperativeHandle",
+    "prefix": "useImperativeHandleSnippet",
+    "body": [
+      "useImperativeHandle(",
+      "  ${1:first},",
+      "  () => {",
+      "    ${2:second}",
+      "  },",
+      "  [${3:third}],",
+      ")"
+    ],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useLayoutEffect": {
+    "key": "useLayoutEffect",
+    "prefix": "useLayoutEffectSnippet",
+    "body": [
+      "useLayoutEffect(() => {",
+      "  ${1:first}",
+      "",
+      "  return () => {",
+      "    ${2:second}",
+      "  };",
+      "}, [${3:third}])"
+    ],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useMemo": {
+    "key": "useMemo",
+    "prefix": "useMemoSnippet",
+    "body": ["useMemo(() => ${1:first}, [${2:second}])"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useReducer": {
+    "key": "useReducer",
+    "prefix": "useReducerSnippet",
+    "body": [
+      "const [state, dispatch] = useReducer(${1:first}, ${2:second}, ${3:third})"
+    ],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useRef": {
+    "key": "useRef",
+    "prefix": "useRefSnippet",
+    "body": ["const ${1:first} = useRef(${2:second})"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useState": {
+    "key": "useState",
+    "prefix": "useStateSnippet",
+    "body": [
+      "const [${1:first}, set${1/(.*)/${1:/capitalize}/}] = useState(${2:second})"
+    ],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "importAs": {
+    "key": "importAs",
+    "prefix": "ima",
+    "body": ["import { ${2:second} as ${3:third} } from '${1:first}'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "importDestructing": {
+    "key": "importDestructing",
+    "prefix": "imd",
+    "body": ["import { ${2:second} } from '${1:first}'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "importEverything": {
+    "key": "importEverything",
+    "prefix": "ime",
+    "body": ["import * as ${2:second} from '${1:first}'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "importNoModuleName": {
+    "key": "importNoModuleName",
+    "prefix": "imn",
+    "body": ["import '${1:first}'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "importReact": {
+    "key": "importReact",
+    "prefix": "imr",
+    "body": ["import React from 'react'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "importReactDom": {
+    "key": "importReactDom",
+    "prefix": "imrd",
+    "body": ["import ReactDOM from 'react-dom'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "importReactWithMemo": {
+    "key": "importReactWithMemo",
+    "prefix": "imrm",
+    "body": ["import React, { memo } from 'react'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "import": {
+    "key": "import",
+    "prefix": "imp",
+    "body": ["import ${2:second} from '${1:first}'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "exportDefault": {
+    "key": "exportDefault",
+    "prefix": "exp",
+    "body": ["export default ${1:first}"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "exportDestructing": {
+    "key": "exportDestructing",
+    "prefix": "exd",
+    "body": ["export { ${2:second} } from '${1:first}'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "exportAs": {
+    "key": "exportAs",
+    "prefix": "exa",
+    "body": ["export { ${2:second} as ${3:third} } from '${1:first}'"],
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "exportNamedFunction": {
+    "key": "exportNamedFunction",
+    "prefix": "enf",
+    "body": ["export const ${1:first} = (${2:second}) => {${3:third}}"],
+    "description": "Export named function",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "exportDefaultFunction": {
+    "key": "exportDefaultFunction",
+    "prefix": "edf",
+    "body": ["export default (${1:first}) => {${2:second}}"],
+    "description": "Export default function",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "exportDefaultNamedFunction": {
+    "key": "exportDefaultNamedFunction",
+    "prefix": "ednf",
+    "body": ["export default function ${1:first}(${2:second}) {${3:third}}"],
+    "description": "Export default named function",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "method": {
+    "key": "method",
+    "prefix": "met",
+    "body": ["${1:first} = (${2:second}) => {${3:third}}"],
+    "description": "Creates a method inside a class",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "forEach": {
+    "key": "forEach",
+    "prefix": "fre",
+    "body": ["${1:first}.forEach(${2:second} => {${3:third}})"],
+    "description": "Creates a forEach statement",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "forOf": {
+    "key": "forOf",
+    "prefix": "fof",
+    "body": ["for(let ${1:first} of ${2:second}) {${3:third}}"],
+    "description": "Iterating over property names of iterable objects",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "forIn": {
+    "key": "forIn",
+    "prefix": "fin",
+    "body": ["for(let ${1:first} in ${2:second}) {${3:third}}"],
+    "description": "Iterating over property values of iterable objects",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "anonymousFunction": {
+    "key": "anonymousFunction",
+    "prefix": "anfn",
+    "body": ["(${1:first}) => { ${2:second} }"],
+    "description": "Creates an anonymous function",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "namedFunction": {
+    "key": "namedFunction",
+    "prefix": "nfn",
+    "body": ["const ${1:first} = (${2:second}) => { ${3:third} }"],
+    "description": "Creates a named function",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "destructingObject": {
+    "key": "destructingObject",
+    "prefix": "dob",
+    "body": ["const {${2:second}} = ${1:first}"],
+    "description": "Creates and assigns a local variable using object destructing",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "destructingArray": {
+    "key": "destructingArray",
+    "prefix": "dar",
+    "body": ["const [${2:second}] = ${1:first}"],
+    "description": "Creates and assigns a local variable using array destructing",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "setInterval": {
+    "key": "setInterval",
+    "prefix": "sti",
+    "body": ["setInterval(() => { ${1:first} }, ${2:second})"],
+    "description": "Executes the given function at specified intervals",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "setTimeOut": {
+    "key": "setTimeOut",
+    "prefix": "sto",
+    "body": ["setTimeout(() => { ${1:first} }, ${2:second})"],
+    "description": "Executes the given function after the specified delay",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "promise": {
+    "key": "promise",
+    "prefix": "prom",
+    "body": ["return new Promise((resolve, reject) => { ${1:first} })"],
+    "description": "Creates and returns a new Promise in the standard ES7 syntax",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "createContext": {
+    "key": "createContext",
+    "prefix": "rcontext",
+    "body": ["const ${1:first} = React.createContext()"],
+    "description": "Create React context",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  }
+}

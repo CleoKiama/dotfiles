@@ -1,0 +1,161 @@
+{
+  "Import React": {
+    "prefix": "imr",
+    "body": [
+      "import * as React from 'react';\n"
+    ],
+    "description": "Import React"
+  },
+
+  "Import React, { useState }": {
+    "prefix": "imrs",
+    "body": [
+      "import * as React from 'react';",
+      "import { useState } from 'react';\n"
+    ],
+    "description": "Import React, { useState }"
+  },
+
+  "Import React, { useState, useEffect }": {
+    "prefix": "imrse",
+    "body": [
+      "import * as React from 'react';",
+      "import { useState, useEffect } from 'react';\n"
+    ],
+    "description": "Import React, { useState, useEffect }"
+  },
+
+  "Function Component": {
+    "prefix": "fc",
+    "body": [
+      "interface $1Props {",
+      "\t$2",
+      "}",
+      " ",
+      "const $1: React.FC<$1Props> = ($3) => {",
+      "\treturn ( $0 );",
+      "}",
+      " ",
+      "export default $1;"
+    ],
+    "description": "Function Component with TypeScript"
+  },
+
+  "Function Syntax Component": {
+    "prefix": "ffc",
+    "body": [
+      "function $1($2) {",
+      "\treturn ( $0 );",
+      "}",
+      "",
+      "export default $1;"
+    ],
+    "description": "Function Syntax Component"
+  },
+
+  "Stateless Function Component": {
+    "prefix": "sfc",
+    "body": [
+      "const $1 = ($2) => {",
+      "\treturn ( $0 );",
+      "}",
+      " ",
+      "export default $1;"
+    ],
+    "description": "Stateless Function Component"
+  },
+
+  "Stateless Function Named Component": {
+    "prefix": "sfnc",
+    "body": [
+      "type Props = {",
+      " ",
+      "}",
+      "export const $1 = ({}: Props) => {",
+      "\treturn ( ",
+      "\t\t<div>",
+      "\t\t\t$0",
+      "\t\t</div>",
+      "\t);",
+      "}"
+    ],
+    "description": "Stateless Function Named Component"
+  },
+
+  "useEffect": {
+    "prefix": "uef",
+    "body": [
+      "useEffect(() => {",
+      "\t$1",
+      "}, []);"
+    ],
+    "description": "useEffect Hook"
+  },
+
+  "useCallback": {
+    "prefix": "ucb",
+    "body": [
+      "useCallback((val$1) => {",
+      "\t$2",
+      "}, []);"
+    ],
+    "description": "useCallback Hook"
+  },
+
+  "Declare a new state variable using State Hook": {
+    "prefix": "usf",
+    "body": [
+      "const [${1}, set${1/(.*)/${1:/capitalize}/}] = useState($2);"
+    ],
+    "description": "Declare a new state Variable using the State Hook. Hit Tab to apply CamelCase to function"
+  },
+
+  "Declare a new ref variable using Ref Hook": {
+    "prefix": "usr",
+    "body": [
+      "const ${1} = useRef($2);"
+    ],
+    "description": "Declare a new ref Variable using the Ref Hook."
+  },
+
+  "Function Syntax Component Inline": {
+    "prefix": "effc",
+    "body": [
+      "export default function $1($2) {",
+      "\treturn ( $0 );",
+      "}"
+    ],
+    "description": "Function Syntax Component Inline"
+  },
+
+  "Context Provider": {
+    "prefix": "cp",
+    "body": [
+      "import { createContext } from 'react';",
+      "",
+      "type ${1/(.*)/${1:/capitalize}/}ContextProviderProps = {",
+      "\tchildren: React.ReactNode;",
+      "};",
+      "",
+      "type ${1/(.*)/${1:/capitalize}/}ContextType = {",
+      "\t$2",
+      "};",
+      "",
+      "export const ${1/(.*)/${1:/capitalize}/}Context = createContext({} as ${1/(.*)/${1:/capitalize}/}ContextType);",
+      "",
+      "export const ${1/(.*)/${1:/capitalize}/}ContextProvider = ({ children }: ${1/(.*)/${1:/capitalize}/}ContextProviderProps) => {",
+      "",
+      "\treturn (",
+      "\t\t<${1/(.*)/${1:/capitalize}/}Context.Provider",
+      "\t\t\tvalue={{",
+      "\t\t\t\t$3",
+      "\t\t\t}}",
+      "\t\t>",
+      "\t\t\t{children}",
+      "\t\t</${1/(.*)/${1:/capitalize}/}Context.Provider>",
+      "\t);",
+      "};"
+    ],
+    "description": "Declare a new Context Provider. Hit Tab to apply PascalCase to type names."
+  }
+}

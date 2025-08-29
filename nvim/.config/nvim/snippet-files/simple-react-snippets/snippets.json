@@ -1,0 +1,99 @@
+{
+  "Import React": {
+    "prefix": "imr",
+    "body": ["import React from 'react';\n"],
+    "description": "Import React"
+  },
+
+  "Import React, { useState }": {
+    "prefix": "imrs",
+    "body": [
+      "import React, { useState } from 'react';\n"
+    ],
+    "description": "Import React, { useState }"
+  },
+
+  "Import React, { useState, useEffect }": {
+    "prefix": "imrse",
+    "body": [
+      "import React, { useState, useEffect } from 'react';\n"
+    ],
+    "description": "Import React, { useState, useEffect }"
+  },
+
+  "Stateless Function Component": {
+    "prefix": "sfc",
+    "body": [
+      "const $1 = ($2) => {",
+      "\treturn ( $0 );",
+      "}",
+      " ",
+      "export default $1;"
+    ],
+    "description": "Stateless Function Component"
+  },
+  
+  "Stateless Function Named Component": {
+    "prefix": "sfnc",
+    "body": [
+      "export const $1 = ($2) => {",
+      "\treturn ( $0 );",
+      "}"
+    ],
+    "description": "Stateless Function Named Component"
+  },
+
+  "Function Syntax Component": {
+    "prefix": "ffc",
+    "body": [
+      "function $1($2) {",
+      "\treturn ( $0 );",
+      "}",
+      "",
+      "export default $1;"
+    ],
+    "description": "Function Syntax Component"
+  },
+
+  "useEffect": {
+    "prefix": "uef",
+    "body": [
+      "useEffect(() => {",
+      "\t$1",
+      "}, []);"
+    ],
+    "description": "useEffect Hook"
+  },
+
+  "useCallback": {
+    "prefix": "ucb",
+    "body": [
+      "useCallback((val$1) => {",
+      "\t$2",
+      "}, []);"
+    ],
+    "description": "useCallback Hook"
+  },
+
+  "Declare a new state variable using State Hook": {
+    "prefix": "usf",
+    "body": ["const [${1}, set${1/(.*)/${1:/capitalize}/}] = useState($2);"],
+    "description": "Declare a new state Variable using the State Hook. Hit Tab to apply CamelCase to function"
+  },
+
+  "Declare a new ref variable using Ref Hook": {
+    "prefix": "usr",
+    "body": ["const ${1} = useRef($2);"],
+    "description": "Declare a new ref Variable using the Ref Hook."
+  },
+
+  "Function Syntax Component Inline": {
+    "prefix": "effc",
+    "body": [
+      "export default function $1($2) {",
+      "\treturn ( $0 );",
+      "}"
+    ],
+    "description": "Function Syntax Component Inline"
+  }
+}
