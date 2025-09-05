@@ -42,7 +42,7 @@ end, { desc = "[p] Show test summary" })
 map("n", "<leader>dr", function()
   require("dapui").setup()
   if vim.bo.filetype == "rust" then
-    vim.cmd.RustLsp('debug')
+    vim.cmd.RustLsp("debug")
   else
     require("dap").continue()
   end
@@ -118,6 +118,10 @@ end, { desc = "[p] git push" })
 map("n", "<leader>gp", function()
   require("neogit").open({ "pull" })
 end, { desc = "[p] git pull" })
+-- git general
+map("n", "<leader>gb", function()
+  Snacks.picker.git_branches()
+end, { desc = "Git branches" })
 
 -- iron repl
 map("n", "<space>rs", "<cmd>IronRepl<cr>", {})
@@ -198,3 +202,7 @@ end
 
 map("n", "j", "gj", { silent = true })
 map("n", "k", "gk", { silent = true })
+
+map("n", "<localleader>tt", function()
+  require('base46').toggle_transparency()
+end, { desc = "Toggle nvim transperancy" })
