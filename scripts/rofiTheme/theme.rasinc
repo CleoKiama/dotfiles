@@ -14,9 +14,7 @@ configuration {
     show-icons:                  false;
 }
 
-@theme "~/.cache/hyde/wallbash/wallbash.rasi"
 @theme "~/.config/rofi/theme.rasi"
-
 
 // Main //
 window {
