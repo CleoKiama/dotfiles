@@ -2,8 +2,21 @@ local opt = vim.opt
 local o = vim.o
 local g = vim.g
 
-if vim.env.SSH_CONNECTION and vim.env.TMUX then
-  g.clipboard = 'tmux'
+if vim.env.SSH_CONNECTION then
+	if vim.env.TMUX then
+		-- SSH + tmux: use tmux clipboard with refresh hack
+		local copy = { "tmux", "load-buffer", "-w", "-" }
+		local paste = { "bash", "-c", "tmux refresh-client -l && sleep 0.05 && tmux save-buffer -" }
+
+		g.clipboard = {
+			name = "tmux",
+			copy = { ["+"] = copy, ["*"] = copy },
+			paste = { ["+"] = paste, ["*"] = paste },
+			cache_enabled = 0,
+		}
+	else
+		g.clipboard = "osc52" -- if not in tmux use osc52 for clipboard
+	end
 end
 
 -------------------------------------- options ------------------------------------------
@@ -62,18 +75,18 @@ local autocmd = vim.api.nvim_create_autocmd
 
 -- restore cursor position
 autocmd("BufReadPost", {
-  pattern = "*",
-  callback = function()
-    local line = vim.fn.line("'\"")
-    if
-        line > 1
-        and line <= vim.fn.line("$")
-        and vim.bo.filetype ~= "commit"
-        and vim.fn.index({ "xxd", "gitrebase" }, vim.bo.filetype) == -1
-    then
-      vim.cmd('normal! g`"')
-    end
-  end,
+	pattern = "*",
+	callback = function()
+		local line = vim.fn.line("'\"")
+		if
+			line > 1
+			and line <= vim.fn.line("$")
+			and vim.bo.filetype ~= "commit"
+			and vim.fn.index({ "xxd", "gitrebase" }, vim.bo.filetype) == -1
+		then
+			vim.cmd('normal! g`"')
+		end
+	end,
 })
 
 -- custom
@@ -92,26 +105,26 @@ vim.cmd("highlight NeogitDiffDeleteHighlight guibg=#334e68 guifg=#c0caf5")
 local x = vim.diagnostic.severity
 
 vim.diagnostic.config({
-  virtual_text = { prefix = "" },
-  signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
-  underline = true,
-  float = { border = "single" },
+	virtual_text = { prefix = "" },
+	signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
+	underline = true,
+	float = { border = "single" },
 })
 
 -- Default border style
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-  opts = opts or {}
-  opts.border = "rounded"
-  return orig_util_open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = "rounded"
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
 -- Disable the scrolloff 10 for my notes
 vim.api.nvim_create_autocmd("BufRead", {
-  pattern = vault_root_path .. "*",
-  callback = function()
-    opt.scrolloff = 0
-  end,
+	pattern = vault_root_path .. "*",
+	callback = function()
+		opt.scrolloff = 0
+	end,
 })
 
 -- vimux settings
