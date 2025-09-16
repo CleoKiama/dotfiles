@@ -172,3 +172,15 @@ tooltip {
 #custom-notification {
   font-family: "NotoSansMono Nerd Font";
 }
+
+#custom-updates.green {
+  color: #a6e3a1;
+}
+
+#custom-updates.yellow {
+  color: #f9e2af;
+}
+
+#custom-updates.red {
+  color: #f38ba8;
+}
