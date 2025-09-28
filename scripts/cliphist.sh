@@ -81,17 +81,13 @@ setup_rofi_config() {
     [[ "${font_scale}" =~ ^[0-9]+$ ]] || font_scale=${ROFI_SCALE:-10}
 
     local font_name=${ROFI_CLIPHIST_FONT:-$ROFI_FONT}
-    font_name=${font_name:-$(get_hyprConf "MENU_FONT")}
-    font_name=${font_name:-$(get_hyprConf "FONT")}
-    font_override="* {font: \"${font_name:-"JetBrainsMono Nerd Font"} ${font_scale}\";}"
+    font_name=${font_name:-"JetBrainsMono Nerd Font"}
 
-    local hypr_border=$(hyprctl -j getoption decoration:rounding | jq '.int')
-    local wind_border=$((hypr_border * 3 / 2))
-    local elem_border=$((hypr_border == 0 ? 5 : hypr_border))
+    font_override="* {font: \"${font_name} ${font_scale}\";}"
 
-    rofi_position=$(get_rofi_pos)
-    local hypr_width=$(hyprctl -j getoption general:border_size | jq '.int')
-    r_override="window{border:${hypr_width}px;border-radius:${wind_border}px;} element{border-radius:${elem_border}px;}"
+    # fallback styles since Niri has no hyprctl
+    rofi_position="window { location: center; }"
+    r_override="window{border:2px;border-radius:8px;} element{border-radius:4px;}"
 }
 
 # Favorites helpers

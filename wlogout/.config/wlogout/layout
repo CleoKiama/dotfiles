@@ -7,7 +7,7 @@
 
 {
     "label": "logout",
-    "action" : "pkill Hyprland || pkill sway || pkill niri || loginctl terminate-user $USER",
+    "action" : "pkill niri",
     "text": "Logout",
     "keybind": "e"
 }

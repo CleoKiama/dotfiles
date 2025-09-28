@@ -24,9 +24,11 @@
   ],
   "modules-center": [
     "custom/padd",
-    "hyprland/workspaces",
+    "niri/workspaces",
+    // "hyprland/workspaces",
     "custom/l_end",
-    "hyprland/window",
+    // "hyprland/window",
+    "niri/window",
     "custom/r_end",
     "custom/padd"
   ],
@@ -229,7 +231,7 @@
     "persistent-workspaces": {}
   },
   "hyprland/window": {
-    "format": "  {}",
+    "format": " {}",
     "rotate": 0,
     "separate-outputs": true,
     "rewrite": {
@@ -250,9 +252,42 @@
       "(.*) — Github": "$1  ",
       "(.*)Github": "Github ",
       "(.*)Spotify Free": "Spotify 󰓇",
-      "(.*)Spotify Premiun": "Spotify 󰓇",
+      "(.*)Spotify Premiun": "Spotify 󰓇"
     },
     "max-length": 50
+  },
+  "niri/workspaces": {
+    "format": "{value}",
+    "format-icons": {
+      // Named workspaces
+      // (you need to configure them in niri)
+      "browser": "",
+      "discord": "",
+      "chat": "<b></b>",
+      // Icons by state
+      "active": "",
+      "default": ""
+    }
+  },
+  "niri/window": {
+    "format": " {}",
+    "rewrite": {
+      "khing@archlinux:(.*)": "$1 ",
+      "(.*) - Visual Studio Code": "$1 󰨞",
+      "(.*)Visual Studio Code": "Code 󰨞",
+      "(.*) - Code - OSS": "$1 󰨞",
+      "(.*)Code - OSS": "Code 󰨞",
+      "(.*) — Nautilus": "$1 󰉋 ",
+      "(.*)Spotify": "Spotify 󰓇",
+      "(.*)Steam": "Steam 󰓓",
+      "(.*) - Discord": "$1  ",
+      "(.*)Netflix": "Netflix 󰝆 ",
+      "(.*) — Github": "$1  ",
+      "(.*)Github": "Github ",
+      "(.*)Spotify Free": "Spotify 󰓇",
+      "(.*)Spotify Premiun": "Spotify 󰓇",
+      "(.*)tmux(.*)": "  Dev Env 🔥"
+    }
   },
   "bluetooth": {
     "format": "{icon}",
