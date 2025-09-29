@@ -1,7 +1,6 @@
 local M = {}
 local map = vim.keymap.set
 local navic = require("nvim-navic")
-local lspconfig = require("lspconfig")
 
 -- Add Mason binaries to PATH
 local is_windows = vim.fn.has("win32") ~= 0
@@ -14,22 +13,30 @@ M.on_attach = function(_, bufnr)
 	local function opts(desc)
 		return { buffer = bufnr, desc = "LSP: " .. desc }
 	end
+
 	-- Key mappings
 	map("n", "gD", function()
 		Snacks.picker.lsp_declarations()
 	end, opts("Go to declaration"))
+
 	map("n", "gd", function()
 		Snacks.picker.lsp_definitions()
 	end, opts("Go to definition"))
+
 	map("n", "gi", vim.lsp.buf.implementation, opts("Go to implementation"))
+
 	map("n", "gr", function()
 		Snacks.picker.lsp_references()
 	end, opts("Show references"))
+
 	map("n", "K", vim.lsp.buf.hover, opts("Show hover documentation"))
+
 	map("n", "<leader>sh", vim.lsp.buf.signature_help, opts("Show signature help"))
+
 	map("n", "<leader>ra", function()
 		require("nvchad.lsp.renamer")()
 	end, { desc = "Rename symbol" })
+
 	map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts("Code action"))
 
 	-- Workspace folder management
@@ -48,10 +55,11 @@ M.on_init = function(client, _)
 end
 
 M.capabilities = require("blink.cmp").get_lsp_capabilities()
+
 -- Setup default configurations
 M.setup = function()
 	-- Configure lua_ls with some defaults
-	lspconfig.lua_ls.setup({
+	vim.lsp.config("lua_ls", {
 		on_attach = function(client, bufnr)
 			M.on_attach(client, bufnr)
 			navic.attach(client, bufnr)
@@ -75,6 +83,8 @@ M.setup = function()
 		},
 	})
 
+	vim.lsp.enable("lua_ls")
+
 	-- Setup additional servers
 	local servers = {
 		"html",
@@ -83,29 +93,30 @@ M.setup = function()
 		"marksman",
 		"prismals",
 		"postgres_lsp",
-		-- "sqlls",
 		"gleam",
 		"jsonls",
 		"yamlls",
+		"pylsp",
 	}
 
 	for _, server in ipairs(servers) do
-		lspconfig[server].setup({
+		vim.lsp.config(server, {
 			on_attach = function(client, bufnr)
 				M.on_attach(client, bufnr)
 				if client.name ~= "postgres_lsp" then
-					navic.attach(client, bufnr) -- Attach navic for all servers except postgres_lsp postgres_lsp not support
+					navic.attach(client, bufnr) -- postgres_lsp doesn’t support navic
 				end
 			end,
 			capabilities = M.capabilities,
 			on_init = M.on_init,
 		})
+		vim.lsp.enable(server)
 	end
+
 	-- Configure harper_ls for Obsidian vault markdown files only
-	lspconfig.harper_ls.setup({
+	vim.lsp.config("harper_ls", {
 		filetypes = { "markdown" },
 		root_dir = function(fname)
-			-- Only activate on markdown files in the Obsidian vault
 			local vault_pattern = "^" .. vim.g.vault_path:gsub("%-", "%%-") .. "/.+%.md$"
 			if string.match(fname, vault_pattern) then
 				return vim.g.vault_path
@@ -137,6 +148,8 @@ M.setup = function()
 			},
 		},
 	})
+
+	vim.lsp.enable("harper_ls")
 end
 
 return M
