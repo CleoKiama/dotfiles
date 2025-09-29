@@ -97,6 +97,7 @@ M.setup = function()
 		"jsonls",
 		"yamlls",
 		"pylsp",
+		"tailwindcss",
 	}
 
 	for _, server in ipairs(servers) do
