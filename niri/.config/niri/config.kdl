@@ -399,17 +399,13 @@ window-rule {
     match app-id="com.network.manager"
     match app-id="org.pulseaudio.pavucontrol"
     match app-id="blueberry.py"
+    match app-id="chrome-nngceckbapebfimnlniiiahkandclblb-Default"
     open-focused true
     open-floating true
     default-column-width { fixed 800; }
     default-window-height { fixed 400; }
 }
 
-// floating utility apps
-window-rule {
-    match app-id="com.mitchellh.ghostty"
-    // opacity 0.
-}
 
 //named workspace assignments
 window-rule {
@@ -458,7 +454,7 @@ binds {
     // utilis
     Mod+Alt+Period hotkey-overlay-title="Emoji picker" { spawn-sh "$HOME/dotfiles/scripts/emoji_picker.sh"; }
     Mod+E { spawn "nautilus"; }
-    Mod+B { spawn "google-chrome-stable"; }
+    Mod+B { spawn "helium-browser"; }
     Mod+C hotkey-overlay-title="Rofi Calculator " { spawn-sh "rofi -show calc -modi calc -no-show-match -no-sort"; }
     Mod+Shift+S hotkey-overlay-title="Settings" { spawn-sh "XDG_CURRENT_DESKTOP=gnome gnome-control-center"; }
     Ctrl+Shift+Escape hotkey-overlay-title="System monitor" { spawn "gnome-system-monitor"; }
