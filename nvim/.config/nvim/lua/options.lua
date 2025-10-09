@@ -96,6 +96,7 @@ opt.scrolloff = 10
 
 opt.hlsearch = false
 opt.incsearch = true
+opt.fileformat = "unix"
 
 --- neogit diff colors
 vim.cmd("highlight NeogitDiffDelete guibg=#2d4f67 guifg=#c0caf5")

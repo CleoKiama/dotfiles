@@ -23,7 +23,13 @@ M.on_attach = function(_, bufnr)
 		Snacks.picker.lsp_definitions()
 	end, opts("Go to definition"))
 
-	map("n", "gi", vim.lsp.buf.implementation, opts("Go to implementation"))
+	map("n", "<leader>D", function()
+		Snacks.picker.lsp_type_definitions()
+	end, opts("Go to type definition"))
+
+	map("n", "gi", function()
+		Snacks.picker.lsp_implementations()
+	end, opts("Go to implementation"))
 
 	map("n", "gr", function()
 		Snacks.picker.lsp_references()
@@ -98,13 +104,14 @@ M.setup = function()
 		"yamlls",
 		"pylsp",
 		"tailwindcss",
+		"copilot",
 	}
 
 	for _, server in ipairs(servers) do
 		vim.lsp.config(server, {
 			on_attach = function(client, bufnr)
 				M.on_attach(client, bufnr)
-				if client.name ~= "postgres_lsp" then
+				if client.name ~= "postgres_lsp" and client.name ~= "copilot" and client.name ~= "tailwindcss" then
 					navic.attach(client, bufnr) -- postgres_lsp doesn’t support navic
 				end
 			end,
