@@ -11,46 +11,46 @@ map("n", "<leader>e", "<CMD>WinResizerStartResize<CR>", { desc = "[p] Start wind
 
 -- Neotest keybindings
 map("n", "<leader>tr", function()
-  require("neotest").run.run(vim.fn.expand("%"))
+	require("neotest").run.run(vim.fn.expand("%"))
 end, { desc = "[p] Run current file" })
 
 map("n", "<leader>td", function()
-  require("neotest").run.run({ strategy = "dap" })
+	require("neotest").run.run({ strategy = "dap" })
 end, { desc = "[p] Debug nearest test" })
 
 map("n", "<leader>tS", function()
-  require("neotest").run.stop()
+	require("neotest").run.stop()
 end, { desc = "[p] Stop nearest test" })
 
 map("n", "<leader>ta", function()
-  require("neotest").run.attach()
+	require("neotest").run.attach()
 end, { desc = "[p] Attach to nearest test" })
 
 map("n", "<leader>to", function()
-  require("neotest").output.open({ enter = true })
+	require("neotest").output.open({ enter = true })
 end, { desc = "[p] Open output window" })
 
 map("n", "<leader>tw", function()
-  require("neotest").output.toggle()
+	require("neotest").output.toggle()
 end, { desc = "[p] Toggle output window" })
 
 map("n", "<leader>ts", function()
-  require("neotest").summary.toggle()
+	require("neotest").summary.toggle()
 end, { desc = "[p] Show test summary" })
 
 -- dap key mappings
 map("n", "<leader>dr", function()
-  require("dapui").setup()
-  if vim.bo.filetype == "rust" then
-    vim.cmd.RustLsp("debug")
-  else
-    require("dap").continue()
-  end
+	require("dapui").setup()
+	if vim.bo.filetype == "rust" then
+		vim.cmd.RustLsp("debug")
+	else
+		require("dap").continue()
+	end
 end, { desc = "[p] DAP continue" })
 
 map("n", "<leader>db", function()
-  require("dapui").setup()
-  require("dap").toggle_breakpoint()
+	require("dapui").setup()
+	require("dap").toggle_breakpoint()
 end, { desc = "[p] DAP toggle breakpoint" })
 
 -- tmux navigate keys
@@ -72,10 +72,10 @@ map("n", "Q", "<nop>")
 map("v", "J", ":m '>+1<CR>gv=gv") -- move the current line up or down in visual mode
 map("v", "K", ":m '<-2<CR>gv=gv")
 map(
-  "n",
-  "<leader>ss",
-  [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-  { desc = "search and replace word under cursor" }
+	"n",
+	"<leader>ss",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "search and replace word under cursor" }
 )
 
 -- custom
@@ -102,25 +102,25 @@ map("n", "<leader>tlf", "<cmd>TailwindConcealToggle<CR>", { desc = "[p] toggle t
 
 -- Neogit
 map("n", "<leader>gs", function()
-  require("neogit").open()
-  require("custom.commit_hook")
+	require("neogit").open()
+	require("custom.commit_hook")
 end, { desc = "[p] git status" })
 
 map("n", "<leader>gc", function()
-  require("neogit").open({ "commit" })
-  require("custom.commit_hook")
+	require("neogit").open({ "commit" })
+	require("custom.commit_hook")
 end, { desc = "[p] git commit" })
 
 map("n", "<leader>gP", function()
-  require("neogit").open({ "push" })
+	require("neogit").open({ "push" })
 end, { desc = "[p] git push" })
 
 map("n", "<leader>gp", function()
-  require("neogit").open({ "pull" })
+	require("neogit").open({ "pull" })
 end, { desc = "[p] git pull" })
 -- git general
 map("n", "<leader>gb", function()
-  Snacks.picker.git_branches()
+	Snacks.picker.git_branches()
 end, { desc = "Git branches" })
 
 -- iron repl
@@ -138,6 +138,12 @@ map("n", "<localleader>lc", "<cmd>Leet console<CR>", { desc = "[p] Leet console"
 map("n", "<localleader>lp", "<cmd>Leet last_submit<CR>", { desc = "[p] Leet code last_submit" })
 map("n", "<localleader>li", "<cmd>Leet info<CR>", { desc = "[p] Leet code info" })
 map("n", "<localleader>lo", "<cmd>Leet open<CR>", { desc = "[p] leet open in browser" })
+
+-- Copilot mappings
+map("i", "<M-l>", function()
+	-- Accept copilot suggestion
+	require("copilot.suggestion").accept_line()
+end, { desc = "Copilot accept line suggestion" })
 
 -- Tstools
 -- Sort and remove unused imports
@@ -167,42 +173,42 @@ map("n", "<localleader>rf", "<cmd>source % <CR>", { desc = "[p] run current File
 -- Convert filepath to module name
 -- e.g. /home/user/.config/nvim/lua/mymodule.lua -> mymodule
 local function get_current_module_name()
-  local filepath = vim.fn.expand("%:p")
-  -- Get everything after /lua/ directory
-  local module = filepath:match("/lua/(.+)$")
-  if module then
-    -- Remove .lua extension and convert / to .
-    return module:gsub("%.lua$", ""):gsub("/", ".")
-  end
+	local filepath = vim.fn.expand("%:p")
+	-- Get everything after /lua/ directory
+	local module = filepath:match("/lua/(.+)$")
+	if module then
+		-- Remove .lua extension and convert / to .
+		return module:gsub("%.lua$", ""):gsub("/", ".")
+	end
 end
 
 -- Create the mapping
 map("n", "<localleader>rl", function()
-  local module_name = get_current_module_name()
-  if module_name then
-    R(module_name)
-    print("Reloaded module: " .. module_name)
-  else
-    print("Not a valid lua module path")
-  end
+	local module_name = get_current_module_name()
+	if module_name then
+		R(module_name)
+		print("Reloaded module: " .. module_name)
+	else
+		print("Not a valid lua module path")
+	end
 end, { desc = "[p] Reload current lua file as module" })
 
 P = function(v)
-  print(vim.inspect(v))
-  return v
+	print(vim.inspect(v))
+	return v
 end
 RELOAD = function(...)
-  return require("plenary.reload").reload_module(...)
+	return require("plenary.reload").reload_module(...)
 end
 
 R = function(name)
-  RELOAD(name)
-  return require(name)
+	RELOAD(name)
+	return require(name)
 end
 
 map("n", "j", "gj", { silent = true })
 map("n", "k", "gk", { silent = true })
 
 map("n", "<localleader>tt", function()
-  require('base46').toggle_transparency()
+	require("base46").toggle_transparency()
 end, { desc = "Toggle nvim transperancy" })
