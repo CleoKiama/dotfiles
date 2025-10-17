@@ -298,6 +298,8 @@ environment {
     ELECTRON_OZONE_PLATFORM_HINT "auto"
     WAYLAND_DISPLAY "wayland-1"
     XDG_BACKEND "wayland"
+    QT_QPA_PLATFORMTHEME "qt5ct"
+    QT_QPA_PLATFORMTHEME "qt6ct"
 }
 
 // ====================================================================
@@ -648,8 +650,8 @@ binds {
     // Expel the bottom window from the focused column to the right.
     Mod+Period { consume-or-expel-window-right; }
 
-    Mod+F { maximize-column; }
-    Mod+Shift+F { fullscreen-window; }
+    Mod+Shift+F { maximize-column; }
+    Mod+F { fullscreen-window; }
 
     // Finer width adjustments.
     // This command can also:
