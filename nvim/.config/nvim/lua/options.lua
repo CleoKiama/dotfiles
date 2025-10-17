@@ -29,10 +29,10 @@ o.cursorlineopt = "number"
 
 -- Indenting
 o.expandtab = true
-o.shiftwidth = 2
+o.shiftwidth = 4
 o.smartindent = true
-o.tabstop = 2
-o.softtabstop = 2
+o.tabstop = 4
+o.softtabstop = 4
 
 opt.fillchars = { eob = " " }
 o.ignorecase = true
@@ -53,8 +53,11 @@ o.splitright = true
 o.timeoutlen = 400
 o.undofile = true
 
--- interval for writing swap file to disk, also used by gitsigns
-o.updatetime = 250
+-- remove swap files and use undo tree for files days upon days ago reviewing
+o.swapfile = false
+o.backup = false
+o.undodir = vim.fn.stdpath("data") .. "/undo"
+o.undofile = true
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
