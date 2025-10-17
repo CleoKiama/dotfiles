@@ -8,12 +8,11 @@ require("neotest").setup({
 				return vim.fn.getcwd()
 			end,
 		}),
-		require("rustaceanvim.neotest"),
+		-- Removed rustaceanvim.neotest to use vimux for rust tests
 	},
 	discovery = {
 		enabled = true,
 		filter_dir = function(name, rel_path, root)
-			print(vim.inspect({ name, rel_path, root }))
 			local excluded_dirs = {
 				"node_modules",
 				"dist",

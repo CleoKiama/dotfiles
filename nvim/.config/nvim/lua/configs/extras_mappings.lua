@@ -11,6 +11,11 @@ map("n", "<leader>e", "<CMD>WinResizerStartResize<CR>", { desc = "[p] Start wind
 
 -- Neotest keybindings
 map("n", "<leader>tr", function()
+	local ft = vim.bo.filetype
+	if ft == "rust" then
+		vim.cmd.RustLsp("testables", "--show-output")
+		return
+	end
 	require("neotest").run.run(vim.fn.expand("%"))
 end, { desc = "[p] Run current file" })
 

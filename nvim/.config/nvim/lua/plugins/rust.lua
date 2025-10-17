@@ -125,7 +125,7 @@ return {
 			dofile(vim.g.base46_cache .. "lsp")
 			vim.g.rustaceanvim = {
 				tools = {
-					test_executor = "neotest",
+					-- test_executor = "neotest",
 					enable_nextest = true,
 				},
 				dap = {
