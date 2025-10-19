@@ -2,8 +2,8 @@
 local M = {}
 
 M.base46 = {
-	theme = "onedark",
-	transparency = false,
+	theme = "tokyonight",
+	transparency = true,
 }
 
 local function navic_location_with_icon()

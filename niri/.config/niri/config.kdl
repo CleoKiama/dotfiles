@@ -178,6 +178,8 @@ layout {
         // Color of the ring on the active monitor.
         active-color "#7fc8ff"
 
+        urgent-color "#9b0000"
+
         // Color of the ring on inactive monitors.
         //
         // The focus ring only draws around the active window, so the only place
@@ -239,23 +241,25 @@ layout {
         // draw the shadow correctly, without having to draw it behind the
         // window. These will also remove client-side shadows if the window
         // draws any.
+
         // sort of like an opacity
         draw-behind-window true
+
 
         // You can change how shadows look. The values below are in logical
         // pixels and match the CSS box-shadow properties.
 
         // Softness controls the shadow blur radius.
-        softness 30
+        softness 0
 
         // Spread expands the shadow.
-        spread 5
+        spread 0
 
         // Offset moves the shadow relative to the window.
         offset x=0 y=5
 
         // You can also change the shadow color and opacity.
-        color "#0007"
+        color "#1237"
     }
 
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.
@@ -353,7 +357,7 @@ animations {
     // off
 
     // Slow down all animations by this factor. Values below 1 speed them up instead.
-    // slowdown 3.0
+    slowdown 1.0
 }
 
 // ====================================================================
@@ -369,6 +373,13 @@ animations {
     geometry-corner-radius 10
     clip-to-geometry true
     draw-border-with-background false
+}
+
+// open-maximized
+ window-rule {
+    match app-id="google-chrome"
+    match app-id="helium"
+    match app-id="com.mitchellh.ghostty"
     open-maximized true
 }
 
@@ -417,19 +428,19 @@ window-rule {
 
 window-rule {
     match app-id="com.mitchellh.ghostty"
+     
     open-on-workspace "2"
 }
 
 
+// media
 window-rule {
     match app-id="mpv"
-    open-on-workspace "3"
+    match app-id="vlc"
+    open-on-workspace "4"
+
 }
 
-window-rule {
-    match app-id="vlc"
-    open-on-workspace "3"
-}
 
 
 // ====================================================================
