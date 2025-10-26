@@ -7,7 +7,7 @@ font-family = "Symbols Nerd Font Mono"
 font-size = 12
 adjust-underline-position = 4
 
-background-opacity = 0.93
+background-opacity = 0.85
 cursor-color = #f94dff
 theme = TokyoNight
 
