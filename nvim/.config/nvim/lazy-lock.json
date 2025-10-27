@@ -56,6 +56,7 @@
   "snacks.nvim": { "branch": "main", "commit": "e39478daace819a93bd9ace62aa3dc4f55fb5254" },
   "template-string.nvim": { "branch": "main", "commit": "da5f326b65fb74fd068aa1d8b55461b64c8fb23b" },
   "timber.nvim": { "branch": "main", "commit": "aac3a12753652a60955d3178b75fdb6c247b9f7d" },
+  "tiny-inline-diagnostic.nvim": { "branch": "main", "commit": "b7cc6132844a04554a8c8397bdda56c00749850a" },
   "todo-comments.nvim": { "branch": "main", "commit": "19d461ddd543e938eb22505fb03fa878800270b6" },
   "treesj": { "branch": "main", "commit": "4770492244ccecdc9b01e0e81fa8f2f6b4a23841" },
   "trouble.nvim": { "branch": "main", "commit": "76030c5542c5d132aeeb467ca0ab370f3f79a697" },

@@ -105,13 +105,14 @@ opt.fileformat = "unix"
 vim.cmd("highlight NeogitDiffDelete guibg=#2d4f67 guifg=#c0caf5")
 vim.cmd("highlight NeogitDiffDeleteHighlight guibg=#334e68 guifg=#c0caf5")
 
--- Configure diagnostics to show virtual text from NvChad
 local x = vim.diagnostic.severity
 
+-- Diagnostic setup
 vim.diagnostic.config({
-	virtual_text = { prefix = "" },
+	-- virtual_text = { prefix = "" },
+	virtual_text = false, -- disable virtual text for tiny-inline-diagnostics
 	signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
-	underline = true,
+	underline = false,
 	float = { border = "single" },
 })
 
