@@ -6,37 +6,12 @@ M.base46 = {
 	transparency = true,
 }
 
-local function navic_location_with_icon()
-	local navic = require("nvim-navic")
-	local devicons = require("nvim-web-devicons")
-	local location = navic.get_location()
-
-	if location ~= "" then
-		local filepath = vim.fn.expand("%:p:~:.")
-		local filename = vim.fn.expand("%:t")
-		local ext = vim.fn.expand("%:e")
-
-		-- Get the icon for the file type
-		local icon = devicons.get_icon(filename, ext, { default = true }) or ""
-
-		-- Replace "/" with ">" except for the last part (filename)
-		local path_parts = vim.split(filepath, "/")
-		local file_with_icon = icon .. " " .. table.remove(path_parts) -- Add icon before filename
-		local formatted_path = table.concat(path_parts, " > ")
-
-		return formatted_path .. " > " .. file_with_icon .. " > " .. location
-	else
-		return location
-	end
-end
-
 M.ui = {
 	tabufline = {
-		enabled = true,
+		enabled = false,
 		lazyload = true,
-		order = { "tabs", "navic", "Separator" },
+		order = { "tabs", "Separator" },
 		modules = {
-			navic = navic_location_with_icon,
 			Separator = function()
 				return " "
 			end,

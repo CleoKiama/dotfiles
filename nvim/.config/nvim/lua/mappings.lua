@@ -22,7 +22,7 @@ map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
 
 map("n", "<leader>fm", function()
-  require("conform").format({ lsp_fallback = true })
+	require("conform").format({ lsp_fallback = true })
 end, { desc = "general format file" })
 
 -- Comment
@@ -32,24 +32,23 @@ map("v", "<leader>/", "gc", { desc = "toggle comment", remap = true })
 -- File tree
 map("n", "<C-n>", ":NvimTreeToggle <CR>", { desc = "Toggle Neotree", noremap = true, silent = true })
 
--- tabufline
 map("n", "<leader>b", "<cmd>enew<CR>", { desc = "buffer new" })
 
 map("n", "<tab>", function()
-  require("nvchad.tabufline").next()
+	vim.cmd("bn")
 end, { desc = "buffer goto next" })
 
 map("n", "<S-tab>", function()
-  require("nvchad.tabufline").prev()
+	vim.cmd("bp")
 end, { desc = "buffer goto prev" })
 
 map("n", "<leader>x", function()
-  require("nvchad.tabufline").close_buffer()
+	vim.cmd("bd")
 end, { desc = "buffer close" })
 
 -- toggleable terminal
 map({ "n", "t" }, "<A-i>", function()
-  require("nvchad.term").toggle({ pos = "float", id = "floatTerm" })
+	require("nvchad.term").toggle({ pos = "float", id = "floatTerm" })
 end, { desc = "terminal toggle floating term" })
 
 require("configs.extras_mappings")
