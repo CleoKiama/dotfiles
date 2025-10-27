@@ -1,6 +1,5 @@
 local M = {}
 local map = vim.keymap.set
-local navic = require("nvim-navic")
 
 -- Add Mason binaries to PATH
 local is_windows = vim.fn.has("win32") ~= 0
@@ -51,6 +50,8 @@ M.on_attach = function(_, bufnr)
 	map("n", "<leader>wl", function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, opts("List workspace folders"))
+
+	require("custom.breadcrumbs") -- setup lsp breadcrumbs
 end
 
 -- Disable semantic tokens (optional)
@@ -66,10 +67,7 @@ M.capabilities = require("blink.cmp").get_lsp_capabilities()
 M.setup = function()
 	-- Configure lua_ls with some defaults
 	vim.lsp.config("lua_ls", {
-		on_attach = function(client, bufnr)
-			M.on_attach(client, bufnr)
-			navic.attach(client, bufnr)
-		end,
+		on_attach = M.on_attach,
 		capabilities = M.capabilities,
 		on_init = M.on_init,
 		settings = {
@@ -109,12 +107,7 @@ M.setup = function()
 
 	for _, server in ipairs(servers) do
 		vim.lsp.config(server, {
-			on_attach = function(client, bufnr)
-				M.on_attach(client, bufnr)
-				if client.name ~= "postgres_lsp" and client.name ~= "copilot" and client.name ~= "tailwindcss" then
-					navic.attach(client, bufnr) -- postgres_lsp doesn’t support navic
-				end
-			end,
+			on_attach = M.on_attach,
 			capabilities = M.capabilities,
 			on_init = M.on_init,
 		})

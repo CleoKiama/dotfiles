@@ -121,7 +121,7 @@ return {
 			local cfg = require("rustaceanvim.config")
 
 			local lsp = require("configs.lspconfig")
-			local navic = require("nvim-navic")
+
 			dofile(vim.g.base46_cache .. "lsp")
 			vim.g.rustaceanvim = {
 				tools = {
@@ -132,10 +132,7 @@ return {
 					adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
 				},
 				server = {
-					on_attach = function(client, bufnr)
-						lsp.on_attach(client, bufnr)
-						navic.attach(client, bufnr)
-					end,
+					on_attach = lsp.on_attach,
 					capabilities = lsp.capabilities,
 				},
 				-- for blink cmp

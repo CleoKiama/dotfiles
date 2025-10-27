@@ -167,13 +167,6 @@ return {
 		end,
 	},
 	{
-		"SmiteshP/nvim-navic",
-		event = "LspAttach",
-		config = function()
-			require("configs.navic")
-		end,
-	},
-	{
 		"simeji/winresizer",
 		cmd = "WinResizerStartResize",
 	},
