@@ -1,0 +1,50 @@
+{
+    "mcp": {
+        "context7": {
+            "type": "remote",
+            "url": "https://mcp.context7.com/mcp",
+            "enabled": true,
+            "headers": {
+                "CONTEXT7_API_KEY": "ctx7sk-e32d5ee2-c8f3-4738-b112-7a0d97d9ce7f"
+            }
+        },
+        "Better Auth": {
+            "type": "remote",
+            "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp",
+            "enabled": true
+        }
+    },
+    "$schema": "https://opencode.ai/config.json",
+    "theme": "catppuccin",
+    "autoupdate": false,
+    "agent": {
+        "build": {
+            "mode": "primary",
+            "model": "github-copilot/claude-sonnet-4",
+            "tools": {
+                "write": true,
+                "edit": true,
+                "bash": true
+            }
+        },
+        "plan": {
+            "mode": "primary",
+            "model": "github-copilot/gpt-5",
+            "tools": {
+                "write": false,
+                "edit": false,
+                "bash": false
+            }
+        },
+        "code-reviewer": {
+            "description": "Reviews code for best practices and potential issues",
+            "mode": "subagent",
+            "model": "github-copilot/claude-sonnet-4",
+            "prompt": "You are a code reviewer. Focus on security, performance, and maintainability.",
+            "tools": {
+                "write": false,
+                "edit": false
+            }
+        }
+    }
+}
