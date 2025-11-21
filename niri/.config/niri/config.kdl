@@ -121,7 +121,9 @@ output "eDP-1" {
 layout {
     // Set gaps around windows in logical pixels.
     gaps 10
-    background-color "transparent"
+     
+    // background color with a transparency
+    background-color  "transparent"
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -225,7 +227,7 @@ layout {
         // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
 
-    // You can enable drop shadows for windows.
+    // You can enable drop shadows for windows. this also sort controls opacity
     shadow {
         // Uncomment the next line to enable shadows.
         on
@@ -261,7 +263,7 @@ layout {
         offset x=0 y=5
 
         // You can also change the shadow color and opacity.
-        color "#1237"
+        color  "hsla(0, 0%, 0%, 0.8)"
     }
 
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.
@@ -281,6 +283,7 @@ layer-rule {
     place-within-backdrop true
     match namespace="^swww-daemon$"
 }
+
 
 layer-rule {
     match namespace="waybar"
@@ -328,8 +331,8 @@ environment {
 // See the binds section below for more spawn examples.
 
 spawn-sh-at-startup "wl-paste --watch cliphist store" //watch clipboard for history
-spawn-sh-at-startup "sleep 15 && cliphist wipe" // wipe previous clipboard history
-spawn-sh-at-startup "$HOME/dotfiles/scripts/wallpaper_slideshow.sh $HOME/Pictures/wallpapers 1800" // cycle through wallpapers with swww
+spawn-sh-at-startup "sleep 10 && cliphist wipe" // wipe previous clipboard history
+spawn-sh-at-startup "$HOME/dotfiles/scripts/wallpaper_slideshow.sh $HOME/Pictures/wallpapers" // cycle through wallpapers with swww
 
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -354,10 +357,10 @@ prefer-no-csd
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
 // The path is formatted with strftime(3) to give you the screenshot date and time.
-screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+// screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 // You can also set this to null to disable saving screenshots to disk.
-// screenshot-path null
+screenshot-path null
 
 // ====================================================================
 // 🖌️  Animation Settings
@@ -373,6 +376,7 @@ animations {
     slowdown 1.0
 }
 
+
 // ====================================================================
 // 📋  Window Rules
 // ====================================================================
@@ -383,7 +387,7 @@ animations {
 
 // Applies to all windows
  window-rule {
-    geometry-corner-radius 10
+    geometry-corner-radius 8
     clip-to-geometry true
     draw-border-with-background false
 }
@@ -393,6 +397,7 @@ animations {
     match app-id="google-chrome"
     match app-id="helium"
     match app-id="com.mitchellh.ghostty"
+    match app-id="zen"
     open-maximized true
 }
 
@@ -439,6 +444,7 @@ window-rule {
     open-on-workspace "1"
 }
 
+// Ghostty setup
 window-rule {
     match app-id="com.mitchellh.ghostty"
     open-on-workspace "2"
@@ -479,7 +485,7 @@ binds {
     // utilis
     Mod+Alt+Period hotkey-overlay-title="Emoji picker" { spawn-sh "$HOME/dotfiles/scripts/emoji_picker.sh"; }
     Mod+E { spawn "nautilus"; }
-    Mod+B { spawn "helium-browser"; }
+    Mod+B { spawn "zen-browser"; }
     Mod+C hotkey-overlay-title="Rofi Calculator " { spawn-sh "rofi -show calc -modi calc -no-show-match -no-sort"; }
     Mod+Shift+S hotkey-overlay-title="Settings" { spawn-sh "XDG_CURRENT_DESKTOP=gnome gnome-control-center"; }
     Ctrl+Shift+Escape hotkey-overlay-title="System monitor" { spawn "gnome-system-monitor"; }
@@ -729,6 +735,8 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+
+    Mod+Ctrl+Shift+F { toggle-windowed-fullscreen; }
 }
 
 
