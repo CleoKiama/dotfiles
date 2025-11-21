@@ -159,14 +159,6 @@ ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 # bun completions
 [ -s "/home/cleo/.bun/_bun" ] && source "/home/cleo/.bun/_bun"
 
-# opencode
-export PATH=/home/cleo/.opencode/bin:$PATH
-
-# Auto-start or attach to tmux only for interactive sessions in Zsh
-if [[ -z "$TMUX" ]] && [[ -n "$PS1" ]]; then
-    tmux attach || tmux new-session -s default
-fi
-
 
 # -------------------------
 # Shell integrations and tools
