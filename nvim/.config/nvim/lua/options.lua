@@ -19,11 +19,11 @@ if vim.env.SSH_CONNECTION then
 	end
 end
 
--------------------------------------- options ------------------------------------------
+-------------------------------------- options -------------------------------------------
 o.laststatus = 3
 o.showmode = false
 o.termguicolors = true
-o.clipboard = "unnamedplus"
+-- o.clipboard = "unnamedplus" -- use system clipboard
 o.cursorline = true
 o.cursorlineopt = "number"
 

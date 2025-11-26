@@ -68,8 +68,8 @@ map({ "n" }, "<c-l>", "<cmd> TmuxNavigateRight<Cr>", { desc = "[p] Tmux navigate
 map("n", "<leader>y", '"+y', { noremap = true, silent = true, desc = "[p] Yank to clipboard" })
 map("v", "<leader>y", '"+y', { noremap = true, silent = true })
 map("n", "n", "nzzzv", { desc = "[p] Move to next search item and center it" })
-map("x", "<leader>p", [["_dP]])
-map({ "n", "v" }, "<leader>d", [["_d]])
+map({ "n", "v" }, "<leader>p", '"+p', { noremap = true, silent = true, desc = "[p] Paste from clipboard" })
+-- map({ "n", "v" }, "<leader>d", [["_d]]) --conflicts with treesitter objects remap for peaking a function definition
 map("n", "J", "mzJ`z", { noremap = true, silent = true, desc = "[p] Join lines and keep cursor position" })
 map("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true, desc = "[p] Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true, desc = "[p] Scroll up and center" })
