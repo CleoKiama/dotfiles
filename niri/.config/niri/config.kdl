@@ -120,7 +120,7 @@ output "eDP-1" {
 
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 10
+    gaps 4
      
     // background color with a transparency
     background-color  "transparent"
