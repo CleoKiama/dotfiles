@@ -1,14 +1,19 @@
 # Fonts
-font-family = "Fira Code"
-font-family-bold = "Fira Code"
-font-family-italic = "Maple Mono"
-font-family-bold-italic = "Maple Mono"
-font-family = "Symbols Nerd Font Mono"
+font-family = "Hasklug Nerd Font Mono Med"
+font-family-italic = "0xProto Nerd Font Italic"
+font-family-bold-italic = "Hasklug Nerd Font Bold Italic"
 font-size = 13
-adjust-underline-position = 4
+
+adjust-underline-position = 6
+adjust-cell-width = -5%
+adjust-cell-height = 15%
+adjust-underline-thickness = 40%
+adjust-cursor-thickness = 150%
 
 background-opacity = 0.65
 cursor-color = #f94dff
+# cursor-color = F8F8F2 # white
+
 theme = Catppuccin Mocha
 
 
