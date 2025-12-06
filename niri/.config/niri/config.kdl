@@ -120,7 +120,7 @@ output "eDP-1" {
 
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 4
+    gaps 6
      
     // background color with a transparency
     background-color  "transparent"
@@ -392,13 +392,13 @@ animations {
     draw-border-with-background false
 }
 
-// open-maximized
+// open-maximized-to-edges
  window-rule {
     match app-id="google-chrome"
     match app-id="helium"
     match app-id="com.mitchellh.ghostty"
     match app-id="zen"
-    open-maximized true
+    open-maximized-to-edges true
 }
 
 
@@ -406,6 +406,7 @@ animations {
 window-rule {
     match title=r#"^[Pp]icture[-\s]?[Ii]n[-\s]?[Pp]icture.*$"#
     open-floating true
+    open-maximized-to-edges false
     open-focused false
     default-column-width { fixed 442; }
     default-window-height { fixed 222; }
@@ -424,7 +425,6 @@ window-rule {
     // block-out-from "screencast"
 }
 
-
 // floating utility apps
 window-rule {
     match app-id="com.network.manager"
@@ -435,6 +435,15 @@ window-rule {
     open-floating true
     default-column-width { fixed 800; }
     default-window-height { fixed 400; }
+}
+
+//floating browser file upload dialogs  
+window-rule {
+    match title="^File Upload"
+    open-floating true
+    open-maximized-to-edges false
+    default-column-width { fixed 1050; }
+    default-window-height { fixed 600; }
 }
 
 
@@ -697,7 +706,8 @@ binds {
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }
 
-    // Move the focused window between the floating and the tiling layout.
+    // Move the focused window between the floating and the tiling layout.   Mod+
+    Mod+Alt+F  hotkey-overlay-title="toggle maximize-window-to-edges" { maximize-window-to-edges; }
     Alt+Return       { toggle-window-floating; }
     Alt+Shift+Return { switch-focus-between-floating-and-tiling; }
 
@@ -736,7 +746,7 @@ binds {
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
 
-    Mod+Ctrl+Shift+F { toggle-windowed-fullscreen; }
+    Mod+Ctrl+Shift+F hotkey-overlay-title="toggle-windowed-fullscreen" { toggle-windowed-fullscreen; }
 }
 
 
@@ -748,3 +758,7 @@ cursor {
     hide-after-inactive-ms 3000
 }
 
+// middle-click paste barely use this
+clipboard {
+    disable-primary
+}
