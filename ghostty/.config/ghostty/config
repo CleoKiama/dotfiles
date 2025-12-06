@@ -5,14 +5,15 @@ font-family-bold-italic = "Hasklug Nerd Font Bold Italic"
 font-size = 13
 
 adjust-underline-position = 6
-adjust-cell-width = -5%
-adjust-cell-height = 15%
+adjust-cell-width = -8%
+adjust-cell-height = 14%
 adjust-underline-thickness = 40%
 adjust-cursor-thickness = 150%
 
-background-opacity = 0.65
+background-opacity = 0.92
+# background-opacity-cells = true
 cursor-color = #f94dff
-# cursor-color = F8F8F2 # white
+#cursor-color = "#F8F8F2" # white
 
 theme = Catppuccin Mocha
 
