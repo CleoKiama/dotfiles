@@ -1,12 +1,35 @@
 # Fonts
 font-family = "Hasklug Nerd Font Mono Med"
-font-family-italic = "0xProto Nerd Font Italic"
-font-family-bold-italic = "Hasklug Nerd Font Bold Italic"
+#font-family = "CaskaydiaCove Nerd Font"
+font-family-bold = "CaskaydiaCove Nerd Font"
+font-family-italic = "CaskaydiaCove Nerd Font"
+font-family-bold-italic = "CaskaydiaCove Nerd Font"
+font-style = Regular
+font-style-bold = Bold
+font-style-italic = Italic
+font-style-bold-italic = Bold Italic
+
 font-size = 13
+
+font-thicken = false
+font-feature = dlig
+font-feature = calt
+font-feature = liga
+font-feature = dlig
+font-feature = ss01
+font-feature = ss02
+font-feature = ss03
+font-feature = ss04
+font-feature = ss05
+font-feature = ss06
+font-feature = ss20
+font-feature = zero
+font-feature = onum
+bold-is-bright = true
 
 adjust-underline-position = 6
 adjust-cell-width = -8%
-adjust-cell-height = 14%
+adjust-cell-height = 13%
 adjust-underline-thickness = 40%
 adjust-cursor-thickness = 150%
 
