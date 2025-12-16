@@ -32,20 +32,9 @@ M.ui = {
 			"%=",
 			"diagnostics",
 			"lsp",
-			"linters_active",
 			"cwd",
 			"cursor",
 		}, -- check stl/utils.lua file in ui repo
-		modules = {
-			-- The default cursor module is override
-			linters_active = function()
-				local linters = require("lint").get_running()
-				if #linters == 0 then
-					return "󰦕"
-				end
-				return "󱉶 " .. table.concat(linters, ", ")
-			end,
-		},
 		theme = "default",
 		separator_style = "default",
 	},

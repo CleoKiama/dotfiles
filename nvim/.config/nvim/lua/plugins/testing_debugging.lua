@@ -1,10 +1,20 @@
 return {
 	{
-		"mfussenegger/nvim-lint",
-		event = { "BufRead", "BufNewFile", "BufWritePost" },
+		"nvimtools/none-ls.nvim",
+		event = { "BufWritePre" },
 		config = function()
-			require("configs.nvim_lint")
+			local null_ls = require("null-ls")
+
+			null_ls.setup({
+				sources = {
+					require("none-ls.diagnostics.eslint_d"),
+					require("none-ls.code_actions.eslint_d"),
+				},
+			})
 		end,
+		dependencies = {
+			"nvimtools/none-ls-extras.nvim",
+		},
 	},
 	{
 		"mfussenegger/nvim-dap",
