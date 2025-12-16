@@ -20,7 +20,7 @@
     "agent": {
         "build": {
             "mode": "primary",
-            "model": "github-copilot/claude-sonnet-4.5",
+            "model": "github-copilot/claude-opus-4.5",
             "tools": {
                 "write": true,
                 "edit": true,
@@ -29,7 +29,7 @@
         },
         "plan": {
             "mode": "primary",
-            "model": "github-copilot/grok-code-fast-1",
+            "model": "github-copilot/claude-opus-4.5",
             "tools": {
                 "write": false,
                 "edit": false,
@@ -39,7 +39,7 @@
         "code-reviewer": {
             "description": "Reviews code for best practices and potential issues",
             "mode": "subagent",
-            "model": "github-copilot/claude-sonnet-4",
+            "model": "github-copilot/claude-opus-4.5",
             "prompt": "You are a code reviewer. Focus on security, performance, and maintainability.",
             "tools": {
                 "write": false,
@@ -48,7 +48,7 @@
         },
         "chat": {
             "description": "Conversational mode for discussing code, libraries, and ideas informally.",
-            "model": "github-copilot/gpt-5-codex",
+            "model": "github-copilot/gpt-5.2",
             "prompt": "You are a technical discussion partner. Ask clarifying questions about code, explain libraries, design patterns, or syntax, and maintain a curious, analytical tone.",
             "tools": {
                 "write": false,
