@@ -57,6 +57,30 @@ return {
 		opts = require("configs.treesitter"),
 	},
 	{
+		"MeanderingProgrammer/treesitter-modules.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				-- ... other configs ...
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						init_selection = "<C-space>", -- set to `false` to disable one of the mappings
+						node_incremental = "<C-space>",
+						scope_incremental = false,
+						node_decremental = "<bs>",
+					},
+				},
+			})
+		end,
+		opts = {
+			fold = { enable = true },
+			highlight = { enable = true },
+			indent = { enable = true },
+			incremental_selection = { enable = true },
+		},
+	},
+	{
 		"mason-org/mason.nvim",
 		cmd = { "Mason", "MasonInstall", "MasonUpdate" },
 		opts = function()
@@ -86,13 +110,6 @@ return {
 		event = "BufWritePre",
 		config = function()
 			require("configs.conform")
-		end,
-	},
-	{
-		"mfussenegger/nvim-lint",
-		event = "BufWritePre",
-		config = function()
-			require("configs.nvim_lint")
 		end,
 	},
 	{
