@@ -5,9 +5,6 @@ return {
 		config = function()
 			require("configs.diffview")
 		end,
-		keys = {
-			{ "<leader>dh", "<cmd>:DiffviewFileHistory %<CR>", { desc = "TagbarToggle" } },
-		},
 	},
 	{
 		"NeogitOrg/neogit",
@@ -47,5 +44,9 @@ return {
 		"esmuellert/vscode-diff.nvim",
 		cmd = { "CodeDiff" },
 		dependencies = { "MunifTanjim/nui.nvim" },
+		keys = {
+			{ "<leader>gdf", "<cmd>:CodeDiff file HEAD <CR>", { desc = "vscode-diff" } },
+			{ "<leader>gda", "<cmd>:CodeDiff <CR>", { desc = "vscode-diff" } },
+		},
 	},
 }
