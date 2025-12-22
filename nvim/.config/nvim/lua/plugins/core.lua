@@ -42,7 +42,7 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		event = "BufReadPost",
+		event = { "BufReadPost", "BufNewFile" },
 		branch = "main",
 		cmd = { "TSInstall", "TSBufEnable", "TSBufDisable" },
 		build = ":TSUpdate",
@@ -50,27 +50,43 @@ return {
 			-- setup nvchad staff
 			dofile(vim.g.base46_cache .. "treesitter")
 			dofile(vim.g.base46_cache .. "syntax")
-			local ts_configs = require("configs.treesitter")
+			local treesitter = require("nvim-treesitter")
+			local ensure_installed = require("configs.treesitter").ensure_installed
 
 			-- replicate `ensure_installed`, runs asynchronously, skips existing languages
-			-- require("nvim-treesitter").install(ts_configs.ensure_installed)
+			local already_installed = treesitter.get_installed()
+			local parsers_to_install = vim.iter(ensure_installed)
+				:filter(function(parser)
+					return not vim.tbl_contains(already_installed, parser)
+				end)
+				:totable()
+			treesitter.install(parsers_to_install)
 			vim.api.nvim_create_autocmd("FileType", {
 				group = vim.api.nvim_create_augroup("treesitter.setup", {}),
+				desc = "Enable Treesitter",
 				callback = function(args)
 					local buf = args.buf
-					local filetype = args.match
+					local filetype = vim.api.nvim_get_option_value("filetype", { buf = buf })
+
+					-- Skip if no filetype
+					if filetype == "" then
+						return
+					end
 
 					-- you need some mechanism to avoid running on buffers that do not
 					-- correspond to a language (like oil.nvim buffers), this implementation
 					-- checks if a parser exists for the current language
 					local language = vim.treesitter.language.get_lang(filetype) or filetype
 					if not vim.treesitter.language.add(language) then
+						--- fail silently
 						return
 					end
 
 					-- replicate `fold = { enable = true }`
-					-- vim.wo.foldmethod = "expr"
-					-- vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+					vim.wo.foldlevel = 99
+					vim.wo.foldmethod = "expr"
+					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+					vim.wo.foldtext = "v:lua.vim.treesitter.foldtext()"
 
 					-- replicate `highlight = { enable = true }`
 					vim.treesitter.start(buf, language)
@@ -239,7 +255,7 @@ return {
 					keymaps = {
 						init_selection = "<C-space>", -- start selection
 						node_incremental = "<C-space>", -- expand node
-						node_decremental = "<leader><S-space>", -- shrink node selection
+						node_decremental = "<C-S-Space>",
 						-- scope_incremental = "<leader>v", -- expand to scope
 					},
 				},
