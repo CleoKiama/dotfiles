@@ -1,41 +1,41 @@
-local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
+-- INFO: custom lsp breadcrumbs in winbar
+-- https://github.com/juniorsundar/nvim/blob/534554a50cc468df0901dc3861e7325a54c01457/lua/config/lsp/breadcrumbs.lua
 
+local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
 local folder_icon = "%#Conditional#" .. "󰉋" .. "%#Normal#"
 local file_icon = "󰈙"
 
--- Cache per buffer: { symbols, base_segments, last_winbar, timer }
-local buf_cache = {}
-
 local kind_icons = {
 	"%#File#" .. "󰈙" .. "%#Normal#", -- file
-	"%#Module#" .. "" .. "%#Normal#", -- module
-	"%#Structure#" .. "" .. "%#Normal#", -- namespace
+	"%#Module#" .. "" .. "%#Normal#", -- module
+	"%#Structure#" .. "" .. "%#Normal#", -- namespace
 	"%#Keyword#" .. "󰌋" .. "%#Normal#", -- key
 	"%#Class#" .. "󰠱" .. "%#Normal#", -- class
 	"%#Method#" .. "󰆧" .. "%#Normal#", -- method
 	"%#Property#" .. "󰜢" .. "%#Normal#", -- property
 	"%#Field#" .. "󰇽" .. "%#Normal#", -- field
-	"%#Function#" .. "" .. "%#Normal#", -- constructor
-	"%#Enum#" .. "" .. "%#Normal#", -- enum
-	"%#Type#" .. "" .. "%#Normal#", -- interface
+	"%#Function#" .. "" .. "%#Normal#", -- constructor
+	"%#Enum#" .. "" .. "%#Normal#", -- enum
+	"%#Type#" .. "" .. "%#Normal#", -- interface
 	"%#Function#" .. "󰊕" .. "%#Normal#", -- function
 	"%#None#" .. "󰂡" .. "%#Normal#", -- variable
 	"%#Constant#" .. "󰏿" .. "%#Normal#", -- constant
-	"%#String#" .. "" .. "%#Normal#", -- string
-	"%#Number#" .. "" .. "%#Normal#", -- number
-	"%#Boolean#" .. "" .. "%#Normal#", -- boolean
-	"%#Array#" .. "" .. "%#Normal#", -- array
-	"%#Class#" .. "" .. "%#Normal#", -- object
-	"", -- package
+	"%#String#" .. "" .. "%#Normal#", -- string
+	"%#Number#" .. "" .. "%#Normal#", -- number
+	"%#Boolean#" .. "" .. "%#Normal#", -- boolean
+	"%#Array#" .. "" .. "%#Normal#", -- array
+	"%#Class#" .. "" .. "%#Normal#", -- object
+	"", -- package
 	"󰟢", -- null
-	"", -- enum-member
-	"%#Struct#" .. "" .. "%#Normal#", -- struct
-	"", -- event
-	"", -- operator
+	"", -- enum-member
+	"%#Struct#" .. "" .. "%#Normal#", -- struct
+	"", -- event
+	"", -- operator
 	"󰅲", -- type-parameter
 }
 
-local function range_contains_pos(range, line, char)
+local function range_contains_pos(symbol, line, char)
+	local range = symbol.range or (symbol.location and symbol.location.range) -- some servers use location.range like the html server
 	local start = range.start
 	local stop = range["end"]
 
@@ -54,68 +54,14 @@ local function range_contains_pos(range, line, char)
 	return true
 end
 
-local function get_base_segments(bufnr)
-	local cache = buf_cache[bufnr]
-	if cache and cache.base_segments then
-		return cache.base_segments
-	end
-
-	local file_path = vim.api.nvim_buf_get_name(bufnr)
-	if not file_path or file_path == "" then
-		return { "[No Name]" }
-	end
-
-	local clients = vim.lsp.get_clients({ bufnr = bufnr })
-	local relative_path = vim.fn.fnamemodify(file_path, ":t")
-
-	if #clients > 0 and clients[1].root_dir then
-		local root_dir = clients[1].root_dir
-		if root_dir then
-			local rel = vim.fs.relpath(file_path, root_dir)
-			if rel and rel ~= "" then
-				relative_path = rel
-			end
-		end
-	end
-
-	local path_components = vim.split(relative_path, "[/\\]+", { trimempty = true })
-	local segments = {}
-
-	for i, component in ipairs(path_components) do
-		if i == #path_components then
-			local icon, icon_hl = nil, nil
-			if devicons_ok then
-				icon, icon_hl = devicons.get_icon(component)
-			end
-
-			local segment
-			if icon and icon_hl then
-				segment = "%#" .. icon_hl .. "#" .. icon .. "%#Normal# " .. component
-			else
-				segment = file_icon .. " " .. component
-			end
-			table.insert(segments, segment)
-		else
-			table.insert(segments, folder_icon .. " " .. component)
-		end
-	end
-
-	if not buf_cache[bufnr] then
-		buf_cache[bufnr] = {}
-	end
-	buf_cache[bufnr].base_segments = segments
-	return segments
-end
-
 local function find_symbol_path(symbol_list, line, char, path)
 	if not symbol_list or #symbol_list == 0 then
 		return false
 	end
-
 	for _, symbol in ipairs(symbol_list) do
-		if range_contains_pos(symbol.range, line, char) then
-			local icon = kind_icons[symbol.kind] or ""
-			table.insert(path, (icon or "") .. " " .. symbol.name)
+		if range_contains_pos(symbol, line, char) then
+			local icon = kind_icons[symbol.kind] or ""
+			table.insert(path, icon .. " " .. symbol.name)
 			find_symbol_path(symbol.children, line, char, path)
 			return true
 		end
@@ -123,95 +69,143 @@ local function find_symbol_path(symbol_list, line, char, path)
 	return false
 end
 
-local function update_winbar(bufnr)
-	local cache = buf_cache[bufnr]
-	if not cache or not cache.symbols then
+--- @param err table | nil
+local function lsp_callback(err, symbols, ctx)
+	if err or not symbols then
+		vim.o.winbar = ""
 		return
 	end
 
+	local winnr = vim.api.nvim_get_current_win()
 	local pos = vim.api.nvim_win_get_cursor(0)
-	local cursor_line = pos[1] - 1
-	local cursor_char = pos[2]
+	local cursor_line = pos[1] - 1 -- LSP uses 0-based line numbers
+	local cursor_char = pos[2] -- this is 0 based already
 
-	local breadcrumbs = vim.deepcopy(get_base_segments(bufnr))
-	find_symbol_path(cache.symbols, cursor_line, cursor_char, breadcrumbs)
+	local file_path = vim.fn.bufname(ctx.bufnr)
+	if not file_path or file_path == "[No Name]" or file_path == "" then
+		vim.o.winbar = "[No Name]"
+		return
+	end
+
+	local relative_path
+
+	local clients = vim.lsp.get_clients({ bufnr = ctx.bufnr })
+
+	if #clients > 0 and clients[1].root_dir then
+		local root_dir = clients[1].root_dir
+		if root_dir == nil then
+			relative_path = file_path
+		else
+			relative_path = vim.fs.relpath(root_dir, file_path)
+		end
+	else
+		local root_dir = vim.fn.getcwd(0)
+		relative_path = vim.fs.relpath(root_dir, file_path)
+	end
+
+	local breadcrumbs = {}
+
+	local path_components = vim.split(relative_path or " ", "/", { trimempty = true })
+	local num_components = #path_components
+
+	for i, component in ipairs(path_components) do
+		if i == num_components then
+			local icon
+			local icon_hl
+
+			if devicons_ok then
+				icon, icon_hl = devicons.get_icon(component)
+			end
+			table.insert(breadcrumbs, "%#" .. icon_hl .. "#" .. (icon or file_icon) .. "%#Normal#" .. " " .. component)
+		else
+			table.insert(breadcrumbs, folder_icon .. " " .. component)
+		end
+	end
+	find_symbol_path(symbols, cursor_line, cursor_char, breadcrumbs)
 
 	local breadcrumb_string = table.concat(breadcrumbs, " > ")
-	if breadcrumb_string == "" then
-		breadcrumb_string = " "
-	end
 
-	if cache.last_winbar ~= breadcrumb_string then
-		vim.wo.winbar = breadcrumb_string
-		cache.last_winbar = breadcrumb_string
+	if breadcrumb_string ~= "" then
+		vim.api.nvim_set_option_value("winbar", breadcrumb_string, { win = winnr })
+	else
+		vim.api.nvim_set_option_value("winbar", " ", { win = winnr })
 	end
 end
 
-local function lsp_callback(err, symbols, ctx, config)
-	if err or not symbols then
-		vim.wo.winbar = ""
-		return
+--- @param clients vim.lsp.Client[]
+--- @param bufnr integer
+---@return vim.lsp.Client?
+local function text_symbol_supported_clients(clients, bufnr)
+	for _, client in ipairs(clients) do
+		if client.supports_method("textDocument/documentSymbol", bufnr) then
+			return client
+		end
 	end
-
-	if not buf_cache[ctx.bufnr] then
-		buf_cache[ctx.bufnr] = {}
-	end
-
-	buf_cache[ctx.bufnr].symbols = symbols
-	update_winbar(ctx.bufnr)
+	return nil
 end
 
-local function refresh_symbols(bufnr)
+local function breadcrumbs_set()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local winnr = vim.api.nvim_get_current_buf()
+
 	local clients = vim.lsp.get_clients({ bufnr = bufnr })
-
-	if #clients == 0 or not clients[1].supports_method("textDocument/documentSymbol") then
+	local supported_client = text_symbol_supported_clients(clients, bufnr)
+	if not supported_client then
 		return
 	end
 
-	local uri = vim.lsp.util.make_text_document_params(bufnr)["uri"]
+	local uri = vim.lsp.util.make_text_document_params(bufnr).uri
 	if not uri then
+		vim.notify("Error: Could not get URI for buffer. Is it saved?", vim.logs.levels.WARN)
 		return
 	end
 
 	local params = {
-		textDocument = { uri = uri },
+		textDocument = {
+			uri = uri,
+		},
 	}
-	vim.lsp.buf_request(bufnr, "textDocument/documentSymbol", params, lsp_callback)
-end
 
-local function debounced_update()
-	local bufnr = vim.api.nvim_get_current_buf()
-	local cache = buf_cache[bufnr]
-
-	if cache and cache.timer then
-		cache.timer:stop()
+	local buf_src = uri:sub(1, uri:find(":") - 1)
+	-- if the buffer is not a file, clear the winbar and return
+	if buf_src ~= "file" then
+		vim.o.winbar = ""
+		return
 	end
 
-	if not cache then
-		buf_cache[bufnr] = {}
-		cache = buf_cache[bufnr]
+	local result, _ = pcall(supported_client.request, "textDocument/documentSymbol", params, lsp_callback, bufnr)
+	if not result then
+		return
 	end
-
-	cache.timer = vim.defer_fn(function()
-		update_winbar(bufnr)
-	end, 200)
 end
 
--- Cleanup cache on buffer delete
-vim.api.nvim_create_autocmd("BufDelete", {
-	callback = function(args)
-		buf_cache[args.buf] = nil
-	end,
+local breadcrumbs_augroup = vim.api.nvim_create_augroup("Breadcrumbs", { clear = true })
+
+local function debounce_breadcrumbs()
+	local timer = vim.uv.new_timer()
+	local debounce_interval = 200
+
+	return function()
+		timer:stop() -- Stop existing timer if running
+		timer:start(
+			debounce_interval,
+			0,
+			vim.schedule_wrap(function()
+				breadcrumbs_set()
+			end)
+		)
+	end
+end
+vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+	group = breadcrumbs_augroup,
+	callback = debounce_breadcrumbs(),
+	desc = "Set breadcrumbs.",
 })
 
--- Refresh symbols when needed
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+vim.api.nvim_create_autocmd({ "WinLeave" }, {
+	group = breadcrumbs_augroup,
 	callback = function()
-		refresh_symbols(vim.api.nvim_get_current_buf())
+		vim.o.winbar = ""
 	end,
-})
-
--- Update breadcrumbs on cursor move (debounced)
-vim.api.nvim_create_autocmd("CursorMoved", {
-	callback = debounced_update,
+	desc = "Clear breadcrumbs when leaving window.",
 })
