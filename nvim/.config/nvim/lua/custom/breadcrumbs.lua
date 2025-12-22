@@ -35,7 +35,7 @@ local kind_icons = {
 }
 
 local function range_contains_pos(symbol, line, char)
-	local range = symbol.range or (symbol.location and symbol.location.range) -- some servers use location.range like the html server
+	local range = symbol.range or (symbol.location and symbol.location.range) -- some servers use location.range like the html language server
 	local start = range.start
 	local stop = range["end"]
 

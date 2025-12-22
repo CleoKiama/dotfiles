@@ -50,8 +50,7 @@ M.on_attach = function(_, bufnr)
 	map("n", "<leader>wl", function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, opts("List workspace folders"))
-
-	require("custom.breadcrumbs") -- setup lsp breadcrumbs
+	require("custom.breadcrumbs")
 end
 
 -- Disable semantic tokens (optional)
@@ -101,8 +100,10 @@ M.setup = function()
 		"jsonls",
 		"yamlls",
 		"pylsp",
+		"ts_ls",
+		-- "tsgo",
 		"tailwindcss",
-		"copilot",
+		-- "copilot",
 	}
 
 	for _, server in ipairs(servers) do
@@ -130,7 +131,7 @@ M.setup = function()
 		settings = {
 			["harper-ls"] = {
 				linters = {
-					SpellCheck = true,
+					SpellCheck = false,
 					SpelledNumbers = false,
 					AnA = true,
 					SentenceCapitalization = true,
