@@ -1,19 +1,21 @@
 return {
 	{
+		"davidosomething/format-ts-errors.nvim",
+		ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+		config = function()
+			require("format-ts-errors").setup({
+				add_markdown = true,
+				start_indent_level = 0,
+			})
+		end,
+	},
+	{
 		"pmizio/typescript-tools.nvim",
 		ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+		enabled = false,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"neovim/nvim-lspconfig",
-			{
-				"davidosomething/format-ts-errors.nvim",
-				config = function()
-					require("format-ts-errors").setup({
-						add_markdown = true,
-						start_indent_level = 0,
-					})
-				end,
-			},
 		},
 		config = function()
 			require("configs.js_ts_snippets")
