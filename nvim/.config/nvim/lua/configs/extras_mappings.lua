@@ -173,7 +173,9 @@ map("n", "<localleader>tfr", "<cmd>TSToolsFileReferences<CR>", { desc = "[p] Fin
 map("n", "<leader>nn", "<cmd>set nu!<CR>", { desc = "[p] Toggle line number" })
 
 -- plugin dev mappings
-map("n", "<localleader>rf", "<cmd>source % <CR>", { desc = "[p] run current File" })
+vim.keymap.set("n", "<localleader>rf", function()
+	vim.cmd("luafile %")
+end, { desc = "[p] run current File", silent = true })
 
 -- Convert filepath to module name
 -- e.g. /home/user/.config/nvim/lua/mymodule.lua -> mymodule
@@ -211,6 +213,7 @@ R = function(name)
 	return require(name)
 end
 
+-- Move by display lines when text wraps
 map("n", "j", "gj", { silent = true })
 map("n", "k", "gk", { silent = true })
 
