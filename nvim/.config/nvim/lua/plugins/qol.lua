@@ -555,4 +555,38 @@ return {
 			})
 		end,
 	},
+	{
+		"folke/ts-comments.nvim",
+		event = "BufReadPost",
+		opts = {
+			lang = {
+				html = "<!-- %s -->",
+				hyprlang = "# %s",
+				javascript = {
+					"// %s",
+					"/* %s */",
+					call_expression = "// %s",
+					jsx_attribute = "// %s",
+					jsx_element = "{/* %s */}",
+					jsx_fragment = "{/* %s */}",
+					spread_element = "// %s",
+					statement_block = "// %s",
+				},
+				rust = { "// %s", "/* %s */" },
+				sql = "-- %s",
+				styled = "/* %s */",
+				tsx = {
+					"// %s",
+					"/* %s */",
+					call_expression = "// %s",
+					jsx_attribute = "// %s",
+					jsx_element = "{/* %s */}",
+					jsx_fragment = "{/* %s */}",
+					spread_element = "// %s",
+					statement_block = "// %s",
+				},
+				typescript = { "// %s", "/* %s */" },
+			},
+		},
+	},
 }
