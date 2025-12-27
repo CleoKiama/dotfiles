@@ -112,8 +112,8 @@ output "eDP-1" {
 }
 
 output "HDMI-A-1" {
-    // mode "1920x1080@60.000"
-     mode "2560x1440@59.951"
+    mode "1920x1080@60.000"
+     // mode "2560x1440@59.951"
     transform "normal"
 
     layout {
@@ -550,8 +550,8 @@ binds {
     Mod+E { spawn "nautilus"; }
     Mod+B { spawn "zen-browser"; }
     Mod+C hotkey-overlay-title="Rofi Calculator " { spawn-sh "rofi -show calc -modi calc -no-show-match -no-sort"; }
-    Mod+Shift+S hotkey-overlay-title="Settings" { spawn-sh "XDG_CURRENT_DESKTOP=gnome gnome-control-center"; }
-    Ctrl+Shift+Escape hotkey-overlay-title="System monitor" { spawn "gnome-system-monitor"; }
+    // Mod+Shift+S hotkey-overlay-title="Settings" { spawn-sh "XDG_CURRENT_DESKTOP=gnome gnome-control-center"; }
+    // Ctrl+Shift+Escape hotkey-overlay-title="System monitor" { spawn "gnome-system-monitor"; }
     Ctrl+Alt+R  { spawn-sh "$HOME/.config/waybar/launch.sh"; } //restart waybar
     Alt+F4 hotkey-overlay-title="Wlogout" { spawn "wlogout"; }
     Mod+Alt+L hotkey-overlay-title="Lock the Screen" { spawn "hyprlock"; }
