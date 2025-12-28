@@ -138,6 +138,83 @@ return {
 			})
 		end,
 		keys = {
+			-- select
+			{
+				"af",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+				end,
+				desc = "Select function outer",
+				mode = { "x", "o" },
+			},
+			{
+				"if",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
+				end,
+				desc = "Select function inner",
+				mode = { "x", "o" },
+			},
+
+			{
+				"ac",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@class.outer", "textobjects")
+				end,
+				desc = "Select class outer",
+				mode = { "x", "o" },
+			},
+			{
+				"ic",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@class.inner", "textobjects")
+				end,
+				desc = "Select class inner",
+				mode = { "x", "o" },
+			},
+
+			{
+				"ap",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@parameter.outer", "textobjects")
+				end,
+				desc = "Select parameter outer",
+				mode = { "x", "o" },
+			},
+			{
+				"ip",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@parameter.inner", "textobjects")
+				end,
+				desc = "Select parameter inner",
+				mode = { "x", "o" },
+			},
+
+			{
+				"is",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@statement.outer", "textobjects")
+				end,
+				desc = "Select statement outer",
+				mode = { "x", "o" },
+			},
+
+			{
+				"al",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@loop.outer", "textobjects")
+				end,
+				desc = "Select loop outer",
+				mode = { "x", "o" },
+			},
+			{
+				"il",
+				function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@loop.inner", "textobjects")
+				end,
+				desc = "Select loop inner",
+				mode = { "x", "o" },
+			},
 			-- move
 			{
 				"]m",
@@ -247,9 +324,10 @@ return {
 	},
 	{
 		"MeanderingProgrammer/treesitter-modules.nvim",
+		event = { "BufReadPost", "BufNewFile" },
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		config = function()
-			require("nvim-treesitter.configs").setup({
+			require("treesitter-modules").setup({
 				incremental_selection = {
 					enable = true,
 					keymaps = {
@@ -262,9 +340,7 @@ return {
 			})
 		end,
 		opts = {
-			fold = { enable = true },
-			highlight = { enable = true },
-			indent = { enable = true },
+			-- fold = { enable = true },
 			incremental_selection = { enable = true },
 		},
 	},
