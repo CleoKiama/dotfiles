@@ -103,6 +103,10 @@ local function lsp_callback(err, symbols, ctx)
 		relative_path = vim.fs.relpath(root_dir, file_path)
 	end
 
+	if not relative_path then
+		relative_path = file_path
+	end
+
 	local breadcrumbs = {}
 
 	local path_components = vim.split(relative_path or " ", "/", { trimempty = true })
