@@ -17,7 +17,6 @@ M.ensure_installed = {
 	"json",
 	"yaml",
 	"toml",
-	"jsonc",
 	"sql",
 	"regex",
 	"rust",
