@@ -1,373 +1,373 @@
 // -*- mode: jsonc -*-
 {
-  // "layer": "top", // Waybar at top layer
-  // "position": "bottom", // Waybar position (top|bottom|left|right)
-  "height": 30, // Waybar height (to be removed for auto height)
-  // "width": 1280, // Waybar width
-  // Choose the order of the modules
-  "modules-left": [
-    "custom/padd",
-    "custom/l_end",
-    "custom/appMenu",
-    "custom/r_end",
-    "custom/padd",
-    "custom/l_end",
-    "cpu",
-    "memory",
-    "custom/r_end",
-    "custom/l_end",
-    "clock",
-    "idle_inhibitor",
-    "custom/screen-record",
-    "custom/r_end",
-    "custom/padd"
-  ],
-  "modules-center": [
-    "custom/padd",
-    "niri/workspaces",
-    // "hyprland/workspaces",
-    "custom/l_end",
-    // "hyprland/window",
-    "niri/window",
-    "custom/r_end",
-    "custom/padd"
-  ],
-  "modules-right": [
-    "custom/padd",
-    "custom/l_end",
-    "backlight",
-    "network",
-    "pulseaudio",
-    "pulseaudio#microphone",
-    "custom/r_end",
-    "custom/l_end",
-    "battery",
-    "tray",
-    "power-profiles-daemon",
-    "bluetooth",
-    "custom/updates",
-    "custom/r_end",
-    "custom/l_end",
-    "custom/notification",
-    "custom/clipboard",
-    "custom/power",
-    "custom/r_end",
-    "custom/padd"
-  ],
-  "idle_inhibitor": {
-    "format": "{icon}",
-    "format-icons": {
-      "activated": " ",
-      "deactivated": " "
-    }
-  },
-  "tray": {
-    // "icon-size": 21,
-    "spacing": 5,
-    "icons": {
-      // "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
-    }
-  },
-  "clock": {
-    "format-alt": "{:%I:%M %p}",
-    "rotate": "${r_deg}",
-    "format": "{:%R 󰃭 %d·%m·%y}",
-    "tooltip-format": "<span>{calendar}</span>",
-    "calendar": {
-      "mode": "month",
-      "mode-mon-col": 3,
-      "on-scroll": 1,
-      "on-click-right": "mode",
-      "format": {
-        "months": "<span color='#ffead3'><b>{}</b></span>",
-        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-        "today": "<span color='#ff6699'><b>{}</b></span>"
-      }
-    },
-    "actions": {
-      "on-click-right": "mode",
-      "on-click-forward": "tz_up",
-      "on-click-backward": "tz_down",
-      "on-scroll-up": "shift_up",
-      "on-scroll-down": "shift_down"
-    }
-  },
-  "cpu": {
-    "interval": 2,
-    "format": "{usage}%  ",
-    "tooltip": true
-  },
-  "memory": {
-    "interval": 2,
-    "format": "{}%  "
-  },
-  "backlight": {
-    // "device": "acpi_video1",
-    "format": "{percent}% {icon}",
-    "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
-  },
-  "battery": {
-    "states": {
-      "good": 95,
-      "warning": 30,
-      "critical": 20
-    },
-    "format": "{icon} {capacity}%",
-    "rotate": 0,
-    "format-charging": " {capacity}%",
-    "format-plugged": " {capacity}%",
-    "format-alt": "{time} {icon}",
-    "format-icons": [
-      "󰂎",
-      "󰁺",
-      "󰁻",
-      "󰁼",
-      "󰁽",
-      "󰁾",
-      "󰁿",
-      "󰂀",
-      "󰂁",
-      "󰂂",
-      "󰁹"
-    ]
-  },
-  "battery#bat2": {
-    "bat": "BAT2"
-  },
-  "custom/appMenu": {
-    "format": "󰣇 ",
-    "tooltip-format": "Apps menu",
-    "tooltip": true,
-    "on-click": "$HOME/.config/rofi/rofilaunch.sh"
-  },
-  "power-profiles-daemon": {
-    "format": "{icon}",
-    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-    "tooltip": true,
-    "format-icons": {
-      "default": " ",
-      "performance": " ",
-      "balanced": "  ",
-      "power-saver": "  "
-    }
-  },
-  "network": {
-    // "interface": "wlp2*", // (Optional) To force the use of this interface
-    "format-wifi": " ",
-    "format-ethernet": "{ipaddr}/{cidr} ",
-    "format-linked": "{ifname} (No IP) ",
-    "format-disconnected": "󰖪 ⚠",
-    // "on-click-right": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
-    "on-click-right": "nmgui",
-    "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
-    "interval": 2,
-    "tooltip-format-disconnected": "Disconnected"
-  },
-  "pulseaudio": {
-    "format": "{icon} {volume}",
-    "rotate": 0,
-    "format-muted": "婢",
-    "on-click": "pavucontrol -t 3",
-    "tooltip-format": "{icon} {desc} // {volume}%",
-    "scroll-step": 5,
-    "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": [
-        "",
-        "",
-        ""
-      ]
-    }
-  },
-  "pulseaudio#microphone": {
-    "format": "{format_source}",
-    "rotate": 0,
-    "format-source": "󰍯",
-    "format-source-muted": " ",
-    "on-click": "pavucontrol -t 4",
-    // "on-click-middle": "volumecontrol.sh -i m",
-    // "on-scroll-up": "volumecontrol.sh -i i",
-    // "on-scroll-down": "volumecontrol.sh -i d",
-    "tooltip-format": "{format_source} {source_desc} // {source_volume}%",
-    "scroll-step": 5
-  },
-  "custom/clipboard": {
-    "format": "󰅇 ",
-    "tooltip-format": "clipboard history",
-    "on-click": "$HOME/dotfiles/scripts/cliphist.sh"
-  },
-  "custom/power": {
-    "format": "⏻ ",
-    "tooltip": false,
-    "on-click": "wlogout"
-  },
-  "custom/screen-record": {
-    "format": " ",
-    "tooltip-format": "record screen section",
-    "on-click": "$HOME/.config/hypr/scripts/record.sh"
-  },
-  "hyprland/workspaces": {
-    "all-outputs": true,
-    "active-only": false,
-    "on-click": "activate",
-    "disable-scroll": false,
-    "on-scroll-up": "hyprctl dispatch workspace -1",
-    "on-scroll-down": "hyprctl dispatch workspace +1",
-    "persistent-workspaces": {}
-  },
-  "hyprland/window": {
-    "format": " {}",
-    "rotate": 0,
-    "separate-outputs": true,
-    "rewrite": {
-      "khing@archlinux:(.*)": "$1 ",
-      "(.*) — Mozilla Firefox": "$1 󰈹",
-      "(.*)Mozilla Firefox": "Firefox 󰈹",
-      "(.*) - Visual Studio Code": "$1 󰨞",
-      "(.*)Visual Studio Code": "Code 󰨞",
-      "(.*) - Code - OSS": "$1 󰨞",
-      "(.*)Code - OSS": "Code 󰨞",
-      "(.*) — Dolphin": "$1 󰉋",
-      "(.*)Spotify": "Spotify 󰓇",
-      "(.*)Steam": "Steam 󰓓",
-      "(.*) - Discord": "$1  ",
-      "(.*)Netflix": "Netflix 󰝆 ",
-      "(.*) — Google chrome": "$1  ",
-      "(.*)Google chrome": "Google chrome  ",
-      "(.*) — Github": "$1  ",
-      "(.*)Github": "Github ",
-      "(.*)Spotify Free": "Spotify 󰓇",
-      "(.*)Spotify Premiun": "Spotify 󰓇"
-    },
-    "max-length": 50
-  },
-  "niri/workspaces": {
-    "format": "{value}",
-    "format-icons": {
-      // Named workspaces
-      // (you need to configure them in niri)
-      "browser": "",
-      "discord": "",
-      "chat": "<b></b>",
-      // Icons by state
-      "active": "",
-      "default": ""
-    }
-  },
-  "niri/window": {
-    "format": " {}",
-    "rewrite": {
-      "khing@archlinux:(.*)": "$1 ",
-      "(.*) - Visual Studio Code": "$1 󰨞",
-      "(.*)Visual Studio Code": "Code 󰨞",
-      "(.*) - Code - OSS": "$1 󰨞",
-      "(.*)Code - OSS": "Code 󰨞",
-      "(.*) — Nautilus": "$1 󰉋 ",
-      "(.*)Spotify": "Spotify 󰓇",
-      "(.*)Steam": "Steam 󰓓",
-      "(.*) - Discord": "$1  ",
-      "(.*)Netflix": "Netflix 󰝆 ",
-      "(.*) — Github": "$1  ",
-      "(.*)Github": "Github ",
-      "(.*)Spotify Free": "Spotify 󰓇",
-      "(.*)Spotify Premiun": "Spotify 󰓇",
-      "(.*)tmux(.*)": "  Dev Env 🔥"
-    }
-  },
-  "bluetooth": {
-    "format": "{icon}",
-    "format-icons": [
-      "",
-      "󰤾",
-      "󰥀",
-      "󰥄",
-      "󰥈"
+    // "layer": "top", // Waybar at top layer
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 30, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    // Choose the order of the modules
+    "modules-left": [
+        "custom/padd",
+        "custom/l_end",
+        "custom/appMenu",
+        "custom/r_end",
+        "custom/padd",
+        "custom/l_end",
+        "cpu",
+        "memory",
+        "custom/r_end",
+        "custom/l_end",
+        "clock",
+        "idle_inhibitor",
+        "custom/screen-record",
+        "custom/r_end",
+        "custom/padd"
     ],
-    "tooltip-format-off": "Bluetooth is off",
-    "tooltip-format-on": "Bluetooth is on",
-    "format-connected": "{icon} {num_connections}",
-    "format-connected-battery": "{icon} {device_battery_percentage}%",
-    "tooltip-format-connected": "{device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}\t{device_battery_percentage}%",
-    "on-click": "blueberry"
-  },
-  // modules for padding //
-  "custom/l_end": {
-    "format": " ",
-    "interval": "once",
-    "tooltip": false
-  },
-  "custom/r_end": {
-    "format": " ",
-    "interval": "once",
-    "tooltip": false
-  },
-  "custom/sl_end": {
-    "format": " ",
-    "interval": "once",
-    "tooltip": false
-  },
-  "custom/sr_end": {
-    "format": " ",
-    "interval": "once",
-    "tooltip": false
-  },
-  "custom/rl_end": {
-    "format": " ",
-    "interval": "once",
-    "tooltip": false
-  },
-  "custom/rr_end": {
-    "format": " ",
-    "interval": "once",
-    "tooltip": false
-  },
-  "custom/padd": {
-    "format": "  ",
-    "interval": "once",
-    "tooltip": false
-  },
-  "custom/updates": {
-    "format": "  {}",
-    "escape": true,
-    "return-type": "json",
-    "exec": "$HOME/dotfiles/scripts/updates.sh",
-    "interval": 86400, // once every day
-    "on-click": "$HOME/dotfiles/scripts/install.sh"
-  },
-  "custom/notification": {
-    "tooltip": false,
-    "format": "{} {icon}",
-    "format-icons": {
-      "notification": " <span foreground='red'><sup></sup></span>",
-      "none": " ",
-      "dnd-notification": " <span foreground='red'><sup></sup></span>",
-      "dnd-none": " ",
-      "inhibited-notification": " <span foreground='red'><sup></sup></span>",
-      "inhibited-none": " ",
-      "dnd-inhibited-notification": " <span foreground='red'><sup></sup></span>",
-      "dnd-inhibited-none": " "
+    "modules-center": [
+        "custom/padd",
+        // "niri/workspaces",
+        "hyprland/workspaces",
+        "custom/l_end",
+        "hyprland/window",
+        // "niri/window",
+        "custom/r_end",
+        "custom/padd"
+    ],
+    "modules-right": [
+        "custom/padd",
+        "custom/l_end",
+        "backlight",
+        "network",
+        "pulseaudio",
+        "pulseaudio#microphone",
+        "custom/r_end",
+        "custom/l_end",
+        "battery",
+        "tray",
+        "power-profiles-daemon",
+        "bluetooth",
+        "custom/updates",
+        "custom/r_end",
+        "custom/l_end",
+        "custom/notification",
+        "custom/clipboard",
+        "custom/power",
+        "custom/r_end",
+        "custom/padd"
+    ],
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": " ",
+            "deactivated": " "
+        }
     },
-    "return-type": "json",
-    "exec-if": "which swaync-client",
-    "exec": "swaync-client -swb",
-    "on-click": "swaync-client -t -sw",
-    "on-click-right": "swaync-client -d -sw",
-    "escape": true
-  }
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 5,
+        "icons": {
+            // "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+        }
+    },
+    "clock": {
+        "format-alt": "{:%I:%M %p}",
+        "rotate": "${r_deg}",
+        "format": "{:%R 󰃭 %d·%m·%y}",
+        "tooltip-format": "<span>{calendar}</span>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b>{}</b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+    "cpu": {
+        "interval": 2,
+        "format": "{usage}%  ",
+        "tooltip": true
+    },
+    "memory": {
+        "interval": 2,
+        "format": "{}%  "
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{percent}% {icon}",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        "rotate": 0,
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": [
+            "󰂎",
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ]
+    },
+    "battery#bat2": {
+        "bat": "BAT2"
+    },
+    "custom/appMenu": {
+        "format": "󰣇 ",
+        "tooltip-format": "Apps menu",
+        "tooltip": true,
+        "on-click": "$HOME/.config/rofi/rofilaunch.sh"
+    },
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+        "tooltip": true,
+        "format-icons": {
+            "default": " ",
+            "performance": " ",
+            "balanced": "  ",
+            "power-saver": "  "
+        }
+    },
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": " ",
+        "format-ethernet": "{ipaddr}/{cidr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "󰖪 ⚠",
+        // "on-click-right": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
+        "on-click-right": "nmgui",
+        "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
+        "interval": 2,
+        "tooltip-format-disconnected": "Disconnected"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}",
+        "rotate": 0,
+        "format-muted": "婢",
+        "on-click": "pavucontrol -t 3",
+        "tooltip-format": "{icon} {desc} // {volume}%",
+        "scroll-step": 5,
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                "",
+                "",
+                ""
+            ]
+        }
+    },
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "rotate": 0,
+        "format-source": "󰍯",
+        "format-source-muted": " ",
+        "on-click": "pavucontrol -t 4",
+        // "on-click-middle": "volumecontrol.sh -i m",
+        // "on-scroll-up": "volumecontrol.sh -i i",
+        // "on-scroll-down": "volumecontrol.sh -i d",
+        "tooltip-format": "{format_source} {source_desc} // {source_volume}%",
+        "scroll-step": 5
+    },
+    "custom/clipboard": {
+        "format": "󰅇 ",
+        "tooltip-format": "clipboard history",
+        "on-click": "$HOME/dotfiles/scripts/cliphist.sh"
+    },
+    "custom/power": {
+        "format": "⏻ ",
+        "tooltip": false,
+        "on-click": "wlogout"
+    },
+    "custom/screen-record": {
+        "format": " ",
+        "tooltip-format": "record screen section",
+        "on-click": "$HOME/.config/hypr/scripts/record.sh"
+    },
+    "hyprland/workspaces": {
+        "all-outputs": true,
+        "active-only": false,
+        "on-click": "activate",
+        "disable-scroll": true,
+        // "on-scroll-up": "hyprctl dispatch workspace -1",
+        // "on-scroll-down": "hyprctl dispatch workspace +1",
+        "persistent-workspaces": {}
+    },
+    "hyprland/window": {
+        "format": " {}",
+        "rotate": 0,
+        "separate-outputs": true,
+        "rewrite": {
+            "khing@archlinux:(.*)": "$1 ",
+            "(.*) — Mozilla Firefox": "$1 󰈹",
+            "(.*)Mozilla Firefox": "Firefox 󰈹",
+            "(.*) - Visual Studio Code": "$1 󰨞",
+            "(.*)Visual Studio Code": "Code 󰨞",
+            "(.*) - Code - OSS": "$1 󰨞",
+            "(.*)Code - OSS": "Code 󰨞",
+            "(.*) — Dolphin": "$1 󰉋",
+            "(.*)Spotify": "Spotify 󰓇",
+            "(.*)Steam": "Steam 󰓓",
+            "(.*) - Discord": "$1  ",
+            "(.*)Netflix": "Netflix 󰝆 ",
+            "(.*) — Google chrome": "$1  ",
+            "(.*)Google chrome": "Google chrome  ",
+            "(.*) — Github": "$1  ",
+            "(.*)Github": "Github ",
+            "(.*)Spotify Free": "Spotify 󰓇",
+            "(.*)Spotify Premiun": "Spotify 󰓇"
+        },
+        "max-length": 50
+    },
+    "niri/workspaces": {
+        "format": "{value}",
+        "format-icons": {
+            // Named workspaces
+            // (you need to configure them in niri)
+            "browser": "",
+            "discord": "",
+            "chat": "<b></b>",
+            // Icons by state
+            "active": "",
+            "default": ""
+        }
+    },
+    "niri/window": {
+        "format": " {}",
+        "rewrite": {
+            "khing@archlinux:(.*)": "$1 ",
+            "(.*) - Visual Studio Code": "$1 󰨞",
+            "(.*)Visual Studio Code": "Code 󰨞",
+            "(.*) - Code - OSS": "$1 󰨞",
+            "(.*)Code - OSS": "Code 󰨞",
+            "(.*) — Nautilus": "$1 󰉋 ",
+            "(.*)Spotify": "Spotify 󰓇",
+            "(.*)Steam": "Steam 󰓓",
+            "(.*) - Discord": "$1  ",
+            "(.*)Netflix": "Netflix 󰝆 ",
+            "(.*) — Github": "$1  ",
+            "(.*)Github": "Github ",
+            "(.*)Spotify Free": "Spotify 󰓇",
+            "(.*)Spotify Premiun": "Spotify 󰓇",
+            "(.*)tmux(.*)": "  Dev Env 🔥"
+        }
+    },
+    "bluetooth": {
+        "format": "{icon}",
+        "format-icons": [
+            "",
+            "󰤾",
+            "󰥀",
+            "󰥄",
+            "󰥈"
+        ],
+        "tooltip-format-off": "Bluetooth is off",
+        "tooltip-format-on": "Bluetooth is on",
+        "format-connected": "{icon} {num_connections}",
+        "format-connected-battery": "{icon} {device_battery_percentage}%",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_battery_percentage}%",
+        "on-click": "blueberry"
+    },
+    // modules for padding //
+    "custom/l_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/r_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/sl_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/sr_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/rl_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/rr_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/padd": {
+        "format": "  ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/updates": {
+        "format": "  {}",
+        "escape": true,
+        "return-type": "json",
+        "exec": "$HOME/dotfiles/scripts/updates.sh",
+        "interval": 86400, // once every day
+        "on-click": "$HOME/dotfiles/scripts/install.sh"
+    },
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{} {icon}",
+        "format-icons": {
+            "notification": " <span foreground='red'><sup></sup></span>",
+            "none": " ",
+            "dnd-notification": " <span foreground='red'><sup></sup></span>",
+            "dnd-none": " ",
+            "inhibited-notification": " <span foreground='red'><sup></sup></span>",
+            "inhibited-none": " ",
+            "dnd-inhibited-notification": " <span foreground='red'><sup></sup></span>",
+            "dnd-inhibited-none": " "
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    }
 }
