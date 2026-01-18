@@ -24,10 +24,12 @@
     ],
     "modules-center": [
         "custom/padd",
+        "ext/workspaces", // mangowc
         // "niri/workspaces",
-        "hyprland/workspaces",
+        // "hyprland/workspaces",
         "custom/l_end",
-        "hyprland/window",
+        "dwl/window", //mangowc titles
+        // "hyprland/window",
         // "niri/window",
         "custom/r_end",
         "custom/padd"
@@ -256,6 +258,16 @@
         },
         "max-length": 50
     },
+    "dwl/window": {
+        "format": "[{layout}]{title}"
+    },
+    "ext/workspaces": {
+        "format": "{icon}",
+        "ignore-hidden": true,
+        // "active-only":true,
+        "on-click": "activate",
+        "sort-by-id": true,
+    },
     "niri/workspaces": {
         "format": "{value}",
         "format-icons": {
@@ -348,7 +360,8 @@
         "return-type": "json",
         "exec": "$HOME/dotfiles/scripts/updates.sh",
         "interval": 86400, // once every day
-        "on-click": "$HOME/dotfiles/scripts/install.sh"
+        "on-click": "$HOME/dotfiles/scripts/install.sh",
+        "on-click-right": "$HOME/dotfiles/scripts/updates.sh"
     },
     "custom/notification": {
         "tooltip": false,
