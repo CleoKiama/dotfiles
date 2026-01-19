@@ -1,16 +1,8 @@
 return {
 	{
-		"sindrets/diffview.nvim",
-		cmd = "DiffviewOpen",
-		config = function()
-			require("configs.diffview")
-		end,
-	},
-	{
 		"NeogitOrg/neogit",
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- required
-			"sindrets/diffview.nvim", -- optional - Diff integration
 		},
 		config = true,
 	},
@@ -41,9 +33,9 @@ return {
 		},
 	},
 	{
-		"esmuellert/vscode-diff.nvim",
-		cmd = { "CodeDiff" },
+		"esmuellert/codediff.nvim",
 		dependencies = { "MunifTanjim/nui.nvim" },
+		cmd = "CodeDiff",
 		keys = {
 			{ "<leader>gdf", "<cmd>:CodeDiff file HEAD <CR>", { desc = "vscode-diff" } },
 			{ "<leader>gda", "<cmd>:CodeDiff <CR>", { desc = "vscode-diff" } },
