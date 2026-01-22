@@ -259,7 +259,7 @@
         "max-length": 50
     },
     "dwl/window": {
-        "format": "[{layout}]{title}"
+        "format": " {title}"
     },
     "ext/workspaces": {
         "format": "{icon}",
