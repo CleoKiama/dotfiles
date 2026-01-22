@@ -30,13 +30,13 @@ bold-is-bright = true
 adjust-underline-position = 6
 adjust-cell-width = -8%
 # normal for my laptop screen
-# adjust-cell-height = 13%
+adjust-cell-height = 12%
 # union tv 
-adjust-cell-height = 30%
+#adjust-cell-height = 30%
 adjust-underline-thickness = 40%
 adjust-cursor-thickness = 150%
 
-background-opacity = 0.90
+background-opacity = 0.92
 # background-opacity-cells = true
 cursor-color = #f94dff
 #cursor-color = "#F8F8F2" # white
@@ -51,3 +51,9 @@ clipboard-read = allow
 clipboard-write = allow
 
 window-decoration = false
+
+# performance
+quit-after-last-window-closed = true
+quit-after-last-window-closed-delay = 5m
+
+#gtk-single-instance = true
