@@ -83,10 +83,10 @@ return {
 					end
 
 					-- replicate `fold = { enable = true }`
-					vim.wo.foldlevel = 99
-					vim.wo.foldmethod = "expr"
-					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-					vim.wo.foldtext = "v:lua.vim.treesitter.foldtext()"
+					-- vim.wo.foldlevel = 99
+					-- vim.wo.foldmethod = "expr"
+					-- vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+					-- vim.wo.foldtext = "v:lua.vim.treesitter.foldtext()"
 
 					-- replicate `highlight = { enable = true }`
 					vim.treesitter.start(buf, language)
