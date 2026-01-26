@@ -11,6 +11,16 @@
         "Better Auth": {
             "type": "remote",
             "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp",
+            "enabled": false
+        },
+        "weather": {
+            "type": "local",
+            "command": ["tsx", "/media/DevDrive/mcp/weather/src/index.ts"],
+            "enabled": false
+        },
+        "CopilotKit MCP": {
+            "type": "remote",
+            "url": "https://mcp.copilotkit.ai",
             "enabled": true
         }
     },
@@ -20,7 +30,7 @@
     "agent": {
         "build": {
             "mode": "primary",
-            "model": "github-copilot/claude-opus-4.5",
+            "model": "github-copilot/gpt-5-mini",
             "tools": {
                 "write": true,
                 "edit": true,
@@ -29,7 +39,7 @@
         },
         "plan": {
             "mode": "primary",
-            "model": "github-copilot/claude-opus-4.5",
+            "model": "github-copilot/gpt-4.1",
             "tools": {
                 "write": false,
                 "edit": false,
