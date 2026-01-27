@@ -15,14 +15,16 @@ swaync  >/dev/null 2>&1 &
 wl-paste --type text --watch cliphist store >/dev/null 2>&1 &
 
 
-hypridle >/dev/null 2>&1 &
+hypridle >/dev/null 2>&1 & # screen idle management
+
+sunsetr > /dev/null 2>&1 & # night light
 
 
 # Start polkit agent
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
  
 # wallpaper slideshow fow swww
-$HOME/dotfiles/scripts/wallpaper_slideshow.sh $HOME/Pictures/wallpapers 1800 >/dev/null 2>&1 &
-$HOME/.local/bin/battery-watcher.sh >/dev/null 2>&1 &
+$HOME/dotfiles/scripts/wallpaper_slideshow.sh $HOME/Pictures/wallpapers 1800 >/dev/null 2>&1 & 
+$HOME/.local/bin/battery-watcher.sh >/dev/null 2>&1 & 
 
 cliphist wipe
