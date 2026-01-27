@@ -10,7 +10,7 @@ return {
 	},
 	{
 		"folke/sidekick.nvim",
-		enabled = true,
+		enabled = false,
 		event = "InsertEnter",
 		opts = {
 			-- add any options here
