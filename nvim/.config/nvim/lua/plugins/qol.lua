@@ -333,7 +333,7 @@ return {
 		ft = "hurl",
 		opts = {
 			debug = false,
-			show_notification = false,
+			show_notification = true,
 			mode = "split",
 			formatters = {
 				json = { "jq" }, -- Make sure you have install jq in your system, e.g: brew install jq
