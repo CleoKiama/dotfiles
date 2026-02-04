@@ -47,10 +47,29 @@ return {
 	},
 	{
 		"NickvanDyke/opencode.nvim",
-		---@type opencode.Opts
-		opts = {
-			-- Your configuration, if any — see lua/opencode/config.lua
-		},
+		init = function()
+			-- Must be set before plugin loads
+			vim.g.opencode_opts = {
+				provider = {
+					enabled = "tmux",
+					tmux = {
+						options = "-h",
+						focus = false,
+						allow_passthrough = false,
+					},
+				},
+				prompts = {
+					ask_auto = { prompt = "", ask = true, submit = true },
+					ask_this = { prompt = "@this: ", ask = true, submit = true },
+					explain = { prompt = "Explain @this", submit = true },
+					fix = { prompt = "Fix @diagnostics", submit = true },
+					review = { prompt = "Review @this for correctness and readability", submit = true },
+					document = { prompt = "Add comments documenting @this", submit = true },
+					optimize = { prompt = "Optimize @this for performance and readability", submit = true },
+					test = { prompt = "Add tests for @this", submit = true },
+				},
+			}
+		end,
 		config = function()
 			-- Listen for opencode events
 			vim.api.nvim_create_autocmd("User", {
@@ -73,78 +92,11 @@ return {
 				desc = "Ask (freeform)",
 			},
 			{
-				"<leader>ac",
-				function()
-					require("opencode").ask("@cursor: ")
-				end,
-				desc = "Ask about cursor",
-				mode = "n",
-			},
-			{
 				"<leader>as",
 				function()
-					require("opencode").ask("@selection: ")
+					require("opencode").select()
 				end,
-				desc = "Ask about selection",
-				mode = "v",
-			},
-
-			-- Session management
-			{
-				"<leader>an",
-				function()
-					require("opencode").command("session_new")
-				end,
-				desc = "New session",
-			},
-
-			-- Output & prompts
-			{
-				"<leader>ap",
-				function()
-					require("opencode").select_prompt()
-				end,
-				desc = "Select prompt",
-				mode = { "n", "v" },
-			},
-			{
-				"<leader>ae",
-				function()
-					require("opencode").prompt("Explain @cursor")
-				end,
-				desc = "Explain code near cursor",
-			},
-
-			-- Messages
-			{
-				"<leader>ay",
-				function()
-					require("opencode").command("messages_copy")
-				end,
-				desc = "Copy last message",
-			},
-			{
-				"<S-C-u>",
-				function()
-					require("opencode").command("messages_half_page_up")
-				end,
-				desc = "Scroll messages up",
-			},
-			{
-				"<S-C-d>",
-				function()
-					require("opencode").command("messages_half_page_down")
-				end,
-				desc = "Scroll messages down",
-			},
-
-			-- Toggle
-			{
-				"<leader>at",
-				function()
-					require("opencode").toggle()
-				end,
-				desc = "Toggle embedded opencode",
+				desc = "Select prompt (auto-submit)",
 			},
 		},
 	},
