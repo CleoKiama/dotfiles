@@ -87,9 +87,22 @@ return {
 			{
 				"<leader>aa",
 				function()
-					require("opencode").ask()
+					require("opencode").ask("@this: ", {
+						submit = true,
+					})
 				end,
 				desc = "Ask (freeform)",
+				mode = { "n", "x" },
+			},
+			{
+				"<leader>aq",
+				function()
+					require("opencode").ask("@this: ", {
+						submit = false,
+					})
+				end,
+				desc = "Ask (freeform).Don't auto submit",
+				mode = { "n", "x" },
 			},
 			{
 				"<leader>as",
@@ -97,6 +110,39 @@ return {
 					require("opencode").select()
 				end,
 				desc = "Select prompt (auto-submit)",
+				mode = { "n", "x" },
+			},
+			{
+				"go",
+				function()
+					return require("opencode").operator("@this ")
+				end,
+				desc = "Add range to opencode",
+				mode = { "n", "x" },
+			},
+			{
+				"goo",
+				function()
+					return require("opencode").operator("@this ") .. "_"
+				end,
+				desc = "Add line to opencode",
+				mode = { "n", "x" },
+			},
+			{
+				"<S-C-u>",
+				function()
+					require("opencode").command("session.half.page.up")
+				end,
+				desc = "Scroll opencode up",
+				mode = { "n" },
+			},
+			{
+				"<S-C-d>",
+				function()
+					require("opencode").command("session.half.page.down")
+				end,
+				desc = "Scroll opencode down",
+				mode = { "n" },
 			},
 		},
 	},
