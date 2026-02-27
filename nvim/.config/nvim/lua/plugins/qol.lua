@@ -335,6 +335,9 @@ return {
 			debug = false,
 			show_notification = true,
 			mode = "split",
+			popup_position = "50%",
+			-- split_position = "bottom",
+			split_position = "right",
 			formatters = {
 				json = { "jq" }, -- Make sure you have install jq in your system, e.g: brew install jq
 				html = {
@@ -364,6 +367,16 @@ return {
 			{ "<localleader>hv", "<cmd>HurlVerbose<CR>", desc = "Hurl verbose mode" },
 			{ "<localleader>hl", "<cmd>HurlShowLastResponse<CR>", desc = "Hurl last response" },
 			{ "<localleader>hV", "<cmd>HurlVeryVerbose<CR>", desc = "Hurl very verbose mode" },
+			{
+				"<localleader>hp",
+				function()
+					local config = _HURL_GLOBAL_CONFIG
+					config.split_position = config.split_position == "right" and "bottom" or "right"
+					local pos = config.split_position
+					vim.notify("Hurl split: " .. pos, vim.log.levels.INFO)
+				end,
+				desc = "Hurl toggle split position",
+			},
 			{
 				"<localleader>h",
 				":HurlRunner<CR>",
