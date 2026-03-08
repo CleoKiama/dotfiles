@@ -135,3 +135,6 @@ vim.api.nvim_create_autocmd("BufRead", {
 -- vimux settings
 g.VimuxHeight = "40%"
 g.VimuxOrientation = "h"
+
+-- disable logs
+vim.lsp.set_log_level("OFF")

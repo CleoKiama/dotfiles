@@ -47,7 +47,7 @@ map("n", "<leader>x", function()
 end, { desc = "buffer close" })
 
 -- toggleable terminal
-map({ "n", "t" }, "<A-i>", function()
+map({ "n", "t" }, "<A-t>", function()
 	require("nvchad.term").toggle({ pos = "float", id = "floatTerm" })
 end, { desc = "terminal toggle floating term" })
 

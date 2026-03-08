@@ -105,7 +105,7 @@ return {
 				mode = { "n", "x" },
 			},
 			{
-				"<leader>as",
+				"<leader>ao",
 				function()
 					require("opencode").select()
 				end,
@@ -113,23 +113,15 @@ return {
 				mode = { "n", "x" },
 			},
 			{
-				"go",
+				"<leader>as",
 				function()
-					return require("opencode").operator("@this ")
+					require("opencode").command("prompt.submit")
 				end,
-				desc = "Add range to opencode",
-				mode = { "n", "x" },
+				desc = "Opencode prompt submit",
+				mode = { "n" },
 			},
 			{
-				"goo",
-				function()
-					return require("opencode").operator("@this ") .. "_"
-				end,
-				desc = "Add line to opencode",
-				mode = { "n", "x" },
-			},
-			{
-				"<S-C-u>",
+				"<C-x>u",
 				function()
 					require("opencode").command("session.half.page.up")
 				end,
@@ -137,7 +129,7 @@ return {
 				mode = { "n" },
 			},
 			{
-				"<S-C-d>",
+				"<C-x>d",
 				function()
 					require("opencode").command("session.half.page.down")
 				end,
