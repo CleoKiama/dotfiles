@@ -1,3 +1,5 @@
+vim.lsp.set_log_level("OFF")
+
 local M = {}
 local map = vim.keymap.set
 
@@ -100,10 +102,10 @@ M.setup = function()
 		"jsonls",
 		"yamlls",
 		"pylsp",
-		"ts_ls",
-		-- "tsgo",
+		"gopls",
+		-- "ts_ls",
+		"tsgo",
 		"tailwindcss",
-		-- "copilot",
 	}
 
 	for _, server in ipairs(servers) do
