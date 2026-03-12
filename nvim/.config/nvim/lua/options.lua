@@ -137,4 +137,4 @@ g.VimuxHeight = "40%"
 g.VimuxOrientation = "h"
 
 -- disable logs
-vim.lsp.set_log_level("OFF")
+vim.lsp.set_log_level("ERROR")
