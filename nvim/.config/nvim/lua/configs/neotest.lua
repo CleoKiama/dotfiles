@@ -8,6 +8,7 @@ require("neotest").setup({
 				return vim.fn.getcwd()
 			end,
 		}),
+		require("neotest-golang")(config),
 		-- Removed rustaceanvim.neotest to use vimux for rust tests
 	},
 	discovery = {
