@@ -10,14 +10,13 @@ map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
 map("n", "<leader>e", "<CMD>WinResizerStartResize<CR>", { desc = "[p] Start window resize" })
 
 -- Neotest keybindings
-map("n", "<leader>tr", function()
-	local ft = vim.bo.filetype
-	if ft == "rust" then
-		vim.cmd.RustLsp("testables", "--show-output")
-		return
-	end
+map("n", "<leader>tf", function()
 	require("neotest").run.run(vim.fn.expand("%"))
 end, { desc = "[p] Run current file" })
+
+map("n", "<leader>tn", function()
+	require("neotest").run.run()
+end, { desc = "[p] Run nearest test" })
 
 map("n", "<leader>td", function()
 	require("neotest").run.run({ strategy = "dap" })
@@ -220,3 +219,12 @@ map("n", "k", "gk", { silent = true })
 map("n", "<localleader>tt", function()
 	require("base46").toggle_transparency()
 end, { desc = "Toggle nvim transperancy" })
+
+-- vimux
+map("n", "<leader>cl", function()
+	vim.cmd("VimuxRunLastCommand")
+end, { desc = "Vimux run last command" })
+
+map("n", "<leader>cc", function()
+	vim.cmd("VimuxClearRunnerHistory")
+end, { desc = "Vimux run last command" })
