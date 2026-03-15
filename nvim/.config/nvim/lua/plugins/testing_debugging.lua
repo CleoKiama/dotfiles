@@ -35,6 +35,7 @@ return {
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-neotest/neotest-jest",
+			"fredrikaverpil/neotest-golang",
 		},
 		config = function()
 			require("configs.neotest")
