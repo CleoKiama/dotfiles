@@ -171,7 +171,7 @@ return {
 		cmd = "WinResizerStartResize",
 	},
 	{
-		"ggandor/leap.nvim",
+		url = "https://codeberg.org/andyg/leap.nvim",
 		keys = {
 			{ "s", "<Plug>(leap)", desc = "Leap" },
 		},
