@@ -28,7 +28,7 @@
         // "niri/workspaces",
         // "hyprland/workspaces",
         "custom/l_end",
-        "dwl/window", //mangowc titles
+        // "dwl/window", // Crashes on Hyprland - use hyprland/window instead
         // "hyprland/window",
         // "niri/window",
         "custom/r_end",
@@ -259,7 +259,8 @@
         "max-length": 50
     },
     "dwl/window": {
-        "format": " {title}"
+        "format": " {title}",
+        "(.*)tmux(.*)": "  Dev Env 🔥"
     },
     "ext/workspaces": {
         "format": "{icon}",
@@ -359,7 +360,7 @@
         "escape": true,
         "return-type": "json",
         "exec": "$HOME/dotfiles/scripts/updates.sh",
-        "interval": 86400, // once every day
+        "interval": 28800, // every 8 hours
         "on-click": "$HOME/dotfiles/scripts/install.sh",
         "on-click-right": "$HOME/dotfiles/scripts/updates.sh"
     },
