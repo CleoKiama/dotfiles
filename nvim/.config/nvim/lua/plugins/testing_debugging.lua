@@ -36,6 +36,7 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-neotest/neotest-jest",
 			"fredrikaverpil/neotest-golang",
+			"marilari88/neotest-vitest",
 		},
 		config = function()
 			require("configs.neotest")

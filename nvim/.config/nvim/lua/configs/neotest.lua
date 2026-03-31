@@ -9,7 +9,7 @@ require("neotest").setup({
 			end,
 		}),
 		require("neotest-golang")(config),
-		-- Removed rustaceanvim.neotest to use vimux for rust tests
+		require("neotest-vitest"),
 	},
 	discovery = {
 		enabled = true,
