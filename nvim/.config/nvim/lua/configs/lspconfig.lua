@@ -90,6 +90,24 @@ M.setup = function()
 
 	vim.lsp.enable("lua_ls")
 
+	-- custom gopls config
+	vim.lsp.config("gopls", {
+		on_attach = M.on_attach,
+		capabilities = M.capabilities,
+		on_init = M.on_init,
+		settings = {
+			gopls = {
+				staticcheck = true,
+				analyses = {
+					unusedparams = true,
+					shadow = true,
+				},
+			},
+		},
+	})
+
+	vim.lsp.enable("gopls")
+
 	-- Setup additional servers
 	local servers = {
 		"html",
@@ -102,7 +120,6 @@ M.setup = function()
 		"jsonls",
 		"yamlls",
 		"pylsp",
-		"gopls",
 		-- "ts_ls",
 		"tsgo",
 		"tailwindcss",

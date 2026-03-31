@@ -46,7 +46,7 @@ local options = {
 		gleam = { "lsp" },
 		sql = { "sql_formatter" },
 		sh = { "beautysh" },
-		go = { "goimports", "lsp" },
+		go = { "goimports" },
 		rust = { "rustfmt" },
 	},
 	format_on_save = {
