@@ -53,9 +53,7 @@ return {
 			-- Equivalent to: let test#strategy = "dispatch"
 			vim.g["test#strategy"] = "vimux"
 
-			-- Optional: limit loaded runners (if you want to lazy-load specific ones)
-			-- only load the Rust cargo test runner
-			vim.g["test#enabled_runners"] = { "rust#cargotest" }
+			vim.g["test#enabled_runners"] = { "rust#cargotest", "javascript#jest", "javascript#vitest" }
 		end,
 		keys = {
 			{
