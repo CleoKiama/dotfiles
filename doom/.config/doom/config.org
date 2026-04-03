@@ -1,5 +1,19 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+#+TITLE: Doom Emacs Configuration
+#+AUTHOR: Cleo
+#+PROPERTY: header-args:emacs-lisp :tangle config.el
 
+
+* Preamble
+Lexical binding is enabled for performance and correctness.
+#+BEGIN_SRC emacs-lisp
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+#+END_SRC
+
+* Org Directory Structure
+All org files live under =/data/org=. We define a root variable and
+derive all other paths from it so there's only one place to change.
+
+#+BEGIN_SRC emacs-lisp
 (defvar my/org-root "/data/org"
   "Root directory for all org files.")
 
@@ -12,17 +26,36 @@
 (setq org-directory (concat my/org-root "/"))
 (setq org-agenda-files (list my/org-gtd))
 (setq org-attach-id-dir my/org-attachments)
+#+END_SRC
 
+* Ui
+** Theme
+#+BEGIN_SRC emacs-lisp
 (setq doom-theme 'doom-one)
+#+END_SRC
 
+** Line Numbers
+=t= gives absolute numbers. Change to ='relative= for Vim-style relative numbers.
+#+BEGIN_SRC emacs-lisp
 (setq display-line-numbers-type t)
+#+END_SRC
 
+* Evil Mode
+** Escape Sequence
+Map =jj= to Escape in insert mode via =evil-escape=.
+The 0.2s delay is intentional — too short and typing "jump" triggers it accidentally.
+#+BEGIN_SRC emacs-lisp
 (after! evil-escape
   (setq evil-escape-key-sequence "jj"
         evil-escape-delay 0.2
         evil-escape-unordered-key-sequence t)
   (evil-escape-mode 1))
+#+END_SRC
 
+* GTD / Org Agenda
+** Capture Templates
+Three templates: personal todos, meetings, and contacts.
+#+BEGIN_SRC emacs-lisp
 (after! org
   (setq org-agenda-files (list my/org-gtd (concat my/org-notes "journal/")))
   (setq org-capture-templates
@@ -41,22 +74,42 @@
 :BIRTHDAY: %^{Birthday (YYYY-MM-DD)}
 :NOTE:     %^{Note}
 :END:" :prepend t)))
+#+END_SRC
 
-(setq org-archive-location (concat my/org-archive "%s_archive::"))
+** Archiving
+#+BEGIN_SRC emacs-lisp
+  (setq org-archive-location (concat my/org-archive "%s_archive::"))
+#+END_SRC
 
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)")))
+** TODO Keywords
+Simple flow: =TODO= → =NEXT= → =WAITING= → =DONE=.
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)")))
+#+END_SRC
 
-(defun log-todo-next-creation-date (&rest ignore)
-  "Log NEXT creation time in the property drawer under the key ACTIVATED."
-  (when (and (string= (org-get-todo-state) "NEXT")
-             (not (org-entry-get nil "ACTIVATED")))
-    (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
-(add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
+** NEXT Activation Timestamp
+Automatically stamp a property =ACTIVATED= when a task moves to =NEXT=,
+so you can track how long something has been your active focus.
+#+BEGIN_SRC emacs-lisp
+  (defun log-todo-next-creation-date (&rest ignore)
+    "Log NEXT creation time in the property drawer under the key ACTIVATED."
+    (when (and (string= (org-get-todo-state) "NEXT")
+               (not (org-entry-get nil "ACTIVATED")))
+      (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
+  (add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
+#+END_SRC
 
-(setq org-log-done 'time)
+** Done Logging
+#+BEGIN_SRC emacs-lisp
+  (setq org-log-done 'time)
+#+END_SRC
 
-(setq org-tag-alist '(
+** Tags
+Context tags (=@=) are mutually exclusive within their group.
+Energy tags (=#=) are freeform.
+#+BEGIN_SRC emacs-lisp
+  (setq org-tag-alist '(
     (:startgroup . nil)
     ("@home"     . ?h)
     ("@work"     . ?w)
@@ -70,7 +123,12 @@
     ("#quick"    . ?q)
     ("#low"      . ?l)))
 )
+#+END_SRC
 
+* Org-Roam (Zettelkasten)
+** Directory & Capture Templates
+Five note types: fleeting, media, atlas (MOC), permanent slipbox, and people.
+#+BEGIN_SRC emacs-lisp
 (after! org-roam
   (setq org-roam-directory my/org-notes)
   (setq org-roam-dailies-directory "journal/")
@@ -95,8 +153,11 @@
            :target (file+head "people/${slug}.org"
                               "#+title: ${title}\n#+filetags: :people:\n:PROPERTIES:\n:CREATED:  %U\n:EMAIL:    \n:ROLE:     \n:MET:      \n:END:\n\n* Notes\n\n* Conversations\n\n* Ideas & Connections")
            :unnarrowed t)))
+#+END_SRC
 
-(setq org-roam-dailies-capture-templates
+** Daily Journal Templates
+#+BEGIN_SRC emacs-lisp
+  (setq org-roam-dailies-capture-templates
         '(("d" "default" entry
            "* %U %?"
            :target (file+head "%<%Y-%m-%d>.org"
@@ -107,8 +168,12 @@
                               ":PROPERTIES:\n:CREATED: %U\n:END:\n#+title: Weekly Review %<%Y-W%W>\n#+filetags: :journal:review:")
            :unnarrowed t)))
 )
+#+END_SRC
 
+* Org Contacts
+#+BEGIN_SRC emacs-lisp
 (after! org-contacts
   (setq org-contacts-files (list (concat my/org-gtd "contacts.org")))
   (setq org-agenda-include-diary t)
   (setq org-contacts-birthday-property "BIRTHDAY"))
+#+END_SRC
