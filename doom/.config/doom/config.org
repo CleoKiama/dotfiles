@@ -34,6 +34,13 @@ derive all other paths from it so there's only one place to change.
 (setq doom-theme 'doom-one)
 #+END_SRC
 
+** Font
+Using JetBrains Mono as the main font. Variable pitch is for prose/org buffers.
+#+BEGIN_SRC emacs-lisp
+(setq doom-font (font-spec :family "Hasklug Nerd Font Mono Med" :size 15)
+      doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 15))
+#+END_SRC
+
 ** Line Numbers
 =t= gives absolute numbers. Change to ='relative= for Vim-style relative numbers.
 #+BEGIN_SRC emacs-lisp
@@ -124,6 +131,13 @@ Energy tags (=#=) are freeform.
     ("#low"      . ?l)))
 )
 #+END_SRC
+** Drawers for Clean Logging
+Store all clock entries and state changes in the =:LOGBOOK:= drawer
+to keep task headings clean and collapsible.
+#+BEGIN_SRC emacs-lisp
+  (setq org-log-into-drawer t)      ; State changes go into LOGBOOK
+  (setq org-clock-into-drawer t)    ; Clock entries go into LOGBOOK
+#+END_SRC
 
 * Org-Roam (Zettelkasten)
 ** Directory & Capture Templates
@@ -176,4 +190,18 @@ Five note types: fleeting, media, atlas (MOC), permanent slipbox, and people.
   (setq org-contacts-files (list (concat my/org-gtd "contacts.org")))
   (setq org-agenda-include-diary t)
   (setq org-contacts-birthday-property "BIRTHDAY"))
+#+END_SRC
+
+* Org Download
+#+BEGIN_SRC emacs-lisp
+(after! org-download
+  (setq org-download-method 'attach))
+#+END_SRC
+
+
+* Spell Checking
+Use aspell as the spell checker backend.
+install aspell with pacman
+#+BEGIN_SRC emacs-lisp
+(setq ispell-program-name "aspell")
 #+END_SRC

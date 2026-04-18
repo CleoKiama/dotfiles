@@ -15,6 +15,9 @@
 
 (setq doom-theme 'doom-one)
 
+(setq doom-font (font-spec :family "Hasklug Nerd Font Mono Med" :size 15)
+      doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 15))
+
 (setq display-line-numbers-type t)
 
 (after! evil-escape
@@ -71,6 +74,9 @@
     ("#low"      . ?l)))
 )
 
+(setq org-log-into-drawer t)      ; State changes go into LOGBOOK
+(setq org-clock-into-drawer t)    ; Clock entries go into LOGBOOK
+
 (after! org-roam
   (setq org-roam-directory my/org-notes)
   (setq org-roam-dailies-directory "journal/")
@@ -112,3 +118,8 @@
   (setq org-contacts-files (list (concat my/org-gtd "contacts.org")))
   (setq org-agenda-include-diary t)
   (setq org-contacts-birthday-property "BIRTHDAY"))
+
+(after! org-download
+  (setq org-download-method 'attach))
+
+(setq ispell-program-name "aspell")

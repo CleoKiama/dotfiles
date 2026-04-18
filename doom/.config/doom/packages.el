@@ -55,3 +55,4 @@
 
 
 (package! org-contacts)
+(package! org-download)
