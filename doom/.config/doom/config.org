@@ -195,7 +195,37 @@ Five note types: fleeting, media, atlas (MOC), permanent slipbox, and people.
 * Org Download
 #+BEGIN_SRC emacs-lisp
 (after! org-download
-  (setq org-download-method 'attach))
+  ;; uses org attach under the hood
+  (setq org-download-method 'attach)
+  ;; Screenshot method for wl-clipboard (Wayland)
+  ;; wl-paste outputs the image directly to stdout
+  (setq org-download-screenshot-method "wl-paste > %s")
+
+  ;; Image directory settings (when not using 'attach method)
+  ;; These are less relevant with 'attach, but good to have
+  ;; (setq org-download-image-dir "./images")
+
+  ;; Customize the heading for images
+  (setq org-download-heading-lvl nil)  ; Don't create a heading
+
+  ;; Display inline images after download
+  (setq org-download-display-inline-images t)
+
+  ;; Annotate images with timestamps
+  (setq org-download-timestamp "_%Y%m%d_%H%M%S")
+
+  ;; Optional: Edit screenshot after pasting (useful for annotations)
+  ;; Requires an image editor like swappy
+  (setq org-download-edit-cmd "swappy -f %s")
+
+   ;; Key bindings under SPC n i (notes insert/image)
+  (map! :leader
+        :prefix ("n i" . "insert image")
+        :desc "Paste clipboard image" "p" #'org-download-clipboard
+        :desc "Download from URL" "u" #'org-download-yank
+        :desc "Delete image at point" "d" #'org-download-delete))
+
+  )
 #+END_SRC
 
 
