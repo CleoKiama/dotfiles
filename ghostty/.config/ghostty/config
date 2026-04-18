@@ -28,11 +28,11 @@ font-feature = onum
 bold-is-bright = true
 
 adjust-underline-position = 6
-adjust-cell-width = -8%
+adjust-cell-width = 0%
 # normal for my laptop screen
-adjust-cell-height = 12%
-# union tv 
-#adjust-cell-height = 30%
+adjust-cell-height = 20%
+# bigger union tv 
+#adjust-cell-height = 8%
 adjust-underline-thickness = 40%
 adjust-cursor-thickness = 150%
 
