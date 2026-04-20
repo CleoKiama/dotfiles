@@ -280,3 +280,7 @@
         :desc "Paste clipboard image" "p" #'org-download-clipboard
         :desc "Download from URL" "u" #'org-download-yank
         :desc "Delete image at point" "d" #'org-download-delete))
+
+(use-package! wakatime-mode
+  :config
+  (global-wakatime-mode))

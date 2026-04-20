@@ -384,3 +384,10 @@ Desktop notifications for meetings and deadlines.
 #+END_SRC
 
 
+
+* Wakatime
+#+BEGIN_SRC emacs-lisp
+(use-package! wakatime-mode
+  :config
+  (global-wakatime-mode))
+#+END_SRC
