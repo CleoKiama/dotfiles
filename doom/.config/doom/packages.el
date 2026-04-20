@@ -54,11 +54,6 @@
 ;; (unpin! t)
 
 
-;; Supercharge org mode
 (package! org-contacts)
 (package! org-download)
-(package! org-super-agenda)
-(package! org-modern)
-(package! org-roam-ui)
-(package! org-wild-notifier)
-(package! org-ql)
+(package! wakatime-mode)
