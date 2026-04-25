@@ -155,6 +155,9 @@
 
 (setq ispell-program-name "aspell")
 
+(after! org
+  (setq org-src-fontify-natively t))
+
 (use-package! org-super-agenda
   :after org-agenda
   :config

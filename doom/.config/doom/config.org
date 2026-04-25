@@ -232,6 +232,13 @@ install aspell with pacman
 (setq ispell-program-name "aspell")
 #+END_SRC
 
+* Org Code Block Syntax Highlighting
+Enable native fontification for Org `#+BEGIN_SRC` blocks.
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (setq org-src-fontify-natively t))
+#+END_SRC
+
 
 * Supercharged Org Mode
 ** Org Super agenda
@@ -383,7 +390,8 @@ Desktop notifications for meetings and deadlines.
         :desc "Delete image at point" "d" #'org-download-delete))
 #+END_SRC
 
-
+#+RESULTS:
+: t
 
 * Wakatime
 #+BEGIN_SRC emacs-lisp
