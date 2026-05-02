@@ -63,3 +63,5 @@
 (package! org-roam-ui)
 (package! org-wild-notifier)
 (package! wakatime-mode)
+(package! linear-emacs
+  :recipe (:host github :repo "anegg0/linear-emacs" :files ("*.el")))
