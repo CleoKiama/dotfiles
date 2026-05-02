@@ -61,67 +61,67 @@
             - State \"DONE\" from \"TODO\" %U
             :END:" :prepend t)))
 
-  (setq org-archive-location (concat my/org-archive "%s_archive::"))
+(setq org-archive-location (concat my/org-archive "%s_archive::"))
 
-  (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-        (sequence "SOMEDAY(s)" "|" "DONE(d)"))
-      )
+(setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+      (sequence "SOMEDAY(s)" "|" "DONE(d)"))
+    )
 
 (setq org-use-tag-inheritance t)
 
-  (defun log-todo-state-change (&rest args)
-    "Log timestamps for various todo states."
-    (let ((state (org-get-todo-state)))
-      (cond
-       ;; When moving to NEXT, log ACTIVATED
-       ((and (string= state "NEXT")
-             (not (org-entry-get nil "ACTIVATED")))
-        (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]")))
+(defun log-todo-state-change (&rest args)
+  "Log timestamps for various todo states."
+  (let ((state (org-get-todo-state)))
+    (cond
+     ;; When moving to NEXT, log ACTIVATED
+     ((and (string= state "NEXT")
+           (not (org-entry-get nil "ACTIVATED")))
+      (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]")))
 
-       ;; When @waiting tag is added, log WAITING_SINCE
-       ((and (member "@waiting" tags)
-           (not (org-entry-get nil "WAITING_SINCE")))
-       (org-entry-put nil "WAITING_SINCE" (format-time-string "[%Y-%m-%d]")))
+     ;; When @waiting tag is added, log WAITING_SINCE
+     ((and (member "@waiting" tags)
+         (not (org-entry-get nil "WAITING_SINCE")))
+     (org-entry-put nil "WAITING_SINCE" (format-time-string "[%Y-%m-%d]")))
 
-        ;; When @waiting tag is removed, clear WAITING_SINCE
-       ((and (org-entry-get nil "WAITING_SINCE")
-           (not (member "@waiting" tags)))
-         (org-entry-put nil "WAITING_SINCE" nil)))))
+      ;; When @waiting tag is removed, clear WAITING_SINCE
+     ((and (org-entry-get nil "WAITING_SINCE")
+         (not (member "@waiting" tags)))
+       (org-entry-put nil "WAITING_SINCE" nil)))))
 
-  (add-hook 'org-after-todo-state-change-hook #'log-todo-state-change)
-  (add-hook 'org-after-tag-change-hook #'log-todo-state-change) ;; Also trigger on tag changes!
+(add-hook 'org-after-todo-state-change-hook #'log-todo-state-change)
+(add-hook 'org-after-tag-change-hook #'log-todo-state-change) ;; Also trigger on tag changes!
 
-  ;; Auto-add CREATED property on capture (via template handles this)
-  ;; But also ensure any new TODO gets a CREATED timestamp
-  (defun log-task-creation-time ()
-    "Log CREATED timestamp when a new TODO is created."
-    (when (and (string= (org-get-todo-state) "TODO")
-               (not (org-entry-get nil "CREATED")))
-      (org-entry-put nil "CREATED" (format-time-string "[%Y-%m-%d]"))))
+;; Auto-add CREATED property on capture (via template handles this)
+;; But also ensure any new TODO gets a CREATED timestamp
+(defun log-task-creation-time ()
+  "Log CREATED timestamp when a new TODO is created."
+  (when (and (string= (org-get-todo-state) "TODO")
+             (not (org-entry-get nil "CREATED")))
+    (org-entry-put nil "CREATED" (format-time-string "[%Y-%m-%d]"))))
 
-  (add-hook 'org-after-todo-state-change-hook #'log-task-creation-time)
+(add-hook 'org-after-todo-state-change-hook #'log-task-creation-time)
 
-  (setq org-log-done 'time)
+(setq org-log-done 'time)
 
-  (setq org-tag-alist '(
-    (:startgroup . nil)
-    ("@home"     . ?h)
-    ("@work"     . ?w)
-    ("@computer" . ?c)
-    ("@phone"    . ?p)
-    ("@errands"  . ?r)
-    ("@email"    . ?e)
-    (:endgroup   . nil)
-    ("@waiting"  . ?W)
-    ("@cancelled"  . ?x)
-    ;; effort required
-    ("#deep"     . ?d) ; deep work
-    ("#quick"    . ?q)
-    ("#low"      . ?l))) ; low effort
+(setq org-tag-alist '(
+  (:startgroup . nil)
+  ("@home"     . ?h)
+  ("@work"     . ?w)
+  ("@computer" . ?c)
+  ("@phone"    . ?p)
+  ("@errands"  . ?r)
+  ("@email"    . ?e)
+  (:endgroup   . nil)
+  ("@waiting"  . ?W)
+  ("@cancelled"  . ?x)
+  ;; effort required
+  ("#deep"     . ?d) ; deep work
+  ("#quick"    . ?q)
+  ("#low"      . ?l))) ; low effort
 
-  (setq org-log-into-drawer t)      ; State changes go into LOGBOOK
-  (setq org-clock-into-drawer t)    ; Clock entries go into LOGBOOK
+(setq org-log-into-drawer t)      ; State changes go into LOGBOOK
+(setq org-clock-into-drawer t)    ; Clock entries go into LOGBOOK
 
 (after! org-roam
   (setq org-roam-directory my/org-notes)
@@ -148,7 +148,7 @@
                               "#+title: ${title}\n#+filetags: :people:\n:PROPERTIES:\n:CREATED:  %U\n:EMAIL:    \n:ROLE:     \n:MET:      \n:END:\n\n* Notes\n\n* Conversations\n\n* Ideas & Connections")
            :unnarrowed t)))
 
-  (setq org-roam-dailies-capture-templates
+(setq org-roam-dailies-capture-templates
         '(("d" "default" entry
            "* %U %?"
            :target (file+head "%<%Y-%m-%d>.org"
@@ -208,6 +208,31 @@
             :order 11)
           ))
   )
+
+(setq org-agenda-custom-commands
+      '(("d" "Daily Focus"
+         ((agenda "" ((org-agenda-span 1)         ;; Just today
+                      (org-agenda-start-day nil))) ;; Start from today
+          (todo "NEXT"                             ;; Show NEXT tasks
+                ((org-agenda-overriding-header "🎯 Active Tasks")))))
+
+        ("w" "Weekly Review"
+         ((todo "WAITING"
+                ((org-agenda-overriding-header "⏳ Waiting On")))
+          (todo "SOMEDAY"
+                ((org-agenda-overriding-header "🌙 Someday/Maybe")))
+          (tags "+@cancelled"
+                ((org-agenda-overriding-header "❌ Cancelled (to archive?)")))))
+
+        ("h" "@home Context"
+         ((tags-todo "+@home-@waiting-@cancelled"
+                     ((org-agenda-overriding-header "🏠 Home Actions")))))
+
+        ("W" "Work Dashboard"
+         ((tags-todo "+@work-@waiting-@cancelled"
+                     ((org-agenda-overriding-header "💼 Work Actions")))
+          (tags "+MEETING"
+                ((org-agenda-overriding-header "📅 Meetings")))))))
 
 (use-package! org-modern
   :after org

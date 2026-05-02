@@ -299,6 +299,33 @@ Enable native fontification for Org `#+BEGIN_SRC` blocks.
   )
 #+END_SRC
 
+** org custom agenda views
+#+begin_src emacs-lisp
+(setq org-agenda-custom-commands
+      '(("d" "Daily Focus"
+         ((agenda "" ((org-agenda-span 1)         ;; Just today
+                      (org-agenda-start-day nil))) ;; Start from today
+          (todo "NEXT"                             ;; Show NEXT tasks
+                ((org-agenda-overriding-header "🎯 Active Tasks")))))
+
+        ("w" "Weekly Review"
+         ((todo "WAITING"
+                ((org-agenda-overriding-header "⏳ Waiting On")))
+          (todo "SOMEDAY"
+                ((org-agenda-overriding-header "🌙 Someday/Maybe")))
+          (tags "+@cancelled"
+                ((org-agenda-overriding-header "❌ Cancelled (to archive?)")))))
+
+        ("h" "@home Context"
+         ((tags-todo "+@home-@waiting-@cancelled"
+                     ((org-agenda-overriding-header "🏠 Home Actions")))))
+
+        ("W" "Work Dashboard"
+         ((tags-todo "+@work-@waiting-@cancelled"
+                     ((org-agenda-overriding-header "💼 Work Actions")))
+          (tags "+MEETING"
+                ((org-agenda-overriding-header "📅 Meetings")))))))
+#+end_src
 
 ** org-modern
 Modernizes Org buffers with beautiful styling.
