@@ -106,11 +106,19 @@ Four templates: personal todos, meetings, contacts, and habits.
 #+END_SRC
 
 ** Keywords TODO states
-Simple flow: =TODO= → =NEXT= → =WAITING= → =DONE=.
+Simple flow: =TODO= → =NEXT=  → =DONE=.
 #+BEGIN_SRC emacs-lisp
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "CANCELLED(c)" "|" "DONE(d)")))
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+        (sequence "SOMEDAY(s)" "|" "DONE(d)"))
+      )
 #+END_SRC
+
+*** Enable tag inheritance
+#+BEGIN_SRC emacs-lisp
+(setq org-use-tag-inheritance t)
+#+END_SRC
+
 
 ** Activation Timestamp
 Automatically stamp a property =ACTIVATED= when a task moves to =NEXT=,
@@ -124,16 +132,19 @@ so you can track how long something has been your active focus.
        ((and (string= state "NEXT")
              (not (org-entry-get nil "ACTIVATED")))
         (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]")))
-       ;; When moving to WAITING, log WAITING_SINCE
-       ((and (string= state "WAITING")
-             (not (org-entry-get nil "WAITING_SINCE")))
-        (org-entry-put nil "WAITING_SINCE" (format-time-string "[%Y-%m-%d]")))
-       ;; When moving FROM WAITING, clear WAITING_SINCE
+
+       ;; When @waiting tag is added, log WAITING_SINCE
+       ((and (member "@waiting" tags)
+           (not (org-entry-get nil "WAITING_SINCE")))
+       (org-entry-put nil "WAITING_SINCE" (format-time-string "[%Y-%m-%d]")))
+
+        ;; When @waiting tag is removed, clear WAITING_SINCE
        ((and (org-entry-get nil "WAITING_SINCE")
-             (not (string= state "WAITING")))
-        (org-entry-put nil "WAITING_SINCE" nil)))))
+           (not (member "@waiting" tags)))
+         (org-entry-put nil "WAITING_SINCE" nil)))))
 
   (add-hook 'org-after-todo-state-change-hook #'log-todo-state-change)
+  (add-hook 'org-after-tag-change-hook #'log-todo-state-change) ;; Also trigger on tag changes!
 
   ;; Auto-add CREATED property on capture (via template handles this)
   ;; But also ensure any new TODO gets a CREATED timestamp
@@ -161,15 +172,15 @@ Energy tags (=#=) are freeform.
     ("@work"     . ?w)
     ("@computer" . ?c)
     ("@phone"    . ?p)
-    ("@errands"  . ?e)
-    ("@email"    . ?m)
+    ("@errands"  . ?r)
+    ("@email"    . ?e)
     (:endgroup   . nil)
     ("@waiting"  . ?W)
-    ("#someday"  . ?S)
+    ("@cancelled"  . ?x)
     ;; effort required
     ("#deep"     . ?d) ; deep work
     ("#quick"    . ?q)
-     ("#low"      . ?l))) ; low effort
+    ("#low"      . ?l))) ; low effort
 #+END_SRC
 ** Drawers for Clean Logging
 Store all clock entries and state changes in the =:LOGBOOK:= drawer
@@ -270,15 +281,15 @@ Enable native fontification for Org `#+BEGIN_SRC` blocks.
            :order 4)
 
           (:name "⏳ WAITING"
-           :todo "WAITING"
-           :order 8)
+              :tag "@waiting"   ;; Changed from :todo
+             :order 8)
 
           (:name "📥 TODO (Later)"
             :todo "TODO"
             :order 9)
 
           (:name "❌ CANCELLED"
-            :todo "CANCELLED"
+            :tag "@cancelled"
             :order 10)
 
           (:name "🌙 SOMEDAY"

@@ -61,60 +61,67 @@
             - State \"DONE\" from \"TODO\" %U
             :END:" :prepend t)))
 
-(setq org-archive-location (concat my/org-archive "%s_archive::"))
+  (setq org-archive-location (concat my/org-archive "%s_archive::"))
 
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "CANCELLED(c)" "|" "DONE(d)")))
+  (setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+        (sequence "SOMEDAY(s)" "|" "DONE(d)"))
+      )
 
-(defun log-todo-state-change (&rest args)
-  "Log timestamps for various todo states."
-  (let ((state (org-get-todo-state)))
-    (cond
-     ;; When moving to NEXT, log ACTIVATED
-     ((and (string= state "NEXT")
-           (not (org-entry-get nil "ACTIVATED")))
-      (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]")))
-     ;; When moving to WAITING, log WAITING_SINCE
-     ((and (string= state "WAITING")
+(setq org-use-tag-inheritance t)
+
+  (defun log-todo-state-change (&rest args)
+    "Log timestamps for various todo states."
+    (let ((state (org-get-todo-state)))
+      (cond
+       ;; When moving to NEXT, log ACTIVATED
+       ((and (string= state "NEXT")
+             (not (org-entry-get nil "ACTIVATED")))
+        (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]")))
+
+       ;; When @waiting tag is added, log WAITING_SINCE
+       ((and (member "@waiting" tags)
            (not (org-entry-get nil "WAITING_SINCE")))
-      (org-entry-put nil "WAITING_SINCE" (format-time-string "[%Y-%m-%d]")))
-     ;; When moving FROM WAITING, clear WAITING_SINCE
-     ((and (org-entry-get nil "WAITING_SINCE")
-           (not (string= state "WAITING")))
-      (org-entry-put nil "WAITING_SINCE" nil)))))
+       (org-entry-put nil "WAITING_SINCE" (format-time-string "[%Y-%m-%d]")))
 
-(add-hook 'org-after-todo-state-change-hook #'log-todo-state-change)
+        ;; When @waiting tag is removed, clear WAITING_SINCE
+       ((and (org-entry-get nil "WAITING_SINCE")
+           (not (member "@waiting" tags)))
+         (org-entry-put nil "WAITING_SINCE" nil)))))
 
-;; Auto-add CREATED property on capture (via template handles this)
-;; But also ensure any new TODO gets a CREATED timestamp
-(defun log-task-creation-time ()
-  "Log CREATED timestamp when a new TODO is created."
-  (when (and (string= (org-get-todo-state) "TODO")
-             (not (org-entry-get nil "CREATED")))
-    (org-entry-put nil "CREATED" (format-time-string "[%Y-%m-%d]"))))
+  (add-hook 'org-after-todo-state-change-hook #'log-todo-state-change)
+  (add-hook 'org-after-tag-change-hook #'log-todo-state-change) ;; Also trigger on tag changes!
 
-(add-hook 'org-after-todo-state-change-hook #'log-task-creation-time)
+  ;; Auto-add CREATED property on capture (via template handles this)
+  ;; But also ensure any new TODO gets a CREATED timestamp
+  (defun log-task-creation-time ()
+    "Log CREATED timestamp when a new TODO is created."
+    (when (and (string= (org-get-todo-state) "TODO")
+               (not (org-entry-get nil "CREATED")))
+      (org-entry-put nil "CREATED" (format-time-string "[%Y-%m-%d]"))))
 
-(setq org-log-done 'time)
+  (add-hook 'org-after-todo-state-change-hook #'log-task-creation-time)
 
-(setq org-tag-alist '(
-  (:startgroup . nil)
-  ("@home"     . ?h)
-  ("@work"     . ?w)
-  ("@computer" . ?c)
-  ("@phone"    . ?p)
-  ("@errands"  . ?e)
-  ("@email"    . ?m)
-  (:endgroup   . nil)
-  ("@waiting"  . ?W)
-  ("#someday"  . ?S)
-  ;; effort required
-  ("#deep"     . ?d) ; deep work
-  ("#quick"    . ?q)
-   ("#low"      . ?l))) ; low effort
+  (setq org-log-done 'time)
 
-(setq org-log-into-drawer t)      ; State changes go into LOGBOOK
-(setq org-clock-into-drawer t)    ; Clock entries go into LOGBOOK
+  (setq org-tag-alist '(
+    (:startgroup . nil)
+    ("@home"     . ?h)
+    ("@work"     . ?w)
+    ("@computer" . ?c)
+    ("@phone"    . ?p)
+    ("@errands"  . ?r)
+    ("@email"    . ?e)
+    (:endgroup   . nil)
+    ("@waiting"  . ?W)
+    ("@cancelled"  . ?x)
+    ;; effort required
+    ("#deep"     . ?d) ; deep work
+    ("#quick"    . ?q)
+    ("#low"      . ?l))) ; low effort
+
+  (setq org-log-into-drawer t)      ; State changes go into LOGBOOK
+  (setq org-clock-into-drawer t)    ; Clock entries go into LOGBOOK
 
 (after! org-roam
   (setq org-roam-directory my/org-notes)
@@ -141,7 +148,7 @@
                               "#+title: ${title}\n#+filetags: :people:\n:PROPERTIES:\n:CREATED:  %U\n:EMAIL:    \n:ROLE:     \n:MET:      \n:END:\n\n* Notes\n\n* Conversations\n\n* Ideas & Connections")
            :unnarrowed t)))
 
-(setq org-roam-dailies-capture-templates
+  (setq org-roam-dailies-capture-templates
         '(("d" "default" entry
            "* %U %?"
            :target (file+head "%<%Y-%m-%d>.org"
@@ -185,15 +192,15 @@
            :order 4)
 
           (:name "⏳ WAITING"
-           :todo "WAITING"
-           :order 8)
+              :tag "@waiting"   ;; Changed from :todo
+             :order 8)
 
           (:name "📥 TODO (Later)"
             :todo "TODO"
             :order 9)
 
           (:name "❌ CANCELLED"
-            :todo "CANCELLED"
+            :tag "@cancelled"
             :order 10)
 
           (:name "🌙 SOMEDAY"
