@@ -59,6 +59,8 @@
 (package! org-contacts)
 (package! org-download)
 (package! org-super-agenda)
+(package! org-gtd)
+(package! org-edna)
 (package! org-modern)
 (package! org-roam-ui)
 (package! org-wild-notifier)

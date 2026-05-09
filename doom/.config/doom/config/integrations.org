@@ -1,0 +1,77 @@
+#+TITLE: Integrations Module
+#+PROPERTY: header-args:emacs-lisp :tangle integrations.el
+
+* External Integrations
+
+** Wakatime
+#+BEGIN_SRC emacs-lisp
+(use-package! wakatime-mode
+  :config
+  (global-wakatime-mode))
+#+END_SRC
+
+** Linear.app
+#+BEGIN_SRC emacs-lisp
+(use-package! linear-emacs
+  :after org
+  :commands (linear-emacs-list-issues
+             linear-emacs-new-issue
+             linear-emacs-enable-org-sync
+             linear-emacs-sync-org-to-linear)
+  :init
+  (setq linear-emacs-org-file-path (expand-file-name "linear.org" my/org-gtd))
+
+  :config
+  (defun my/linear-load-api-key-from-auth-source ()
+    "Load Linear API key from auth-source (machine api.linear.app login apikey)."
+    (require 'auth-source)
+    (let* ((auth-info (auth-source-search :host "api.linear.app" :user "apikey" :max 1))
+           (secret (when auth-info
+                     (funcall (plist-get (car auth-info) :secret)))))
+      (if secret
+          (setq linear-emacs-api-key secret)
+        (linear-emacs-load-api-key-from-env))))
+
+  (my/linear-load-api-key-from-auth-source)
+
+  ;; Keep Linear state mapping isolated from GTD states
+  (setq linear-emacs-issues-state-mapping
+        '(("Backlog" . "TODO")
+          ("Todo" . "TODO")
+          ("In Progress" . "WIP")
+          ("In Review" . "REVIEW")
+          ("Blocked" . "HOLD")
+          ("Done" . "DONE")))
+
+  (setq linear-emacs-org-priority-mapping
+        '((0 . nil)
+          (1 . "A")
+          (2 . "B")
+          (3 . "C")
+          (4 . "D")))
+
+  (defun my/enable-linear-org-sync ()
+    "Enable Linear-org synchronization when linear.org is opened."
+    (when (and buffer-file-name
+               (string-match-p "linear\\.org$" buffer-file-name))
+      (linear-emacs-enable-org-sync)
+      (message "Linear-org synchronization enabled for this buffer")))
+
+  (add-hook 'find-file-hook #'my/enable-linear-org-sync)
+
+  (add-hook 'org-after-todo-state-change-hook
+            (lambda ()
+              (when (and buffer-file-name
+                         (string-match-p "linear\\.org$" buffer-file-name)
+                         (fboundp 'linear-emacs-sync-org-to-linear))
+                (linear-emacs-sync-org-to-linear))))
+
+  (map! :leader
+        (:prefix-map ("l" . "linear")
+         :desc "List Linear issues" "l" #'linear-emacs-list-issues
+         :desc "Create new issue" "n" #'linear-emacs-new-issue
+         :desc "Sync current issue" "s" #'linear-emacs-sync-org-to-linear
+         :desc "Enable org sync" "e" #'linear-emacs-enable-org-sync
+         :desc "Disable org sync" "d" #'linear-emacs-disable-org-sync
+         :desc "Test connection" "t" #'linear-emacs-test-connection)))
+#+END_SRC
