@@ -13,7 +13,8 @@
 (setq org-directory (concat my/org-root "/"))
 (setq org-attach-id-dir my/org-attachments)
 
-(setq doom-theme 'doom-one)
+(setq catppuccin-flavor 'mocha) ;; Options: 'mocha, 'macchiato, 'frappe, 'latte
+(setq doom-theme 'catppuccin)
 
 (setq doom-font (font-spec :family "Hasklug Nerd Font Mono Med" :size 15)
       doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 15))
