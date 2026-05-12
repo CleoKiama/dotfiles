@@ -134,5 +134,22 @@ All GTD workflow configuration lives here:
        :desc "Process inbox" "p" #'org-gtd-process-inbox
        :desc "Engage (action list)" "e" #'org-gtd-engage
        :desc "Show all NEXT" "n" #'org-gtd-show-all-next
-       :desc "Stuck projects" "s" #'org-gtd-reflect-stuck-projects))
+       :desc "Stuck projects" "s" #'org-gtd-reflect-stuck-projects
+       :desc "Reflect missed items" "m" #'org-gtd-reflect-missed-items
+       :desc "Reflect someday/maybe" "y" #'org-gtd-reflect-someday-review
+       :desc "Reflect completed items" "R" #'org-gtd-reflect-completed-items
+       :desc "Archive completed" "a" #'org-gtd-archive-completed-items
+       :desc "Reflect areas of focus" "r" #'org-gtd-reflect-area-of-focus))
+
+(map! :g
+      :desc "GTD: Capture" "C-d c" #'org-gtd-capture
+      :desc "GTD: Process inbox" "C-d p" #'org-gtd-process-inbox
+      :desc "GTD: Engage" "C-d e" #'org-gtd-engage
+      :desc "GTD: Show all NEXT" "C-d n" #'org-gtd-show-all-next
+      :desc "GTD: Stuck projects" "C-d s" #'org-gtd-reflect-stuck-projects
+      :desc "GTD: Reflect missed items" "C-d m" #'org-gtd-reflect-missed-items
+      :desc "GTD: Reflect someday" "C-d y" #'org-gtd-reflect-someday-review
+      :desc "GTD: Reflect completed" "C-d R" #'org-gtd-reflect-completed-items
+      :desc "GTD: Archive completed" "C-d a" #'org-gtd-archive-completed-items
+      :desc "GTD: Reflect areas" "C-d r" #'org-gtd-reflect-area-of-focus)
 #+END_SRC

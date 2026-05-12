@@ -1,0 +1,131 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "agents": {
+    "sisyphus": {
+      "model": "github-copilot/claude-opus-4.7",
+      "variant": "max",
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
+    },
+    "hephaestus": {
+      "model": "opencode/minimax-m2.5-free",
+      "fallback_models": ["github-copilot/gpt-5.2-codex", "opencode/hy3-preview-free"]
+    },
+    "oracle": {
+      "model": "github-copilot/claude-sonnet-4.6",
+      "variant": "max",
+      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/minimax-m2.5-free"]
+    },
+    "librarian": {
+      "model": "opencode/minimax-m2.5-free",
+      "fallback_models": ["opencode/hy3-preview-free", "opencode/gpt-5-nano"]
+    },
+    "explore": {
+      "model": "opencode/hy3-preview-free",
+      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/gpt-5-nano"]
+    },
+    "multimodal-looker": {
+      "model": "opencode/hy3-preview-free",
+      "variant": "medium",
+      "fallback_models": ["github-copilot/gemini-3-flash-preview", "opencode/minimax-m2.5-free"]
+    },
+    "prometheus": {
+      "model": "github-copilot/claude-opus-4.7",
+      "variant": "high",
+      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/hy3-preview-free"]
+    },
+    "metis": {
+      "model": "opencode/minimax-m2.5-free",
+      "fallback_models": ["github-copilot/gpt-5.2", "opencode/gpt-5-nano"]
+    },
+    "momus": {
+      "model": "opencode/hy3-preview-free",
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
+    },
+    "atlas": {
+      "model": "opencode/minimax-m2.5-free",
+      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/hy3-preview-free"]
+    },
+    "chat": {
+      "description": "Casual conversation, explanations, and learning - no code changes",
+      "model": "opencode/gpt-5-nano",
+      "temperature": 0.7,
+      "fallback_models": ["opencode/hy3-preview-free", "opencode/minimax-m2.5-free"],
+      "permission": {
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny"
+      }
+    },
+    "teacher": {
+      "description": "Patient tutor for learning concepts, debugging explanations, best practices",
+      "model": "opencode/minimax-m2.5-free",
+      "temperature": 0.5,
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/hy3-preview-free"],
+      "permission": {
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "opencode/minimax-m2.5-free",
+      "variant": "high",
+      "fallback_models": ["github-copilot/gemini-3-flash-preview", "opencode/hy3-preview-free"]
+    },
+    "ultrabrain": {
+      "model": "github-copilot/gpt-5.4",
+      "variant": "xhigh",
+      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/minimax-m2.5-free"]
+    },
+    "deep": {
+      "model": "opencode/minimax-m2.5-free",
+      "variant": "medium",
+      "fallback_models": ["github-copilot/gpt-5.3-codex", "opencode/big-pickle"]
+    },
+    "artistry": {
+      "model": "opencode/hy3-preview-free",
+      "variant": "high",
+      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/minimax-m2.5-free"]
+    },
+    "quick": {
+      "model": "opencode/hy3-preview-free",
+      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/gpt-5-nano"]
+    },
+    "unspecified-low": {
+      "model": "opencode/minimax-m2.5-free",
+      "fallback_models": ["opencode/hy3-preview-free", "opencode/gpt-5-nano"]
+    },
+    "unspecified-high": {
+      "model": "opencode/minimax-m2.5-free",
+      "variant": "high",
+      "fallback_models": ["github-copilot/gpt-5.2", "opencode/hy3-preview-free"]
+    },
+    "writing": {
+      "model": "anthropic/claude-sonnet-4-6",
+      // "model": "opencode/minimax-m2.5-free",
+      "variant": "medium",
+      "fallback_models": [
+        // "anthropic/claude-sonnet-4-6",
+        "opencode/minimax-m2.5-free",
+        "opencode/hy3-preview-free"
+      ]
+    }
+  },
+  "lsp": {
+    "typescript-language-server": {
+      "command": ["$HOME/.local/share/nvim/mason/bin/typescript-language-server"],
+      "extensions": [".ts", ".tsx"],
+      "priority": 10,
+      "env": { "NODE_OPTIONS": "--max-old-space-size=4096" },
+      "initialization": {
+        "preferences": { "includeInlayParameterNameHints": "all" }
+      }
+    },
+    "pylsp": { "disabled": true }
+  }
+}
