@@ -1,70 +1,56 @@
 {
-    "mcp": {
-        "context7": {
-            "type": "remote",
-            "url": "https://mcp.context7.com/mcp",
-            "enabled": true,
-            "headers": {
-                "CONTEXT7_API_KEY": "ctx7sk-e32d5ee2-c8f3-4738-b112-7a0d97d9ce7f"
-            }
-        },
-        "Better Auth": {
-            "type": "remote",
-            "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp",
-            "enabled": false
-        },
-        "weather": {
-            "type": "local",
-            "command": ["tsx", "/media/DevDrive/mcp/weather/src/index.ts"],
-            "enabled": false
-        },
-        "CopilotKit MCP": {
-            "type": "remote",
-            "url": "https://mcp.copilotkit.ai",
-            "enabled": true
-        }
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true,
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-e32d5ee2-c8f3-4738-b112-7a0d97d9ce7f"
+      }
     },
-    "$schema": "https://opencode.ai/config.json",
-    "theme": "catppuccin",
-    "autoupdate": false,
-    "agent": {
-        "build": {
-            "mode": "primary",
-            "model": "github-copilot/gpt-5-mini",
-            "tools": {
-                "write": true,
-                "edit": true,
-                "bash": true
-            }
-        },
-        "plan": {
-            "mode": "primary",
-            "model": "github-copilot/gpt-4.1",
-            "tools": {
-                "write": false,
-                "edit": false,
-                "bash": false
-            }
-        },
-        "code-reviewer": {
-            "description": "Reviews code for best practices and potential issues",
-            "mode": "subagent",
-            "model": "github-copilot/claude-opus-4.5",
-            "prompt": "You are a code reviewer. Focus on security, performance, and maintainability.",
-            "tools": {
-                "write": false,
-                "edit": false
-            }
-        },
-        "chat": {
-            "description": "Conversational mode for discussing code, libraries, and ideas informally.",
-            "model": "github-copilot/gpt-5.2",
-            "prompt": "You are a technical discussion partner. Ask clarifying questions about code, explain libraries, design patterns, or syntax, and maintain a curious, analytical tone.",
-            "tools": {
-                "write": false,
-                "edit": false,
-                "bash": false
-            }
-        }
+    "CopilotKit MCP": {
+      "type": "remote",
+      "url": "https://mcp.copilotkit.ai",
+      "enabled": true
+    },
+    "Linear-mcp": {
+      "type": "remote",
+      "url": "https://mcp.linear.app/mcp",
+      "enabled": true
     }
+  },
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "agent": {
+    "build": {
+      "mode": "primary",
+      "model": "github-copilot/gpt-5-mini",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
+    "plan": {
+      "mode": "primary",
+      "model": "github-copilot/gpt-4.1",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false
+      }
+    },
+    "chat": {
+      "description": "Conversational mode for discussing code, libraries, and ideas informally.",
+      "model": "github-copilot/gpt-5.2",
+      "prompt": "You are a technical discussion partner. Ask clarifying questions about code, explain libraries, design patterns, or syntax, and maintain a curious, analytical tone.",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false
+      }
+    }
+  },
+  "plugin": ["oh-my-openagent", "opencode-wakatime"],
+  "provider": {}
 }
