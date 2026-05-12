@@ -1,119 +1,107 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
+    // Sisyphus: Main orchestrator. Plans, delegates, and drives execution to completion with discipline and parallelization. Usually the entry point for coordinated automation.
     "sisyphus": {
-      "model": "github-copilot/claude-opus-4.7",
+      "model": "github-copilot/claude-opus-4.6",
       "variant": "max",
       "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
     },
+    // Hephaestus: Autonomous deep worker. Excels at complex, multistep, end-to-end implementation after goal is set, including research and hands-on coding. Focuses on completing entire goals, not just small edits.
     "hephaestus": {
-      "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["github-copilot/gpt-5.2-codex", "opencode/hy3-preview-free"]
+      "model": "github-copilot/gpt-5.3-codex",
+      "fallback_models": ["github-copilot/gpt-5.2-codex", "opencode/nemotron-3-super-free"]
     },
     "oracle": {
       "model": "github-copilot/claude-sonnet-4.6",
       "variant": "max",
-      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/minimax-m2.5-free"]
+      // Nemotron 3 Super replaces minimax here: GPQA 79.23%, stronger reasoning for consultant role.
+      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/nemotron-3-super-free"]
     },
+    // Librarian: External code and documentation researcher. Fetches best practices, official docs, and OSS references. Perfect for unfamiliar libraries/apis.
     "librarian": {
       "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["opencode/hy3-preview-free", "opencode/gpt-5-nano"]
+      "fallback_models": ["opencode/deepseek-v4-flash-free", "opencode/ring-2.6-1t-free"]
     },
+    // Explore: Fast contextual codebase search. Finds where things are implemented, discovers file structure, triggers parallel codebase searching agents.
     "explore": {
-      "model": "opencode/hy3-preview-free",
-      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/gpt-5-nano"]
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/nemotron-3-super-free"]
     },
+    // Multimodal Looker: For analyzing visual artifacts (screenshots, diagrams, PDFs, images). Summarizes and interprets visual data for agents.
     "multimodal-looker": {
-      "model": "opencode/hy3-preview-free",
+      "model": "github-copilot/gpt-4.1",
       "variant": "medium",
       "fallback_models": ["github-copilot/gemini-3-flash-preview", "opencode/minimax-m2.5-free"]
     },
+    // Prometheus: Strategic planner. Interviews, clarifies ambiguous requests, and drafts rigorous execution plans before implementation. Use for complex/uncertain tasks.
     "prometheus": {
-      "model": "github-copilot/claude-opus-4.7",
-      "variant": "high",
-      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/hy3-preview-free"]
+      "model": "opencode/ring-2.6-1t-free",
+      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/minimax-m2.5-free"]
     },
+    // Metis: Plan consultant. Rigorously analyzes scope, intent, and hidden requirements before work begins. Catches failure points in requests and specs.
     "metis": {
       "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["github-copilot/gpt-5.2", "opencode/gpt-5-nano"]
+      "fallback_models": ["github-copilot/gpt-5.2", "opencode/ring-2.6-1t-free"]
     },
+    // Momus: Plan critic/reviewer. Performs exhaustive quality and completeness checks on plans before handoff to implementation agents.
     "momus": {
-      "model": "opencode/hy3-preview-free",
+      "model": "opencode/ring-2.6-1t-free",
       "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
     },
+    // Atlas: Likely a context compiler or auxiliary specialized agent. Exact details depend on local implementation, consult further project docs if needed.
     "atlas": {
       "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/hy3-preview-free"]
-    },
-    "chat": {
-      "description": "Casual conversation, explanations, and learning - no code changes",
-      "model": "opencode/gpt-5-nano",
-      "temperature": 0.7,
-      "fallback_models": ["opencode/hy3-preview-free", "opencode/minimax-m2.5-free"],
-      "permission": {
-        "edit": "deny",
-        "write": "deny",
-        "bash": "deny"
-      }
-    },
-    "teacher": {
-      "description": "Patient tutor for learning concepts, debugging explanations, best practices",
-      "model": "opencode/minimax-m2.5-free",
-      "temperature": 0.5,
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/hy3-preview-free"],
-      "permission": {
-        "edit": "deny",
-        "write": "deny",
-        "bash": "deny",
-        "read": "allow",
-        "glob": "allow",
-        "grep": "allow"
-      }
+      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/deepseek-v4-flash-free"]
     }
   },
   "categories": {
+    // Frontend, UI/UX, design, and styling. Always use for layout, CSS, and component development.
     "visual-engineering": {
-      "model": "opencode/minimax-m2.5-free",
+      "model": "github-copilot/claude-sonnet-4.6",
       "variant": "high",
-      "fallback_models": ["github-copilot/gemini-3-flash-preview", "opencode/hy3-preview-free"]
+      "fallback_models": ["github-copilot/gemini-3-flash-preview", "opencode/minimax-m2.5-free"]
     },
+    // Hardest logic, algorithms, architecture, and system-level decisions. For highly complex or ambiguous work only.
     "ultrabrain": {
       "model": "github-copilot/gpt-5.4",
       "variant": "xhigh",
-      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/minimax-m2.5-free"]
+      // Ring 2.6 1T replaces minimax: AIME26 95.83%, thinking model with xhigh mode = legit reasoning fallback.
+      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/ring-2.6-1t-free"]
     },
+    // Autonomous research and full end-to-end implementation. Call when task requires exploration, planning, and execution as one flow.
     "deep": {
       "model": "opencode/minimax-m2.5-free",
       "variant": "medium",
-      "fallback_models": ["github-copilot/gpt-5.3-codex", "opencode/big-pickle"]
+      "fallback_models": ["github-copilot/gpt-5.3-codex", "opencode/nemotron-3-super-free"]
     },
+    // For experiments, creative problem-solving, and non-standard approaches outside normal categories.
     "artistry": {
-      "model": "opencode/hy3-preview-free",
+      "model": "github-copilot/gpt-5.4-mini",
       "variant": "high",
-      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/minimax-m2.5-free"]
+      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/ring-2.6-1t-free"]
     },
+    // Single-file, low-risk, trivial tasks or fixes (typos, config tweaks, basic syntax corrections).
     "quick": {
-      "model": "opencode/hy3-preview-free",
-      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/gpt-5-nano"]
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/big-pickle"]
     },
+    // For low-effort, default/no-category actions (should be rare in disciplined agent flows).
     "unspecified-low": {
-      "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["opencode/hy3-preview-free", "opencode/gpt-5-nano"]
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/nemotron-3-super-free"]
     },
+    // For high-effort, uncategorized automation. Only use if no matching domain category applies, not recommended for strategic tasks.
     "unspecified-high": {
       "model": "opencode/minimax-m2.5-free",
       "variant": "high",
-      "fallback_models": ["github-copilot/gpt-5.2", "opencode/hy3-preview-free"]
+      "fallback_models": ["github-copilot/gpt-5.2", "opencode/ring-2.6-1t-free"]
     },
+    // Technical writing, README docs, API/prose explanations. Use for all non-code documentation needs.
     "writing": {
-      "model": "anthropic/claude-sonnet-4-6",
-      // "model": "opencode/minimax-m2.5-free",
+      "model": "opencode/minimax-m2.5-free",
       "variant": "medium",
-      "fallback_models": [
-        // "anthropic/claude-sonnet-4-6",
-        "opencode/minimax-m2.5-free",
-        "opencode/hy3-preview-free"
-      ]
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/ring-2.6-1t-free"]
     }
   },
   "lsp": {

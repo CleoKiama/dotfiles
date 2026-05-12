@@ -41,13 +41,29 @@
       }
     },
     "chat": {
-      "description": "Conversational mode for discussing code, libraries, and ideas informally.",
-      "model": "github-copilot/gpt-5.2",
-      "prompt": "You are a technical discussion partner. Ask clarifying questions about code, explain libraries, design patterns, or syntax, and maintain a curious, analytical tone.",
-      "tools": {
-        "write": false,
-        "edit": false,
-        "bash": false
+      "description": "Casual conversation, explanations, and learning - no code changes",
+      "model": "opencode/deepseek-v4-flash-free",
+      "temperature": 0.7,
+      "fallback_models": ["opencode/big-pickle", "opencode/minimax-m2.5-free"],
+      "permission": {
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny"
+      }
+    },
+    "teacher": {
+      "description": "Patient tutor for learning concepts, debugging explanations, best practices",
+      "model": "opencode/minimax-m2.5-free",
+      "temperature": 0.5,
+      // big-pickle ok here: teacher is read-only, low tool call risk.
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/big-pickle"],
+      "permission": {
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow"
       }
     }
   },
