@@ -1,0 +1,12 @@
+[Unit]
+Description=Battery watcher for auto suspend
+After=niri.service
+PartOf=niri.service
+
+[Service]
+ExecStart=/home/cleo/.local/bin/battery-watcher.sh
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=niri.service

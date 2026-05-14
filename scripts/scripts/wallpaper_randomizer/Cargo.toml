@@ -1,0 +1,9 @@
+[package]
+name = "wallpaper_randomizer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand = "0.8"
+walkdir = "2.3"
+ctrlc = "3.2"

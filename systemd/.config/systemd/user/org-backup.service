@@ -1,0 +1,6 @@
+[Unit]
+Description=Org Backup Script
+
+[Service]
+Type=oneshot
+ExecStart=/home/cleo/scripts/org-backup.sh
