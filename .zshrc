@@ -95,6 +95,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 
 # PNPM package manager
+export PATH="$HOME/.config/emacs/bin/:$PATH" # Add Emacs bin to PATH for emacsclient
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
@@ -118,7 +119,6 @@ function yazi_cd() {
 }
 alias y="yazi_cd"  # Keep the short alias but use descriptive function name
 
-alias code="code --password-store=gnome-libsecret"
 
 # -------------------------
 # Completions
@@ -155,4 +155,10 @@ unset HISTFILE  #disable history file
 
 eval "$(starship init zsh)" #starship
 
-
+# pnpm
+export PNPM_HOME="/home/cleo/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
