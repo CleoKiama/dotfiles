@@ -28,7 +28,7 @@
         // "niri/workspaces",
         // "hyprland/workspaces",
         "custom/l_end",
-        // "dwl/window", // Crashes on Hyprland - use hyprland/window instead
+        "dwl/window", //INFO: Crashes on Hyprland use only for mangowc
         // "hyprland/window",
         // "niri/window",
         "custom/r_end",
@@ -211,7 +211,7 @@
     "custom/clipboard": {
         "format": "󰅇 ",
         "tooltip-format": "clipboard history",
-        "on-click": "$HOME/dotfiles/scripts/cliphist.sh"
+        "on-click": "$HOME/scripts/cliphist.sh"
     },
     "custom/power": {
         "format": "⏻ ",
@@ -359,10 +359,10 @@
         "format": "  {}",
         "escape": true,
         "return-type": "json",
-        "exec": "$HOME/dotfiles/scripts/updates.sh",
+        "exec": "$HOME/scripts/updates.sh",
         "interval": 28800, // every 8 hours
-        "on-click": "$HOME/dotfiles/scripts/install.sh",
-        "on-click-right": "$HOME/dotfiles/scripts/updates.sh"
+        "on-click": "$HOME/scripts/install.sh",
+        "on-click-right": "$HOME/scripts/updates.sh"
     },
     "custom/notification": {
         "tooltip": false,
