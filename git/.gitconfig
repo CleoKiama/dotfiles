@@ -1,0 +1,22 @@
+[user]
+	name = CleoKiama
+	email = 111430806+CleoKiama@users.noreply.github.com
+	signingkey = ~/.ssh/id_ed25519
+
+[gpg]
+	format = ssh
+
+[commit]
+	gpgsign = true
+
+[tag]
+	gpgSign = true
+
+[init]
+	defaultBranch = main
+
+[push]
+	autoSetupRemote = true
+
+[includeIf "gitdir:/media/DevDrive/thegoodco/"]
+	path = ~/.gitconfig-thegoodco
