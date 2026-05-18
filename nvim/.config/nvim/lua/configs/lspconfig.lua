@@ -119,7 +119,7 @@ M.setup = function()
 		"gleam",
 		"jsonls",
 		"yamlls",
-		"pylsp",
+		"basedpyright",
 		-- "ts_ls",
 		"tsgo",
 		"tailwindcss",
