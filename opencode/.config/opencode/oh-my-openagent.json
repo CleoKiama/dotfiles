@@ -21,11 +21,11 @@
     // Librarian: External code and documentation researcher. Fetches best practices, official docs, and OSS references. Perfect for unfamiliar libraries/apis.
     "librarian": {
       "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["opencode/deepseek-v4-flash-free", "opencode/qwen3.6-plus-free"]
+      "fallback_models": ["opencode/big-pickle", "opencode/qwen3.6-plus-free"]
     },
     // Explore: Fast contextual codebase search. Finds where things are implemented, discovers file structure, triggers parallel codebase searching agents.
     "explore": {
-      "model": "opencode/deepseek-v4-flash-free",
+      "model": "opencode/qwen3.6-plus-free",
       "fallback_models": ["opencode/minimax-m2.5-free", "opencode/nemotron-3-super-free"]
     },
     // Multimodal Looker: For analyzing visual artifacts (screenshots, diagrams, PDFs, images). Summarizes and interprets visual data for agents.
@@ -52,7 +52,7 @@
     // Atlas: Likely a context compiler or auxiliary specialized agent. Exact details depend on local implementation, consult further project docs if needed.
     "atlas": {
       "model": "opencode/qwen3.6-plus-free",
-      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/deepseek-v4-flash-free"]
+      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/minimax-m2.5-free"]
     }
   },
   "categories": {
@@ -83,8 +83,8 @@
     },
     // Single-file, low-risk, trivial tasks or fixes (typos, config tweaks, basic syntax corrections).
     "quick": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/big-pickle"]
+      "model": "opencode/qwen3.6-plus-free",
+      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/qwen3.6-plus-free"]
     },
     // For low-effort, default/no-category actions (should be rare in disciplined agent flows).
     "unspecified-low": {
@@ -122,6 +122,9 @@
     "main_pane_size": 60,
     "main_pane_min_width": 120,
     "agent_pane_min_width": 40
+  },
+  "background_task": {
+    "defaultConcurrency": 2
   },
   "runtime_fallback": {
     "enabled": true,
