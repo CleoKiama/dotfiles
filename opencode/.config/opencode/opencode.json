@@ -21,6 +21,14 @@
   },
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
+  "permission": {
+    "read": {
+      "*": "allow",
+      "*.env": "allow",
+      "*.env.*": "allow",
+      "*.env.example": "allow"
+    }
+  },
   "agent": {
     "build": {
       "mode": "primary",
