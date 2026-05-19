@@ -21,7 +21,7 @@
     // Librarian: External code and documentation researcher. Fetches best practices, official docs, and OSS references. Perfect for unfamiliar libraries/apis.
     "librarian": {
       "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["opencode/deepseek-v4-flash-free", "opencode/ring-2.6-1t-free"]
+      "fallback_models": ["opencode/deepseek-v4-flash-free", "opencode/qwen3.6-plus-free"]
     },
     // Explore: Fast contextual codebase search. Finds where things are implemented, discovers file structure, triggers parallel codebase searching agents.
     "explore": {
@@ -36,22 +36,22 @@
     },
     // Prometheus: Strategic planner. Interviews, clarifies ambiguous requests, and drafts rigorous execution plans before implementation. Use for complex/uncertain tasks.
     "prometheus": {
-      "model": "opencode/ring-2.6-1t-free",
+      "model": "opencode/qwen3.6-plus-free",
       "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/minimax-m2.5-free"]
     },
     // Metis: Plan consultant. Rigorously analyzes scope, intent, and hidden requirements before work begins. Catches failure points in requests and specs.
     "metis": {
-      "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["github-copilot/gpt-5.2", "opencode/ring-2.6-1t-free"]
+      "model": "opencode/qwen3.6-plus-free",
+      "fallback_models": ["github-copilot/gpt-5.2", "opencode/minimax-m2.5-free"]
     },
     // Momus: Plan critic/reviewer. Performs exhaustive quality and completeness checks on plans before handoff to implementation agents.
     "momus": {
-      "model": "opencode/ring-2.6-1t-free",
+      "model": "opencode/qwen3.6-plus-free",
       "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
     },
     // Atlas: Likely a context compiler or auxiliary specialized agent. Exact details depend on local implementation, consult further project docs if needed.
     "atlas": {
-      "model": "opencode/minimax-m2.5-free",
+      "model": "opencode/qwen3.6-plus-free",
       "fallback_models": ["opencode/nemotron-3-super-free", "opencode/deepseek-v4-flash-free"]
     }
   },
@@ -66,20 +66,20 @@
     "ultrabrain": {
       "model": "github-copilot/gpt-5.4",
       "variant": "xhigh",
-      // Ring 2.6 1T replaces minimax: AIME26 95.83%, thinking model with xhigh mode = legit reasoning fallback.
-      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/ring-2.6-1t-free"]
+      // Qwen 3.6 Plus as free reasoning fallback (ring-2.6-1t-free discontinued).
+      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/qwen3.6-plus-free"]
     },
     // Autonomous research and full end-to-end implementation. Call when task requires exploration, planning, and execution as one flow.
     "deep": {
-      "model": "opencode/minimax-m2.5-free",
+      "model": "opencode/qwen3.6-plus-free",
       "variant": "medium",
-      "fallback_models": ["github-copilot/gpt-5.3-codex", "opencode/nemotron-3-super-free"]
+      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/nemotron-3-super-free"]
     },
     // For experiments, creative problem-solving, and non-standard approaches outside normal categories.
     "artistry": {
       "model": "github-copilot/gpt-5.4-mini",
       "variant": "high",
-      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/ring-2.6-1t-free"]
+      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/qwen3.6-plus-free"]
     },
     // Single-file, low-risk, trivial tasks or fixes (typos, config tweaks, basic syntax corrections).
     "quick": {
@@ -93,15 +93,15 @@
     },
     // For high-effort, uncategorized automation. Only use if no matching domain category applies, not recommended for strategic tasks.
     "unspecified-high": {
-      "model": "opencode/minimax-m2.5-free",
+      "model": "opencode/qwen3.6-plus-free",
       "variant": "high",
-      "fallback_models": ["github-copilot/gpt-5.2", "opencode/ring-2.6-1t-free"]
+      "fallback_models": ["opencode/minimax-m2.5-free", "github-copilot/gpt-5.2"]
     },
     // Technical writing, README docs, API/prose explanations. Use for all non-code documentation needs.
     "writing": {
-      "model": "opencode/minimax-m2.5-free",
+      "model": "opencode/qwen3.6-plus-free",
       "variant": "medium",
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/ring-2.6-1t-free"]
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
     }
   },
   "lsp": {
@@ -115,5 +115,18 @@
       }
     },
     "pylsp": { "disabled": true }
+  },
+  "tmux": {
+    "enabled": true,
+    "layout": "main-vertical",
+    "main_pane_size": 60,
+    "main_pane_min_width": 120,
+    "agent_pane_min_width": 40
+  },
+  "runtime_fallback": {
+    "enabled": true,
+    "max_fallback_attempts": 3,
+    "cooldown_seconds": 60,
+    "notify_on_fallback": true
   }
 }
