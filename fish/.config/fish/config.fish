@@ -17,6 +17,9 @@ fish_add_path $PNPM_HOME
 # AUR helper
 set -gx aurhelper yay
 
+# SSH agent socket 
+set -gx SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
+
 # -------------------------
 # Abbreviations (expand in-place, visible in history)
 # -------------------------
