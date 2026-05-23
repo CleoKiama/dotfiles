@@ -5,7 +5,7 @@
     "sisyphus": {
       "model": "github-copilot/claude-opus-4.6",
       "variant": "max",
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/deepseek-v4-flash-free"]
     },
     // Hephaestus: Autonomous deep worker. Excels at complex, multistep, end-to-end implementation after goal is set, including research and hands-on coding. Focuses on completing entire goals, not just small edits.
     "hephaestus": {
@@ -15,44 +15,45 @@
     "oracle": {
       "model": "github-copilot/claude-sonnet-4.6",
       "variant": "max",
-      // Nemotron 3 Super replaces minimax here: GPQA 79.23%, stronger reasoning for consultant role.
-      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/nemotron-3-super-free"]
+      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/nemotron-3-super-free"]
     },
     // Librarian: External code and documentation researcher. Fetches best practices, official docs, and OSS references. Perfect for unfamiliar libraries/apis.
     "librarian": {
-      "model": "opencode/minimax-m2.5-free",
-      "fallback_models": ["opencode/big-pickle", "opencode/qwen3.6-plus-free"]
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": ["opencode/big-pickle", "opencode/nemotron-3-super-free"]
     },
     // Explore: Fast contextual codebase search. Finds where things are implemented, discovers file structure, triggers parallel codebase searching agents.
     "explore": {
-      "model": "opencode/qwen3.6-plus-free",
-      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/nemotron-3-super-free"]
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": ["opencode/big-pickle", "opencode/nemotron-3-super-free"]
     },
     // Multimodal Looker: For analyzing visual artifacts (screenshots, diagrams, PDFs, images). Summarizes and interprets visual data for agents.
     "multimodal-looker": {
-      "model": "github-copilot/gpt-4.1",
-      "variant": "medium",
-      "fallback_models": ["github-copilot/gemini-3-flash-preview", "opencode/minimax-m2.5-free"]
+      "model": "github-copilot/gemini-3.1-pro-preview",
+      "variant": "high",
+      "fallback_models": [
+        "github-copilot/gemini-3-flash-preview",
+        "opencode/deepseek-v4-flash-free"
+      ]
     },
     // Prometheus: Strategic planner. Interviews, clarifies ambiguous requests, and drafts rigorous execution plans before implementation. Use for complex/uncertain tasks.
     "prometheus": {
-      "model": "opencode/qwen3.6-plus-free",
-      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/minimax-m2.5-free"]
+      "model": "opencode/nemotron-3-super-free",
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/deepseek-v4-flash-free"]
     },
     // Metis: Plan consultant. Rigorously analyzes scope, intent, and hidden requirements before work begins. Catches failure points in requests and specs.
     "metis": {
-      "model": "opencode/qwen3.6-plus-free",
-      "fallback_models": ["github-copilot/gpt-5.2", "opencode/minimax-m2.5-free"]
+      "model": "opencode/nemotron-3-super-free",
+      "fallback_models": ["opencode/deepseek-v4-flash-free", "github-copilot/gpt-5-mini"]
     },
     // Momus: Plan critic/reviewer. Performs exhaustive quality and completeness checks on plans before handoff to implementation agents.
     "momus": {
-      "model": "opencode/qwen3.6-plus-free",
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
+      "model": "github-copilot/claude-sonnet-4.6",
+      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/deepseek-v4-flash-free"]
     },
-    // Atlas: Likely a context compiler or auxiliary specialized agent. Exact details depend on local implementation, consult further project docs if needed.
     "atlas": {
-      "model": "opencode/qwen3.6-plus-free",
-      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/minimax-m2.5-free"]
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/big-pickle"]
     }
   },
   "categories": {
@@ -60,48 +61,50 @@
     "visual-engineering": {
       "model": "github-copilot/claude-sonnet-4.6",
       "variant": "high",
-      "fallback_models": ["github-copilot/gemini-3-flash-preview", "opencode/minimax-m2.5-free"]
+      "fallback_models": [
+        "github-copilot/gemini-3.1-pro-preview",
+        "opencode/deepseek-v4-flash-free"
+      ]
     },
     // Hardest logic, algorithms, architecture, and system-level decisions. For highly complex or ambiguous work only.
     "ultrabrain": {
       "model": "github-copilot/gpt-5.4",
       "variant": "xhigh",
-      // Qwen 3.6 Plus as free reasoning fallback (ring-2.6-1t-free discontinued).
-      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/qwen3.6-plus-free"]
+      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/nemotron-3-super-free"]
     },
     // Autonomous research and full end-to-end implementation. Call when task requires exploration, planning, and execution as one flow.
     "deep": {
-      "model": "opencode/qwen3.6-plus-free",
+      "model": "opencode/nemotron-3-super-free",
       "variant": "medium",
-      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/nemotron-3-super-free"]
+      "fallback_models": ["github-copilot/gpt-5.3-codex", "opencode/deepseek-v4-flash-free"]
     },
     // For experiments, creative problem-solving, and non-standard approaches outside normal categories.
     "artistry": {
       "model": "github-copilot/gpt-5.4-mini",
       "variant": "high",
-      "fallback_models": ["github-copilot/claude-opus-4.6", "opencode/qwen3.6-plus-free"]
+      "fallback_models": ["github-copilot/claude-opus-4.7", "opencode/nemotron-3-super-free"]
     },
     // Single-file, low-risk, trivial tasks or fixes (typos, config tweaks, basic syntax corrections).
     "quick": {
-      "model": "opencode/qwen3.6-plus-free",
-      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/qwen3.6-plus-free"]
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": ["opencode/big-pickle", "opencode/nemotron-3-super-free"]
     },
     // For low-effort, default/no-category actions (should be rare in disciplined agent flows).
     "unspecified-low": {
       "model": "opencode/deepseek-v4-flash-free",
-      "fallback_models": ["opencode/minimax-m2.5-free", "opencode/nemotron-3-super-free"]
+      "fallback_models": ["opencode/big-pickle", "opencode/nemotron-3-super-free"]
     },
     // For high-effort, uncategorized automation. Only use if no matching domain category applies, not recommended for strategic tasks.
     "unspecified-high": {
-      "model": "opencode/qwen3.6-plus-free",
+      "model": "opencode/nemotron-3-super-free",
       "variant": "high",
-      "fallback_models": ["opencode/minimax-m2.5-free", "github-copilot/gpt-5.2"]
+      "fallback_models": ["opencode/deepseek-v4-flash-free", "github-copilot/gpt-5.2"]
     },
     // Technical writing, README docs, API/prose explanations. Use for all non-code documentation needs.
     "writing": {
-      "model": "opencode/qwen3.6-plus-free",
+      "model": "opencode/nemotron-3-super-free",
       "variant": "medium",
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/minimax-m2.5-free"]
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/deepseek-v4-flash-free"]
     }
   },
   "lsp": {
@@ -115,13 +118,6 @@
       }
     },
     "pylsp": { "disabled": true }
-  },
-  "tmux": {
-    "enabled": true,
-    "layout": "main-vertical",
-    "main_pane_size": 60,
-    "main_pane_min_width": 120,
-    "agent_pane_min_width": 40
   },
   "background_task": {
     "defaultConcurrency": 2
