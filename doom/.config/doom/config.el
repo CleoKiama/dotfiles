@@ -1,4 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(setq shell-file-name (executable-find "bash")) ; using fish shell
 
 (defvar my/org-root "/data/org"
   "Root directory for all org files.")
