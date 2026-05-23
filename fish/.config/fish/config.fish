@@ -53,7 +53,18 @@ alias grep='grep --color=auto'
 command -q zoxide && zoxide init fish --cmd cd | source
 
 # FZF
-command -q fzf && fzf --fish | source
+if command -q fzf
+    fzf --fish | source
+
+    # Match zsh fzf-tab muscle memory: open fzf completion on plain TAB,
+    # plus Alt+L as an alternate shortcut.
+    if functions -q fzf_complete
+        bind tab fzf_complete
+        bind -M insert tab fzf_complete
+        bind alt-l fzf_complete
+        bind -M insert alt-l fzf_complete
+    end
+end
 
 # Atuin
 command -q atuin && atuin init fish | source
