@@ -5,6 +5,7 @@
 * Preamble
 #+BEGIN_SRC emacs-lisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(setq shell-file-name (executable-find "bash")) ; using fish shell
 #+END_SRC
 
 * Table of Contents

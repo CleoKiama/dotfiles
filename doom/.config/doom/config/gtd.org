@@ -102,6 +102,9 @@ All GTD workflow configuration lives here:
   (setq org-gtd-update-ack "4.0.0")
   :config
   (setq org-gtd-directory my/org-gtd
+        ;; Use a single archive policy via org-mode's org-archive-location.
+        ;; This keeps org-gtd archiving consistent with the rest of org.
+        org-gtd-archive-location nil
         org-gtd-keyword-mapping
         '((todo . "TODO")
           (next . "NEXT")
@@ -130,26 +133,18 @@ All GTD workflow configuration lives here:
 #+BEGIN_SRC emacs-lisp
 (map! :leader
       (:prefix-map ("d" . "GTD")
-       :desc "Capture to inbox" "c" #'org-gtd-capture
-       :desc "Process inbox" "p" #'org-gtd-process-inbox
-       :desc "Engage (action list)" "e" #'org-gtd-engage
-       :desc "Show all NEXT" "n" #'org-gtd-show-all-next
-       :desc "Stuck projects" "s" #'org-gtd-reflect-stuck-projects
-       :desc "Reflect missed items" "m" #'org-gtd-reflect-missed-items
-       :desc "Reflect someday/maybe" "y" #'org-gtd-reflect-someday-review
-       :desc "Reflect completed items" "R" #'org-gtd-reflect-completed-items
-       :desc "Archive completed" "a" #'org-gtd-archive-completed-items
-       :desc "Reflect areas of focus" "r" #'org-gtd-reflect-area-of-focus))
-
-(map! :g
-      :desc "GTD: Capture" "C-d c" #'org-gtd-capture
-      :desc "GTD: Process inbox" "C-d p" #'org-gtd-process-inbox
-      :desc "GTD: Engage" "C-d e" #'org-gtd-engage
-      :desc "GTD: Show all NEXT" "C-d n" #'org-gtd-show-all-next
-      :desc "GTD: Stuck projects" "C-d s" #'org-gtd-reflect-stuck-projects
-      :desc "GTD: Reflect missed items" "C-d m" #'org-gtd-reflect-missed-items
-      :desc "GTD: Reflect someday" "C-d y" #'org-gtd-reflect-someday-review
-      :desc "GTD: Reflect completed" "C-d R" #'org-gtd-reflect-completed-items
-      :desc "GTD: Archive completed" "C-d a" #'org-gtd-archive-completed-items
-      :desc "GTD: Reflect areas" "C-d r" #'org-gtd-reflect-area-of-focus)
+       :desc "Command center" ";" #'org-gtd-command-center
+        :desc "Capture to inbox" "c" #'org-gtd-capture
+        :desc "Clarify item at point" "k" #'org-gtd-clarify-item
+        :desc "Process inbox" "p" #'org-gtd-process-inbox
+        :desc "Engage (action list)" "e" #'org-gtd-engage
+        :desc "Show all NEXT" "n" #'org-gtd-show-all-next
+        :desc "Stuck projects" "s" #'org-gtd-reflect-stuck-projects
+        :desc "Reflect missed items" "m" #'org-gtd-reflect-missed-items
+        :desc "Reflect upcoming delegated" "u" #'org-gtd-reflect-upcoming-delegated
+        :desc "Reflect someday/maybe" "y" #'org-gtd-reflect-someday-review
+        :desc "Reflect completed items" "R" #'org-gtd-reflect-completed-items
+        :desc "Reflect completed projects" "P" #'org-gtd-reflect-completed-projects
+        :desc "Archive completed" "a" #'org-gtd-archive-completed-items
+        :desc "Reflect areas of focus" "r" #'org-gtd-reflect-area-of-focus))
 #+END_SRC

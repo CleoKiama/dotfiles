@@ -18,74 +18,18 @@
   (evil-escape-mode 1))
 #+END_SRC
 
-** Org Super Agenda
-#+BEGIN_SRC emacs-lisp
-(use-package! org-super-agenda
-  :after org-agenda
-  :config
-  (org-super-agenda-mode)
-  (setq org-super-agenda-groups
-        '((:name "⚡ NEXT (Active)"
-           :todo "NEXT"
-           :order 0)
-
-          (:name "🏠 @home"
-           :tag "@home"
-           :order 1)
-
-          (:name "💼 @work"
-           :tag "@work"
-           :order 2)
-
-          (:name "📱 @phone/@email"
-           :tag ("@phone" "@email")
-           :order 3)
-
-          (:name "🚗 @errands"
-           :tag "@errands"
-           :order 4)
-
-          (:name "⏳ WAITING"
-           :todo "WAIT"
-           :order 8)
-
-          (:name "📥 TODO (Later)"
-           :todo "TODO"
-           :order 9)
-
-          (:name "❌ CANCELLED"
-           :todo "CNCL"
-           :order 10))))
-#+END_SRC
-
-** Custom Agenda Views
+** Optional Context Views
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
-      '(("d" "Daily Focus"
-         ((agenda "" ((org-agenda-span 1)
-                      (org-agenda-start-day nil)))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "🎯 Active Tasks")))))
-
-        ("w" "Weekly Review"
-         ((todo "WAIT"
-                ((org-agenda-overriding-header "⏳ Waiting On")))
-           (todo "CNCL"
-                ((org-agenda-overriding-header "❌ Cancelled (to archive?)")))
-           (stuck ""
-                  ((org-agenda-overriding-header "🧱 Stuck Projects (no NEXT action)")))
-           (tags-todo "-WAIT-CNCL/!TODO"
-                      ((org-agenda-overriding-header "📥 Unprocessed TODO items")))))
-
-        ("h" "@home Context"
+      '(("h" "@home Context"
          ((tags-todo "+@home/!-WAIT-CNCL"
-                     ((org-agenda-overriding-header "🏠 Home Actions")))))
+                      ((org-agenda-overriding-header "🏠 Home Actions")))))
 
         ("W" "Work Dashboard"
          ((tags-todo "+@work/!-WAIT-CNCL"
-                     ((org-agenda-overriding-header "💼 Work Actions")))
-          (tags "+MEETING"
-                ((org-agenda-overriding-header "📅 Meetings")))))))
+                      ((org-agenda-overriding-header "💼 Work Actions")))
+           (tags "+MEETING"
+                 ((org-agenda-overriding-header "📅 Meetings")))))))
 #+END_SRC
 
 ** org-modern
