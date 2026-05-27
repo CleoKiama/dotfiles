@@ -1,0 +1,5 @@
+# personal bookmarks
+# format: display name :: url
+
+org-mode :: https://orgmode.org/worg/org-tutorials/org4beginners.html
+org-ref  :: https://orgmode.org/index.html#sec-4.2
