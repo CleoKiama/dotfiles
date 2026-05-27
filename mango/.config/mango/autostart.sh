@@ -5,8 +5,6 @@ set +e
 # something to do with scale value for xwayland apps
 echo "Xft.dpi: 115" | xrdb -merge
 
-# awww-daemon >/dev/null 2>&1 &
-
 waybar  >/dev/null 2>&1 &
 
 swaync  >/dev/null 2>&1 &
@@ -22,7 +20,9 @@ sunsetr > /dev/null 2>&1 & # night light
 
 
 # Start polkit agent
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
+# trying hyprpolkitagent enabled via systemd user service
+#/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
+
 
 # wallpaper slideshow fow swww
 $HOME/.local/bin/wallpaper_slider $HOME/Pictures/wallpapers 1800 >/dev/null 2>&1 &
