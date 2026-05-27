@@ -1,0 +1,15 @@
+blueberry
+brave-bin
+gnome-bluetooth
+gnome-bluetooth-debug
+mangowm
+mangowm-debug
+scenefx0.4
+slack-desktop
+ttf-ms-fonts
+vesktop-bin
+wlogout
+wlogout-debug
+yay
+yay-debug
+zen-browser-bin
