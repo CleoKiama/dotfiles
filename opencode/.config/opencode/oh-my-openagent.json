@@ -43,7 +43,7 @@
     },
     // Metis: Plan consultant. Rigorously analyzes scope, intent, and hidden requirements before work begins. Catches failure points in requests and specs.
     "metis": {
-      "model": "opencode/nemotron-3-super-free",
+      "model": "github-copilot/gemini-3-flash-preview",
       "fallback_models": ["opencode/deepseek-v4-flash-free", "github-copilot/gpt-5-mini"]
     },
     // Momus: Plan critic/reviewer. Performs exhaustive quality and completeness checks on plans before handoff to implementation agents.
@@ -52,19 +52,16 @@
       "fallback_models": ["opencode/nemotron-3-super-free", "opencode/deepseek-v4-flash-free"]
     },
     "atlas": {
-      "model": "opencode/deepseek-v4-flash-free",
+      "model": "github-copilot/gpt-5.3-codex",
       "fallback_models": ["opencode/nemotron-3-super-free", "opencode/big-pickle"]
     }
   },
   "categories": {
     // Frontend, UI/UX, design, and styling. Always use for layout, CSS, and component development.
     "visual-engineering": {
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
-      "fallback_models": [
-        "github-copilot/gemini-3.1-pro-preview",
-        "opencode/deepseek-v4-flash-free"
-      ]
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/deepseek-v4-flash-free"]
     },
     // Hardest logic, algorithms, architecture, and system-level decisions. For highly complex or ambiguous work only.
     "ultrabrain": {
