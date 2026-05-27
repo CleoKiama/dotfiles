@@ -1,0 +1,4 @@
+# work bookmarks
+# format: display name :: url
+aws-console :: https://d-9067f6a7ae.awsapps.com/start/#/?tab=accounts
+thegoodco :: https://github.com/thegoodco

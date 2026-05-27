@@ -1,0 +1,9 @@
+# neutral bookmarks - opens with current default browser (xdg-open)
+# format: display name :: url
+# These bookmarks work for both personal and work contexts
+qwen  :: https://chat.qwen.ai/
+claude :: https://claude.ai/
+gemini :: https://gemini.google.com/app
+transcript-yt :: https://www.youtube-transcript.io/
+studio :: https://aistudio.google.com/live
+gh-downloader :: https://download-directory.github.io/
