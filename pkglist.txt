@@ -57,6 +57,7 @@ pipewire-alsa
 pipewire-jack
 pipewire-pulse
 postgresql
+power-profiles-daemon
 qt5ct
 qt6ct
 ripgrep
@@ -69,7 +70,9 @@ slack-desktop
 sof-firmware
 spotify-launcher
 starship
+stow
 sudo
+sway-audio-idle-inhibit-git
 swaybg
 swaync
 tailscale

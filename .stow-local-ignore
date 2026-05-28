@@ -1,0 +1,13 @@
+\.git
+\.gitignore
+\.sisyphus
+assets
+docs
+arch-restore\.sh
+aur_packages\.txt
+pacman_packages\.txt
+README\.md
+LICENCE
+structure\.txt
+migrate-to-flat\.sh
+mpris\.so

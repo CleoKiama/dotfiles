@@ -73,6 +73,13 @@ command -q atuin && atuin init fish | source
 command -q starship && starship init fish | source
 
 # -------------------------
+# Keybindings
+# -------------------------
+# Accept autosuggestion with Alt+l (home row friendly)
+bind alt-l forward-char
+bind -M insert alt-l forward-char
+
+# -------------------------
 # Yazi file manager with directory tracking
 # -------------------------
 function y
