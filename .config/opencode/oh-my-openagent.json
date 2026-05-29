@@ -124,5 +124,8 @@
     "max_fallback_attempts": 3,
     "cooldown_seconds": 60,
     "notify_on_fallback": true
+  },
+  "git_master": {
+    "include_co_authored_by": true
   }
 }
