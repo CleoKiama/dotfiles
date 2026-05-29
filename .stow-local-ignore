@@ -1,13 +1,24 @@
-\.git
-\.gitignore
-\.sisyphus
-assets
-docs
-arch-restore\.sh
-aur_packages\.txt
-pacman_packages\.txt
-README\.md
-LICENCE
-structure\.txt
-migrate-to-flat\.sh
-mpris\.so
+# Ignore files and folders in the repo root
+^\.git$
+^\.gitignore$
+^README\.md$
+^LICENSE$
+^assets$
+^docs$
+
+# Ignore your system/package scripts and lists
+^pkglist\.txt$
+^aur_packages\.txt$
+^pacman_packages\.txt$
+^arch-restore\.sh$
+^migrate-to-flat\.sh$
+
+# Ignore any miscellaneous setup files
+^\.sisyphus$
+^mpris\.so$
+
+# Ignore license files in the root
+^LICENCE$
+^LICENSE$
+
+^.tmux.conf.remote 
