@@ -10,7 +10,7 @@ pgrep -u "$USER" rofi >/dev/null && exit 0
 cache_dir="${HYDE_CACHE_HOME:-$HOME/.cache/hyde}"
 favorites_file="${cache_dir}/landing/cliphist_favorites"
 [ -f "$HOME/.cliphist_favorites" ] && favorites_file="$HOME/.cliphist_favorites"
-cliphist_style="$HOME/dotfiles/scripts/scripts/rofiTheme/theme.rasinc"
+cliphist_style="$HOME/dotfiles/scripts/rofiTheme/theme.rasinc"
 del_mode=false
 
 # Process clipboard selections
