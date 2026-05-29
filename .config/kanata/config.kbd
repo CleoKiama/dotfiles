@@ -1,7 +1,53 @@
-(defsrc
-  caps
+(defcfg
+  process-unmapped-keys yes
 )
 
-(deflayer default
-  lctrl
+(defsrc
+  caps a   s   d   j   k   l   ;
+  lsft rsft lctl rctl lmet rmet lalt ralt
 )
+
+(defvar
+  tap-time 200
+  hold-time 200
+  left-hand-keys (q w e r t a s d f g z x c v b)
+  right-hand-keys (y u i o p h j k l ; n m , . /)
+)
+
+(deflayer base
+  @cap @a  @s  @d  @j  @k  @l  @;
+  XX   XX   XX   XX   XX   XX   XX   lrld
+)
+
+;; Prevent accidental mod activation during fast typing
+(deflayer nomods
+  @cap a   s   d   j   k   l   ;
+  XX   XX   XX   XX   XX   XX   XX   lrld
+)
+
+(deffakekeys
+  to-base (layer-switch base)
+)
+
+(defalias
+  tap (multi
+    (layer-switch nomods)
+    (on-idle-fakekey to-base tap 20)
+  )
+
+  ;; Caps: tap=Escape, hold=Shift
+  cap (tap-hold $tap-time $hold-time esc lsft)
+
+  ;; Left hand: A=Super, S=Alt, D=Ctrl
+  a (tap-hold-tap-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lalt $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lctl $left-hand-keys)
+
+  ;; Right hand: J=Ctrl, K=Alt, L=Super, ;=Shift
+  j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rctl $right-hand-keys)
+  k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) ralt $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) rmet $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rsft $right-hand-keys)
+)
+
+
