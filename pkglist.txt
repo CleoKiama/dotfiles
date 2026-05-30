@@ -19,6 +19,7 @@ docker
 efibootmgr
 emacs-wayland
 eza
+fastfetch
 fd
 fish
 flatpak
@@ -36,6 +37,7 @@ hyprpolkitagent
 imagemagick
 intel-media-driver
 intel-ucode
+kanata-bin
 linux
 linux-firmware
 linux-lts
@@ -52,6 +54,7 @@ noto-fonts
 noto-fonts-emoji
 opencode-bin
 openssh
+pano-scrobbler-bin
 pavucontrol
 pipewire-alsa
 pipewire-jack
@@ -64,7 +67,9 @@ ripgrep
 rofi
 rofi-calc
 rofimoji
+ruff
 satty
+seahorse
 shellcheck
 slack-desktop
 sof-firmware
