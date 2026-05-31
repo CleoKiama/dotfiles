@@ -5,7 +5,7 @@
     "sisyphus": {
       "model": "github-copilot/claude-opus-4.6",
       "variant": "max",
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/deepseek-v4-flash-free"]
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/mimo-v2.5-free"]
     },
     // Hephaestus: Autonomous deep worker. Excels at complex, multistep, end-to-end implementation after goal is set, including research and hands-on coding. Focuses on completing entire goals, not just small edits.
     "hephaestus": {
@@ -20,31 +20,28 @@
     // Librarian: External code and documentation researcher. Fetches best practices, official docs, and OSS references. Perfect for unfamiliar libraries/apis.
     "librarian": {
       "model": "opencode/deepseek-v4-flash-free",
-      "fallback_models": ["opencode/big-pickle", "opencode/nemotron-3-super-free"]
+      "fallback_models": ["opencode/mimo-v2.5-free", "opencode/nemotron-3-super-free"]
     },
     // Explore: Fast contextual codebase search. Finds where things are implemented, discovers file structure, triggers parallel codebase searching agents.
     "explore": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "fallback_models": ["opencode/big-pickle", "opencode/nemotron-3-super-free"]
+      "model": "opencode/mimo-v2.5-free",
+      "fallback_models": ["opencode/deepseek-v4-flash-free", "opencode/nemotron-3-super-free"]
     },
     // Multimodal Looker: For analyzing visual artifacts (screenshots, diagrams, PDFs, images). Summarizes and interprets visual data for agents.
     "multimodal-looker": {
-      "model": "github-copilot/gemini-3.1-pro-preview",
+      "model": "github-copilot/gemini-3.5-flash",
       "variant": "high",
-      "fallback_models": [
-        "github-copilot/gemini-3-flash-preview",
-        "opencode/deepseek-v4-flash-free"
-      ]
+      "fallback_models": ["github-copilot/gemini-3.5-flash", "opencode/deepseek-v4-flash-free"]
     },
     // Prometheus: Strategic planner. Interviews, clarifies ambiguous requests, and drafts rigorous execution plans before implementation. Use for complex/uncertain tasks.
     "prometheus": {
       "model": "opencode/nemotron-3-super-free",
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/deepseek-v4-flash-free"]
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/mimo-v2.5-free"]
     },
     // Metis: Plan consultant. Rigorously analyzes scope, intent, and hidden requirements before work begins. Catches failure points in requests and specs.
     "metis": {
-      "model": "github-copilot/gemini-3-flash-preview",
-      "fallback_models": ["opencode/deepseek-v4-flash-free", "github-copilot/gpt-5-mini"]
+      "model": "github-copilot/gemini-3.5-flash",
+      "fallback_models": ["opencode/mimo-v2.5-free", "github-copilot/gpt-5-mini"]
     },
     // Momus: Plan critic/reviewer. Performs exhaustive quality and completeness checks on plans before handoff to implementation agents.
     "momus": {
@@ -59,7 +56,7 @@
   "categories": {
     // Frontend, UI/UX, design, and styling. Always use for layout, CSS, and component development.
     "visual-engineering": {
-      "model": "github-copilot/gemini-3.1-pro-preview",
+      "model": "github-copilot/gemini-3.5-flash",
       "variant": "high",
       "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/deepseek-v4-flash-free"]
     },
@@ -83,13 +80,13 @@
     },
     // Single-file, low-risk, trivial tasks or fixes (typos, config tweaks, basic syntax corrections).
     "quick": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "fallback_models": ["opencode/big-pickle", "opencode/nemotron-3-super-free"]
+      "model": "opencode/mimo-v2.5-free",
+      "fallback_models": ["opencode/deepseek-v4-flash-free", "opencode/nemotron-3-super-free"]
     },
     // For low-effort, default/no-category actions (should be rare in disciplined agent flows).
     "unspecified-low": {
       "model": "opencode/deepseek-v4-flash-free",
-      "fallback_models": ["opencode/big-pickle", "opencode/nemotron-3-super-free"]
+      "fallback_models": ["opencode/mimo-v2.5-free", "opencode/nemotron-3-super-free"]
     },
     // For high-effort, uncategorized automation. Only use if no matching domain category applies, not recommended for strategic tasks.
     "unspecified-high": {
@@ -99,33 +96,33 @@
     },
     // Technical writing, README docs, API/prose explanations. Use for all non-code documentation needs.
     "writing": {
-      "model": "opencode/nemotron-3-super-free",
+      "model": "github-copilot/claude-sonnet-4.6",
       "variant": "medium",
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/deepseek-v4-flash-free"]
-    }
-  },
-  "lsp": {
-    "typescript-language-server": {
-      "command": ["$HOME/.local/share/nvim/mason/bin/typescript-language-server"],
-      "extensions": [".ts", ".tsx"],
-      "priority": 10,
-      "env": { "NODE_OPTIONS": "--max-old-space-size=4096" },
-      "initialization": {
-        "preferences": { "includeInlayParameterNameHints": "all" }
-      }
+      "fallback_models": ["opencode/nemotron-3-super-free", "opencode/mimo-v2.5-free"]
     },
-    "pylsp": { "disabled": true }
-  },
-  "background_task": {
-    "defaultConcurrency": 2
-  },
-  "runtime_fallback": {
-    "enabled": true,
-    "max_fallback_attempts": 3,
-    "cooldown_seconds": 60,
-    "notify_on_fallback": true
-  },
-  "git_master": {
-    "include_co_authored_by": true
+    "lsp": {
+      "typescript-language-server": {
+        "command": ["$HOME/.local/share/nvim/mason/bin/typescript-language-server"],
+        "extensions": [".ts", ".tsx"],
+        "priority": 10,
+        "env": { "NODE_OPTIONS": "--max-old-space-size=4096" },
+        "initialization": {
+          "preferences": { "includeInlayParameterNameHints": "all" }
+        }
+      },
+      "pylsp": { "disabled": true }
+    },
+    "background_task": {
+      "defaultConcurrency": 2
+    },
+    "runtime_fallback": {
+      "enabled": true,
+      "max_fallback_attempts": 3,
+      "cooldown_seconds": 60,
+      "notify_on_fallback": true
+    },
+    "git_master": {
+      "include_co_authored_by": true
+    }
   }
 }
