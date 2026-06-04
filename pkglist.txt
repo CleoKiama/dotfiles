@@ -14,6 +14,7 @@ btop
 btrfs-progs
 cava
 cliphist
+cloudflare-warp-bin
 cmake
 docker
 efibootmgr
@@ -37,6 +38,7 @@ hyprpolkitagent
 imagemagick
 intel-media-driver
 intel-ucode
+jq
 kanata-bin
 linux
 linux-firmware
@@ -44,7 +46,10 @@ linux-lts
 linux-lts-headers
 localsend-bin
 lsof
+man-db
+man-pages
 mangowm
+mediawriter
 mesa
 mpv
 nautilus
@@ -56,11 +61,13 @@ opencode-bin
 openssh
 pano-scrobbler-bin
 pavucontrol
+pear-desktop-bin
 pipewire-alsa
 pipewire-jack
 pipewire-pulse
 postgresql
 power-profiles-daemon
+qbittorrent
 qt5ct
 qt6ct
 ripgrep
@@ -80,6 +87,7 @@ sudo
 sway-audio-idle-inhibit-git
 swaybg
 swaync
+t3code-bin
 tailscale
 tesseract
 tmux
@@ -104,8 +112,10 @@ waybar
 wf-recorder
 wireplumber
 wlogout
+wlr-randr
 woff2-font-awesome
 xdg-desktop-portal-wlr
+xwayland-satellite
 yay
 yay-debug
 yazi
