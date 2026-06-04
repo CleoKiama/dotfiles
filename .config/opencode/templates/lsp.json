@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/lsp-tools-mcp/main/schema.json",
+  "lsp": {
+    "typescript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts"]
+    },
+    "biome": {
+      "command": ["biome", "lsp-proxy", "--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx", ".json", ".jsonc", ".css", ".graphql", ".gql", ".html"]
+    },
+    "bash": {
+      "command": ["bash-language-server", "start"],
+      "extensions": [".sh", ".bash", ".zsh"]
+    }
+  }
+}
