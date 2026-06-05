@@ -9,6 +9,8 @@ waybar  >/dev/null 2>&1 &
 
 swaync  >/dev/null 2>&1 &
 
+systemctl --user start hyprpolkitagent.service >/dev/null 2>&1 &
+
 sway-audio-idle-inhibit  >/dev/null 2>&1 &
 
 
