@@ -8,7 +8,7 @@
 )
 
 (defvar
-  tap-time 200
+  tap-time 150
   hold-time 200
   left-hand-keys (q w e r t a s d f g z x c v b)
   right-hand-keys (y u i o p h j k l ; n m , . /)
@@ -39,7 +39,7 @@
   cap (tap-hold $tap-time $hold-time esc lsft)
 
   ;; Left hand: A=Super, S=Alt, D=Ctrl
-  a (tap-hold-tap-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
+  a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
   s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lalt $left-hand-keys)
   d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lctl $left-hand-keys)
 
