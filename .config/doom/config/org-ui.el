@@ -6,6 +6,7 @@
         evil-escape-delay 0.2
         evil-escape-unordered-key-sequence t)
   (evil-escape-mode 1))
+(setq display-line-numbers-type 'relative)
 
 (setq org-agenda-custom-commands
       '(("h" "@home Context"
