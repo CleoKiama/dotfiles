@@ -1,5 +1,6 @@
 # Ignore files and folders in the repo root
 ^\.git$
+^\.gitattributes$
 ^\.gitignore$
 ^README\.md$
 ^LICENSE$

@@ -1,0 +1,4 @@
+# Route binary font files to Git LFS. Repo stays small, clones stay fast.
+# Setup: `git lfs install --local` (one-time) and `pacman -S git-lfs`.
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.otf filter=lfs diff=lfs merge=lfs -text
