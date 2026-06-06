@@ -97,6 +97,10 @@ opt.spelllang = "en_us"
 opt.spell = true
 opt.scrolloff = 10
 
+-- relative line numbers
+opt.relativenumber = true
+opt.number = true
+
 opt.hlsearch = false
 opt.incsearch = true
 opt.fileformat = "unix"
@@ -134,7 +138,7 @@ vim.api.nvim_create_autocmd("BufRead", {
 
 -- vimux settings
 g.VimuxHeight = "40%"
-g.VimuxOrientation = "h"
+g.VimuxOrientation = "v"
 
 -- disable logs
 vim.lsp.set_log_level("ERROR")
