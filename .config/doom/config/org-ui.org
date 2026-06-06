@@ -9,13 +9,14 @@
   (setq org-src-fontify-natively t))
 #+END_SRC
 
-** Evil Escape
+** Evil
 #+BEGIN_SRC emacs-lisp
 (after! evil-escape
   (setq evil-escape-key-sequence "jj"
         evil-escape-delay 0.2
         evil-escape-unordered-key-sequence t)
   (evil-escape-mode 1))
+(setq display-line-numbers-type 'relative)
 #+END_SRC
 
 ** Optional Context Views
