@@ -9,9 +9,7 @@ waybar  >/dev/null 2>&1 &
 
 swaync  >/dev/null 2>&1 &
 
-systemctl --user start hyprpolkitagent.service >/dev/null 2>&1 &
 
-sway-audio-idle-inhibit  >/dev/null 2>&1 &
 
 
 # clipboard content manager
@@ -33,3 +31,10 @@ $HOME/.local/bin/wallpaper_slider $HOME/Pictures/wallpapers 1800 >/dev/null 2>&1
 $HOME/.local/bin/battery_watcher-bin >/dev/null 2>&1 &
 
 cliphist wipe
+
+sway-audio-idle-inhibit  >/dev/null 2>&1 &
+
+systemctl --user start hyprpolkitagent.service >/dev/null 2>&1 &
+sleep 3 &
+systemctl --user start emacs.service >/dev/null 2>&1 &
+
