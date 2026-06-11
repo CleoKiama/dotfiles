@@ -44,7 +44,6 @@ end, { desc = "[p] Show test summary" })
 
 -- dap key mappings
 map("n", "<leader>dr", function()
-	require("dapui").setup()
 	if vim.bo.filetype == "rust" then
 		vim.cmd.RustLsp("debug")
 	else
@@ -53,7 +52,6 @@ map("n", "<leader>dr", function()
 end, { desc = "[p] DAP continue" })
 
 map("n", "<leader>db", function()
-	require("dapui").setup()
 	require("dap").toggle_breakpoint()
 end, { desc = "[p] DAP toggle breakpoint" })
 
