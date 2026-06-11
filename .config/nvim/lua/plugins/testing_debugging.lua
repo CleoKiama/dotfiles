@@ -21,7 +21,8 @@ return {
 		event = "VeryLazy",
 		dependencies = {
 			"theHamsta/nvim-dap-virtual-text",
-			"rcarriga/nvim-dap-ui",
+			"igorlfs/nvim-dap-view",
+			"mfussenegger/nvim-dap-python",
 		},
 		config = function()
 			require("configs.dap")

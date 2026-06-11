@@ -1,9 +1,9 @@
-local dapui_loaded, dapui = pcall(require, "dapui")
+local dv_loaded, dv = pcall(require, "dap-view")
 local dap_loaded, dap = pcall(require, "dap")
 local vt_loaded, dap_vt = pcall(require, "nvim-dap-virtual-text")
 local utils_loaded, _dap_utils = pcall(require, "dap.utils")
 
-if not dapui_loaded or not dap_loaded or not vt_loaded or not utils_loaded then
+if not dv_loaded or not dap_loaded or not vt_loaded or not utils_loaded then
 	vim.notify("DAP dependencies are missing. Please install them.")
 	return
 end
@@ -26,68 +26,22 @@ dap_vt.setup({
 	virt_text_win_col = nil, -- Position the virtual text at a fixed window column (starting from the first text column)
 })
 
--- DAP UI Setup
-dapui.setup({
-	icons = { expanded = "▾", collapsed = "▸" },
-	mappings = {
-		expand = { "<CR>", "<2-LeftMouse>" },
-		open = "o",
-		remove = "d",
-		edit = "e",
-		repl = "r",
-		toggle = "t",
-	},
-	expand_lines = vim.fn.has("nvim-0.7"), -- Requires Neovim >= 0.7
-	layouts = {
-		{
-			elements = {
-				{ id = "scopes", size = 0.25 },
-				"breakpoints",
-				"stacks",
-				"watches",
-			},
-			size = 40, -- 40 columns
-			position = "left",
-		},
-		{
-			elements = {
-				"repl",
-				"console",
-			},
-			size = 0.25, -- 25% of total lines
+-- nvim-dap-view Setup (replaces nvim-dap-ui)
+dv.setup({
+	auto_toggle = true,
+	windows = {
+		position = "left",
+		size = 40,
+		terminal = {
 			position = "bottom",
+			size = 0.25,
 		},
-	},
-	floating = {
-		max_height = nil, -- These can be integers or a float between 0 and 1.
-		max_width = nil, -- Floats will be treated as percentage of your screen.
-		border = "rounded", -- Border style: "single", "double", "rounded"
-		mappings = {
-			close = { "q", "<Esc>" },
-		},
-	},
-	windows = { indent = 1 },
-	render = {
-		max_type_length = nil,
 	},
 })
 
 -- DAP Setup
 dap.set_log_level("TRACE")
 
--- Automatically open UI
-dap.listeners.before.attach.dapui_config = function()
-	dapui.open()
-end
-dap.listeners.before.launch.dapui_config = function()
-	dapui.open()
-end
-dap.listeners.before.event_terminated.dapui_config = function()
-	dapui.close()
-end
-dap.listeners.before.event_exited.dapui_config = function()
-	dapui.close()
-end
 -- Enable virtual text
 vim.g.dap_virtual_text = true
 
@@ -123,3 +77,29 @@ for _, language in ipairs(supported_filetypes) do
 		},
 	}
 end
+
+require("dap-python").setup("uv")
+
+local function set_step_keymaps()
+	local actions = {
+		["<Down>"] = "step_over",
+		["<Right>"] = "step_into",
+		["<Left>"] = "step_out",
+		["<Up>"] = "restart_frame",
+	}
+	for key, action in pairs(actions) do
+		vim.keymap.set("n", key, function()
+			require("dap")[action]()
+		end, { noremap = true, silent = true, desc = "DAP " .. action })
+	end
+end
+
+local function clear_step_keymaps()
+	for _, key in ipairs({ "<Down>", "<Right>", "<Left>", "<Up>" }) do
+		pcall(vim.keymap.del, "n", key)
+	end
+end
+
+dap.listeners.after.event_initialized["step_keys"] = set_step_keymaps
+dap.listeners.before.event_terminated["step_keys"] = clear_step_keymaps
+dap.listeners.before.event_exited["step_keys"] = clear_step_keymaps
