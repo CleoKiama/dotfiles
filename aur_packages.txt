@@ -4,7 +4,7 @@ brave-bin
 cloudflare-warp-bin
 kanata-bin
 localsend-bin
-mangowm
+mangowm-git
 mediawriter
 opencode-bin
 pano-scrobbler-bin
@@ -17,5 +17,4 @@ ttf-symbola-free
 vesktop-bin
 wlogout
 yay
-yay-debug
 zen-browser-bin
