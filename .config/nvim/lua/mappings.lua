@@ -46,6 +46,8 @@ map("n", "<leader>x", function()
 	vim.cmd("bd")
 end, { desc = "buffer close" })
 
+map("n", "<leader>X", "<cmd>bdelete!<cr>", { desc = "Force close buffer" })
+
 -- toggleable terminal
 map({ "n", "t" }, "<A-t>", function()
 	require("nvchad.term").toggle({ pos = "float", id = "floatTerm" })
