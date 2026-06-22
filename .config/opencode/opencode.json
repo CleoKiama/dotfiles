@@ -6,13 +6,16 @@
       "url": "https://mcp.context7.com/mcp",
       "enabled": true,
       "headers": {
-        "CONTEXT7_API_KEY": "ctx7sk-e32d5ee2-c8f3-4738-b112-7a0d97d9ce7f"
+        "CONTEXT7_API_KEY": "{file:~/.config/opencode/context7-key}"
       }
     },
     "Linear-mcp": {
       "type": "remote",
       "url": "https://mcp.linear.app/mcp",
-      "enabled": true
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {file:~/.config/opencode/linear-key}"
+      }
     },
     "axiom": {
       "type": "remote",
