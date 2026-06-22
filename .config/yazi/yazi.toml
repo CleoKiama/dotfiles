@@ -1,2 +1,42 @@
 [mgr]
+ratio = [1, 4, 3]
+sort_by = "alphabetical"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
+sort_translit = false
+linemode = "none"
 show_hidden = true
+show_symlink = true
+scrolloff = 5
+mouse_events = ["click", "scroll"]
+
+[preview]
+wrap = "no"
+tab_size = 2
+max_width = 600
+max_height = 900
+cache_dir = ""
+image_delay = 30
+image_filter = "triangle"
+image_quality = 75
+
+[tasks]
+file_workers = 5
+plugin_workers = 3
+fetch_workers = 5
+preload_workers = 5
+process_workers = 5
+bizarre_retry = 5
+suppress_preload = false
+image_alloc = 536870912  # 512 MiB
+image_bound = [0, 0]
+
+[input]
+cursor_blink = false
+
+[which]
+sort_by = "none"
+sort_sensitive = false
+sort_reverse = false
+sort_translit = false
