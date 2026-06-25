@@ -1,5 +1,10 @@
 (defcfg
   process-unmapped-keys yes
+  ;; NOTE: tap-hold-require-prior-idle (equivalent to ZMK's require-prior-idle-ms
+  ;; from urob's timeless homerow mods) lands in kanata v1.12.0-prerelease-2.
+  ;; On v1.11.0 it is unavailable, so same-hand suppression via
+  ;; tap-hold-release-keys + hand-key lists is the active anti-misfire mechanism.
+  ;; Upgrade to v1.12.0+ and add: tap-hold-require-prior-idle 150
 )
 
 (defsrc
@@ -19,36 +24,23 @@
   XX   XX   XX   XX   XX   XX   XX   lrld
 )
 
-;; Prevent accidental mod activation during fast typing
-(deflayer nomods
-  @cap a   s   d   f   j   k   l   ;
-  XX   XX   XX   XX   XX   XX   XX   lrld
-)
-
-(deffakekeys
-  to-base (layer-switch base)
-)
-
 (defalias
-  tap (multi
-    (layer-switch nomods)
-    (on-idle-fakekey to-base tap 20)
-  )
-
   ;; Caps: Escape
   cap esc
 
-  ;; Left hand: A=Shift, S=Ctrl, D=Alt, F=Super
-  a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lsft $left-hand-keys)
-  s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lctl $left-hand-keys)
-  d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lalt $left-hand-keys)
-  f (tap-hold-release-keys $tap-time $hold-time (multi f @tap) lmet $left-hand-keys)
+  ;; Left hand: A=Shift, S=Alt, D=Super, F=Ctrl
+  ;; tap-hold-release-keys + hand-key lists provide same-hand suppression
+  ;; (equivalent to ZMK hold-trigger-key-positions): the hold only activates
+  ;; when the next key is on the opposite hand.
+  a (tap-hold-release-keys $tap-time $hold-time a lsft $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time s lalt $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time d lmet $left-hand-keys)
+  f (tap-hold-release-keys $tap-time $hold-time f lctl $left-hand-keys)
 
-  ;; Right hand: J=Super, K=Alt, L=Ctrl, ;=Shift
-  j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rmet $right-hand-keys)
-  k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) ralt $right-hand-keys)
-  l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) rctl $right-hand-keys)
-  ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rsft $right-hand-keys)
+  ;; Right hand: J=Ctrl, K=Super, L=Alt, ;=Shift
+  j (tap-hold-release-keys $tap-time $hold-time j rctl $right-hand-keys)
+  k (tap-hold-release-keys $tap-time $hold-time k rmet $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time l ralt $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time ; rsft $right-hand-keys)
 )
-
 
