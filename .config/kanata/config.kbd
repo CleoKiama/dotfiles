@@ -3,7 +3,7 @@
 )
 
 (defsrc
-  caps a   s   d   j   k   l   ;
+  caps a   s   d   f   j   k   l   ;
   lsft rsft lctl rctl lmet rmet lalt ralt
 )
 
@@ -15,13 +15,13 @@
 )
 
 (deflayer base
-  @cap @a  @s  @d  @j  @k  @l  @;
+  @cap @a  @s  @d  @f  @j  @k  @l  @;
   XX   XX   XX   XX   XX   XX   XX   lrld
 )
 
 ;; Prevent accidental mod activation during fast typing
 (deflayer nomods
-  @cap a   s   d   j   k   l   ;
+  @cap a   s   d   f   j   k   l   ;
   XX   XX   XX   XX   XX   XX   XX   lrld
 )
 
@@ -35,18 +35,19 @@
     (on-idle-fakekey to-base tap 20)
   )
 
-  ;; Caps: tap=Escape, hold=Shift
-  cap (tap-hold $tap-time $hold-time esc lsft)
+  ;; Caps: Escape
+  cap esc
 
-  ;; Left hand: A=Super, S=Alt, D=Ctrl
-  a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
-  s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lalt $left-hand-keys)
-  d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lctl $left-hand-keys)
+  ;; Left hand: A=Shift, S=Ctrl, D=Alt, F=Super
+  a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lsft $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lctl $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lalt $left-hand-keys)
+  f (tap-hold-release-keys $tap-time $hold-time (multi f @tap) lmet $left-hand-keys)
 
-  ;; Right hand: J=Ctrl, K=Alt, L=Super, ;=Shift
-  j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rctl $right-hand-keys)
+  ;; Right hand: J=Super, K=Alt, L=Ctrl, ;=Shift
+  j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rmet $right-hand-keys)
   k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) ralt $right-hand-keys)
-  l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) rmet $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) rctl $right-hand-keys)
   ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rsft $right-hand-keys)
 )
 
