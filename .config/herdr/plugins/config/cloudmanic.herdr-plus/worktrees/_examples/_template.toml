@@ -1,0 +1,37 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# herdr-plus worktree auto-layout template
+# ─────────────────────────────────────────────────────────────────────────────
+# When herdr creates OR opens a worktree (via `herdr worktree create`/`open` or
+# the right-click dialog), herdr fires a `worktree.created` / `worktree.opened`
+# event. herdr-plus catches it, finds a layout matching the worktree's repo, and
+# opens that layout's tabs and panes in the new workspace — every command
+# running — with no keypress.
+#
+# Layouts live in this `worktrees/` dir, one TOML file per layout.
+# The switch is simply whether the file exists: delete it to turn a layout off.
+# Docs: https://github.com/cloudmanic/herdr-plus#worktree-auto-layout
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Required: matches the worktree's repo name (the repo's basename),
+# case-insensitively. e.g. a clone of github.com/me/options-cafe → "options-cafe"
+repo = "my-project"
+
+# Optional: narrow to worktrees on exactly this branch.
+# A branch-specific layout wins over a repo-only one when both match.
+# branch = "main"
+
+# ── Tabs ────────────────────────────────────────────────────────────────────
+# Identical format to project files, including multi-pane [[tabs.panes]] splits.
+
+[[tabs]]
+name = "agent"
+# ⚠ --dangerously-skip-permissions removes Claude Code's permission prompts.
+# Use only in trusted repos; drop the flag for normal safety.
+command = "claude --dangerously-skip-permissions"
+
+[[tabs]]
+name = "lazygit"
+command = "lazygit"
+
+[[tabs]]
+name = "terminal"

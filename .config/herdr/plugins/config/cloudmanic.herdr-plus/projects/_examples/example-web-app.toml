@@ -1,0 +1,29 @@
+# Example project: a typical web app monorepo with an agent, git TUI,
+# a server tab with split panes, and a scratch terminal.
+# Edit working_dir, commands, and names to match your real stack.
+
+name = "Web App"
+description = "Frontend + backend monorepo with agent and dev servers"
+working_dir = "~/Projects/web-app"
+group = "personal"
+
+[[tabs]]
+name = "agent"
+# ⚠ --dangerously-skip-permissions removes Claude Code's permission prompts.
+# Use only in trusted repos; drop the flag for normal safety.
+command = "claude --dangerously-skip-permissions"
+
+[[tabs]]
+name = "lazygit"
+command = "lazygit"
+
+[[tabs]]
+name = "dev"
+  [[tabs.panes]]
+  command = "npm run dev"
+  [[tabs.panes]]
+  command = "npm run test:watch"
+  split = "down"
+
+[[tabs]]
+name = "shell"

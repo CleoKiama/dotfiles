@@ -1,0 +1,51 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# herdr-plus project template
+# ─────────────────────────────────────────────────────────────────────────────
+# Copy this file, rename it, and edit. The file NAME doesn't matter — only the
+# contents. Add a file to add a project; delete it to remove one.
+# Pick a project from herdr-plus's fuzzy browser and it spins up a whole
+# workspace: every tab, every pane, every startup command — in one keypress.
+# Docs: https://github.com/cloudmanic/herdr-plus#projects
+# ─────────────────────────────────────────────────────────────────────────────
+
+name = "My Project"
+description = "Short one-line description shown in the fuzzy picker"
+
+# Working directory for the whole workspace. ~ and $ENV_VARS expand.
+working_dir = "~/Projects/my-project"
+
+# Optional: cluster related projects under a heading in the picker.
+# Only engages when at least one project sets `group`.
+# group = "work"
+
+# ── Tabs ────────────────────────────────────────────────────────────────────
+# Tabs open in file order. The first tab reuses the workspace's root tab;
+# the rest are created behind it. A tab with no `command` is just an empty shell.
+
+[[tabs]]
+name = "agent"
+# ⚠ --dangerously-skip-permissions removes Claude Code's permission prompts.
+# Use only in trusted repos; drop the flag for normal safety.
+command = "claude --dangerously-skip-permissions"
+
+[[tabs]]
+name = "lazygit"
+command = "lazygit"
+
+[[tabs]]
+name = "terminal"   # no command — just an empty shell
+
+# ── Split panes within a tab (up to 4 panes) ────────────────────────────────
+# A tab uses EITHER `command` OR `[[tabs.panes]]`, not both.
+# Each pane after the first sets `split` to "down" (stacked) or "right" (side
+# by side). Omitted `split` defaults to "down".
+
+# [[tabs]]
+# name = "server"
+#
+# [[tabs.panes]]
+# command = "npm run dev"
+#
+# [[tabs.panes]]
+# command = "npm run test:watch"
+# split = "down"

@@ -1,0 +1,31 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# herdr-plus quick actions
+# ─────────────────────────────────────────────────────────────────────────────
+# A fuzzy launcher for one-off commands. Pick one and it runs in the directory
+# you launched from. Three types: command (default), select, form.
+# Commands are Go templates: {{.WorkDir}}, {{.SessionTitle}}, {{.Value}}, etc.
+# Also exported as HERDR_PLUS_* env vars. If a command doesn't reference
+# {{.Value}}, the value is appended as a final shell-quoted argument.
+# Docs: https://github.com/cloudmanic/herdr-plus#quick-actions
+# ─────────────────────────────────────────────────────────────────────────────
+
+# type = "command" (default) — runs immediately
+name = "Open GitHub"
+command = "xdg-open https://github.com"
+
+# ── select: pick from a second fuzzy list; the choice becomes {{.Value}} ────
+# name = "Open Repo"
+# type = "select"
+# command = "xdg-open https://github.com/cloudmanic/{{.Value}}"
+#
+# [[options]]
+# label = "Herdr Plus"
+# value = "herdr-plus"
+
+# ── form: type a value that becomes {{.Value}} ──────────────────────────────
+# name = "Search the web"
+# type = "form"
+# command = "xdg-open 'https://duckduckgo.com/?q={{.Value | urlquery}}'"
+#
+# [form]
+# prompt = "Search for"
