@@ -14,6 +14,9 @@ fish_add_path $HOME/.cargo/bin
 set -gx PNPM_HOME $HOME/.local/share/pnpm
 fish_add_path $PNPM_HOME
 
+# vi mode
+fish_vi_key_bindings
+
 # AUR helper
 set -gx aurhelper yay
 
@@ -97,3 +100,7 @@ if not string match -q -- "$PNPM_HOME/bin" $PATH
   set -gx PATH "$PNPM_HOME/bin" $PATH
 end
 # pnpm end
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
