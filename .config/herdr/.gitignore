@@ -1,0 +1,8 @@
+herdr-client.log
+herdr-server.log
+session.json
+# Cloned plugin source — managed by `herdr plugin install`, not us.
+plugins/github/
+# Plugin registry — machine-specific paths, timestamps, commit hashes.
+# Bootstrap per-machine with: herdr plugin install cloudmanic/herdr-plus --yes
+plugins.json
