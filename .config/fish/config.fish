@@ -72,11 +72,14 @@ end
 # Atuin
 command -q atuin && atuin init fish | source
 
-# Ctrl+P: current shell session history (incremental, like up-arrow)
+# Ctrl+P / Ctrl+N: inline history cycling (like zsh atuin-up/down-search)
 # Ctrl+R (bound by atuin init above) is global full-screen history search.
-bind \cp _atuin_bind_up
-bind -M insert \cp _atuin_bind_up
-bind -M vi_normal \cp _atuin_bind_up
+bind \cp up-or-search
+bind -M insert \cp up-or-search
+bind -M vi_normal \cp up-or-search
+bind \cn down-or-search
+bind -M insert \cn down-or-search
+bind -M vi_normal \cn down-or-search
 
 # Starship prompt
 command -q starship && starship init fish | source
