@@ -72,6 +72,12 @@ end
 # Atuin
 command -q atuin && atuin init fish | source
 
+# Ctrl+P: current shell session history (incremental, like up-arrow)
+# Ctrl+R (bound by atuin init above) is global full-screen history search.
+bind \cp _atuin_bind_up
+bind -M insert \cp _atuin_bind_up
+bind -M vi_normal \cp _atuin_bind_up
+
 # Starship prompt
 command -q starship && starship init fish | source
 
