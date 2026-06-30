@@ -1,0 +1,117 @@
+{
+  "$schema": "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json",
+
+  // Active preset: free opencode models only — no opencode-go token spend.
+  // Switch back to "mixed" when opencode-go tokens are replenished.
+  "preset": "mixed",
+
+  // Enable all agents including Observer (disabled by default).
+  "disabled_agents": [],
+
+  // Match opencode.json's autoupdate: false — notify only, don't auto-install.
+  "autoUpdate": false,
+
+  "presets": {
+    // ── Active preset: mixed providers, balanced cost/quality ──
+    "mixed": {
+      // Orchestrator: runs frequently (planning, delegation, reconciliation).
+      "orchestrator": {
+        "model": "github-copilot/gpt-5.4-mini",
+        "skills": ["*"],
+        "mcps": ["*", "!context7"]
+      },
+      // Oracle: hardest problems — architecture, deep debugging, code review.
+      // Worth the premium: Claude Opus 4.7 is the strongest reasoning model available.
+      "oracle": {
+        "model": "github-copilot/claude-opus-4.7",
+        "variant": "high",
+        "skills": ["simplify"],
+        "mcps": ["codebase-memory-mcp"]
+      },
+      // Council: synthesises diverse model perspectives into one verdict.
+      // deepseek-v4-pro is a strong synthesiser at a lower cost than premium options.
+      "council": {
+        "model": "opencode/deepseek-v4-flash-free",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      // Librarian: research and documentation lookups — fast and cheap.
+      "librarian": {
+        "model": "opencode/mimo-v2.5-free",
+        "skills": [],
+        "mcps": ["websearch", "context7", "gh_grep"]
+      },
+      // Explorer: codebase reconnaissance — fast and cheap.
+      "explorer": {
+        "model": "opencode/nemotron-3-ultra-free",
+        "skills": [],
+        "mcps": ["codebase-memory-mcp"]
+      },
+      // Designer: UI/UX and visual polish — Gemini Flash excels at visual tasks.
+      "designer": {
+        "model": "github-copilot/gemini-3-flash-preview",
+        "skills": [],
+        "mcps": []
+      },
+      // Fixer: scoped implementation from concrete plans — efficient coding model.
+      "fixer": {
+        "model": "github-copilot/claude-sonnet-4.5",
+        "variant": "high",
+        "skills": [],
+        "mcps": ["codebase-memory-mcp"]
+      },
+      // Observer: visual analysis (images, screenshots, PDFs) — vision-capable.
+      "observer": {
+        "model": "github-copilot/gpt-5.5",
+        "skills": [],
+        "mcps": []
+      }
+    },
+
+    // ── Free preset: opencode free-tier models only — zero opencode-go token spend ──
+    "free": {
+      // Orchestrator: nemotron-3-ultra-free — strongest free reasoning model for planning.
+      "orchestrator": { "model": "opencode/nemotron-3-ultra-free", "skills": ["*"], "mcps": ["*", "!context7"] },
+      // Oracle: also nemotron-3-ultra-free — best available for hard problems in free tier.
+      "oracle": { "model": "opencode/nemotron-3-ultra-free", "variant": "high", "skills": ["simplify"], "mcps": ["codebase-memory-mcp"] },
+      // Council: deepseek-v4-flash-free — fast synthesis at zero cost.
+      "council": { "model": "opencode/deepseek-v4-flash-free", "variant": "high", "skills": [], "mcps": [] },
+      // Librarian: mimo-v2.5-free — efficient for research and doc lookups.
+      "librarian": { "model": "opencode/mimo-v2.5-free", "skills": [], "mcps": ["websearch", "context7", "gh_grep"] },
+      // Explorer: mimo-v2.5-free — fast and cheap codebase reconnaissance.
+      "explorer": { "model": "opencode/mimo-v2.5-free", "skills": [], "mcps": ["codebase-memory-mcp"] },
+      // Designer: mimo-v2.5-free — best visual-capable free option available.
+      "designer": { "model": "opencode/mimo-v2.5-free", "skills": [], "mcps": [] },
+      // Fixer: north-mini-code-free — code-specialised free model for implementation.
+      "fixer": { "model": "opencode/north-mini-code-free", "variant": "high", "skills": [], "mcps": ["codebase-memory-mcp"] },
+      // Observer: mimo-v2.5-free — multimodal free option for visual analysis.
+      "observer": { "model": "opencode/mimo-v2.5-free", "skills": [], "mcps": [] }
+    },
+
+    // ── Alternative preset: all opencode-go, lowest cost ──
+    "opencode-go": {
+      "orchestrator": { "model": "opencode-go/glm-5.1", "skills": ["*"], "mcps": ["*", "!context7"] },
+      "oracle": { "model": "opencode-go/deepseek-v4-pro", "variant": "max", "skills": ["simplify"], "mcps": ["codebase-memory-mcp"] },
+      "council": { "model": "opencode-go/deepseek-v4-pro", "variant": "high", "skills": [], "mcps": [] },
+      "librarian": { "model": "opencode-go/minimax-m2.7", "skills": [], "mcps": ["websearch", "context7", "gh_grep"] },
+      "explorer": { "model": "opencode-go/minimax-m2.7", "skills": [], "mcps": ["codebase-memory-mcp"] },
+      "designer": { "model": "opencode-go/kimi-k2.6", "variant": "medium", "skills": [], "mcps": [] },
+      "fixer": { "model": "opencode-go/deepseek-v4-flash", "variant": "high", "skills": [], "mcps": ["codebase-memory-mcp"] },
+      "observer": { "model": "opencode-go/kimi-k2.6", "skills": [], "mcps": [] }
+    }
+  },
+
+  // Council: diverse councillors from different model families for cross-examination.
+  // 2 premium (Claude, GPT) + 2 cost-effective (DeepSeek, GLM) = broad perspective coverage.
+  "council": {
+    "default_preset": "mixed",
+    "presets": {
+      "mixed": {
+        "claude": { "model": "github-copilot/claude-sonnet-4.6" },
+        "gpt": { "model": "github-copilot/gpt-5.4" },
+        "deepseek": { "model": "opencode/deepseek-v4-flash-free" },
+      }
+    }
+  }
+}
