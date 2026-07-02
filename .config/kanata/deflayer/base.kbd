@@ -1,0 +1,22 @@
+(deflayer base
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  esc  @a   @s   @d   @f   _         _    @j   @k   @l   @;
+  _    _    _    _    _    _    _    _    _    _    _
+            @num               @nav             @sym
+)
+
+(defalias
+  a (tap-hold-release-keys $tap-time $hold-time a lsft $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time s lalt $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time d lmet $left-hand-keys)
+  f (tap-hold-release-keys $tap-time $hold-time f lctl $left-hand-keys)
+  j (tap-hold-release-keys $tap-time $hold-time j rctl $right-hand-keys)
+  k (tap-hold-release-keys $tap-time $hold-time k rmet $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time l ralt $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time ; rsft $right-hand-keys)
+
+  sft (tap-hold-press $tap-time $hold-time bspc lsft)
+  nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
+  sym (tap-hold-press $tap-time $hold-time ret (layer-while-held symbols))
+)
