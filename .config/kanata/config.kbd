@@ -7,40 +7,15 @@
   ;; Upgrade to v1.12.0+ and add: tap-hold-require-prior-idle 150
 )
 
-(defsrc
-  caps a   s   d   f   j   k   l   ;
-  lsft rsft lctl rctl lmet rmet lalt ralt
-)
-
 (defvar
   tap-time 150
   hold-time 200
-  left-hand-keys (q w e r t a s d f g z x c v b)
-  right-hand-keys (y u i o p h j k l ; n m , . /)
+  left-hand-keys (1 2 3 4 5 q w e r t a s d f g z x c v b <)
+  right-hand-keys (6 7 8 9 0 y u i o p h j k l ; n m , . / bspc)
 )
 
-(deflayer base
-  @cap @a  @s  @d  @f  @j  @k  @l  @;
-  XX   XX   XX   XX   XX   XX   XX   lrld
-)
-
-(defalias
-  ;; Caps: Escape
-  cap esc
-
-  ;; Left hand: A=Shift, S=Alt, D=Super, F=Ctrl
-  ;; tap-hold-release-keys + hand-key lists provide same-hand suppression
-  ;; (equivalent to ZMK hold-trigger-key-positions): the hold only activates
-  ;; when the next key is on the opposite hand.
-  a (tap-hold-release-keys $tap-time $hold-time a lsft $left-hand-keys)
-  s (tap-hold-release-keys $tap-time $hold-time s lalt $left-hand-keys)
-  d (tap-hold-release-keys $tap-time $hold-time d lmet $left-hand-keys)
-  f (tap-hold-release-keys $tap-time $hold-time f lctl $left-hand-keys)
-
-  ;; Right hand: J=Ctrl, K=Super, L=Alt, ;=Shift
-  j (tap-hold-release-keys $tap-time $hold-time j rctl $right-hand-keys)
-  k (tap-hold-release-keys $tap-time $hold-time k rmet $right-hand-keys)
-  l (tap-hold-release-keys $tap-time $hold-time l ralt $right-hand-keys)
-  ; (tap-hold-release-keys $tap-time $hold-time ; rsft $right-hand-keys)
-)
-
+(include defsrc/pc.kbd)
+(include defalias/qwerty.kbd)
+(include deflayer/base.kbd)
+(include deflayer/symbols.kbd)
+(include deflayer/navigation.kbd)

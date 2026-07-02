@@ -1,0 +1,32 @@
+(defalias
+  ;; Navigation layer helper aliases
+  all C-a   sav C-s   cls C-w   ndo C-z
+  cut C-x   cpy C-c   pst C-v
+
+  ;; Numpad digits
+  0 0  1 1  2 2  3 3  4 4  5 5  6 6  7 7  8 8  9 9
+
+  ;; Numpad operators and punctuation
+  - -   / /   . .   , ,   = =
+
+  ;; Shifted digits (number row symbols)
+  s0 S-0  s1 S-1  s2 S-2  s3 S-3  s4 S-4
+  s5 S-5  s6 S-6  s7 S-7  s8 S-8  s9 S-9
+
+  ;; Symbols layer — programming symbols on alpha keys (QWERTY-optimized)
+  ;; Row 1 (q w e r t  y u i o p)
+  ^  S-6   <  S-,   >  S-.   $  S-4   %  S-5
+  @  S-2   &  S-7   *  S-8   '  '     `  `
+
+  ;; Row 2 (a s d f g  h j k l ;)
+  {  S-[   pl S-9   pr S-0   }  S-]
+  \  \     +  S-=   '' S-'
+
+  ;; Row 3 (z x c v b  < n m , . /)
+  ~  S-`   [  [     ]  ]     _  S--   #  S-3
+  |  S-\   !  S-1   scl ;    :  S-;   ?  S-/
+
+  ;; NumRow — programmable keys (no-ops by default)
+  dk1 XX   dk2 XX   dk3 XX   dk4 XX   dk5 XX
+  nbs spc
+)
