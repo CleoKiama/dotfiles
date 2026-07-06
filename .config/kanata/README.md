@@ -41,7 +41,9 @@ Home-row modifier keys on a hold-tap with `tap-hold-release-keys` and same-hand 
 | J   | j   | Ctrl (right)  |
 | K   | k   | Super (right) |
 | L   | l   | Alt (right)   |
-| ;   | ;   | Shift (right) |
+| ;   | ESC | Shift (right) |
+
+Caps Lock is disabled (XX). Physical Delete is disabled (XX).
 
 Anti-misfire: same-hand key detection via `$left-hand-keys` / `$right-hand-keys` variable lists prevents accidental modifier activation when rolling.
 
@@ -64,6 +66,7 @@ Programming symbols accessed by holding the right thumb (Enter). Mirrors the Ars
 Q→^   W→<   E→>   R→$   T→%       Y→@   U→&   I→*   O→'   P→`
 A→{   S→(   D→)   F→}   G→=       H→\   J→+   K→-   L→/   ;→"
 Z→~   X→[   C→]   V→_   B→#       N→|   M→!   ,→;   .→:   /→?
+                                        ;→ESC (tap) / Shift (hold)
 ```
 
 ### Navigation
@@ -138,6 +141,15 @@ The layout uses an angle mod for the bottom-left keys, shifting ZXCVB inward for
 ### going cold turkey
 
 All keys outside the 34-key core are mapped to `XX` (no-op) in every layer. The physical number row, modifiers, arrows, F-keys, and numpad are all silenced. Numbers are only accessible via the `num` thumb chord (Navigation → NumRow layer stacking).
+
+**Exception:** Print Screen is mapped to `lrld` (live reload) for convenient config reloading.
+
+### Key Remaps
+
+| Physical Key    | Action                        |
+| --------------- | ----------------------------- |
+| Semicolon (`;`) | Tap: ESC, Hold: Shift (right) |
+| Print Screen    | Live reload config (`lrld`)   |
 
 ## File Structure
 

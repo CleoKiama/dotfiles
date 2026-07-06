@@ -1,11 +1,11 @@
 (deflayer base
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   _    _    _    _    _         _    _    _    _    _
-  esc  @a   @s   @d   @f   _         _    @j   @k   @l   @;
+  XX   @a   @s   @d   @f   _         _    @j   @k   @l   @;
   _    _    _    _    _    _    _    _    _    _    _
             @num               @nav             @sym
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX
+  XX   lrld   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
@@ -21,7 +21,7 @@
   j (tap-hold-release-keys $tap-time $hold-time j rctl $right-hand-keys)
   k (tap-hold-release-keys $tap-time $hold-time k rmet $right-hand-keys)
   l (tap-hold-release-keys $tap-time $hold-time l ralt $right-hand-keys)
-  ; (tap-hold-release-keys $tap-time $hold-time ; rsft $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time esc rsft $right-hand-keys)
 
   sft (tap-hold-press $tap-time $hold-time bspc lsft)
   nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
