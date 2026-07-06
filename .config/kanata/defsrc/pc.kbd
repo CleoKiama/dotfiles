@@ -4,4 +4,12 @@
   caps  a    s    d    f    g         h    j    k    l    ;
   z    x    c    v    b    <    n    m    ,    .    /
             lalt          spc             ralt
+  tab  lshift rshift lctl  rctl  lmet  rmet  enter  del  esc
+  ins  prtsc  pause
+  up   down   left   right home  end   pgup  pgdn
+  f1   f2     f3     f4    f5    f6    f7    f8    f9    f10   f11   f12
+  kp0  kp1    kp2    kp3   kp4   kp5   kp6   kp7   kp8   kp9
+  kprt kp+    kp-    kp*   kp/   kp.   nlk
+  '
+  -    =    `    [    ]    \
 )

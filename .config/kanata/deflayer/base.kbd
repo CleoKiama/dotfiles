@@ -1,9 +1,16 @@
 (deflayer base
-  _    _    _    _    _    _    _    _    _    _    _
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   _    _    _    _    _         _    _    _    _    _
   esc  @a   @s   @d   @f   _         _    @j   @k   @l   @;
   _    _    _    _    _    _    _    _    _    _    _
             @num               @nav             @sym
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX
 )
 
 (defalias
