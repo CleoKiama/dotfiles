@@ -101,10 +101,25 @@ Calculator-style numpad with arrow keys on the left hand:
 
 ```
 Q          W→Home   E→Up     R→End    T→PgUp
-                          H→/     J→7     K→8     L→9
-                    S→Left  D→Down  F→Right G→PgDn  H→-   J→4   K→5   L→6   ;→0
+                           H→/     J→7     K→8     L→9
+                     S→Left  D→Down  F→Right G→PgDn  H→-   J→4   K→5   L→6   ;→0
                                             H→,    J→1   K→2   L→3   ;→.
 ```
+
+### Workspace
+
+![Workspace Layer](docs/images/workspace.svg)
+
+Workspace switching via dual-thumb chord (lalt + ralt held together). Home row sends Super+1 through Super+0:
+
+```
+Q          W        E        R        T
+A→Super+1  S→Super+2  D→Super+3  F→Super+4  G→Super+5
+Z          X        C        V        B
+                                        H→Super+6  J→Super+7  K→Super+8  L→Super+9  ;→Super+0
+```
+
+**Usage:** Hold both thumb keys (lalt + ralt) together, tap a home-row letter to switch workspace, release thumbs to return to base.
 
 ### Function Keys
 
@@ -138,11 +153,23 @@ The layout uses an angle mod for the bottom-left keys, shifting ZXCVB inward for
 )
 ```
 
+### Chords
+
+Dual-thumb chord for workspace switching:
+
+```lisp
+(defchordsv2
+  (lalt ralt) (layer-while-held workspace) 350 all-released ()
+)
+```
+
 ### going cold turkey
 
 All keys outside the 34-key core are mapped to `XX` (no-op) in every layer. The physical number row, modifiers, arrows, F-keys, and numpad are all silenced. Numbers are only accessible via the `num` thumb chord (Navigation → NumRow layer stacking).
 
-**Exception:** Print Screen is mapped to `lrld` (live reload) for convenient config reloading.
+**Exceptions:**
+- Print Screen is mapped to `lrld` (live reload) for convenient config reloading
+- Both thumbs together (lalt + ralt) activates the workspace layer for Super+1..0 workspace switching
 
 ### Key Remaps
 
@@ -150,6 +177,7 @@ All keys outside the 34-key core are mapped to `XX` (no-op) in every layer. The 
 | --------------- | ----------------------------- |
 | Semicolon (`;`) | Tap: ESC, Hold: Shift (right) |
 | Print Screen    | Live reload config (`lrld`)   |
+| Both thumbs     | Workspace layer (Super+1..0)  |
 
 ## File Structure
 

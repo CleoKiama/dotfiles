@@ -1,5 +1,6 @@
 (defcfg
   process-unmapped-keys yes
+  concurrent-tap-hold yes
   ;; NOTE: tap-hold-require-prior-idle (equivalent to ZMK's require-prior-idle-ms
   ;; from urob's timeless homerow mods) lands in kanata v1.12.0-prerelease-2.
   ;; On v1.11.0 it is unavailable, so same-hand suppression via
@@ -19,3 +20,9 @@
 (include deflayer/base.kbd)
 (include deflayer/symbols.kbd)
 (include deflayer/navigation.kbd)
+
+;; Workspace chord: hold both thumbs (lalt + ralt) → workspace layer
+;; Home row sends Super+1..0 for workspace switching
+(defchordsv2
+  (lalt ralt) (layer-while-held workspace) 350 all-released ()
+)
