@@ -25,4 +25,5 @@
 ;; Home row sends Super+1..0 for workspace switching
 (defchordsv2
   (lalt ralt) (layer-while-held workspace) 350 all-released ()
+  (j k) esc 100 all-released ()
 )

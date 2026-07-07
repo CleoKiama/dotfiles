@@ -41,9 +41,9 @@ Home-row modifier keys on a hold-tap with `tap-hold-release-keys` and same-hand 
 | J   | j   | Ctrl (right)  |
 | K   | k   | Super (right) |
 | L   | l   | Alt (right)   |
-| ;   | ESC | Shift (right) |
+| ;   | ;   | Shift (right) |
 
-Caps Lock is disabled (XX). Physical Delete is disabled (XX).
+Caps Lock is disabled (XX). Physical Delete is disabled (XX). Escape is on `j`+`k` chord.
 
 Anti-misfire: same-hand key detection via `$left-hand-keys` / `$right-hand-keys` variable lists prevents accidental modifier activation when rolling.
 
@@ -66,7 +66,7 @@ Programming symbols accessed by holding the right thumb (Enter). Mirrors the Ars
 Q→^   W→<   E→>   R→$   T→%       Y→@   U→&   I→*   O→'   P→`
 A→{   S→(   D→)   F→}   G→=       H→\   J→+   K→-   L→/   ;→"
 Z→~   X→[   C→]   V→_   B→#       N→|   M→!   ,→;   .→:   /→?
-                                        ;→ESC (tap) / Shift (hold)
+                                        ;→; (tap) / Shift (hold)
 ```
 
 ### Navigation
@@ -155,11 +155,15 @@ The layout uses an angle mod for the bottom-left keys, shifting ZXCVB inward for
 
 ### Chords
 
-Dual-thumb chord for workspace switching:
+| Chord         | Action                        | Timeout | Condition     |
+| ------------- | ----------------------------- | ------- | ------------- |
+| `lalt`+`ralt` | Workspace layer (hold)        | 350ms   | all-released  |
+| `j`+`k`       | Escape                        | 100ms   | all-released  |
 
 ```lisp
 (defchordsv2
   (lalt ralt) (layer-while-held workspace) 350 all-released ()
+  (j k) esc 100 all-released ()
 )
 ```
 
@@ -175,7 +179,9 @@ All keys outside the 34-key core are mapped to `XX` (no-op) in every layer. The 
 
 | Physical Key    | Action                        |
 | --------------- | ----------------------------- |
-| Semicolon (`;`) | Tap: ESC, Hold: Shift (right) |
+| Semicolon (`;`) | Tap: `;`, Hold: Shift (right)                   |
+| `j`+`k` chord   | Escape (press both simultaneously, then release) |
+| Print Screen
 | Print Screen    | Live reload config (`lrld`)   |
 | Both thumbs     | Workspace layer (Super+1..0)  |
 
