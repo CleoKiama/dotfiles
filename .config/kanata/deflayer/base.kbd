@@ -21,7 +21,7 @@
   j (tap-hold-release-keys $tap-time $hold-time j rctl $right-hand-keys)
   k (tap-hold-release-keys $tap-time $hold-time k rmet $right-hand-keys)
   l (tap-hold-release-keys $tap-time $hold-time l ralt $right-hand-keys)
-  ; (tap-hold-release-keys $tap-time $hold-time esc rsft $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time ; rsft $right-hand-keys)
   nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
   sym (tap-hold-press $tap-time $hold-time ret (layer-while-held symbols))
 )
