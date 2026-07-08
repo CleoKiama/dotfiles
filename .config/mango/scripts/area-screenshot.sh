@@ -1,1 +1,1 @@
-grim -g "$(slurp $SLURP_ARGS)" - | wl-copy && notify-send "Screenshot Captured" "Image copied to clipboard" -i camera-photo 
+grim -g "$(slurp $SLURP_ARGS)" - | satty -f - -o /tmp/screenshot-annotated.png && cat /tmp/screenshot-annotated.png | wl-copy && notify-send "Screenshot Captured" "Annotated image copied to clipboard" -i camera-photo 
