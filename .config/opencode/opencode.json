@@ -26,9 +26,7 @@
     "codebase-memory-mcp": {
       "enabled": true,
       "type": "local",
-      "command": [
-        "codebase-memory-mcp"
-      ]
+      "command": ["codebase-memory-mcp"]
     }
   },
   "autoupdate": false,
@@ -63,10 +61,7 @@
       "description": "Casual conversation, explanations, and learning - no code changes",
       "model": "opencode/deepseek-v4-flash-free",
       "temperature": 0.7,
-      "fallback_models": [
-        "opencode/big-pickle",
-        "opencode/minimax-m2.5-free"
-      ],
+      "fallback_models": ["opencode/big-pickle", "opencode/minimax-m2.5-free"],
       "permission": {
         "edit": "deny",
         "write": "deny",
@@ -77,10 +72,7 @@
       "description": "Patient tutor for learning concepts, debugging explanations, best practices",
       "model": "opencode/mimo-v2.5-free",
       "temperature": 0.5,
-      "fallback_models": [
-        "github-copilot/claude-sonnet-4.6",
-        "opencode/big-pickle"
-      ],
+      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/big-pickle"],
       "permission": {
         "edit": "deny",
         "write": "deny",
@@ -93,12 +85,16 @@
     "explore": {
       "disable": true
     },
+    "compaction": {
+      "model": "opencode/deepseek-v4-flash-free"
+    },
     "general": {
       "disable": true
     }
   },
   "plugin": [
     "opencode-wakatime",
+    "superpowers@git+https://github.com/obra/superpowers.git",
     "oh-my-opencode-slim"
   ],
   "provider": {},
