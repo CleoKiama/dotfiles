@@ -3,7 +3,7 @@
 
   // Active preset: free opencode models only — no opencode-go token spend.
   // Switch back to "mixed" when opencode-go tokens are replenished.
-  "preset": "mixed",
+  "preset": "free",
 
   // Enable all agents including Observer (disabled by default).
   "disabled_agents": [],
@@ -44,7 +44,7 @@
       },
       // Explorer: codebase reconnaissance — fast and cheap.
       "explorer": {
-        "model": "opencode/nemotron-3-ultra-free",
+        "model": "opencode/north-mini-code-free",
         "skills": [],
         "mcps": ["codebase-memory-mcp"]
       },
@@ -56,7 +56,7 @@
       },
       // Fixer: scoped implementation from concrete plans — efficient coding model.
       "fixer": {
-        "model": "github-copilot/claude-sonnet-4.5",
+        "model": "github-copilot/gpt-5.3-codex",
         "variant": "high",
         "skills": [],
         "mcps": ["codebase-memory-mcp"]
@@ -72,9 +72,9 @@
     // ── Free preset: opencode free-tier models only — zero opencode-go token spend ──
     "free": {
       // Orchestrator: nemotron-3-ultra-free — strongest free reasoning model for planning.
-      "orchestrator": { "model": "opencode/nemotron-3-ultra-free", "skills": ["*"], "mcps": ["*", "!context7"] },
+      "orchestrator": { "model": "opencode/deepseek-v4-flash-free", "skills": ["*"], "mcps": ["*", "!context7"] },
       // Oracle: also nemotron-3-ultra-free — best available for hard problems in free tier.
-      "oracle": { "model": "opencode/nemotron-3-ultra-free", "variant": "high", "skills": ["simplify"], "mcps": ["codebase-memory-mcp"] },
+      "oracle": { "model": "opencode/deepseek-v4-flash-free", "variant": "high", "skills": ["simplify"], "mcps": ["codebase-memory-mcp"] },
       // Council: deepseek-v4-flash-free — fast synthesis at zero cost.
       "council": { "model": "opencode/deepseek-v4-flash-free", "variant": "high", "skills": [], "mcps": [] },
       // Librarian: mimo-v2.5-free — efficient for research and doc lookups.
@@ -84,7 +84,7 @@
       // Designer: mimo-v2.5-free — best visual-capable free option available.
       "designer": { "model": "opencode/mimo-v2.5-free", "skills": [], "mcps": [] },
       // Fixer: north-mini-code-free — code-specialised free model for implementation.
-      "fixer": { "model": "opencode/north-mini-code-free", "variant": "high", "skills": [], "mcps": ["codebase-memory-mcp"] },
+      "fixer": { "model": "opencode/deepseek-v4-flash-free", "variant": "medium", "skills": [], "mcps": ["codebase-memory-mcp"] },
       // Observer: mimo-v2.5-free — multimodal free option for visual analysis.
       "observer": { "model": "opencode/mimo-v2.5-free", "skills": [], "mcps": [] }
     },
@@ -92,7 +92,7 @@
     // ── Alternative preset: all opencode-go, lowest cost ──
     "opencode-go": {
       "orchestrator": { "model": "opencode-go/glm-5.1", "skills": ["*"], "mcps": ["*", "!context7"] },
-      "oracle": { "model": "opencode-go/deepseek-v4-pro", "variant": "max", "skills": ["simplify"], "mcps": ["codebase-memory-mcp"] },
+      "oracle": { "model": "opencode-go/deepseek-v4-pro", "variant": "medium", "skills": ["simplify"], "mcps": ["codebase-memory-mcp"] },
       "council": { "model": "opencode-go/deepseek-v4-pro", "variant": "high", "skills": [], "mcps": [] },
       "librarian": { "model": "opencode-go/minimax-m2.7", "skills": [], "mcps": ["websearch", "context7", "gh_grep"] },
       "explorer": { "model": "opencode-go/minimax-m2.7", "skills": [], "mcps": ["codebase-memory-mcp"] },
