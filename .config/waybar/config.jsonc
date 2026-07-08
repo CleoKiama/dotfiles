@@ -28,7 +28,7 @@
         // "niri/workspaces",
         // "hyprland/workspaces",
         "custom/l_end",
-        "dwl/window", //INFO: Crashes on Hyprland use only for mangowc
+        // "dwl/window", //INFO: Crashes on Hyprland and mango - incompatible
         // "hyprland/window",
         // "niri/window",
         "custom/r_end",
