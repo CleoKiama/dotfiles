@@ -38,6 +38,7 @@ return {
 			"nvim-neotest/neotest-jest",
 			"fredrikaverpil/neotest-golang",
 			"marilari88/neotest-vitest",
+			"nvim-neotest/neotest-python",
 		},
 		config = function()
 			require("configs.neotest")
