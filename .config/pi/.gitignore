@@ -7,6 +7,7 @@ agent/sessions/
 agent/mcp-cache/
 agent/mcp-oauth/
 agent/mcp-cache.json
+.pi/
 
 # Auto-installed packages via pi install
 agent/git/
