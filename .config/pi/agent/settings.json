@@ -16,24 +16,25 @@
     "keepRecentTokens": 20000
   },
   "enabledModels": [
-    "opencode/deepseek-v4-flash-free",
-    "opencode/mimo-v2.5-free",
-    "opencode/minimax-m2.5-free",
-    "github-copilot/claude-sonnet*",
-    "github-copilot/gpt-*"
+    "opencode/*-free",
+    "opencode-go/*"
   ],
   "skills": [
     "~/dotfiles/.config/pi/agent/skills/git-commit",
     "~/.config/pi/agent/git/github.com/badlogic/pi-skills"
   ],
   "extensions": [
-    "~/dotfiles/.config/pi/agent/extensions/subagent/index.ts"
+    "~/.config/pi/agent/extensions/custom-compaction.ts"
   ],
   "prompts": [
     "~/dotfiles/.config/pi/agent/prompts"
   ],
   "packages": [
     "git:github.com/badlogic/pi-skills",
-    "npm:pi-wakatime"
+    "npm:pi-wakatime",
+    "git:github.com/obra/superpowers",
+    "npm:pi-mcp-adapter",
+    "npm:@tintinweb/pi-subagents",
+    "npm:@tintinweb/pi-tasks"
   ]
 }
