@@ -4,6 +4,7 @@
 set -gx EDITOR nvim
 set -gx COLORTERM truecolor
 set -gx fish_greeting ""
+set -gx fish_history ""
 
 # Path
 fish_add_path $HOME/.local/bin
@@ -72,15 +73,6 @@ end
 # Atuin
 command -q atuin && atuin init fish | source
 
-# Ctrl+P / Ctrl+N: inline history cycling (like zsh atuin-up/down-search)
-# Ctrl+R (bound by atuin init above) is global full-screen history search.
-bind \cp up-or-search
-bind -M insert \cp up-or-search
-bind -M vi_normal \cp up-or-search
-bind \cn down-or-search
-bind -M insert \cn down-or-search
-bind -M vi_normal \cn down-or-search
-
 # Starship prompt
 command -q starship && starship init fish | source
 
@@ -113,3 +105,6 @@ end
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# pi coding agent config directory (instead of ~/.pi/agent)
+set -gx PI_CODING_AGENT_DIR $HOME/.config/pi/agent

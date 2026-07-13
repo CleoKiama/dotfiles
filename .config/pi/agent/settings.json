@@ -1,0 +1,35 @@
+{
+  "lastChangelogVersion": "0.80.6",
+  "theme": "dark",
+  "defaultProvider": "opencode",
+  "defaultModel": "deepseek-v4-flash-free",
+  "defaultThinkingLevel": "high",
+  "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\"",
+  "quietStartup": true,
+  "doubleEscapeAction": "tree",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 16384,
+    "keepRecentTokens": 20000
+  },
+  "enabledModels": [
+    "opencode/deepseek-v4-flash-free",
+    "opencode/mimo-v2.5-free",
+    "opencode/minimax-m2.5-free",
+    "github-copilot/claude-sonnet*",
+    "github-copilot/gpt-*"
+  ],
+  "skills": [
+    "~/dotfiles/.config/pi/agent/skills/git-commit",
+    "~/.config/pi/agent/git/github.com/badlogic/pi-skills"
+  ],
+  "extensions": [
+    "~/dotfiles/.config/pi/agent/extensions/subagent/index.ts"
+  ],
+  "prompts": [
+    "~/dotfiles/.config/pi/agent/prompts"
+  ],
+  "packages": [
+    "git:github.com/badlogic/pi-skills"
+  ]
+}
