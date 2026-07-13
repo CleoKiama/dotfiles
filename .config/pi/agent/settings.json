@@ -5,6 +5,9 @@
   "defaultModel": "deepseek-v4-flash-free",
   "defaultThinkingLevel": "high",
   "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\"",
+  "npmCommand": [
+    "pnpm"
+  ],
   "quietStartup": true,
   "doubleEscapeAction": "tree",
   "compaction": {
@@ -30,6 +33,7 @@
     "~/dotfiles/.config/pi/agent/prompts"
   ],
   "packages": [
-    "git:github.com/badlogic/pi-skills"
+    "git:github.com/badlogic/pi-skills",
+    "npm:pi-wakatime"
   ]
 }
