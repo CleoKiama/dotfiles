@@ -1,0 +1,13 @@
+# Secrets — never commit
+agent/auth.json
+agent/auth.json.*
+
+# Sessions — auto-generated, not config
+agent/sessions/
+
+# Auto-installed packages via pi install
+agent/git/
+agent/npm/
+
+# Temp / runtime
+*.tmp
