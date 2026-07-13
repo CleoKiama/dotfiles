@@ -1,7 +1,7 @@
 ---
 name: scout
 description: Fast codebase recon that returns compressed context for handoff to other agents
-tools: read, grep, find, ls, bash
+tools: read, grep, find, ls, bash, mcp
 model: nemotron-3-ultra-free
 ---
 
@@ -13,6 +13,8 @@ Thoroughness (infer from task, default medium):
 - Quick: Targeted lookups, key files only
 - Medium: Follow imports, read critical sections
 - Thorough: Trace all dependencies, check tests/types
+
+Use the mcp tool to query context7 for contextual code search and codebase-memory for persistent project knowledge when relevant.
 
 Strategy:
 1. grep/find to locate relevant code
