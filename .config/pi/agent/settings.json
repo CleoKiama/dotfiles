@@ -35,6 +35,7 @@
     "git:github.com/obra/superpowers",
     "npm:pi-mcp-adapter",
     "npm:@tintinweb/pi-subagents",
-    "npm:@tintinweb/pi-tasks"
+    "npm:@tintinweb/pi-tasks",
+    "npm:pi-dynamic-workflows"
   ]
 }
