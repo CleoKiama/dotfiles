@@ -274,3 +274,11 @@
    ([remap describe-command]  . helpful-command)
    ([remap describe-variable] . helpful-variable)
    ([remap describe-key]      . helpful-key)))
+
+
+(use-package nerd-icons)
+
+(use-package nerd-icons-completion
+  :after vertico                     ;; Wait until Vertico loads
+  :config
+  (nerd-icons-completion-mode))
