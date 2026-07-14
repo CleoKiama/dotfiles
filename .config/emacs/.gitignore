@@ -1,0 +1,18 @@
+# -*- mode: gitignore; -*-
+
+# 1. Ignore the massive compiled Lisp binaries (CPU-specific)
+eln-cache/
+
+# 2. Ignore local runtime history and crash recovery lists
+auto-save-list/
+history
+
+# 3. Ignore Emacs backup files (like init.el~)
+*~
+\#*\#
+
+# 4. Ignore straight's heavy package downloads
+straight/
+
+# 5. BUT track straight's lockfile (acts like lazy-lock.json)
+!straight/versions/
