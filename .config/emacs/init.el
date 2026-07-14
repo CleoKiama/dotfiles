@@ -11,7 +11,7 @@
   (set-fringe-mode 10))       ; Give some breathing room left/right
 
 (menu-bar-mode -1)            ; Hides the top menu bar
-(setq visible-bell t)         ; Flashes the screen instead of an audible beep
+(setq visible-bell nil)         ; Flashes the screen instead of an audible beep
 
 
 ;; Set the default font family, size, and weight
@@ -97,17 +97,21 @@
           ;; C-x bindings in `ctl-x-map'
           ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
           ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+          ("C-x C-f" . consult-fd)
           ;; M-g bindings in `goto-map'
           ("M-g e" . consult-compile-error)
           ("M-g r" . consult-grep-match)
           ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
           ("M-g m" . consult-mark)
           ;; M-s bindings in `search-map'
-          ("M-s d" . consult-find)                  ;; Alternative: consult-fd
           ("M-s g" . consult-grep)
           ("M-s G" . consult-git-grep)
           ("M-s r" . consult-ripgrep)
-          )
+          ;; --- THE NEW HISTORY BINDING ---
+          ;; This binds C-r to consult-history ONLY when inside the minibuffer
+            :map minibuffer-local-map
+            ("C-r" . consult-history))
+          
 
    ;; The :init configuration is always executed (Not lazy)
    :init
@@ -176,8 +180,23 @@
   ;; If there is more than one, they won't work right.
   )
 
+;; Enable rich annotations using the Marginalia package
+(use-package marginalia
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+
+  ;; The :init section is always executed.
+  :init
+
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
+  (marginalia-mode))
+
  (use-package doom-modeline
-   :ensure t
    :init (doom-modeline-mode 1))
 
 
@@ -187,3 +206,45 @@
 ; paredit for emacs-lisp mode
 (use-package paredit
   :hook (emacs-lisp-mode . paredit-mode))
+
+
+(use-package embark
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("M-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Show the Embark target at point via Eldoc. You may adjust the
+  ;; Eldoc strategy, if you want to see the documentation from
+  ;; multiple providers. Beware that using this can be a little
+  ;; jarring since the message shown in the minibuffer can be more
+  ;; than one line, causing the modeline to move up and down:
+
+  ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+  ;; Add Embark to the mouse context menu. Also enable `context-menu-mode'.
+  ;; (context-menu-mode 1)
+  ;; (add-hook 'context-menu-functions #'embark-context-menu 100)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult) 
+
+(use-package wgrep
+  :config
+  ;; Automatically save all modified buffers when you commit your wgrep changes
+  (setq wgrep-auto-save-buffer t)
+  ;; Prevent wgrep from changing read-only files unless forced
+  (setq wgrep-change-readonly-file nil))
