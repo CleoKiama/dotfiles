@@ -20,6 +20,13 @@
                     :height 130
                     :weight 'medium)
 
+; Enable line numbers globally 
+(global-display-line-numbers-mode t)
+(column-number-mode t) 
+
+;; Disable line numbers in Org mode
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode 0)))
+
 (load-theme 'tango-dark)
 
 ;; intialize straight.el 
@@ -170,3 +177,6 @@
  (use-package doom-modeline
    :ensure t
    :init (doom-modeline-mode 1))
+
+
+(setq my-var nil)
