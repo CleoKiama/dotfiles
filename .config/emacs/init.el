@@ -248,3 +248,10 @@
   (setq wgrep-auto-save-buffer t)
   ;; Prevent wgrep from changing read-only files unless forced
   (setq wgrep-change-readonly-file nil))
+
+(use-package helpful
+  :bind
+  (([remap describe-function] . helpful-callable)
+   ([remap describe-command]  . helpful-command)
+   ([remap describe-variable] . helpful-variable)
+   ([remap describe-key]      . helpful-key)))
