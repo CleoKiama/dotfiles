@@ -24,6 +24,8 @@
 (global-display-line-numbers-mode t)
 (column-number-mode t) 
 
+(which-key-mode 1)
+
 ;; Disable line numbers in Org mode
 (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode 0)))
 
@@ -179,4 +181,9 @@
    :init (doom-modeline-mode 1))
 
 
-(setq my-var nil)
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+; paredit for emacs-lisp mode
+(use-package paredit
+  :hook (emacs-lisp-mode . paredit-mode))
