@@ -36,6 +36,8 @@
     "npm:pi-mcp-adapter",
     "npm:@tintinweb/pi-subagents",
     "npm:@tintinweb/pi-tasks",
-    "npm:pi-dynamic-workflows"
-  ]
+    "npm:pi-dynamic-workflows",
+    "npm:@yusukeshib/pi-stash"
+  ],
+  "hideThinkingBlock": true
 }
