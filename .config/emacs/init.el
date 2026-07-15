@@ -213,7 +213,7 @@
   (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
+  ; (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (nerd-icons must be installed!)
   (doom-themes-neotree-config)
   ;; or for treemacs users
@@ -285,3 +285,85 @@
   :after vertico                     ;; Wait until Vertico loads
   :config
   (nerd-icons-completion-mode))
+
+
+(defun cl/evil-hook ()
+  (dolist (mode '(custom-mode
+                  eshell-mode
+                  git-rebase-mode
+                  erc-mode
+                  circe-server-mode
+                  circe-chat-mode
+                  circe-query-mode
+                  sauron-mode
+                  term-mode))
+    (add-to-list 'evil-emacs-state-modes mode)))
+
+;; may the motions be with you
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  ;; :hook (evil-mode . cl/evil-hook) ; Commented out to prevent startup errors
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
+
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+
+
+(use-package hydra)
+
+;; 1. Define the Text Scaling Hydra
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
+;; 2. Define the Window Resize Hydra
+(defhydra hydra-window-resize (:timeout 4)
+  "resize window"
+  ("h" shrink-window-horizontally "shrink-width")
+  ("j" enlarge-window "grow-height")
+  ("k" shrink-window "shrink-height")
+  ("l" enlarge-window-horizontally "grow-width")
+  ("f" nil "finished" :exit t))
+
+
+(use-package general
+  :config
+  ;; Create the custom definer
+  (general-create-definer cl/leader-keys
+    :states '(normal insert visual emacs)
+    :keymaps 'override
+    :prefix "SPC"            ; Primary leader
+    :global-prefix "C-SPC")  ; Global fallback
+
+  ;; Bind EVERYTHING here
+  (cl/leader-keys
+    ;; Toggles Folder
+    "t"  '(:ignore t :which-key "toggles")
+    "ts" '(hydra-text-scale/body :which-key "scale text")
+
+    ;; Windows Folder
+    "w"  '(:ignore t :which-key "windows")
+    "wr" '(hydra-window-resize/body :which-key "resize window"))
+)
+
+
