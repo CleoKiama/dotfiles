@@ -31,6 +31,9 @@
 
 (load-theme 'tango-dark)
 
+;; "make ESC quit prompts and other temporary windows"
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
 ;; intialize straight.el 
 
 ;; 1. Bootstrap straight.el (Standard installation snippet)
