@@ -1,7 +1,7 @@
 ---
 name: librarian
 description: Documentation and research specialist — searches web docs, best practices, and references then returns structured findings
-tools: read, grep, find, ls, bash
+tools: read, grep, find, ls, bash, mcp
 model: mimo-v2.5-free
 ---
 
