@@ -348,12 +348,11 @@
 
 (use-package general
   :config
-  ;; Create the custom definer
   (general-create-definer cl/leader-keys
     :states '(normal insert visual emacs)
     :keymaps 'override
-    :prefix "SPC"            ; Primary leader
-    :global-prefix "C-SPC")  ; Global fallback
+    :prefix "SPC"
+    :global-prefix "C-SPC")
 
   ;; Bind EVERYTHING here
   (cl/leader-keys
@@ -363,7 +362,22 @@
 
     ;; Windows Folder
     "w"  '(:ignore t :which-key "windows")
-    "wr" '(hydra-window-resize/body :which-key "resize window"))
+    "wr" '(hydra-window-resize/body :which-key "resize window")
+    )
+  )
+
+
+(use-package projectile
+  :init
+  (projectile-mode 1)
+  :config
+  (cl/leader-keys
+    "p"  '(:ignore t :which-key "projects")
+    "pf" '(projectile-find-file :which-key "find file")
+    "ps" '(projectile-switch-project :which-key "switch project")
+    "pp" '(projectile-run-project :which-key "run project")
+    "pt" '(projectile-test-project :which-key "test project"))
+  :custom
+  (projectile-project-search-path '("/data/code"))
+  (projectile-switch-project-action #'projectile-find-file)
 )
-
-
