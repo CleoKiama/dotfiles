@@ -392,3 +392,5 @@
     "gP" '(magit-push :which-key "push"))
 )
 
+(use-package forge
+  :after magit)
