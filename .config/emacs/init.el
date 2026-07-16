@@ -14,13 +14,25 @@
 (setq visible-bell nil)         ; Flashes the screen instead of an audible beep
 
 
-;; Set the default font family, size, and weight
+;; fonts 
+;; Set the default font family, size, and weight for various 
 (set-face-attribute 'default nil
                     :font "Hasklug Nerd Font Mono"
                     :height 130
                     :weight 'medium)
 
-; Enable line numbers globally 
+(set-face-attribute 'variable-pitch nil
+                    :font "Cantarell"  
+                    :height 140    
+                    :weight 'regular)
+
+(set-face-attribute 'fixed-pitch nil
+                    :font "Hasklug Nerd Font Mono"
+                    :height 130
+                    :weight 'medium)
+
+
+					; Enable line numbers globally 
 (global-display-line-numbers-mode t)
 (column-number-mode t) 
 
@@ -394,3 +406,41 @@
 
 (use-package forge
   :after magit)
+
+
+(defun cleo/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode 1)
+  (setq evil-auto-indent nil)
+)
+
+(use-package org
+  :hook (org-mode . cleo/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾")
+  ;; The face attributes for your hybrid font setup
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+)
+
+
+
+(use-package visual-fill-column
+  :straight (visual-fill-column
+             :type git
+             :host nil
+             :repo "https://codeberg.org/joostkremers/visual-fill-column.git")
+  :hook (org-mode . visual-fill-column-mode)
+  :config
+  (setq visual-fill-column-width 100)
+  (setq visual-fill-column-center-text t)
+)
+
+
+
