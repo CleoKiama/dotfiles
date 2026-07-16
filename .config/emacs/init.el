@@ -381,3 +381,14 @@
   (projectile-project-search-path '("/data/code"))
   (projectile-switch-project-action #'projectile-find-file)
 )
+
+(use-package magit
+  :config
+  (cl/leader-keys
+    "g"  '(:ignore t :which-key "git")
+    "gs" '(magit-status :which-key "status")
+    "gb" '(magit-branch-checkout :which-key "checkout branch")
+    "gp" '(magit-pull :which-key "pull")
+    "gP" '(magit-push :which-key "push"))
+)
+
