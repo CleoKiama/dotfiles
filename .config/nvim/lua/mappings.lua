@@ -1,7 +1,8 @@
 local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
-map("i", "jj", "<Esc>")
+-- have exc mapped in kanata jk now
+-- map("i", "jj", "<Esc>")
 map("t", "jj", [[<C-\><C-n>]], { noremap = true })
 
 map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
