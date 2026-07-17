@@ -142,6 +142,9 @@
    (setq xref-show-xrefs-function #'consult-xref
          xref-show-definitions-function #'consult-xref)
 
+   ;; Explicitly use projectile for project root detection
+   (setq consult-project-root-function #'projectile-project-root)
+
    ;; Configure other variables and modes in the :config section,
    ;; after lazily loading the package.
    :config
@@ -375,6 +378,15 @@
     ;; Windows Folder
     "w"  '(:ignore t :which-key "windows")
     "wr" '(hydra-window-resize/body :which-key "resize window")
+
+    ;; Buffers Folder
+    "b"  '(:ignore t :which-key "buffers")
+    "bb" '(consult-buffer :which-key "switch buffer")
+    "bk" '(kill-this-buffer :which-key "kill buffer")
+
+    ;; Search Folder
+    "s"  '(:ignore t :which-key "search")
+    "ss" '(consult-line :which-key "search buffer")
     )
   )
 
@@ -386,6 +398,7 @@
   (cl/leader-keys
     "p"  '(:ignore t :which-key "projects")
     "pf" '(projectile-find-file :which-key "find file")
+    "pw" '(consult-ripgrep :which-key "ripgrep")
     "ps" '(projectile-switch-project :which-key "switch project")
     "pp" '(projectile-run-project :which-key "run project")
     "pt" '(projectile-test-project :which-key "test project"))
