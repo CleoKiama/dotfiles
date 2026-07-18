@@ -16,3 +16,16 @@ straight/
 
 # 5. BUT track straight's lockfile (acts like lazy-lock.json)
 !straight/versions/
+
+# 6. Ignore the tangled build output — emacs.org is the real source
+emacs.el
+
+# 7. Forge's local GitHub issue/PR cache (sqlite db, purely local, regenerates)
+forge-database.sqlite
+
+# 8. Projectile's local bookmarks/frecency state (per-machine usage stats)
+projectile-bookmarks.eld
+projectile-frecency.eld
+
+# 9. Transient's (Magit's menu framework) local history
+transient/
