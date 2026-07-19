@@ -75,6 +75,96 @@ generated one.
   :init (doom-modeline-mode 1))
 #+end_src
 
+* Evil Mode
+
+#+begin_src emacs-lisp
+(defun cl/evil-hook ()
+  (dolist (mode '(custom-mode
+                  eshell-mode
+                  git-rebase-mode
+                  erc-mode
+                  circe-server-mode
+                  circe-chat-mode
+                  circe-query-mode
+                  sauron-mode
+                  term-mode))
+    (add-to-list 'evil-emacs-state-modes mode)))
+
+;; may the motions be with you
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+#+end_src
+
+* Hydras
+
+#+begin_src emacs-lisp
+(use-package hydra)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
+(defhydra hydra-window-resize (:timeout 4)
+  "resize window"
+  ("h" shrink-window-horizontally "shrink-width")
+  ("j" enlarge-window "grow-height")
+  ("k" shrink-window "shrink-height")
+  ("l" enlarge-window-horizontally "grow-width")
+  ("f" nil "finished" :exit t))
+#+end_src
+
+* Keybindings (general.el leader)
+
+Everything sits under one =SPC=-prefixed, which-key-discoverable
+tree instead of scattered =C-c= prefixes. Each package section below
+adds its own entries into ~cl/leader-keys~ rather than defining a
+separate leader per package.
+
+#+begin_src emacs-lisp
+(use-package general
+  :config
+  (general-create-definer cl/leader-keys
+    :states '(normal insert visual emacs)
+    :keymaps 'override
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+
+  (cl/leader-keys
+    "t"  '(:ignore t :which-key "toggles")
+    "ts" '(hydra-text-scale/body :which-key "scale text")
+
+    "w"  '(:ignore t :which-key "windows")
+    "wr" '(hydra-window-resize/body :which-key "resize window")
+
+    "b"  '(:ignore t :which-key "buffers")
+    "bb" '(consult-buffer :which-key "switch buffer")
+    "bk" '(kill-current-buffer :which-key "kill buffer")
+
+    "s"  '(:ignore t :which-key "search")
+    "ss" '(consult-line :which-key "search buffer")))
+#+end_src
+
 * Completion System
 
 Vertico + Consult + Orderless + Marginalia, minibuffer-first
@@ -212,96 +302,6 @@ tools (Embark, Helpful).
    ([remap describe-key]      . helpful-key)))
 #+end_src
 
-* Evil Mode
-
-#+begin_src emacs-lisp
-(defun cl/evil-hook ()
-  (dolist (mode '(custom-mode
-                  eshell-mode
-                  git-rebase-mode
-                  erc-mode
-                  circe-server-mode
-                  circe-chat-mode
-                  circe-query-mode
-                  sauron-mode
-                  term-mode))
-    (add-to-list 'evil-emacs-state-modes mode)))
-
-;; may the motions be with you
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
-
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
-#+end_src
-
-* Hydras
-
-#+begin_src emacs-lisp
-(use-package hydra)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("j" text-scale-increase "in")
-  ("k" text-scale-decrease "out")
-  ("f" nil "finished" :exit t))
-
-(defhydra hydra-window-resize (:timeout 4)
-  "resize window"
-  ("h" shrink-window-horizontally "shrink-width")
-  ("j" enlarge-window "grow-height")
-  ("k" shrink-window "shrink-height")
-  ("l" enlarge-window-horizontally "grow-width")
-  ("f" nil "finished" :exit t))
-#+end_src
-
-* Keybindings (general.el leader)
-
-Everything sits under one =SPC=-prefixed, which-key-discoverable
-tree instead of scattered =C-c= prefixes. Each package section below
-adds its own entries into ~cl/leader-keys~ rather than defining a
-separate leader per package.
-
-#+begin_src emacs-lisp
-(use-package general
-  :config
-  (general-create-definer cl/leader-keys
-    :states '(normal insert visual emacs)
-    :keymaps 'override
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-
-  (cl/leader-keys
-    "t"  '(:ignore t :which-key "toggles")
-    "ts" '(hydra-text-scale/body :which-key "scale text")
-
-    "w"  '(:ignore t :which-key "windows")
-    "wr" '(hydra-window-resize/body :which-key "resize window")
-
-    "b"  '(:ignore t :which-key "buffers")
-    "bb" '(consult-buffer :which-key "switch buffer")
-    "bk" '(kill-current-buffer :which-key "kill buffer")
-
-    "s"  '(:ignore t :which-key "search")
-    "ss" '(consult-line :which-key "search buffer")))
-#+end_src
-
 * Projects
 
 #+begin_src emacs-lisp
@@ -321,7 +321,21 @@ separate leader per package.
   (projectile-switch-project-action #'projectile-find-file))
 #+end_src
 
-* Magit
+* File management
+**  Dired
+#+begin_src emacs-lisp
+(use-package dired
+  :straight nil                          
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-up-directory
+    "l" 'dired-find-file))
+#+end_src
+
+* Development 
+** Magit
 
 #+begin_src emacs-lisp
 (use-package magit
@@ -335,6 +349,170 @@ separate leader per package.
 
 (use-package forge
   :after magit)
+#+end_src
+
+** Lsp and completion 
+***  Eglot 
+#+begin_src emacs-lisp
+   (use-package eglot
+    :ensure nil
+    :hook ((go-mode . eglot-ensure)
+           (rust-mode . eglot-ensure)
+           (typescript-mode . eglot-ensure)
+           (python-mode . eglot-ensure))
+    :custom
+    (eglot-autoshutdown t)
+    (eglot-sync-connect nil)
+    (eglot-connect-timeout 30)
+    (eglot-events-buffer-size 0)
+    :config
+    (add-to-list 'eglot-server-programs
+                 '(rust-mode . ("rust-analyzer")))
+    (add-to-list 'eglot-server-programs
+                 '(go-mode . ("gopls")))
+    (add-to-list 'eglot-server-programs
+                 '(typescript-mode . ("typescript-language-server" "--stdio")))
+    (add-to-list 'eglot-server-programs
+                 '(python-mode . ("pyright-langserver" "--stdio")))
+
+    (evil-define-key 'normal eglot-mode-map
+      (kbd "gd") 'xref-find-definitions
+      (kbd "gD") 'eglot-find-declaration
+      (kbd "gt") 'eglot-find-typeDefinition
+      (kbd "gi") 'eglot-find-implementation
+      (kbd "gr") 'xref-find-references
+      (kbd "K")  'eglot-show-doc-buffer)
+
+    ;; ── Leader bindings (SPC) ──
+    ;; "Super modern" — ca for code action, rn for rename, etc.
+    (cl/leader-keys
+      "ca" '(eglot-code-actions :which-key "code actions")
+      "ra" '(eglot-rename :which-key "rename symbol")
+      "fa"  '(eglot-format :which-key "format buffer")
+      "ls" '(eglot-reconnect :which-key "restart server")
+      "lS" '(eglot-shutdown :which-key "stop server")))
+
+  ;; Helper: show documentation in a dedicated buffer (the "hover" experience)
+  (defun eglot-show-doc-buffer ()
+    "Show documentation for symbol at point in a dedicated buffer."
+    (interactive)
+    (let ((buf (eldoc-doc-buffer)))
+      (if (get-buffer buf)
+          (display-buffer buf
+                          '((display-buffer-reuse-window
+                             display-buffer-pop-up-window)
+                            (window-width . 80)
+                            (window-height . 15)))
+        (message "No documentation available at point"))))
+#+end_src
+
+*** Corfu (Completion UI)
+
+Corfu provides a minimal, snappy popup completion UI.
+
+#+begin_src emacs-lisp
+(use-package corfu
+  :custom
+  (corfu-cycle t)                     ; cycle through candidates
+  (corfu-auto t)                      ; show completions automatically
+  (corfu-auto-prefix 1)               ; trigger after 1 char (snappy!)
+  (corfu-auto-delay 0.0)              ; no delay (snappy!)
+  (corfu-preview-current nil)         ; don't preview in buffer
+  (corfu-preselect-first t)           ; preselect first candidate
+  (corfu-on-exact-match nil)          ; don't auto-insert on exact match
+  (corfu-quit-no-match t)             ; quit if no match
+  :bind
+  (:map corfu-map
+        ("TAB" . corfu-next)
+        ([backtab] . corfu-previous)
+        ("RET" . corfu-insert)
+        ("M-SPC" . corfu-insert-separator)
+        ("M-h" . corfu-show-documentation)
+        ("M-l" . corfu-show-location))
+  :init
+  (global-corfu-mode))
+
+;; Popup documentation for Corfu (shows docs in child frame)
+(use-package corfu-popupinfo
+  :straight nil                          ; part of corfu package
+  :after corfu
+  :custom
+  (corfu-popupinfo-delay '(0.25 . 0.1))  ; show docs after 250ms
+  :config
+  (corfu-popupinfo-mode 1))
+#+end_src
+
+*** Cape 
+#+begin_src emacs-lisp
+(use-package cape
+  :after corfu
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  :config
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+#+end_src
+
+*** Kind Icon
+
+#+begin_src emacs-lisp
+(use-package kind-icon
+  :after corfu
+  :custom
+  (kind-icon-use-icons t)
+  (kind-icon-default-face 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+#+end_src
+
+*** Flymake (Diagnostics)
+
+#+begin_src emacs-lisp
+
+    ;; ── Bracket navigation for diagnostics ──
+   (evil-define-key 'normal eglot-mode-map
+    (kbd "]d") 'flymake-goto-next-error
+    (kbd "[d") 'flymake-goto-prev-error
+    (kbd "]e") '(lambda () (interactive) (flymake-goto-next-error 1 '() 1))   
+    (kbd "[e") '(lambda () (interactive) (flymake-goto-prev-error 1 '() 1))
+    (kbd "]w") '(lambda () (interactive) (flymake-goto-next-error 1 '(warning) t))
+    (kbd "[w") '(lambda () (interactive) (flymake-goto-prev-error 1 '(warning) t))
+    )
+
+  (use-package flymake
+    :ensure nil
+    :custom
+    (flymake-no-changes-timeout 0.7)
+    :config
+    (cl/leader-keys
+      "en" '(flymake-goto-next-error :which-key "next error")
+      "ep" '(flymake-goto-prev-error :which-key "previous error")
+      "el" '(flymake-show-buffer-diagnostics :which-key "list errors")
+      "eL" '(flymake-show-project-diagnostics :which-key "project errors")))
+#+end_src
+
+*** Xref
+
+#+begin_src emacs-lisp
+(use-package xref
+  :ensure nil
+  :custom
+  (xref-search-program 'ripgrep)
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref))
+#+end_src
+
+*** Eldoc
+
+#+begin_src emacs-lisp
+(use-package eldoc
+  :ensure nil
+  :custom
+  (eldoc-idle-delay 0.2)
+  (eldoc-echo-area-use-multiline-p 3)
+  :config
+  (global-eldoc-mode 1))
 #+end_src
 
 * Org Mode
