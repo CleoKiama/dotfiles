@@ -335,6 +335,17 @@ tools (Embark, Helpful).
 #+end_src
 
 * Development 
+
+** Treesitter 
+#+begin_src emacs-lisp
+ (use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  (treesit-auto-langs '(go rust typescript javascript tsx  json bash yaml dockerfile css html markdown toml python))  
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode)) 
+#+end_src
 ** Magit
 
 #+begin_src emacs-lisp
