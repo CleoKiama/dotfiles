@@ -13,11 +13,11 @@ generated one.
 (setq inhibit-startup-message t)
 
 ;; Only disable these elements if Emacs is running as a graphical application
-(when (display-graphic-p)
+  (display-graphic-p)
   (scroll-bar-mode -1)        ; Disable visible scrollbar
   (tool-bar-mode -1)          ; Disable the toolbar
   (tooltip-mode -1)           ; Disable tooltips
-  (set-fringe-mode 10))       ; Give some breathing room left/right
+  (set-fringe-mode 10)        ; Give some breathing room left/right
 
 (menu-bar-mode -1)              ; Hides the top menu bar
 (setq visible-bell nil)         ; Flashes the screen instead of an audible beep
@@ -317,7 +317,7 @@ tools (Embark, Helpful).
     "pp" '(projectile-run-project :which-key "run project")
     "pt" '(projectile-test-project :which-key "test project"))
   :custom
-  (projectile-project-search-path '("/data/code"))
+  (projectile-project-search-path '("/home/cleo/dotfiles/" "/data/org/"))
   (projectile-switch-project-action #'projectile-find-file))
 #+end_src
 
@@ -594,3 +594,12 @@ even though =init.el= itself doesn't strictly need it thanks to
           (lambda ()
             (add-hook 'after-save-hook #'cl/org-babel-tangle-config nil 'local)))
 #+end_src
+
+* Miscellaneous 
+** Wakatime
+#+BEGIN_SRC emacs-lisp
+(use-package wakatime-mode
+  :config
+  (global-wakatime-mode))
+#+END_SRC
+
