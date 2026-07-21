@@ -29,3 +29,6 @@ projectile-frecency.eld
 
 # 9. Transient's (Magit's menu framework) local history
 transient/
+
+#10 tree sitter 
+tree-sitter/
