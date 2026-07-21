@@ -57,6 +57,13 @@ generated one.
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 
+*  Backups, Autosave, and Lockfiles
+#+begin_src emacs-lisp
+(setq make-backup-files nil)   ; no file~ backups
+(setq auto-save-default nil)   ; no #file# autosave snapshots
+(setq create-lockfiles nil)    ; no .#file lock symlinks
+#+end_src
+
 * Modeline and Theming
 
 #+begin_src emacs-lisp
@@ -305,20 +312,22 @@ tools (Embark, Helpful).
 * Projects
 
 #+begin_src emacs-lisp
-(use-package projectile
-  :init
-  (projectile-mode 1)
-  :config
-  (cl/leader-keys
-    "p"  '(:ignore t :which-key "projects")
-    "pf" '(projectile-find-file :which-key "find file")
-    "pw" '(consult-ripgrep :which-key "ripgrep")
-    "ps" '(projectile-switch-project :which-key "switch project")
-    "pp" '(projectile-run-project :which-key "run project")
-    "pt" '(projectile-test-project :which-key "test project"))
-  :custom
-  (projectile-project-search-path '("/home/cleo/dotfiles/" "/data/org/"))
-  (projectile-switch-project-action #'projectile-find-file))
+  (use-package projectile
+    :init
+    (projectile-mode 1)
+    :config
+    (cl/leader-keys
+      "p"  '(:ignore t :which-key "projects")
+      "pf" '(projectile-find-file :which-key "find file")
+      "pw" '(consult-ripgrep :which-key "ripgrep")
+      "ps" '(projectile-switch-project :which-key "switch project")
+      "pp" '(projectile-run-project :which-key "run project")
+      "pt" '(projectile-test-project :which-key "test project")
+      "pd" '(projectile-dired :which-key "project dired")
+      )
+    :custom
+    (projectile-project-search-path '("/home/cleo/dotfiles/" "/data/org/"))
+    (projectile-switch-project-action #'projectile-find-file))
 #+end_src
 
 * File management
@@ -527,6 +536,26 @@ Corfu provides a minimal, snappy popup completion UI.
   :config
   (global-eldoc-mode 1))
 #+end_src
+
+** QOL 
+
+***  harpoon 
+#+begin_src emacs-lisp
+(use-package harpoon
+  :config
+  (cl/leader-keys
+    "h"  '(:ignore t :which-key "harpoon")
+    "ha" '(harpoon-add-file :which-key "add file")
+    "hh" '(harpoon-quick-menu-hydra :which-key "quick menu")
+    "hc" '(harpoon-clear :which-key "clear"))
+
+  ;; Direct jumps, mirroring your <A-j/k/l/;> muscle memory from Neovim
+  (global-set-key (kbd "M-j") 'harpoon-go-to-1)
+  (global-set-key (kbd "M-k") 'harpoon-go-to-2)
+  (global-set-key (kbd "M-l") 'harpoon-go-to-3)
+  (global-set-key (kbd "M-;") 'harpoon-go-to-4))
+#+end_src
+
 
 * Org Mode
 
