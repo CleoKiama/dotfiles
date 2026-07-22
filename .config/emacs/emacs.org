@@ -7,6 +7,77 @@ that on by default) gets written out to =emacs.el= and loaded by
 =init.el= via ~org-babel-load-file~. Edit this file, not the
 generated one.
 
+*  Backups, Autosave, and Lockfiles
+#+begin_src emacs-lisp
+(setq make-backup-files nil)   ; no file~ backups
+(setq auto-save-default nil)   ; no #file# autosave snapshots
+(setq create-lockfiles nil)    ; no .#file lock symlinks
+
+;; Restore GC after startup (complements early-init.el maximization)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 32 1024 1024)
+                  gc-cons-percentage 0.6)))
+
+;; Undo limits (13× defaults — more undo history)
+(setq undo-limit (* 13 160000)        ; ~2 MB
+      undo-strong-limit (* 13 240000)  ; ~3 MB
+      undo-outer-limit (* 13 24000000))  ; ~312 MB
+
+;; File handling — resolve symlinks, follow VCS
+(setq find-file-visit-truename t
+      vc-follow-symlinks t)
+
+;; Security — block eval: in dir-locals
+(setq enable-local-eval nil)
+
+;; Better search — apropos searches everything
+(setq apropos-do-all t)
+
+;; Help — don't autoload for completion
+(setq help-enable-completion-autoload nil)
+
+;; Eglot — cleaner config
+(setq eglot-report-progress nil)
+(setq eglot-extend-to-xref t)
+(setq jsonrpc-event-hook nil)
+(setq eglot-events-buffer-config '(:size 0 :format short))
+(setq eglot-send-changes-idle-time 0.5)
+
+;; Flymake — don't show diagnostics at end of line
+(setq flymake-show-diagnostics-at-end-of-line nil)
+(setq flymake-wrap-around nil)
+
+;; Scroll and display
+(setq scroll-conservatively 20)
+(setq auto-window-vscroll nil)
+(setq highlight-nonselected-windows nil)
+(setq fast-but-imprecise-scrolling t)
+
+;; Process IO
+(setq process-adaptive-read-buffering nil)
+(setq ffap-machine-p-known 'reject)
+
+;; Search
+(setq lazy-highlight-initial-delay 0)
+
+;; Warnings
+(setq warning-minimum-level :error)
+(setq ad-redefinition-action 'accept)
+(setq warning-suppress-types '((defvaralias) (lexical-binding)))
+(setq warning-inhibit-types '((files missing-lexbind-cookie)))
+
+;; use-package
+(setq use-package-expand-minimally t
+      use-package-verbose nil)
+
+;; Encoding
+(setq default-input-method nil)
+
+;; Truncate lines by default (line wrapping is expensive)
+(setq-default truncate-lines t)
+#+end_src
+
 * Basic UI Configuration
 
 #+begin_src emacs-lisp
@@ -55,13 +126,6 @@ generated one.
 
 ;; "make ESC quit prompts and other temporary windows"
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-#+end_src
-
-*  Backups, Autosave, and Lockfiles
-#+begin_src emacs-lisp
-(setq make-backup-files nil)   ; no file~ backups
-(setq auto-save-default nil)   ; no #file# autosave snapshots
-(setq create-lockfiles nil)    ; no .#file lock symlinks
 #+end_src
 
 * Modeline and Theming
@@ -374,7 +438,7 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
   ;;    Re-evaluates at RUNTIME, so it always finds fd/rg regardless of
   ;;    when exec-path-from-shell runs.  This is the key fix for the freeze.
   (setq projectile-generic-command
-        (lambda (_)
+        (lambda (&rest _)
           (cond
            ((executable-find "fd")
             (concat "fd . -0 --type f --hidden --follow --exclude .git "
@@ -447,6 +511,21 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
 
 ** Lsp and completion 
 ***  Eglot 
+
+#+begin_src emacs-lisp
+(defvar cl/lsp--read-process-output-max nil)
+(defvar cl/lsp--gcmh-high-cons-threshold nil)
+
+(defun cl/lsp-optimize ()
+  "Boost IPC buffer and GC threshold for eglot."
+  (setq cl/lsp--read-process-output-max (default-value 'read-process-output-max)
+        read-process-output-max (* 1024 1024))  ; 1 MB
+  (when (boundp 'gcmh-high-cons-threshold)
+    (setq cl/lsp--gcmh-high-cons-threshold (default-value 'gcmh-high-cons-threshold)
+          gcmh-high-cons-threshold (* 2 (default-value 'gcmh-high-cons-threshold))
+          gcmh-low-cons-threshold (* 2 (default-value 'gcmh-low-cons-threshold)))))
+#+end_src
+
 #+begin_src emacs-lisp
    (use-package eglot
     :hook ((go-mode . eglot-ensure)
@@ -461,8 +540,25 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
     (eglot-autoshutdown t)
     (eglot-sync-connect nil)
     (eglot-connect-timeout 30)
-    (eglot-events-buffer-size 0)
+    (eglot-auto-display-help-buffer nil)  ; don't steal focus
+    :hook (eglot-managed-mode . cl/lsp-optimize)
     :config
+    ;; Suppress "Server tried to register unsupported capability
+    ;; 'workspace/didChangeConfiguration'" — eglot already sends this
+    ;; via `eglot-connect-hook', so we just accept the registration silently.
+    (cl-defmethod eglot-register-capability
+      (server (_method (eql workspace/didChangeConfiguration)) id &rest _params)
+      nil)
+
+    ;; Workspace configuration — sent when eglot connects.
+    ;; typeCheckingMode "off" = import errors + casts only (big perf win).
+    ;; Flip to "basic" if you want light checking later.
+    (setq-default eglot-workspace-configuration
+      '(:basedpyright (:typeCheckingMode "off")
+        :basedpyright.analysis (:diagnosticSeverityOverrides
+                                (:reportUnusedCallResult "none")
+                                :inlayHints (:callArgumentNames :json-false))))
+
     (add-to-list 'eglot-server-programs
                  '((rust-mode rust-ts-mode) . ("rust-analyzer")))
     (add-to-list 'eglot-server-programs
@@ -470,7 +566,17 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
     (add-to-list 'eglot-server-programs
                  '((typescript-mode typescript-ts-mode) . ("tsgo" "--lsp" "--stdio")))
     (add-to-list 'eglot-server-programs
-                 '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio")))
+                 '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio"
+                          :initializationOptions (:basedpyright (:plugins (
+                             :ruff (:enabled t
+                                   :lineLength 88
+                                   :exclude ["E501"]
+                                   :select ["E" "F" "I" "UP"])
+                             :pycodestyle (:enabled nil)
+                             :pyflakes (:enabled nil)
+                             :pylint (:enabled nil)
+                             :rope_completion (:enabled t)
+                             :autopep8 (:enabled nil)))))))
 
     
 
