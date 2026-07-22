@@ -172,6 +172,17 @@ separate leader per package.
     "ss" '(consult-line :which-key "search buffer")))
 #+end_src
 
+* Reused functions
+#+begin_src emacs-lisp
+(defvar cl/ignored-directories
+  '(;; JavaScript/TypeScript
+    "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
+    ;; Rust
+    "target"
+    ;; Python
+    "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
+#+end_src
+
 * Completion System
 
 Vertico + Consult + Orderless + Marginalia, minibuffer-first
@@ -226,6 +237,14 @@ completion.
 
   (setq consult-project-root-function #'projectile-project-root)
   :config
+  (setq consult-fd-args
+        (concat "fd --type f --exclude .git "
+                (mapconcat (lambda (dir) (concat "--exclude " dir))
+                           cl/ignored-directories " ")))
+  (setq consult-ripgrep-args
+        (concat consult-ripgrep-args " --no-require-git "
+                (mapconcat (lambda (dir) (format "-g '!%s'" dir))
+                           cl/ignored-directories " ")))
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep consult-man
@@ -309,27 +328,6 @@ tools (Embark, Helpful).
    ([remap describe-key]      . helpful-key)))
 #+end_src
 
-* Projects
-
-#+begin_src emacs-lisp
-  (use-package projectile
-    :init
-    (projectile-mode 1)
-    :config
-    (cl/leader-keys
-      "p"  '(:ignore t :which-key "projects")
-      "pf" '(projectile-find-file :which-key "find file")
-      "pw" '(consult-ripgrep :which-key "ripgrep")
-      "ps" '(projectile-switch-project :which-key "switch project")
-      "pp" '(projectile-run-project :which-key "run project")
-      "pt" '(projectile-test-project :which-key "test project")
-      "pd" '(projectile-dired :which-key "project dired")
-      )
-    :custom
-    (projectile-project-search-path '("/home/cleo/dotfiles/" "/data/org/"))
-    (projectile-switch-project-action #'projectile-find-file))
-#+end_src
-
 * File management
 **  Dired
 #+begin_src emacs-lisp
@@ -345,6 +343,74 @@ tools (Embark, Helpful).
 
 * Development 
 
+** * Environment
+Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell (Fish), so eglot can find binaries like =gopls= that only live in shell-managed PATH additions.
+
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+#+end_src
+
+** Projects
+
+#+begin_src emacs-lisp
+(use-package projectile
+  :custom
+  (projectile-indexing-method 'hybrid)       ;; hybrid: external tool + Elisp-level ignores
+  (projectile-require-project-root 'prompt)   
+  (projectile-project-search-path
+   '("/data/code/" ("/data/org/" . 1) "/media/DevDrive/thegoodco" "/media/DevDrive" "/home/cleo/dotfiles"))
+  (projectile-switch-project-action #'projectile-find-file)
+  (projectile-auto-cleanup-known-projects t)
+  (projectile-git-submodule-command nil)       ;; disable submodule scanning (perf)
+
+  :config
+  ;; 1. Add ignored directories to Projectile's native ignore list
+  (dolist (dir cl/ignored-directories)
+    (add-to-list 'projectile-globally-ignored-directories dir))
+
+  ;; 2. Lambda-based generic command (Doom-inspired).
+  ;;    Re-evaluates at RUNTIME, so it always finds fd/rg regardless of
+  ;;    when exec-path-from-shell runs.  This is the key fix for the freeze.
+  (setq projectile-generic-command
+        (lambda (_)
+          (cond
+           ((executable-find "fd")
+            (concat "fd . -0 --type f --hidden --follow --exclude .git "
+                    (mapconcat (lambda (dir) (concat "--exclude " dir))
+                               cl/ignored-directories " ")))
+           ((executable-find "rg")
+            (concat "rg --files -0 --hidden --follow --color=never --no-require-git "
+                    (mapconcat (lambda (dir) (format "-g '!%s'" dir))
+                               cl/ignored-directories " ")))
+           (t "find . -type f -print0"))))
+
+  ;; 3. Force projectile to ALWAYS use the generic command above,
+  ;;    never VCS-specific commands (git ls-files, hg, etc.).
+  (advice-add
+   #'projectile-get-ext-command :around
+   (lambda (fn &rest args)
+     (if (functionp projectile-generic-command)
+         (funcall projectile-generic-command (car args))
+       (apply fn args))))
+
+  ;; project.el integration
+  (add-hook 'project-find-functions #'project-projectile)
+
+  ;; Leader keys
+  (cl/leader-keys
+    "p"  '(:ignore t :which-key "projects")
+    "pf" '(projectile-find-file :which-key "find file")
+    "pw" '(consult-ripgrep :which-key "ripgrep")
+    "ps" '(projectile-switch-project :which-key "switch project")
+    "pp" '(projectile-run-project :which-key "run project")
+    "pt" '(projectile-test-project :which-key "test project")
+    "pd" '(projectile-dired :which-key "project dired")))
+
+(projectile-mode +1)
+#+end_src
+
 ** Treesitter 
 #+begin_src emacs-lisp
  (use-package treesit-auto
@@ -355,19 +421,25 @@ tools (Embark, Helpful).
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode)) 
 #+end_src
+
 ** Magit
 
 #+begin_src emacs-lisp
 (use-package magit
-  :config
+  :commands (magit-status magit-branch-checkout magit-pull magit-push)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  :init
   (cl/leader-keys
     "g"  '(:ignore t :which-key "git")
     "gs" '(magit-status :which-key "status")
     "gb" '(magit-branch-checkout :which-key "checkout branch")
     "gp" '(magit-pull :which-key "pull")
-    "gP" '(magit-push :which-key "push")))
+    "gP" '(magit-push :which-key "push"))
+  )
 
-(setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+
+
 
 (use-package forge
   :after magit)
@@ -377,11 +449,14 @@ tools (Embark, Helpful).
 ***  Eglot 
 #+begin_src emacs-lisp
    (use-package eglot
-    :ensure nil
     :hook ((go-mode . eglot-ensure)
+           (go-ts-mode . eglot-ensure)
            (rust-mode . eglot-ensure)
+           (rust-ts-mode . eglot-ensure)
            (typescript-mode . eglot-ensure)
-           (python-mode . eglot-ensure))
+           (typescript-ts-mode . eglot-ensure)
+           (python-mode . eglot-ensure)
+           (python-ts-mode . eglot-ensure))
     :custom
     (eglot-autoshutdown t)
     (eglot-sync-connect nil)
@@ -389,43 +464,53 @@ tools (Embark, Helpful).
     (eglot-events-buffer-size 0)
     :config
     (add-to-list 'eglot-server-programs
-                 '(rust-mode . ("rust-analyzer")))
+                 '((rust-mode rust-ts-mode) . ("rust-analyzer")))
     (add-to-list 'eglot-server-programs
-                 '(go-mode . ("gopls")))
+                 '((go-mode go-ts-mode) . ("gopls")))
     (add-to-list 'eglot-server-programs
-                 '(typescript-mode . ("typescript-language-server" "--stdio")))
+                 '((typescript-mode typescript-ts-mode) . ("tsgo" "--lsp" "--stdio")))
     (add-to-list 'eglot-server-programs
-                 '(python-mode . ("pyright-langserver" "--stdio")))
+                 '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio")))
 
-    (evil-define-key 'normal eglot-mode-map
-      (kbd "gd") 'xref-find-definitions
-      (kbd "gD") 'eglot-find-declaration
-      (kbd "gt") 'eglot-find-typeDefinition
-      (kbd "gi") 'eglot-find-implementation
-      (kbd "gr") 'xref-find-references
-      (kbd "K")  'eglot-show-doc-buffer)
+    
 
     ;; ── Leader bindings (SPC) ──
     ;; "Super modern" — ca for code action, rn for rename, etc.
     (cl/leader-keys
       "ca" '(eglot-code-actions :which-key "code actions")
       "ra" '(eglot-rename :which-key "rename symbol")
-      "fa"  '(eglot-format :which-key "format buffer")
+      "fa"  '(apheleia-format-buffer :which-key "format buffer")
       "ls" '(eglot-reconnect :which-key "restart server")
       "lS" '(eglot-shutdown :which-key "stop server")))
+#+end_src
 
-  ;; Helper: show documentation in a dedicated buffer (the "hover" experience)
-  (defun eglot-show-doc-buffer ()
-    "Show documentation for symbol at point in a dedicated buffer."
-    (interactive)
-    (let ((buf (eldoc-doc-buffer)))
-      (if (get-buffer buf)
-          (display-buffer buf
-                          '((display-buffer-reuse-window
-                             display-buffer-pop-up-window)
-                            (window-width . 80)
-                            (window-height . 15)))
-        (message "No documentation available at point"))))
+**** Eldoc
+
+#+begin_src emacs-lisp
+(use-package eldoc
+  :ensure nil
+  :custom
+  (eldoc-idle-delay 0.2)
+  (eldoc-echo-area-use-multiline-p 3)
+  :config
+  (global-eldoc-mode 1))
+#+end_src
+
+****  eldoc-box
+
+#+begin_src emacs-lisp
+  (use-package eldoc-box
+  :after eglot
+  :config
+  (evil-define-key 'normal eglot-mode-map
+    (kbd "gd") 'xref-find-definitions
+    (kbd "gD") 'eglot-find-declaration
+    (kbd "gt") 'eglot-find-typeDefinition
+    (kbd "gi") 'eglot-find-implementation
+    (kbd "gr") 'xref-find-references
+    (kbd "K")  'eldoc-box-help-at-point
+    (kbd "]d") 'flycheck-next-error
+    (kbd "[d") 'flycheck-previous-error))
 #+end_src
 
 *** Corfu (Completion UI)
@@ -438,7 +523,7 @@ Corfu provides a minimal, snappy popup completion UI.
   (corfu-cycle t)                     ; cycle through candidates
   (corfu-auto t)                      ; show completions automatically
   (corfu-auto-prefix 1)               ; trigger after 1 char (snappy!)
-  (corfu-auto-delay 0.0)              ; no delay (snappy!)
+  (corfu-auto-delay 0.7)              ; no delay (snappy!)
   (corfu-preview-current nil)         ; don't preview in buffer
   (corfu-preselect-first t)           ; preselect first candidate
   (corfu-on-exact-match nil)          ; don't auto-insert on exact match
@@ -488,31 +573,7 @@ Corfu provides a minimal, snappy popup completion UI.
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
 
-*** Flymake (Diagnostics)
 
-#+begin_src emacs-lisp
-
-    ;; ── Bracket navigation for diagnostics ──
-   (evil-define-key 'normal eglot-mode-map
-    (kbd "]d") 'flymake-goto-next-error
-    (kbd "[d") 'flymake-goto-prev-error
-    (kbd "]e") '(lambda () (interactive) (flymake-goto-next-error 1 '() 1))   
-    (kbd "[e") '(lambda () (interactive) (flymake-goto-prev-error 1 '() 1))
-    (kbd "]w") '(lambda () (interactive) (flymake-goto-next-error 1 '(warning) t))
-    (kbd "[w") '(lambda () (interactive) (flymake-goto-prev-error 1 '(warning) t))
-    )
-
-  (use-package flymake
-    :ensure nil
-    :custom
-    (flymake-no-changes-timeout 0.7)
-    :config
-    (cl/leader-keys
-      "en" '(flymake-goto-next-error :which-key "next error")
-      "ep" '(flymake-goto-prev-error :which-key "previous error")
-      "el" '(flymake-show-buffer-diagnostics :which-key "list errors")
-      "eL" '(flymake-show-project-diagnostics :which-key "project errors")))
-#+end_src
 
 *** Xref
 
@@ -525,16 +586,39 @@ Corfu provides a minimal, snappy popup completion UI.
   (xref-show-definitions-function #'consult-xref))
 #+end_src
 
-*** Eldoc
+**  Formatting and linters 
+#+begin_src emacs-lisp
+(use-package apheleia
+  :commands (apheleia-format-buffer apheleia-mode)
+  :init
+  (apheleia-global-mode +1))
+#+end_src
 
 #+begin_src emacs-lisp
-(use-package eldoc
-  :ensure nil
-  :custom
-  (eldoc-idle-delay 0.2)
-  (eldoc-echo-area-use-multiline-p 3)
+(use-package flycheck
+  :commands (flycheck-next-error flycheck-previous-error
+             flycheck-list-errors flycheck-mode)
+  :init
+  (global-flycheck-mode +1)
   :config
-  (global-eldoc-mode 1))
+  (cl/leader-keys
+    "en" '(flycheck-next-error :which-key "next error")
+    "ep" '(flycheck-previous-error :which-key "previous error")
+    "el" '(flycheck-list-errors :which-key "list errors")))
+
+(use-package flycheck-eglot
+  :after eglot
+  :config
+  ;; Don't auto-chain — we explicitly add oxlint below
+  (setq flycheck-eglot-exclusive t)
+  (global-flycheck-eglot-mode +1)
+
+  ;; Chain oxlint after Eglot diagnostics for JS/TS buffers
+  (defun cl/oxlint-after-eglot ()
+    (when (derived-mode-p 'typescript-mode 'typescript-ts-mode
+                          'tsx-ts-mode 'js-mode 'js-ts-mode)
+      (flycheck-add-next-checker 'eglot-check 'javascript-oxlint t)))
+  (add-hook 'flycheck-eglot-mode-hook #'cl/oxlint-after-eglot))
 #+end_src
 
 ** QOL 
@@ -633,4 +717,3 @@ even though =init.el= itself doesn't strictly need it thanks to
   :config
   (global-wakatime-mode))
 #+END_SRC
-
