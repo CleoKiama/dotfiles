@@ -24,23 +24,16 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; --- 2. Pull in the newer Org *before* anything else can touch Org --
-;; org-babel-load-file (below) uses ob-tangle, which requires 'org.
-;; If we let that be satisfied by Emacs's built-in Org, and only ask
-;; straight for the newer Org later (inside emacs.org), Emacs ends up
-;; with two Org versions loaded in the same session -> the mismatch
-;; warning. Pulling this specific recipe forward, ahead of everything
-;; else, means only one Org ever loads. Keep this recipe in sync with
-;; the `:straight` spec on the `org` use-package block in emacs.org.
 (straight-use-package '(org :branch "bugfix"))
 
-;; --- 3. use-package via straight -----------------------------------
+(straight-use-package 'project)
+(require 'project)
+
 (setq straight-use-package-by-default t)
+
 (straight-use-package 'use-package)
 
-;; --- 4. Hand off to the literate config -----------------------------
-;; org-babel-load-file tangles emacs.org -> emacs.el (only if emacs.org
-;; is newer than the last tangle) and then loads the result. Pass `t`
-;; as a second arg later if you want it byte-compiled for a faster
-;; startup once the config has settled down.
+;; (dolist (pkg '(xref eldoc flymake seq jsonrpc external-completion compat))
+  ;; (straight-use-package `(,pkg :type built-in)))
+
 (org-babel-load-file (expand-file-name "emacs.org" user-emacs-directory))

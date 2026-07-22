@@ -32,3 +32,6 @@ transient/
 
 #10 tree sitter 
 tree-sitter/
+.cache/
+.local/
+projects
