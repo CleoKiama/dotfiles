@@ -2,7 +2,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   _    _    _    _    _         _    _    _    _    _
   XX   @a   @s   @d   @f   _         _    @j   @k   @l   @;
-  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    @m   _    _    _
             @num               @nav             @sym
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   lrld   XX
@@ -24,4 +24,5 @@
   ; (tap-hold-release-keys $tap-time $hold-time ; rsft $right-hand-keys)
   nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
   sym (tap-hold-press $tap-time $hold-time ret (layer-while-held symbols))
+  m (tap-hold $tap-time $hold-time m (layer-while-held media))
 )

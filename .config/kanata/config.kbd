@@ -20,6 +20,7 @@
 (include deflayer/base.kbd)
 (include deflayer/symbols.kbd)
 (include deflayer/navigation.kbd)
+(include deflayer/media.kbd)
 
 ;; Workspace chord: hold both thumbs (lalt + ralt) → workspace layer
 ;; Home row sends Super+1..0 for workspace switching
