@@ -7,3 +7,13 @@ kitty
 .gitconfig
 .gitconfig-thegoodco
 .gitignore
+.stow-local-ignore
+
+README.md
+LICENCE
+
+pkglist.txt
+aur_packages.txt
+arch-restore.sh
+
+.tmux.conf.remote
