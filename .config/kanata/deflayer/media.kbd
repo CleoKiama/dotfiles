@@ -1,11 +1,11 @@
-;; Media layer: MPRIS playback + volume control
+;; Media layer: MPRIS playback + volume/brightness control
 ;; Activated by holding m (tap-hold: tap = m, hold = this layer)
 ;; Left hand only, since m itself is a right-hand key.
 
 (deflayer media
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX        XX   XX   XX   XX   XX
-  XX   prev pp   next XX   XX   XX   XX   XX   XX   XX
+  XX   prev pp   next brdn brup XX   XX   XX   XX   XX
   vold volu mute XX   XX   XX   XX   _    XX   XX   XX
             XX              XX             XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
