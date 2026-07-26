@@ -1,25 +1,9 @@
-# Ignore files and folders in the repo root
-^\.git$
-^\.gitattributes$
-^\.gitignore$
-^README\.md$
-^LICENSE$
-^assets$
-^docs$
+doom
+alacritty.toml
+kitty
 
-# Ignore your system/package scripts and lists
-^pkglist\.txt$
-^aur_packages\.txt$
-^pacman_packages\.txt$
-^arch-restore\.sh$
-^migrate-to-flat\.sh$
-
-# Ignore any miscellaneous setup files
-^\.sisyphus$
-^mpris\.so$
-
-# Ignore license files in the root
-^LICENCE$
-^LICENSE$
-
-^.tmux.conf.remote 
+.git
+.gitattributes
+.gitconfig
+.gitconfig-thegoodco
+.gitignore
