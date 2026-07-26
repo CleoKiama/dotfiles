@@ -8,12 +8,8 @@ set -gx fish_history ""
 
 # Path
 fish_add_path $HOME/.local/bin
-fish_add_path $HOME/.config/emacs/bin
 fish_add_path $HOME/.cargo/bin
 
-# PNPM
-set -gx PNPM_HOME $HOME/.local/share/pnpm
-fish_add_path $PNPM_HOME
 
 # vi mode
 fish_vi_key_bindings
@@ -95,16 +91,19 @@ function y
     rm -f -- $tmp
 end
 
-# pnpm
-set -gx PNPM_HOME "/home/cleo/.local/share/pnpm"
-if not string match -q -- "$PNPM_HOME/bin" $PATH
-  set -gx PATH "$PNPM_HOME/bin" $PATH
-end
-# pnpm end
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+
+# 1. Define PNPM_HOME variable
+set -gx PNPM_HOME "$HOME/.local/share/pnpm"
+
+# 2. Add PNPM_HOME to PATH if it isn't already there
+if not contains $PNPM_HOME $PATH
+    set -gx PATH $PNPM_HOME $PATH
+end
 
 # pi coding agent config directory (instead of ~/.pi/agent)
 set -gx PI_CODING_AGENT_DIR $HOME/.config/pi/agent
