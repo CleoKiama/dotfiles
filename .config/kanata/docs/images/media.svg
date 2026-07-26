@@ -24,25 +24,16 @@
     .left   { transform: translate(-15px, 0); }
     .right  { transform: translate(+15px, 0); }
 
-    .shortcut { font-size: 10px; transform: translate(-3px,  -1px); }
-    .layerSym { font-weight: normal; }
-    .layerMod { font-weight: bold; font-size: 14px; }
-    .layerNav { font-weight: bold; }
-    .right .layerNav { font-weight: normal; }
-
-    .layerMod, .colorMod { fill: #333; }
-    .layerSym, .colorSym { fill: blue; }
-    .layerNav, .colorNav { fill: #e83; }
-    #row_AA    .level2   { fill: #333; }
+    .layer  { font-size: 14px; font-weight: bold; fill: #f8f8f8; }
+    .layerMedia { fill: #a3f; font-size: 16px; }
+    .trigger { fill: #a3f; }
 
     @media (prefers-color-scheme: dark) {
-      text                 { fill: #666; }
-      rect                 { fill: #444; }
-      .dualKey             { fill: #666; }
-      .layerMod, .colorMod { fill: #eee; }
-      .layerSym, .colorSym { fill: #99f; }
-      .layerNav, .colorNav { fill: #e83; }
-      #row_AA .level2      { fill: #ccc; }
+      text        { fill: #666; }
+      rect        { fill: #444; }
+      .dualKey    { fill: #666; }
+      .layerMedia { fill: #c9f; }
+      .trigger    { fill: #c9f; }
     }
   </style>
 
@@ -51,22 +42,18 @@
       <g transform="translate(90)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">Q</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">F1</text>
       </g>
       <g transform="translate(150)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">W</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">F2</text>
       </g>
       <g transform="translate(210)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">E</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">F3</text>
       </g>
       <g transform="translate(270)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">R</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">F4</text>
       </g>
       <g transform="translate(330)">
         <rect width="52" height="52" rx="5" ry="5"/>
@@ -102,26 +89,27 @@
       <g transform="translate(90)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">A</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">F5</text>
+        <text x="38.0" y="43.4" class="layerMedia">⏮</text>
       </g>
       <g transform="translate(150)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">S</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">F6</text>
+        <text x="38.0" y="43.4" class="layerMedia">⏯</text>
       </g>
       <g transform="translate(210)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">D</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">F7</text>
+        <text x="38.0" y="43.4" class="layerMedia">⏭</text>
       </g>
       <g transform="translate(270)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">F</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">F8</text>
+        <text x="38.0" y="43.4" class="layerMedia">🔅</text>
       </g>
       <g transform="translate(330)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">G</text>
+        <text x="38.0" y="43.4" class="layerMedia">🔆</text>
       </g>
     </g>
     <g class="right">
@@ -132,17 +120,14 @@
       <g transform="translate(450)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">J</text>
-        <text x="38.0" y="20.6" class="layerNav">⌥</text>
       </g>
       <g transform="translate(510)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">K</text>
-        <text x="38.0" y="20.6" class="layerNav">⌃</text>
       </g>
       <g transform="translate(570)">
         <rect width="52" height="52" rx="5" ry="5"/>
         <text x="12.8" y="20.6" class="level2">L</text>
-        <text x="38.0" y="20.6" class="layerNav">⌘</text>
       </g>
       <g transform="translate(630)">
         <rect width="52" height="52" rx="5" ry="5"/>
@@ -156,37 +141,26 @@
     <g class="left">
       <g transform="translate(90)">
         <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">Z</text>
-          <text x="38.0" y="20.6" class="layerNav shortcut">F9</text>
-        </g>
+        <text x="12.8" y="20.6" class="level2">Z</text>
+        <text x="38.0" y="43.4" class="layerMedia">🔉</text>
       </g>
       <g transform="translate(150)">
         <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">X</text>
-          <text x="38.0" y="20.6" class="layerNav shortcut">F10</text>
-        </g>
+        <text x="12.8" y="20.6" class="level2">X</text>
+        <text x="38.0" y="43.4" class="layerMedia">🔊</text>
       </g>
       <g transform="translate(210)">
         <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">C</text>
-          <text x="38.0" y="20.6" class="layerNav shortcut">F11</text>
-        </g>
+        <text x="12.8" y="20.6" class="level2">C</text>
+        <text x="38.0" y="43.4" class="layerMedia">🔇</text>
       </g>
       <g transform="translate(270)">
         <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">V</text>
-          <text x="38.0" y="20.6" class="layerNav shortcut">F12</text>
-        </g>
+        <text x="12.8" y="20.6" class="level2">V</text>
       </g>
       <g transform="translate(330)">
         <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">B</text>
-        </g>
+        <text x="12.8" y="20.6" class="level2">B</text>
       </g>
     </g>
     <g class="right">
@@ -195,8 +169,9 @@
         <text x="12.8" y="20.6" class="level2">N</text>
       </g>
       <g transform="translate(450)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">M</text>
+        <rect width="52" height="52" rx="5" ry="5" style="stroke: #a3f; stroke-width: 2px;"/>
+        <text x="12.8" y="20.6" class="level2 trigger">M</text>
+        <text x="26.0" y="43.4" class="layer trigger" style="font-size: 11px;">hold</text>
       </g>
       <g transform="translate(510)">
         <rect width="52" height="52" rx="5" ry="5"/>
@@ -219,16 +194,15 @@
   <g id="row_AA">
     <g transform="translate(180)">
       <rect width="82" height="52" rx="5" ry="5"/>
-      <text x="41" y="42.8" class="layerMod layerNav"
-          style="font-weight: normal;">esc to base</text>
+      <text x="20.5" y="42.8" class="layer" style="fill: #999;">Alt</text>
     </g>
     <g transform="translate(270)">
       <rect width="232" height="52" rx="5" ry="5"/>
+      <text x="20.5" y="42.8" class="layer" style="fill: #999;">⍽</text>
     </g>
     <g transform="translate(510)">
       <rect width="82" height="52" rx="5" ry="5"/>
-      <text x="41" y="42.8" class="layerMod layerNav"
-          style="font-weight: normal;">esc to base</text>
+      <text x="20.5" y="42.8" class="layer" style="fill: #999;">⏎</text>
     </g>
   </g>
 

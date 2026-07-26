@@ -51,10 +51,11 @@ Anti-misfire: same-hand key detection via `$left-hand-keys` / `$right-hand-keys`
 
 ![Layer Taps](docs/images/layer_taps.svg)
 
-| Thumb               | Tap   | Hold                          |
-| ------------------- | ----- | ----------------------------- |
-| Left thumb (Space)  | Space | Navigation layer (hold 250ms) |
-| Right thumb (Enter) | Enter | Symbols layer                 |
+| Thumb                | Tap       | Hold                          |
+| -------------------- | --------- | ----------------------------- |
+| Left thumb (lalt)    | Backspace | Num layer                     |
+| Middle thumb (Space) | Space     | Navigation layer (hold 250ms) |
+| Right thumb (ralt)   | Enter     | Symbols layer                 |
 
 ### Symbols
 
@@ -73,25 +74,31 @@ Z→~   X→[   C→]   V→_   B→#       N→|   M→!   ,→;   .→:   /→
 
 ![Navigation Layer](docs/images/navigation.svg)
 
-Vim-style arrows on HJKL, plus editor shortcuts. Activated by holding the left thumb (Space):
+Vim-style arrows on HJKL, editor shortcuts on the left hand, mouse wheel on the bottom right. Activated by holding the left thumb (Space):
 
 ```
-Q→Tab       W→Home     E→Up       R→End      T→PgUp
-A→Ctrl+A    S→Left     D→Down     F→Right    G→PgDn
-Z→Ctrl+Z    X→Ctrl+X   C→Ctrl+C   V→Ctrl+V   B→Bksp
-                                        H→-    J→4   K→5   L→6   ;→0
+Q→NumPad(switch)  W→Close(Ctrl+W)  E→Back      R→Forward    T
+                                        Y→Home  U→PgDn  I→PgUp  O→End  P
+A→SelectAll(Ctrl+A)  S→Save(Ctrl+S)  D→Shift+Tab  F→Tab   G
+                                        H→←  J→↓  K→↑  L→→  ;→Fn (hold)
+Z→Undo(Ctrl+Z)  X→Cut(Ctrl+X)  C→Copy(Ctrl+C)  V→Paste(Ctrl+V)  B
+                                        N→Wheel←  M→Wheel↓  ,→Wheel↑  .→Wheel→  /
 ```
+
+Thumb keys while Navigation is held: left thumb → Delete, right thumb → Escape (both return to base on release; Escape also works as an explicit exit).
 
 ### NumRow
 
 ![NumRow Layer](docs/images/numrow.svg)
 
-Numbers and shifted symbols on the home row. Activated by holding the left thumb while in Navigation layer (layer stacking):
+Numbers on the left hand only. Activated by holding the left thumb (lalt tap-hold: tap = Backspace, hold = NumRow):
 
 ```
-Q→!   W→@   E→#   R→$   T→%       Y→^   U→&   I→*   O→(   P→)
-A→1   S→2   D→3   F→4   G→5       H→6   J→7   K→8   L→9   ;→0
+Q→6   W→7   E→8   R→9   T→0       Y        U        I        O        P
+A→1   S→2   D→3   F→4   G→5       H        J        K        L        ;
 ```
+
+Digits deliberately stay off the right hand (`h j k l ;` pass through as plain letters) so vim relative-jump rolls like `2j`/`2k` don't misfire while this layer is held.
 
 ### Numpad
 
@@ -110,16 +117,14 @@ Q          W→Home   E→Up     R→End    T→PgUp
 
 ![Workspace Layer](docs/images/workspace.svg)
 
-Workspace switching via dual-thumb chord (lalt + ralt held together). Home row sends Super+1 through Super+0:
+Workspace switching via dual-thumb chord (lalt + ralt held together). Left hand sends Super+1 through Super+0, mirroring the NumRow split so the right hand stays free:
 
 ```
-Q          W        E        R        T
+Q→Super+6  W→Super+7  E→Super+8  R→Super+9  T→Super+0
 A→Super+1  S→Super+2  D→Super+3  F→Super+4  G→Super+5
-Z          X        C        V        B
-                                        H→Super+6  J→Super+7  K→Super+8  L→Super+9  ;→Super+0
 ```
 
-**Usage:** Hold both thumb keys (lalt + ralt) together, tap a home-row letter to switch workspace, release thumbs to return to base.
+**Usage:** Hold both thumb keys (lalt + ralt) together, tap a left-hand letter to switch workspace, release thumbs to return to base.
 
 ### Function Keys
 
@@ -131,7 +136,18 @@ F1–F12 on the left hand, modifiers on the right:
 Q→F1   W→F2   E→F3   R→F4
 A→F5   S→F6   D→F7   F→F8
 Z→F9   X→F10  C→F11  V→F12
-                              J→Ctrl   K→Alt   L→Super
+                              J→Alt   K→Ctrl   L→Super
+```
+
+### Media
+
+![Media Layer](docs/images/media.svg)
+
+MPRIS playback, volume, and brightness control. Activated by holding `m` (tap-hold: tap types `m`, hold enters the layer). Left hand only, since `m` itself is a right-hand key:
+
+```
+A→Prev  S→Play/Pause  D→Next  F→Brightness Down  G→Brightness Up
+Z→Vol Down  X→Vol Up  C→Mute
 ```
 
 ## Angle Mod
@@ -169,7 +185,7 @@ The layout uses an angle mod for the bottom-left keys, shifting ZXCVB inward for
 
 ### going cold turkey
 
-All keys outside the 34-key core are mapped to `XX` (no-op) in every layer. The physical number row, modifiers, arrows, F-keys, and numpad are all silenced. Numbers are only accessible via the `num` thumb chord (Navigation → NumRow layer stacking).
+All keys outside the 34-key core are mapped to `XX` (no-op) in every layer. The physical number row, modifiers, arrows, F-keys, and numpad are all silenced. Numbers are only accessible via the `num` thumb hold (left thumb, `lalt`) on the NumRow layer.
 
 **Exceptions:**
 - Print Screen is mapped to `lrld` (live reload) for convenient config reloading
@@ -181,7 +197,6 @@ All keys outside the 34-key core are mapped to `XX` (no-op) in every layer. The 
 | --------------- | ----------------------------- |
 | Semicolon (`;`) | Tap: `;`, Hold: Shift (right)                   |
 | `j`+`k` chord   | Escape (press both simultaneously, then release) |
-| Print Screen
 | Print Screen    | Live reload config (`lrld`)   |
 | Both thumbs     | Workspace layer (Super+1..0)  |
 
@@ -197,15 +212,18 @@ kanata/
 ├── deflayer/
 │   ├── base.kbd            # Base layer + home-row mods + thumb holds
 │   ├── symbols.kbd         # Symbols + numrow layers
-│   └── navigation.kbd      # Navigation + numpad + funpad layers
+│   ├── navigation.kbd      # Navigation + numpad + funpad + workspace layers
+│   └── media.kbd           # Media layer (MPRIS + volume + brightness)
 └── docs/
-    └── images/             # Arsenik layout reference images
+    └── images/             # Layout reference images
         ├── all.svg
         ├── symbols.svg
         ├── navigation.svg
         ├── numpad.svg
         ├── fn.svg
         ├── numrow.svg
+        ├── workspace.svg
+        ├── media.svg
         ├── hrm.svg
         ├── layer_taps.svg
         └── angle_mod.svg

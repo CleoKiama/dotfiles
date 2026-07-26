@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120 -4 720 60">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 -4 640 60">
 
   <style>
     rect, path {
@@ -30,33 +30,68 @@
       <rect width="52" height="52" rx="5" ry="5"/>
       <g class="key">
         <text x="12.8" y="20.6">A</text>
+        <text x="26.0" y="43.4" class="layer">Shift</text>
       </g>
     </g>
     <g transform="translate(150)">
       <rect width="52" height="52" rx="5" ry="5"/>
       <g class="key">
         <text x="12.8" y="20.6">S</text>
-        <text x="26.0" y="43.4" class="layer">Super</text>
+        <text x="26.0" y="43.4" class="layer">Alt</text>
       </g>
     </g>
     <g transform="translate(210)">
       <rect width="52" height="52" rx="5" ry="5"/>
       <g class="key">
         <text x="12.8" y="20.6">D</text>
-        <text x="26.0" y="43.4" class="layer">Ctrl</text>
+        <text x="26.0" y="43.4" class="layer">Super</text>
       </g>
     </g>
     <g transform="translate(270)">
       <rect width="52" height="52" rx="5" ry="5"/>
       <g class="key">
         <text x="12.8" y="20.6">F</text>
-        <text x="26.0" y="43.4" class="layer">Alt</text>
+        <text x="26.0" y="43.4" class="layer">Ctrl</text>
       </g>
     </g>
     <g transform="translate(330)">
       <rect width="52" height="52" rx="5" ry="5"/>
       <g class="key">
         <text x="12.8" y="20.6">G</text>
+      </g>
+    </g>
+    <g transform="translate(390)">
+      <rect width="52" height="52" rx="5" ry="5"/>
+      <g class="key">
+        <text x="12.8" y="20.6">H</text>
+      </g>
+    </g>
+    <g transform="translate(450)">
+      <rect width="52" height="52" rx="5" ry="5"/>
+      <g class="key">
+        <text x="12.8" y="20.6">J</text>
+        <text x="26.0" y="43.4" class="layer">Ctrl</text>
+      </g>
+    </g>
+    <g transform="translate(510)">
+      <rect width="52" height="52" rx="5" ry="5"/>
+      <g class="key">
+        <text x="12.8" y="20.6">K</text>
+        <text x="26.0" y="43.4" class="layer">Super</text>
+      </g>
+    </g>
+    <g transform="translate(570)">
+      <rect width="52" height="52" rx="5" ry="5"/>
+      <g class="key">
+        <text x="12.8" y="20.6">L</text>
+        <text x="26.0" y="43.4" class="layer">Alt</text>
+      </g>
+    </g>
+    <g transform="translate(630)">
+      <rect width="52" height="52" rx="5" ry="5"/>
+      <g class="key">
+        <text x="12.8" y="20.6">;</text>
+        <text x="26.0" y="43.4" class="layer">Shift</text>
       </g>
     </g>
   </g>
