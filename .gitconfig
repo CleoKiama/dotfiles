@@ -18,5 +18,11 @@
 [push]
 	autoSetupRemote = true
 
-[includeIf "gitdir:/media/DevDrive/thegoodco/"]
+[includeIf "gitdir:/home/cleo/Projects/thegoodco/"]
 	path = ~/.gitconfig-thegoodco
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
