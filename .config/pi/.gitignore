@@ -13,5 +13,8 @@ agent/mcp-cache.json
 agent/git/
 agent/npm/
 
+# Local state — machine-specific trust decisions
+agent/trust.json
+
 # Temp / runtime
 *.tmp
