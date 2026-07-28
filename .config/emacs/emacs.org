@@ -753,6 +753,14 @@ Corfu provides a minimal, snappy popup completion UI.
 #+end_src
 
 
+* Miscellaneous 
+** Wakatime
+#+BEGIN_SRC emacs-lisp
+(use-package wakatime-mode
+  :config
+  (global-wakatime-mode))
+#+END_SRC
+
 * Org Mode
 
 ** Base org config
@@ -822,10 +830,3 @@ even though =init.el= itself doesn't strictly need it thanks to
             (add-hook 'after-save-hook #'cl/org-babel-tangle-config nil 'local)))
 #+end_src
 
-* Miscellaneous 
-** Wakatime
-#+BEGIN_SRC emacs-lisp
-(use-package wakatime-mode
-  :config
-  (global-wakatime-mode))
-#+END_SRC
