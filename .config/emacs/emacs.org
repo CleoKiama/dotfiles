@@ -307,10 +307,11 @@ completion.
                            cl/ignored-directories " ")))
   (setq consult-ripgrep-args
         (concat consult-ripgrep-args " --no-require-git "
-                (mapconcat (lambda (dir) (format "-g '!%s'" dir))
+                (mapconcat (lambda (dir) (format "-g!%s" dir))
                            cl/ignored-directories " ")))
+ 
   (consult-customize
-   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-theme :preview-key '(:debounce 0.4 any)
    consult-ripgrep consult-git-grep consult-grep consult-man
    consult-bookmark consult-recent-file consult-xref
    consult-source-bookmark consult-source-file-register
