@@ -278,47 +278,52 @@ completion.
 ** Consult
 
 #+begin_src emacs-lisp
-(use-package consult
-  :bind (([remap Info-search] . consult-info)
-         ("C-x M-:" . consult-complex-command)
-         ("C-x b" . consult-buffer)
-         ("C-x C-f" . consult-fd)
-         ("M-g e" . consult-compile-error)
-         ("M-g r" . consult-grep-match)
-         ("M-g o" . consult-outline)
-         ("M-g m" . consult-mark)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         :map minibuffer-local-map
-         ("C-r" . consult-history))
-  :init
-  (advice-add #'register-preview :override #'consult-register-window)
-  (setq register-preview-delay 0.5)
 
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+  (defun cl/get-project-root (&optional _may-prompt)
+    (when (fboundp 'projectile-project-root)
+      (projectile-project-root)))
+    
+    (use-package consult
+      :bind (([remap Info-search] . consult-info)
+             ("C-x M-:" . consult-complex-command)
+             ("C-x b" . consult-buffer)
+             ("C-x C-f" . consult-fd)
+             ("M-g e" . consult-compile-error)
+             ("M-g r" . consult-grep-match)
+             ("M-g o" . consult-outline)
+             ("M-g m" . consult-mark)
+             ("M-s g" . consult-grep)
+             ("M-s G" . consult-git-grep)
+             ("M-s r" . consult-ripgrep)
+             :map minibuffer-local-map
+             ("C-r" . consult-history))
+      :init
+      (advice-add #'register-preview :override #'consult-register-window)
+      (setq register-preview-delay 0.5)
 
-  (setq consult-project-root-function #'projectile-project-root)
-  :config
-  (setq consult-fd-args
-        (concat "fd --type f --exclude .git "
-                (mapconcat (lambda (dir) (concat "--exclude " dir))
-                           cl/ignored-directories " ")))
-  (setq consult-ripgrep-args
-        (concat consult-ripgrep-args " --no-require-git "
-                (mapconcat (lambda (dir) (format "-g!%s" dir))
-                           cl/ignored-directories " ")))
- 
-  (consult-customize
-   consult-theme :preview-key '(:debounce 0.4 any)
-   consult-ripgrep consult-git-grep consult-grep consult-man
-   consult-bookmark consult-recent-file consult-xref
-   consult-source-bookmark consult-source-file-register
-   consult-source-recent-file consult-source-project-recent-file
-   :preview-key '(:debounce 0.4 any))
+      (setq xref-show-xrefs-function #'consult-xref
+            xref-show-definitions-function #'consult-xref)
+      :config
+      (setq consult-fd-args
+            (concat "fd --type f --hidden --exclude .git "
+                    (mapconcat (lambda (dir) (concat "--exclude " dir))
+                               cl/ignored-directories " ")))
+      (setq consult-ripgrep-args
+            (concat consult-ripgrep-args " --no-require-git "
+                    (mapconcat (lambda (dir) (format "-g!%s" dir))
+                               cl/ignored-directories " ")))
+     
+      (consult-customize
+       consult-theme :preview-key '(:debounce 0.4 any)
+       consult-ripgrep consult-git-grep consult-grep consult-man
+       consult-bookmark consult-recent-file consult-xref
+       consult-source-bookmark consult-source-file-register
+       consult-source-recent-file consult-source-project-recent-file
+       :preview-key '(:debounce 0.4 any))
 
-  (setq consult-narrow-key "<"))
+      (setq consult-narrow-key "<")
+      :custom
+      (consult-project-function #'cl/get-project-root))
 #+end_src
 
 ** Orderless
@@ -347,7 +352,7 @@ completion.
   :after vertico
   :config
   (nerd-icons-completion-mode))
-#+end_src
+#+end_Src
 
 * Editing helpers
 
