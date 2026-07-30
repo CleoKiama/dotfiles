@@ -7,52 +7,18 @@ that on by default) gets written out to =emacs.el= and loaded by
 =init.el= via ~org-babel-load-file~. Edit this file, not the
 generated one.
 
-*  Backups, Autosave, and Lockfiles
-#+begin_src emacs-lisp
-(setq make-backup-files nil)   ; no file~ backups
-(setq auto-save-default nil)   ; no #file# autosave snapshots
-(setq create-lockfiles nil)    ; no .#file lock symlinks
+* Perfomance & System Defaults
 
+#+begin_src emacs-lisp
 ;; Restore GC after startup (complements early-init.el maximization)
 (add-hook 'emacs-startup-hook
           (lambda ()
             (setq gc-cons-threshold (* 32 1024 1024)
                   gc-cons-percentage 0.6)))
 
-;; Undo limits (13× defaults — more undo history)
-(setq undo-limit (* 13 160000)        ; ~2 MB
-      undo-strong-limit (* 13 240000)  ; ~3 MB
-      undo-outer-limit (* 13 24000000))  ; ~312 MB
-
-;; File handling — resolve symlinks, follow VCS
-(setq find-file-visit-truename t
-      vc-follow-symlinks t)
-
-;; Security — block eval: in dir-locals
-(setq enable-local-eval nil)
-
-;; Better search — apropos searches everything
-(setq apropos-do-all t)
-
 ;; Help — don't autoload for completion
 (setq help-enable-completion-autoload nil)
 
-;; Eglot — cleaner config
-(setq eglot-report-progress nil)
-(setq eglot-extend-to-xref t)
-(setq jsonrpc-event-hook nil)
-(setq eglot-events-buffer-config '(:size 0 :format short))
-(setq eglot-send-changes-idle-time 0.5)
-
-;; Flymake — don't show diagnostics at end of line
-(setq flymake-show-diagnostics-at-end-of-line nil)
-(setq flymake-wrap-around nil)
-
-;; Scroll and display
-(setq scroll-conservatively 20)
-(setq auto-window-vscroll nil)
-(setq highlight-nonselected-windows nil)
-(setq fast-but-imprecise-scrolling t)
 
 ;; Process IO
 (setq process-adaptive-read-buffering nil)
@@ -61,40 +27,204 @@ generated one.
 ;; Search
 (setq lazy-highlight-initial-delay 0)
 
-;; Warnings
-(setq warning-minimum-level :error)
+;; Suppress noisy warnings
 (setq ad-redefinition-action 'accept)
 (setq warning-suppress-types '((defvaralias) (lexical-binding)))
 (setq warning-inhibit-types '((files missing-lexbind-cookie)))
 
-;; use-package
+;; use-package macro optimizations
 (setq use-package-expand-minimally t
       use-package-verbose nil)
 
-;; Encoding
+;; Default input method 
 (setq default-input-method nil)
 
-;; Truncate lines by default (line wrapping is expensive)
-(setq-default truncate-lines t)
 #+end_src
 
-* Basic UI Configuration
+* Core Settings
 
 #+begin_src emacs-lisp
-(setq inhibit-startup-message t)
+  (use-package emacs
+    ;; Built-in package configuration; do not download via straight.el.
+    :straight nil                    
+    ;; Set custom variables to configure Emacs behavior.
+    :custom          
+    ;; --- Startup & Files ---
 
-;; Only disable these elements if Emacs is running as a graphical application
-  (display-graphic-p)
-  (scroll-bar-mode -1)        ; Disable visible scrollbar
-  (tool-bar-mode -1)          ; Disable the toolbar
-  (tooltip-mode -1)           ; Disable tooltips
-  (set-fringe-mode 10)        ; Give some breathing room left/right
+    ;; Disable the startup splash screen message when Emacs launches.
+    (inhibit-startup-message t)                    
+    ;; Disable automatic saving of buffers.
+    (auto-save-default nil)                       
+    ;; Prevent the creation of lock files (.#filename) when editing.
+    (create-lockfiles nil)
+    ;; Disable creation of backup files (filename~).
+    (make-backup-files nil)
+    ;; Move deleted files to the system trash instead of permanently deleting them.
+    (delete-by-moving-to-trash t)
+    ;; Resolve symlinks when opening files to visit the real file path.
+    (find-file-visit-truename t)                    
+    ;; Automatically follow version-controlled symlinks without prompting.
+    (vc-follow-symlinks t)
 
-(menu-bar-mode -1)              ; Hides the top menu bar
-(setq visible-bell nil)         ; Flashes the screen instead of an audible beep
+    ;; --- UI & Layout ---
+
+    ;; Display the current column number in the mode line.
+    (column-number-mode t) 
+    ;; Use relative line numbering in buffers with line numbers enabled.
+    (display-line-numbers-type 'relative)
+    ;; Disable word wrapping and truncate long lines horizontally
+    (truncate-lines t)
+    ;; Silence the audible bell entirely.
+    (ring-bell-function 'ignore)                
+    ;; Disable the visible flash bell as well.
+    (visible-bell nil)
+    ;; Disable GUI dialog boxes in favor of minibuffer prompts.
+    (use-dialog-box nil)  
+    ;; Use short answers in prompts for quicker responses (y/n instead of yes/no).
+    (use-short-answers t)
+    ;; Prevent automatic side-by-side window splitting unless window is very wide.
+    (split-width-threshold 300)                    
+    ;; Force buffer switching commands to respect user-defined display actions.
+    (switch-to-buffer-obey-display-actions t)
+    ;; Keep cursor centered when scrolling near screen edges instead of recentering jumping.
+    (scroll-conservatively 20) 
+    ;; Accelerate scrolling by postponing font-lock rendering during fast movement.
+    (fast-but-imprecise-scrolling t)
+
+    ;; --- Editing & Completion ---
+
+    ;; Use spaces instead of tab characters for indentation.
+    (indent-tabs-mode nil) 
+    ;; Set the visual width of a tab character to 4 spaces.
+    (tab-width 4)                                   
+   ;; Indent the line first; if already indented, trigger completion.
+    (tab-always-indent 'complete)                  
+    ;; Enable replacing active region text with newly typed text.
+    (delete-selection-mode 1)                      
+    ;; Allow opening a new minibuffer command while already inside one.
+    (enable-recursive-minibuffers t)          
+    ;; Hide irrelevant commands from M-x completion based on current mode.
+    (read-extended-command-predicate
+     #'command-completion-default-include-p)
+     ;; Limit minibuffer and command history length to 25 items.
+    (history-length 25)                              
+    ;; Enable mouse right-click context menus.
+    (context-menu-mode t)                     
+
+    ;; --- System & Safety ---
+
+    ;; Prevent unsafe execution of arbitrary Lisp code in file-local variables.
+    (enable-local-eval nil)                         
+    ;; Expand search results for apropos commands to include more details.
+    (apropos-do-all t) 
+    ;; Ignore low-priority warnings and only display actual errors.
+    (warning-minimum-level :error)                  
+    ;; Enable maximum syntax highlighting precision for Tree-sitter modes.
+    (treesit-font-lock-level 4) 
+    ;; Set the default dictionary for spell-checking commands.
+    (ispell-dictionary "en_US")                     
+
+    ;; --- Undo Limits ---
+    
+    ;; Increase soft undo memory limit (~2MB) before garbage collection.
+    (undo-limit (* 13 160000))                       
+    ;; Increase hard undo memory limit (~3MB) to prevent losing history.
+    (undo-strong-limit (* 13 240000))               
+
+    (undo-outer-limit (* 13 24000000))           
+
+    ;; Configure hooks to trigger features in specific buffer modes.
+    :hook                                           
+    ;; Automatically enable line numbers in all programming modes.
+    (prog-mode . display-line-numbers-mode)          
+
+   
+    :init                                           
+    ;; Disable window clutter
+
+    ;; Hide the top menu bar for a cleaner interface.
+    (menu-bar-mode -1) 
+     ;; Hide the icon tool bar if running in GUI mode.
+    (when (fboundp 'tool-bar-mode)
+      (tool-bar-mode -1))  
+
+     ;; Hide graphical scroll bars if active.
+    (when (fboundp 'scroll-bar-mode)
+      (scroll-bar-mode -1)) 
+
+    ;; Add 10-pixel padding to the left and right window borders.
+    (set-fringe-mode 10)
+
+    ;; Enable core modes
+    ;; Automatically reload buffers when files change on disk.
+    (global-auto-revert-mode 1)
+    ;; Track recently opened files for fast file switching.
+    (recentf-mode 1)
+    ;; Save minibuffer command history across Emacs restarts.
+    (savehist-mode 1)
+    ;; Save point location in files to restore cursor position upon reopen.
+    (save-place-mode 1)
+
+    ;; Enable undo/redo for window configurations (using C-c <left> / C-c <right>).
+    (winner-mode 1)                                   
+    ;; Enable mouse interaction when running Emacs inside a terminal.
+    (xterm-mouse-mode 1)                              
+    ;; Dim unusable parts of file paths in minibuffer promptsia.
+    (file-name-shadow-mode 1)  
+
+    ;; Code to execute AFTER the package/module is loaded.
+    :config                                           
+    ;; Custom switch buffer behavior
+    (defun skip-these-buffers (_window buffer _bury-or-kill)
+      "Filter out special/asterisk buffers (e.g. *Messages*) during buffer switching."
+      (string-match "\\*[^*]+\\*" (buffer-name buffer)))
+     ;; Ignore star-named buffers when navigating previous/next buffers.
+    (setq switch-to-prev-buffer-skip 'skip-these-buffers)
+
+    ;; Enforce UTF-8 encoding across all file operations.
+    (modify-coding-system-alist 'file "" 'utf-8)  
+
+   
+  ;; Save manual customizations to a separate file instead of cluttering `init.el'.
+  ;; You can M-x customize, M-x customize-group, or M-x customize-themes, etc.
+  ;; The saves you do manually using the Emacs interface would overwrite this file.
+  ;; The following makes sure those customizations are in a separate file.
+   
+  ;; Specify the custom file path.
+  (setq custom-file (locate-user-emacs-file "custom-vars.el")) 
+  ;; Load the custom file quietly, ignoring errors.
+  (load custom-file 'noerror 'nomessage)
+
+  ;; Makes Emacs vertical divisor the symbol │ instead of |. for the terminal
+  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+  )
+
 #+end_src
 
-** Fonts
+**  Windows Management
+#+begin_src emacs-lisp
+(use-package window
+  :straight nil  
+  :custom
+  (display-buffer-alist
+   '(
+     ;; Catch help, logs, warnings, and messages; pin to bottom side-window (25% height)
+     ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . 0))
+
+     ;; Catch diagnostics, completions, and xref results; pin to bottom side-window next to help
+     ("\\*\\(Flycheck.*\\|Flymake.*\\|xref\\|Completions\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . 1))
+     )))
+#+end_src
+
+* Fonts
 
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
@@ -113,11 +243,9 @@ generated one.
                     :weight 'medium)
 #+end_src
 
-** Line numbers, which-key,  escape
+* Line numbers, which-key,  escape
 
 #+begin_src emacs-lisp
-(global-display-line-numbers-mode t)
-(column-number-mode t)
 
 (which-key-mode 1)
 
@@ -266,13 +394,6 @@ completion.
   :init
   (savehist-mode))
 
-(use-package emacs
-  :custom
-  (context-menu-mode t)
-  (enable-recursive-minibuffers t)
-  (read-extended-command-predicate #'command-completion-default-include-p)
-  (minibuffer-prompt-properties
-   '(read-only t cursor-intangible t face minibuffer-prompt)))
 #+end_src
 
 ** Consult
@@ -352,7 +473,7 @@ completion.
   :after vertico
   :config
   (nerd-icons-completion-mode))
-#+end_Src
+#+end_src
 
 * Editing helpers
 
@@ -405,6 +526,20 @@ tools (Embark, Helpful).
   :straight nil                          
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
+  :custom
+     ;; Display files in a human-readable format and group directories first.
+   (dired-listing-switches "-lah --group-directories-first")  
+    ;; Enable "do what I mean" for target directories.
+   (dired-dwim-target t)                                    
+   (dired-guess-shell-alist-user
+    ;; Open image files with `feh' or the default viewer.
+   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
+   ;; Open audio and video files with `mpv'.
+   ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
+   ;; Default opening command for other files.
+   (".*" "open" "xdg-open"))) 
+  ;; Close the previous buffer when opening a new `dired' instance.
+  (dired-kill-when-opening-new-dired-buffer t)              
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-up-directory
@@ -519,17 +654,17 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
 ***  Eglot 
 
 #+begin_src emacs-lisp
-(defvar cl/lsp--read-process-output-max nil)
-(defvar cl/lsp--gcmh-high-cons-threshold nil)
+  (defvar cl/lsp--read-process-output-max nil)
+  (defvar cl/lsp--gcmh-high-cons-threshold nil)
 
-(defun cl/lsp-optimize ()
-  "Boost IPC buffer and GC threshold for eglot."
-  (setq cl/lsp--read-process-output-max (default-value 'read-process-output-max)
-        read-process-output-max (* 1024 1024))  ; 1 MB
-  (when (boundp 'gcmh-high-cons-threshold)
-    (setq cl/lsp--gcmh-high-cons-threshold (default-value 'gcmh-high-cons-threshold)
-          gcmh-high-cons-threshold (* 2 (default-value 'gcmh-high-cons-threshold))
-          gcmh-low-cons-threshold (* 2 (default-value 'gcmh-low-cons-threshold)))))
+  (defun cl/lsp-optimize ()
+    "Boost IPC buffer and GC threshold for eglot."
+    (setq cl/lsp--read-process-output-max (default-value 'read-process-output-max)
+          read-process-output-max (* 1024 1024))  ; 1 MB
+    (when (boundp 'gcmh-high-cons-threshold)
+      (setq cl/lsp--gcmh-high-cons-threshold (default-value 'gcmh-high-cons-threshold)
+            gcmh-high-cons-threshold (* 2 (default-value 'gcmh-high-cons-threshold))
+            gcmh-low-cons-threshold (* 2 (default-value 'gcmh-low-cons-threshold)))))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -547,6 +682,12 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
     (eglot-sync-connect nil)
     (eglot-connect-timeout 30)
     (eglot-auto-display-help-buffer nil)  ; don't steal focus
+    (eglot-report-progress nil)
+    (eglot-extend-to-xref t)
+    (jsonrpc-event-hook nil)
+    (eglot-events-buffer-config '(:size 0 :format short))
+    (eglot-send-changes-idle-time 0.5)   
+
     :hook (eglot-managed-mode . cl/lsp-optimize)
     :config
     ;; Suppress "Server tried to register unsupported capability
@@ -594,18 +735,6 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
       "fa"  '(apheleia-format-buffer :which-key "format buffer")
       "ls" '(eglot-reconnect :which-key "restart server")
       "lS" '(eglot-shutdown :which-key "stop server")))
-#+end_src
-
-**** Eldoc
-
-#+begin_src emacs-lisp
-(use-package eldoc
-  :ensure nil
-  :custom
-  (eldoc-idle-delay 0.2)
-  (eldoc-echo-area-use-multiline-p 3)
-  :config
-  (global-eldoc-mode 1))
 #+end_src
 
 ****  eldoc-box
@@ -685,18 +814,6 @@ Corfu provides a minimal, snappy popup completion UI.
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
 
-
-
-*** Xref
-
-#+begin_src emacs-lisp
-(use-package xref
-  :ensure nil
-  :custom
-  (xref-search-program 'ripgrep)
-  (xref-show-xrefs-function #'consult-xref)
-  (xref-show-definitions-function #'consult-xref))
-#+end_src
 
 **  Formatting and linters 
 #+begin_src emacs-lisp
