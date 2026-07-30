@@ -56,23 +56,12 @@
 
 (advice-add 'command-line-1 :around #'cl/early-init--respect-file-handlers)
 
-;;; Emacs server — start for emacsclient
-(load "server")
-(unless (server-running-p) (server-start))
 
 ;;; Startup benchmark
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "Emacs loaded in %.2fs (%d GCs)"
                      (float-time (time-subtract after-init-time
-                                                 cl/emacs-load-start-time))
+                                                cl/emacs-load-start-time))
                      gcs-done)))
 
-;;; UI — already handled by use-package/straight in init.el
-;;; (menu-bar, tool-bar, scroll-bar, fringe, fonts)
-
-;;; Local Variables:
-;;; byte-compile-warnings: (not obsolete free-vars)
-;;; End:
-
-;;; early-init.el ends here
