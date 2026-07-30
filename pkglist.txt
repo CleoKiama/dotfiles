@@ -5,6 +5,7 @@ aspell
 aspell-en
 atuin
 awww
+azure-cli
 base
 base-devel
 bat
@@ -27,6 +28,7 @@ emacs-wayland
 eza
 fastfetch
 fd
+feh
 fish
 flatpak
 flatseal
