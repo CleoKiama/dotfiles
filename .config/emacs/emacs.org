@@ -290,76 +290,159 @@ generated one.
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 
-* Modeline and Theming
-
+* Globals 
+Mostly reusable functions throughout the config
 #+begin_src emacs-lisp
-(use-package doom-themes
-  :custom
-  (doom-themes-enable-bold t)
-  (doom-themes-enable-italic t)
-  (doom-themes-treemacs-theme "doom-atom")
-  :config
-  (load-theme 'doom-one t)
- ;; (doom-themes-neotree-config)
- ;; (doom-themes-treemacs-config)
-  (doom-themes-org-config))
+;; Define a global customizable variable `cl/use-nerd-fonts' to control the use of
+;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
+;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
+;; flexibility in appearance settings. By setting it to `t', we enable Nerd Fonts
+;; symbols; setting it to `nil' would disable them.
+(defcustom cl/use-nerd-fonts t
+  "Configuration for using Nerd Fonts Symbols."
+  :type 'boolean
+  :group 'appearance)
 
-(use-package doom-modeline
-  :init (doom-modeline-mode 1))
+ (defvar cl/ignored-directories
+    '(;; JavaScript/TypeScript
+      "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
+      ;; Rust
+      "target"
+      ;; Python
+      "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
 #+end_src
 
 * Evil Mode
 
 #+begin_src emacs-lisp
 
-  ;; may the motions be with you
-  (use-package evil
-    :init
-    ;; Integrate `evil' with other Emacs features (optional as it's true by default).
-    (setq evil-want-integration t)      ;; Disable default keybinding to set custom ones.
-    (setq evil-want-keybinding nil)     ;; Disable default keybinding to set custom ones.
-    (setq evil-want-C-u-scroll t)       ;; Makes C-u scroll
-    (setq evil-want-C-u-delete t)       ;; Makes C-u delete on insert mode
-    (setq evil-want-C-i-jump nil)
+    ;; may the motions be with you
+    (use-package evil
+      :defer t
+      :init
+      ;; Integrate `evil' with other Emacs features (optional as it's true by default).
+      (setq evil-want-integration t)      ;; Disable default keybinding to set custom ones.
+      (setq evil-want-keybinding nil)     ;; Disable default keybinding to set custom ones.
+      (setq evil-want-C-u-scroll t)       ;; Makes C-u scroll
+      (setq evil-want-C-u-delete t)       ;; Makes C-u delete on insert mode
+      (setq evil-want-C-i-jump nil)
+      :hook 
+      (after-init . evil-mode)
+      :config
+      (evil-set-undo-system 'undo-tree)   ;; Uses the undo-tree package as the default undo system
+      (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+      (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+      (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+      (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+      (evil-set-initial-state 'messages-buffer-mode 'normal)
+      (evil-set-initial-state 'dashboard-mode 'normal)
+
+       ;; global binds
+
+       ;; Go to next Flymake error
+       (evil-define-key 'normal 'global (kbd "]d") 'flymake-goto-next-error) 
+       ;; Go to previous Flymake error
+       (evil-define-key 'normal 'global (kbd "[d") 'flymake-goto-prev-error) 
+
+       ;; Diff-HL navigation for version control
+       (evil-define-key 'normal 'global (kbd "]c") 'diff-hl-next-hunk)       ;; Next diff hunk
+       (evil-define-key 'normal 'global (kbd "[c") 'diff-hl-previous-hunk)   ;; Previous diff hunk
+
+       ;; kill ring 
+       (evil-define-key 'normal 'global (kbd "P") 'consult-yank-from-kill-ring)
+
+       ;; Tab navigation
+       (evil-define-key 'normal 'global (kbd "]t") 'tab-next)        ;; Go to next tab
+       (evil-define-key 'normal 'global (kbd "[t") 'tab-previous)    ;; Go to previous tab
+
+       ;; LSP commands keybindings
+       (evil-define-key 'normal lsp-mode-map
+       ;; (kbd "gd") 'lsp-find-definition                ;; evil-collection already provides gd
+       (kbd "gr") 'lsp-find-references                   ;; Finds LSP references
+       (kbd "gI") 'lsp-find-implementation               ;; Find implementation
+        )
+
+      (defun cl/lsp-describe-and-jump ()
+      "Show hover documentation and jump to *lsp-help* buffer."
+      (interactive)
+      (lsp-describe-thing-at-point)
+      (let ((help-buffer "*lsp-help*"))
+        (when (get-buffer help-buffer)
+          (switch-to-buffer-other-window help-buffer))))
+
+      ;; Emacs 31 finaly brings us support for 'floating windows' (a.k.a. "child frames")
+      ;; to terminal Emacs. If you're still using 30, docs will be shown in a buffer at the
+      ;; inferior part of your frame.
+      (evil-define-key 'normal 'global (kbd "K")
+      (if (>= emacs-major-version 31)
+          #'eldoc-box-help-at-point
+          #'cl/lsp-describe-and-jump)) 
+
+
+     ;; Commenting functionality for single and multiple lines
+      (evil-define-key 'normal 'global (kbd "gcc")
+       (lambda ()
+           (interactive)
+              (if (not (use-region-p))
+                   (comment-or-uncomment-region (line-beginning-position) (line-end-position)))))
+
+       (evil-define-key 'visual 'global (kbd "gc")
+                     (lambda ()
+                       (interactive)
+                       (if (use-region-p)
+                           (comment-or-uncomment-region (region-beginning) (region-end)))))
+
+      ;enable evil mode
+      (evil-mode 1)
+       
+       )
+
+      
+
+    (use-package evil-collection
+      :defer t
+      :hook
+      (evil-mode . evil-collection-init)
+      :config
+      (evil-collection-init)
+    )
+
+    (use-package evil-surround
+    :after evil-collection
+    :config
+    (global-evil-surround-mode 1))
+
+
+    
+  ;; UNDO TREE
+  ;; The `undo-tree' package provides an advanced and visual way to
+  ;; manage undo history. It allows you to navigate and visualize your
+  ;; undo history as a tree structure, making it easier to manage
+  ;; changes in your buffers.
+  (use-package undo-tree
+    :defer t
     :hook
-    (after-init . evil-mode)
+    (after-init . global-undo-tree-mode)
+    :init
+    (setq undo-tree-visualizer-timestamps t
+          undo-tree-visualizer-diff t
+          ;; Increase undo limits to avoid losing history due to Emacs' garbage collection.
+          ;; These values can be adjusted based on your needs.
+          ;; 10X bump of the undo limits to avoid issues with premature
+          ;; Emacs GC which truncates the undo history very aggressively.
+          undo-limit 800000                     ;; Limit for undo entries.
+          undo-strong-limit 12000000            ;; Strong limit for undo entries.
+          undo-outer-limit 120000000)           ;; Outer limit for undo entries.
     :config
-    (evil-set-undo-system 'undo-tree)   ;; Uses the undo-tree package as the default undo system
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+    ;; Set the directory where `undo-tree' will save its history files.
+    ;; This keeps undo history across sessions, stored in a cache directory.
+    (setq undo-tree-history-directory-alist
+      `(("." . ,(expand-file-name "undo" user-emacs-directory))))
 
-    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+    )
 
-    (evil-set-initial-state 'messages-buffer-mode 'normal)
-    (evil-set-initial-state 'dashboard-mode 'normal))
-
-   
-  (use-package evil-collection
-    :after evil
-    :config
-    (evil-collection-init))
-#+end_src
-
-* Hydras
-
-#+begin_src emacs-lisp
-(use-package hydra)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("j" text-scale-increase "in")
-  ("k" text-scale-decrease "out")
-  ("f" nil "finished" :exit t))
-
-(defhydra hydra-window-resize (:timeout 4)
-  "resize window"
-  ("h" shrink-window-horizontally "shrink-width")
-  ("j" enlarge-window "grow-height")
-  ("k" shrink-window "shrink-height")
-  ("l" enlarge-window-horizontally "grow-width")
-  ("f" nil "finished" :exit t))
 #+end_src
 
 * Keybindings (general.el leader)
@@ -371,6 +454,7 @@ separate leader per package.
 
 #+begin_src emacs-lisp
   (use-package general
+    :defer t
     :config
     (general-create-definer cl/leader-keys
       :states '(normal insert visual emacs)
@@ -378,7 +462,7 @@ separate leader per package.
       :prefix "SPC"
       :global-prefix "C-SPC")
 
-   ;; global keybinds on leader 
+     ;; global leader based keybinds 
     (cl/leader-keys
       "t"  '(:ignore t :which-key "toggles")
       "ts" '(hydra-text-scale/body :which-key "scale text")
@@ -417,39 +501,88 @@ separate leader per package.
       "gP" '(magit-push :which-key "push")
       "gb" '(vc-annotate :which-key "vc info for current buffer")
 
+      ;; project management
+      "p"  '(:ignore t :which-key "projects")
+      "pf" '(projectile-find-file :which-key "find file")
+      "ps" '(projectile-switch-project :which-key "switch project")
+      "pp" '(projectile-run-project :which-key "run project")
+      "pt" '(projectile-test-project :which-key "test project")
+      "pk" '(projectile-kill-buffers :which-key "project-kill-buffers")
+      "pd" '(projectile-dired :which-key "project-dired")
+
+      ;; kill ring
+      "P" '(consult-yank-from-kill-ring :which-key "yank from kill ring")
+
+      ;; Embark actions for contextual commands
+      "." '(embark-act :which-key "yank from kill ring")
+
+      ;; Undo tree visualization
+      "u" '(undo-tree-visualize :which-key "undo tree")
+
+      ;; lsp 
+      "rn" '(lsp-rename :which-key "lsp rename")
+      "ca" '(lsp-execute-code-action :which-key "lsp code action")
+      ;; "lf" '(lsp-format-buffer :which-key "lsp based format")
+
      )
-   ;; Go to next Flymake error
-   (evil-define-key 'normal 'global (kbd "] d") 'flymake-goto-next-error) 
-   ;; Go to previous Flymake error
-   (evil-define-key 'normal 'global (kbd "[ d") 'flymake-goto-prev-error) 
 
-   ;; Diff-HL navigation for version control
-   (evil-define-key 'normal 'global (kbd "] c") 'diff-hl-next-hunk) ;; Next diff hunk
-   (evil-define-key 'normal 'global (kbd "[ c") 'diff-hl-previous-hunk) ;; Previous diff hunk
+  )
+#+end_src
 
+* Modeline and Theming
+
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :custom
+    (doom-themes-enable-bold t)
+    (doom-themes-enable-italic t)
+    (doom-themes-treemacs-theme "doom-atom")
+    :config
+    (load-theme 'doom-one t)
+   ;; (doom-themes-neotree-config)
+   ;; (doom-themes-treemacs-config)
+    (doom-themes-org-config))
+
+  (use-package doom-modeline
+    :defer t
+    :init (doom-modeline-mode 1)
+    :custom
+  ;; Set the buffer file name style to just the buffer name (without path).
+  (doom-modeline-buffer-file-name-style 'buffer-name) 
+  ;; Enable project detection for displaying the project name.
+  (doom-modeline-project-detection 'project) 
+  ;; Show the buffer name in the mode line.
+  (doom-modeline-buffer-name t)                     
+   ;; Limit the version control system (VCS) branch name length to 25 characters.
+  (doom-modeline-vcs-max-length 25)                  
+    :config
+  ;; Check if nerd fonts are being used.
+  (if cl/use-nerd-fonts
+      (setq doom-modeline-icon t)       ;; Enable icons in the mode line if nerd fonts are used.
+         (setq doom-modeline-icon nil)) ;; Disable icons if nerd fonts are not being used.
+    :hook
+    (after-init . doom-modeline-mode)
     )
 #+end_src
 
-* Globals 
-Mostly reusable functions throughout the config
-#+begin_src emacs-lisp
-;; Define a global customizable variable `cl/use-nerd-fonts' to control the use of
-;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
-;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
-;; flexibility in appearance settings. By setting it to `t', we enable Nerd Fonts
-;; symbols; setting it to `nil' would disable them.
-(defcustom cl/use-nerd-fonts t
-  "Configuration for using Nerd Fonts Symbols."
-  :type 'boolean
-  :group 'appearance)
+* Hydras
 
- (defvar cl/ignored-directories
-    '(;; JavaScript/TypeScript
-      "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
-      ;; Rust
-      "target"
-      ;; Python
-      "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
+#+begin_src emacs-lisp
+(use-package hydra)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
+(defhydra hydra-window-resize (:timeout 4)
+  "resize window"
+  ("h" shrink-window-horizontally "shrink-width")
+  ("j" enlarge-window "grow-height")
+  ("k" shrink-window "shrink-height")
+  ("l" enlarge-window-horizontally "grow-width")
+  ("f" nil "finished" :exit t))
 #+end_src
 
 * Completion System
@@ -555,7 +688,7 @@ navigating buffers, files, and xrefs with ease.
   (completion-pcm-leading-wildcard t))
 #+end_src
 
-** Marginalia and nerd-icons
+** Marginalia 
 
  Marginalia enhances the completion experience in Emacs by adding additional context to the completion candidates.
  This includes helpful annotations such as documentation and other relevant information, making it easier to choose the right option.
@@ -569,14 +702,7 @@ navigating buffers, files, and xrefs with ease.
     :hook
      (after-init . marginalia-mode)
     )
-
-  (use-package nerd-icons)
-
-  (use-package nerd-icons-completion
-    :after vertico
-    :config
-    (nerd-icons-completion-mode))
-#+end_src
+ #+end_src
 
 
 ** Embark, wgrep, helpful
@@ -618,7 +744,6 @@ It extends the capabilities of completion frameworks by offering direct actions 
      ([remap describe-key]      . helpful-key)))
 #+end_src
 
-
 * Editing helpers
 
 Rainbow delimiters, paredit, and the "tell me what's under point"
@@ -626,37 +751,60 @@ tools (Embark, Helpful).
 
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
+  :defer t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package paredit
   :hook (emacs-lisp-mode . paredit-mode))
 #+end_src
 
+* Nerd icons 
+#+begin_src emacs-lisp
+  (use-package nerd-icons
+   :if cl/use-nerd-fonts     ;; Load the package only if the user has configured to use nerd fonts.
+   :defer t
+     )
+
+   (use-package nerd-icons-completion
+     ;; Load after `nerd-icons' and `marginalia' to ensure proper integration.
+     :after (:all nerd-icons marginalia)
+     :config
+     (nerd-icons-completion-mode))
+
+  (use-package nerd-icons-dired
+  :if cl/use-nerd-fonts     ;; Load the package only if the user has configured to use nerd fonts.
+  :defer t                  ;; Load the package only when needed to improve startup time.
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+#+end_src
 * File management
 **  Dired
 #+begin_src emacs-lisp
-(use-package dired
-  :straight nil                          
-  :commands (dired dired-jump)
-  :bind (("C-x C-j" . dired-jump))
-  :custom
-     ;; Display files in a human-readable format and group directories first.
-   (dired-listing-switches "-lah --group-directories-first")  
-    ;; Enable "do what I mean" for target directories.
-   (dired-dwim-target t)                                    
-   (dired-guess-shell-alist-user
-    ;; Open image files with `feh' or the default viewer.
-   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
-   ;; Open audio and video files with `mpv'.
-   ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
-   ;; Default opening command for other files.
-   (".*" "open" "xdg-open"))) 
-  ;; Close the previous buffer when opening a new `dired' instance.
-  (dired-kill-when-opening-new-dired-buffer t)              
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-up-directory
-    "l" 'dired-find-file))
+  (use-package dired
+    :straight nil                          
+    :commands (dired dired-jump)
+    :bind (("C-x C-j" . dired-jump))
+    :custom
+       ;; Display files in a human-readable format and group directories first.
+     (dired-listing-switches "-lah --group-directories-first")  
+      ;; Enable "do what I mean" for target directories.
+     (dired-dwim-target t)                                    
+     (dired-guess-shell-alist-user
+      ;; Open image files with `feh' or the default viewer.
+     '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
+     ;; Open audio and video files with `mpv'.
+     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
+     ;; Default opening command for other files.
+     (".*" "open" "xdg-open"))) 
+    ;; Close the previous buffer when opening a new `dired' instance.
+    (dired-kill-when-opening-new-dired-buffer t)              
+    :config
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "h" 'dired-up-directory
+      "l" 'dired-find-file)
+    )
+
 #+end_src
 
 * Development 
@@ -670,6 +818,16 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
   (exec-path-from-shell-initialize))
 #+end_src
 
+
+**   Dotenv 
+ A simple major mode to provide .env files with color highlighting
+
+#+begin_src emacs-lisp
+(use-package dotenv-mode
+  :defer t
+  :mode ("\\.env\\(\\.[^.]+\\)?\\'" . dotenv-mode))
+#+end_src
+
 ** Projects
 
 #+begin_src emacs-lisp
@@ -678,7 +836,8 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
     (projectile-indexing-method 'hybrid)       ;; hybrid: external tool + Elisp-level ignores
     (projectile-require-project-root 'prompt)   
     (projectile-project-search-path
-     '("/data/code/" ("/data/org/" . 1) "/media/DevDrive/thegoodco" "/media/DevDrive" "/home/cleo/dotfiles"))
+     '("/data/code/" ("/data/org/" . 1) "/media/DevDrive/thegoodco" "/media/DevDrive"  "/home/cleo/dotfiles"))
+
     (projectile-switch-project-action #'projectile-find-file)
     (projectile-auto-cleanup-known-projects t)
     (projectile-git-submodule-command nil)       ;; disable submodule scanning (perf)
@@ -716,17 +875,9 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
     ;; project.el integration
     (add-hook 'project-find-functions #'project-projectile)
 
-    ;; Leader keys
-    (cl/leader-keys
-      "p"  '(:ignore t :which-key "projects")
-      "pf" '(projectile-find-file :which-key "find file")
-      "ps" '(projectile-switch-project :which-key "switch project")
-      "pp" '(projectile-run-project :which-key "run project")
-      "pt" '(projectile-test-project :which-key "test project")
-      "pd" '(projectile-dired :which-key "project dired")))
-  
 
   (projectile-mode +1)
+  )
 #+end_src
 
 ** Treesitter 
@@ -901,16 +1052,7 @@ Provides inline helpful
 #+begin_src emacs-lisp
   (use-package eldoc-box
   :defer t
-  :config
-  (evil-define-key 'normal eglot-mode-map
-    (kbd "gd") 'xref-find-definitions
-    (kbd "gD") 'eglot-find-declaration
-    (kbd "gt") 'eglot-find-typeDefinition
-    (kbd "gi") 'eglot-find-implementation
-    (kbd "gr") 'xref-find-references
-    (kbd "K")  'eldoc-box-help-at-point
-    (kbd "]d") 'flycheck-next-error
-    (kbd "[d") 'flycheck-previous-error))
+  )
 #+end_src
 
 
@@ -1048,6 +1190,32 @@ It draws vertical lines (by default, a character of your choice) at each level o
   (global-set-key (kbd "M-;") 'harpoon-go-to-4))
 #+end_src
 
+
+***  Pulsar
+The `pulsar' package enhances the user experience in Emacs by providing ;; visual feedback through pulsating highlights.
+This feature is especially useful in programming modes, where it can help users easily track actions such as scrolling, error navigation, yanking, deleting, and  jumping to definitions.
+
+#+begin_src emacs-lisp
+(use-package pulsar
+  :defer t
+  :hook
+  (after-init . pulsar-global-mode)
+  :config
+  (setq pulsar-pulse t)
+  (setq pulsar-delay 0.025)
+  (setq pulsar-iterations 10)
+  (setq pulsar-face 'evil-ex-lazy-highlight)
+
+  (add-to-list 'pulsar-pulse-functions 'evil-scroll-down)
+  (add-to-list 'pulsar-pulse-functions 'flymake-goto-next-error)
+  (add-to-list 'pulsar-pulse-functions 'flymake-goto-prev-error)
+  (add-to-list 'pulsar-pulse-functions 'evil-yank)
+  (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
+  (add-to-list 'pulsar-pulse-functions 'evil-delete)
+  (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
+  (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
+  )
+#+end_src
 
 * Miscellaneous 
 
