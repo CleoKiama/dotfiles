@@ -35,3 +35,7 @@ tree-sitter/
 .cache/
 .local/
 projects
+mason/
+undo/
+places
+recentf
