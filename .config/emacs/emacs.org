@@ -764,6 +764,23 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
       "lS" '(eglot-shutdown :which-key "stop server")))
 #+end_src
 
+**** Eldoc  
+
+Provides inline helpful 
+
+  #+begin_src emacs-lisp
+(use-package eldoc
+  :straight nil                                ;; This is built-in, no need to fetch it.
+  :config
+  (setq eldoc-idle-delay 0)                  ;; Automatically fetch doc help
+  (setq eldoc-echo-area-use-multiline-p nil) ;; We use the "K" floating help instead
+                                             ;; set to t if you want docs on the echo area
+  (setq eldoc-echo-area-display-truncation-message nil)
+  :init
+  (global-eldoc-mode))
+  #+end_src
+
+  
 ****  eldoc-box
 
 #+begin_src emacs-lisp
@@ -843,6 +860,9 @@ Corfu provides a minimal, snappy popup completion UI.
 
 
 **  Formatting and linters 
+
+***  Aphelia
+
 #+begin_src emacs-lisp
 (use-package apheleia
   :commands (apheleia-format-buffer apheleia-mode)
@@ -850,31 +870,18 @@ Corfu provides a minimal, snappy popup completion UI.
   (apheleia-global-mode +1))
 #+end_src
 
+***  flycheck
+ Flymake is an on-the-fly syntax checking extension that provides real-time feedback about errors and warnings in your code as you write. This can greatly enhance your  coding experience by catching issues early.
+
 #+begin_src emacs-lisp
-(use-package flycheck
-  :commands (flycheck-next-error flycheck-previous-error
-             flycheck-list-errors flycheck-mode)
-  :init
-  (global-flycheck-mode +1)
-  :config
-  (cl/leader-keys
-    "en" '(flycheck-next-error :which-key "next error")
-    "ep" '(flycheck-previous-error :which-key "previous error")
-    "el" '(flycheck-list-errors :which-key "list errors")))
-
-(use-package flycheck-eglot
-  :after eglot
-  :config
-  ;; Don't auto-chain — we explicitly add oxlint below
-  (setq flycheck-eglot-exclusive t)
-  (global-flycheck-eglot-mode +1)
-
-  ;; Chain oxlint after Eglot diagnostics for JS/TS buffers
-  (defun cl/oxlint-after-eglot ()
-    (when (derived-mode-p 'typescript-mode 'typescript-ts-mode
-                          'tsx-ts-mode 'js-mode 'js-ts-mode)
-      (flycheck-add-next-checker 'eglot-check 'javascript-oxlint t)))
-  (add-hook 'flycheck-eglot-mode-hook #'cl/oxlint-after-eglot))
+(use-package flymake
+  :straight nil          ;; This is built-in, no need to fetch it.
+  :defer t
+  :hook (prog-mode . flymake-mode)
+  :custom
+  (flymake-margin-indicators-string
+   '((error "!»" compilation-error) (warning "»" compilation-warning)
+     (note "»" compilation-info))))
 #+end_src
 
 ** QOL 
@@ -898,10 +905,11 @@ Corfu provides a minimal, snappy popup completion UI.
 
 
 * Miscellaneous 
+
 ** Wakatime
 #+BEGIN_SRC emacs-lisp
 (use-package wakatime-mode
-  :config
+ :config
   (global-wakatime-mode))
 #+END_SRC
 
@@ -919,6 +927,7 @@ Corfu provides a minimal, snappy popup completion UI.
 
   (use-package org
     :straight (:branch "bugfix") ;; make sure this matches the one in init.el
+    :defer t 
     :hook (org-mode . cleo/org-mode-setup)
     :config
     (setq org-ellipsis " ▾")
