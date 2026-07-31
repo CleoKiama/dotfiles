@@ -398,15 +398,26 @@ separate leader per package.
     "ss" '(consult-line :which-key "search buffer")))
 #+end_src
 
-* Reused functions
+* Globals 
+Mostly reusable functions throughout the config
 #+begin_src emacs-lisp
-(defvar cl/ignored-directories
-  '(;; JavaScript/TypeScript
-    "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
-    ;; Rust
-    "target"
-    ;; Python
-    "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
+;; Define a global customizable variable `cl/use-nerd-fonts' to control the use of
+;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
+;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
+;; flexibility in appearance settings. By setting it to `t', we enable Nerd Fonts
+;; symbols; setting it to `nil' would disable them.
+(defcustom cl/use-nerd-fonts t
+  "Configuration for using Nerd Fonts Symbols."
+  :type 'boolean
+  :group 'appearance)
+
+ (defvar cl/ignored-directories
+    '(;; JavaScript/TypeScript
+      "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
+      ;; Rust
+      "target"
+      ;; Python
+      "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
 #+end_src
 
 * Completion System
@@ -858,35 +869,52 @@ Provides inline helpful
 Corfu provides a minimal, snappy popup completion UI.
 
 #+begin_src emacs-lisp
-(use-package corfu
-  :custom
-  (corfu-cycle t)                     ; cycle through candidates
-  (corfu-auto t)                      ; show completions automatically
-  (corfu-auto-prefix 1)               ; trigger after 1 char (snappy!)
-  (corfu-auto-delay 0.7)              ; no delay (snappy!)
-  (corfu-preview-current nil)         ; don't preview in buffer
-  (corfu-preselect-first t)           ; preselect first candidate
-  (corfu-on-exact-match nil)          ; don't auto-insert on exact match
-  (corfu-quit-no-match t)             ; quit if no match
-  :bind
-  (:map corfu-map
-        ("TAB" . corfu-next)
-        ([backtab] . corfu-previous)
-        ("RET" . corfu-insert)
-        ("M-SPC" . corfu-insert-separator)
-        ("M-h" . corfu-show-documentation)
-        ("M-l" . corfu-show-location))
-  :init
-  (global-corfu-mode))
+  (use-package corfu
+    :defer t
+    :custom
+    (corfu-cycle t)                     ; cycle through candidates
+    (corfu-auto t)                      ; show completions automatically
+    (corfu-auto-prefix 1)               ; trigger after 1 char (snappy!)
+    (corfu-auto-delay 0.7)              ; no delay (snappy!)
+    (corfu-preview-current nil)         ; don't preview in buffer
+    (corfu-preselect-first t)           ; preselect first candidate
+    (corfu-on-exact-match nil)          ; don't auto-insert on exact match
+    (corfu-quit-no-match t)             ; quit if no match
+    (corfu-min-width 50)                ; Minimum width of completion popup
+    (corfu-max-width 50)                ; Maximum width of completion popup
+    (corfu-popupinfo-delay 0.6)         ; Delay before showing documentation popup
+    :bind
+    (:map corfu-map
+          ("TAB" . corfu-next)
+          ([backtab] . corfu-previous)
+          ("RET" . corfu-insert)
+          ("M-SPC" . corfu-insert-separator)
+          ("M-h" . corfu-show-documentation)
+          ("M-l" . corfu-show-location))
+    :init
+    (global-corfu-mode)
+    (corfu-popupinfo-mode t)
+    :config
+     (if cl/use-nerd-fonts
+       (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+    )
 
-;; Popup documentation for Corfu (shows docs in child frame)
+;;; NERD-ICONS-CORFU
+;; Provides Nerd Icons to be used with CORFU.
+(use-package nerd-icons-corfu
+  :if cl/use-nerd-fonts
+  :straight t
+  :defer t
+  :after (:all corfu))
+  
+;; Popup documentation for Corfu for auto complete docs
 (use-package corfu-popupinfo
-  :straight nil                          ; part of corfu package
-  :after corfu
-  :custom
-  (corfu-popupinfo-delay '(0.25 . 0.1))  ; show docs after 250ms
-  :config
-  (corfu-popupinfo-mode 1))
+    :straight nil                          ; part of corfu package
+    :after corfu
+    :custom
+    (corfu-popupinfo-delay '(0.25 . 0.1))  ; show docs after 250ms
+    :config
+    (corfu-popupinfo-mode 1))
 #+end_src
 
 *** Cape 
