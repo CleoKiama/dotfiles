@@ -810,7 +810,6 @@ tools (Embark, Helpful).
 #+end_src
 
 * Development 
-
 ** * Environment
 Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell (Fish), so eglot can find binaries like =gopls= that only live in shell-managed PATH additions.
 
@@ -819,7 +818,6 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
   :config
   (exec-path-from-shell-initialize))
 #+end_src
-
 
 **   Dotenv 
  A simple major mode to provide .env files with color highlighting
@@ -1032,7 +1030,6 @@ Uses the project's local =node_modules/.bin= (eslint, tsserver, etc.) instead of
           js-ts-mode) . add-node-modules-path))
 #+end_src
 
-
 *** Eldoc  
 
 Provides inline helpful 
@@ -1057,7 +1054,6 @@ Provides inline helpful
   :defer t
   )
 #+end_src
-
 
 *** Corfu (Completion UI)
 
@@ -1133,6 +1129,32 @@ Corfu provides a minimal, snappy popup completion UI.
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
 
+*** Mason
+#+begin_src emacs-lisp
+  (use-package mason
+    :straight t
+    :commands (mason-log
+               mason-info
+               mason-doctor
+               mason-update
+               mason-install
+               mason-manager
+               mason-uninstall
+               mason-update-all
+               mason-update-registry)
+    :config
+    ;; can bind this to some key later
+      (defun cl/mason-install-servers ()
+    "Ensure all required LSP servers are installed via mason."
+           (interactive)
+             (require 'mason)
+                   (mason-setup
+                     (dolist (pkg '("tsgo" "rust-analyzer" "basedpyright" "gopls"))
+                       (unless (mason-installed-p pkg)
+                         (ignore-errors (mason-install pkg))))))
+)
+
+#+end_src
 
 **  Indent mode
 The `indent-guide' package provides visual indicators for indentation levels in programming modes, making it easier to see code structure at a glance.
