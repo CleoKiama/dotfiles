@@ -689,12 +689,24 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
 ** Treesitter 
 #+begin_src emacs-lisp
  (use-package treesit-auto
+  :after emacs
   :custom
   (treesit-auto-install 'prompt)
-  (treesit-auto-langs '(go rust typescript javascript tsx  json bash yaml dockerfile css html markdown toml python))  
+  (treesit-auto-langs '(go rust typescript javascript tsx json bash yaml dockerfile css html markdown toml python))  
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode)) 
+#+end_src
+
+** Markdown
+Markdown Mode provides support for editing Markdown files in Emacs, enabling features like syntax highlighting, previews, and more.
+It’s particularly useful for README files, as it can be set to use GitHub Flavored Markdown for enhanced compatibility.
+
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :defer t
+  :mode ("README\\.md\\'" . gfm-mode)            ;; Use gfm-mode for README.md files.
+  :init (setq markdown-command "multimarkdown")) ;; Set the Markdown processing command.
 #+end_src
 
 ** Magit
