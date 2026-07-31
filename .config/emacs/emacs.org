@@ -751,6 +751,7 @@ It’s particularly useful for README files, as it can be set to use GitHub Flav
 ***  Lsp mode 
 
 #+begin_src emacs-lisp
+  ;;TODO see if this are require after full setp since mostly used with eglot
   (defvar cl/lsp--read-process-output-max nil)
   (defvar cl/lsp--gcmh-high-cons-threshold nil)
 
@@ -764,7 +765,6 @@ It’s particularly useful for README files, as it can be set to use GitHub Flav
             gcmh-low-cons-threshold (* 2 (default-value 'gcmh-low-cons-threshold)))))
 #+end_src
 
-LSP
 Emacs comes with an integrated LSP client called `eglot', which offers basic LSP functionality.
 However, `eglot' has limitations, such as not supporting multiple language servers simultaneously within the same buffer (e.g., handling both TypeScript, Tailwind and ESLint
 LSPs together in a React project). For this reason, the more mature and capable `lsp-mode' is included as a third-party package, providing advanced IDE-like features and better support for multiple language servers and configurations.
@@ -773,21 +773,18 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
   https://emacs-lsp.github.io/lsp-mode/
 
 #+begin_src emacs-lisp
-   (use-package lsp-mode
-  :ensure t
-  :straight t
+  (use-package lsp-mode
   :defer t
   :hook (;; Replace XXX-mode with concrete major mode (e.g. python-mode)
          (lsp-mode . lsp-enable-which-key-integration)  ;; Integrate with Which Key
-         ((js-mode                                      ;; Enable LSP for JavaScript
+         ((
            tsx-ts-mode                                  ;; Enable LSP for TSX
            typescript-ts-base-mode                      ;; Enable LSP for TypeScript
-           css-mode                                     ;; Enable LSP for CSS
+           css-ts-mode                                     ;; Enable LSP for CSS
            go-ts-mode                                   ;; Enable LSP for Go
            js-ts-mode                                   ;; Enable LSP for JavaScript (TS mode)
            prisma-mode                                  ;; Enable LSP for Prisma
            python-base-mode                             ;; Enable LSP for Python
-           ruby-base-mode                               ;; Enable LSP for Ruby
            rust-ts-mode                                 ;; Enable LSP for Rust
            web-mode) . lsp-deferred))                   ;; Enable LSP for Web (HTML)
   :commands lsp
@@ -837,7 +834,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
 
 #+begin_src emacs-lisp
 (use-package lsp-tailwindcss
-  :defer t
+  :after lsp-mode
   :config
   ;; Associate ERB files with HTML.
   (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html"))
@@ -846,8 +843,18 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
 
 #+end_src
 
+Uses the project's local =node_modules/.bin= (eslint, tsserver, etc.) instead of whatever's installed globally. Different projects often pin different tool versions, so this keeps Emacs using the right one per project. Hooked into TS/TSX/JS modes below — loads lazily on first file visit.
 
-**** Eldoc  
+#+begin_src emacs-lisp
+(use-package add-node-modules-path
+  :hook ((typescript-ts-mode
+          tsx-ts-mode
+          js-mode
+          js-ts-mode) . add-node-modules-path))
+#+end_src
+
+
+*** Eldoc  
 
 Provides inline helpful 
 
