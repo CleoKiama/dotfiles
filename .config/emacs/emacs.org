@@ -311,40 +311,35 @@ generated one.
 * Evil Mode
 
 #+begin_src emacs-lisp
-(defun cl/evil-hook ()
-  (dolist (mode '(custom-mode
-                  eshell-mode
-                  git-rebase-mode
-                  erc-mode
-                  circe-server-mode
-                  circe-chat-mode
-                  circe-query-mode
-                  sauron-mode
-                  term-mode))
-    (add-to-list 'evil-emacs-state-modes mode)))
 
-;; may the motions be with you
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  ;; may the motions be with you
+  (use-package evil
+    :init
+    ;; Integrate `evil' with other Emacs features (optional as it's true by default).
+    (setq evil-want-integration t)      ;; Disable default keybinding to set custom ones.
+    (setq evil-want-keybinding nil)     ;; Disable default keybinding to set custom ones.
+    (setq evil-want-C-u-scroll t)       ;; Makes C-u scroll
+    (setq evil-want-C-u-delete t)       ;; Makes C-u delete on insert mode
+    (setq evil-want-C-i-jump nil)
+    :hook
+    (after-init . evil-mode)
+    :config
+    (evil-set-undo-system 'undo-tree)   ;; Uses the undo-tree package as the default undo system
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
 
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
+   
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
 #+end_src
 
 * Hydras
@@ -375,27 +370,64 @@ adds its own entries into ~cl/leader-keys~ rather than defining a
 separate leader per package.
 
 #+begin_src emacs-lisp
-(use-package general
-  :config
-  (general-create-definer cl/leader-keys
-    :states '(normal insert visual emacs)
-    :keymaps 'override
-    :prefix "SPC"
-    :global-prefix "C-SPC")
+  (use-package general
+    :config
+    (general-create-definer cl/leader-keys
+      :states '(normal insert visual emacs)
+      :keymaps 'override
+      :prefix "SPC"
+      :global-prefix "C-SPC")
 
-  (cl/leader-keys
-    "t"  '(:ignore t :which-key "toggles")
-    "ts" '(hydra-text-scale/body :which-key "scale text")
+   ;; global keybinds on leader 
+    (cl/leader-keys
+      "t"  '(:ignore t :which-key "toggles")
+      "ts" '(hydra-text-scale/body :which-key "scale text")
 
-    "w"  '(:ignore t :which-key "windows")
-    "wr" '(hydra-window-resize/body :which-key "resize window")
+      "w"  '(:ignore t :which-key "windows")
+      "wr" '(hydra-window-resize/body :which-key "resize window")
 
-    "b"  '(:ignore t :which-key "buffers")
-    "bb" '(consult-buffer :which-key "switch buffer")
-    "bk" '(kill-current-buffer :which-key "kill buffer")
+      "b"  '(:ignore t :which-key "buffers")
+      "bb" '(consult-buffer :which-key "switch buffer")
+      "bk" '(kill-current-buffer :which-key "kill buffer")
+      "bi" '(ibuffer :which-key "ibuffer")
 
-    "s"  '(:ignore t :which-key "search")
-    "ss" '(consult-line :which-key "search buffer")))
+      "s"  '(:ignore t :which-key "search")
+      "ss" '(consult-line :which-key "search buffer")
+
+      ;; find staff
+      "ff" '(consult-fd :which-key "find files")
+      "fw" '(consult-ripgrep :which-key "live grep")
+      "fW" '(consult-git-grep :which-key "git grep")
+      "fh" '(consult-info :which-key "Search info manuals")
+      "/" '(consult-line :which-key "search line")
+
+      ;; Flymake navigation
+      "x"  '(:ignore t :which-key "toggles")
+      "xx" '(consult-flymake :which-key "search line") ;; gives something like trouble.nvim
+
+      ;; Dired commands for file management
+      "xd" '(dired :which-key "dired") 
+      "xj" '(dired-jump :which-key "dired jump") 
+      "xf" '(find-file :which-key "dired find-file") 
+
+      ;; Magit
+      "g"  '(:ignore t :which-key "git")
+      "gs" '(magit-status :which-key "status")
+      "gp" '(magit-pull :which-key "pull")
+      "gP" '(magit-push :which-key "push")
+      "gb" '(vc-annotate :which-key "vc info for current buffer")
+
+     )
+   ;; Go to next Flymake error
+   (evil-define-key 'normal 'global (kbd "] d") 'flymake-goto-next-error) 
+   ;; Go to previous Flymake error
+   (evil-define-key 'normal 'global (kbd "[ d") 'flymake-goto-prev-error) 
+
+   ;; Diff-HL navigation for version control
+   (evil-define-key 'normal 'global (kbd "] c") 'diff-hl-next-hunk) ;; Next diff hunk
+   (evil-define-key 'normal 'global (kbd "[ c") 'diff-hl-previous-hunk) ;; Previous diff hunk
+
+    )
 #+end_src
 
 * Globals 
@@ -641,60 +673,60 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
 ** Projects
 
 #+begin_src emacs-lisp
-(use-package projectile
-  :custom
-  (projectile-indexing-method 'hybrid)       ;; hybrid: external tool + Elisp-level ignores
-  (projectile-require-project-root 'prompt)   
-  (projectile-project-search-path
-   '("/data/code/" ("/data/org/" . 1) "/media/DevDrive/thegoodco" "/media/DevDrive" "/home/cleo/dotfiles"))
-  (projectile-switch-project-action #'projectile-find-file)
-  (projectile-auto-cleanup-known-projects t)
-  (projectile-git-submodule-command nil)       ;; disable submodule scanning (perf)
+  (use-package projectile
+    :custom
+    (projectile-indexing-method 'hybrid)       ;; hybrid: external tool + Elisp-level ignores
+    (projectile-require-project-root 'prompt)   
+    (projectile-project-search-path
+     '("/data/code/" ("/data/org/" . 1) "/media/DevDrive/thegoodco" "/media/DevDrive" "/home/cleo/dotfiles"))
+    (projectile-switch-project-action #'projectile-find-file)
+    (projectile-auto-cleanup-known-projects t)
+    (projectile-git-submodule-command nil)       ;; disable submodule scanning (perf)
 
-  :config
-  ;; 1. Add ignored directories to Projectile's native ignore list
-  (dolist (dir cl/ignored-directories)
-    (add-to-list 'projectile-globally-ignored-directories dir))
+    :config
+    ;; 1. Add ignored directories to Projectile's native ignore list
+    (dolist (dir cl/ignored-directories)
+      (add-to-list 'projectile-globally-ignored-directories dir))
 
-  ;; 2. Lambda-based generic command (Doom-inspired).
-  ;;    Re-evaluates at RUNTIME, so it always finds fd/rg regardless of
-  ;;    when exec-path-from-shell runs.  This is the key fix for the freeze.
-  (setq projectile-generic-command
-        (lambda (&rest _)
-          (cond
-           ((executable-find "fd")
-            (concat "fd . -0 --type f --hidden --follow --exclude .git "
-                    (mapconcat (lambda (dir) (concat "--exclude " dir))
-                               cl/ignored-directories " ")))
-           ((executable-find "rg")
-            (concat "rg --files -0 --hidden --follow --color=never --no-require-git "
-                    (mapconcat (lambda (dir) (format "-g '!%s'" dir))
-                               cl/ignored-directories " ")))
-           (t "find . -type f -print0"))))
+    ;; 2. Lambda-based generic command (Doom-inspired).
+    ;;    Re-evaluates at RUNTIME, so it always finds fd/rg regardless of
+    ;;    when exec-path-from-shell runs.  This is the key fix for the freeze.
+    (setq projectile-generic-command
+          (lambda (&rest _)
+            (cond
+             ((executable-find "fd")
+              (concat "fd . -0 --type f --hidden --follow --exclude .git "
+                      (mapconcat (lambda (dir) (concat "--exclude " dir))
+                                 cl/ignored-directories " ")))
+             ((executable-find "rg")
+              (concat "rg --files -0 --hidden --follow --color=never --no-require-git "
+                      (mapconcat (lambda (dir) (format "-g '!%s'" dir))
+                                 cl/ignored-directories " ")))
+             (t "find . -type f -print0"))))
 
-  ;; 3. Force projectile to ALWAYS use the generic command above,
-  ;;    never VCS-specific commands (git ls-files, hg, etc.).
-  (advice-add
-   #'projectile-get-ext-command :around
-   (lambda (fn &rest args)
-     (if (functionp projectile-generic-command)
-         (funcall projectile-generic-command (car args))
-       (apply fn args))))
+    ;; 3. Force projectile to ALWAYS use the generic command above,
+    ;;    never VCS-specific commands (git ls-files, hg, etc.).
+    (advice-add
+     #'projectile-get-ext-command :around
+     (lambda (fn &rest args)
+       (if (functionp projectile-generic-command)
+           (funcall projectile-generic-command (car args))
+         (apply fn args))))
 
-  ;; project.el integration
-  (add-hook 'project-find-functions #'project-projectile)
+    ;; project.el integration
+    (add-hook 'project-find-functions #'project-projectile)
 
-  ;; Leader keys
-  (cl/leader-keys
-    "p"  '(:ignore t :which-key "projects")
-    "pf" '(projectile-find-file :which-key "find file")
-    "pw" '(consult-ripgrep :which-key "ripgrep")
-    "ps" '(projectile-switch-project :which-key "switch project")
-    "pp" '(projectile-run-project :which-key "run project")
-    "pt" '(projectile-test-project :which-key "test project")
-    "pd" '(projectile-dired :which-key "project dired")))
+    ;; Leader keys
+    (cl/leader-keys
+      "p"  '(:ignore t :which-key "projects")
+      "pf" '(projectile-find-file :which-key "find file")
+      "ps" '(projectile-switch-project :which-key "switch project")
+      "pp" '(projectile-run-project :which-key "run project")
+      "pt" '(projectile-test-project :which-key "test project")
+      "pd" '(projectile-dired :which-key "project dired")))
+  
 
-(projectile-mode +1)
+  (projectile-mode +1)
 #+end_src
 
 ** Treesitter 
@@ -728,13 +760,6 @@ It’s particularly useful for README files, as it can be set to use GitHub Flav
   :commands (magit-status magit-branch-checkout magit-pull magit-push)
   :custom
     (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  :init
-    (cl/leader-keys
-      "g"  '(:ignore t :which-key "git")
-      "gs" '(magit-status :which-key "status")
-      "gb" '(magit-branch-checkout :which-key "checkout branch")
-      "gp" '(magit-pull :which-key "pull")
-      "gP" '(magit-push :which-key "push"))
   :config
   (if cl/use-nerd-fonts   ;; Check if nerd fonts are being used
   (setopt magit-format-file-function #'magit-format-file-nerd-icons)) ;; Turns on magit nerd-icons
