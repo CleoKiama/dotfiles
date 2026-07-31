@@ -412,7 +412,7 @@ separate leader per package.
 * Completion System
 
 Vertico + Consult + Orderless + Marginalia, minibuffer-first
-completion. 
+completion,embark and embark consult
 
 **  Vertico  
 
@@ -448,6 +448,11 @@ completion.
 
 ** Consult
 
+Consult provides powerful completion and narrowing commands for Emacs.
+It integrates well with other completion frameworks like Vertico, enabling
+features like previews and enhanced register management. It's useful for
+navigating buffers, files, and xrefs with ease.
+ 
 #+begin_src emacs-lisp
 
   (defun cl/get-project-root (&optional _may-prompt)
@@ -455,20 +460,9 @@ completion.
       (projectile-project-root)))
     
     (use-package consult
-      :bind (([remap Info-search] . consult-info)
-             ("C-x M-:" . consult-complex-command)
-             ("C-x b" . consult-buffer)
-             ("C-x C-f" . consult-fd)
-             ("M-g e" . consult-compile-error)
-             ("M-g r" . consult-grep-match)
-             ("M-g o" . consult-outline)
-             ("M-g m" . consult-mark)
-             ("M-s g" . consult-grep)
-             ("M-s G" . consult-git-grep)
-             ("M-s r" . consult-ripgrep)
-             :map minibuffer-local-map
-             ("C-r" . consult-history))
+      :defer t
       :init
+      ;; Enhance register preview with thin lines and no mode line.
       (advice-add #'register-preview :override #'consult-register-window)
       (setq register-preview-delay 0.5)
 
@@ -498,9 +492,19 @@ completion.
 #+end_src
 
 ** Orderless
+ Orderless enhances completion in Emacs by allowing flexible pattern matching.
+ It works seamlessly with Vertico, enabling you to use partial strings and regular expressions to find files, buffers, and commands more efficiently.
+ This combination provides a powerful and customizable completion experience.
 
 #+begin_src emacs-lisp
 (use-package orderless
+  :defer t
+  :after vertico
+  :init
+ (setq completion-styles '(orderless basic)  ;; Set the completion styles.
+        completion-category-defaults nil     ;; Clear default category settings.
+        ;; Customize file completion styles.
+        completion-category-overrides '((file (styles partial-completion)))) 
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles partial-completion))))
@@ -510,19 +514,65 @@ completion.
 
 ** Marginalia and nerd-icons
 
+ Marginalia enhances the completion experience in Emacs by adding additional context to the completion candidates.
+ This includes helpful annotations such as documentation and other relevant information, making it easier to choose the right option.
+
 #+begin_src emacs-lisp
-(use-package marginalia
-  :bind (:map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
-  :init
-  (marginalia-mode))
+  (use-package marginalia
+    :bind (:map minibuffer-local-map
+           ("M-A" . marginalia-cycle))
+    :init
+    (marginalia-mode)
+    :hook
+     (after-init . marginalia-mode)
+    )
 
-(use-package nerd-icons)
+  (use-package nerd-icons)
 
-(use-package nerd-icons-completion
-  :after vertico
-  :config
-  (nerd-icons-completion-mode))
+  (use-package nerd-icons-completion
+    :after vertico
+    :config
+    (nerd-icons-completion-mode))
+#+end_src
+
+
+** Embark, wgrep, helpful
+
+Embark provides a powerful contextual action menu for Emacs, allowing you to perform various operations on completion candidates and other items.
+It extends the capabilities of completion frameworks by offering direct actions on the candidates.
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)
+     ("M-;" . embark-dwim)
+     ("C-h B" . embark-bindings))
+    :defer t
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
+    :config
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  (use-package embark-consult
+  :hook
+    ;; Enable preview in Embark collect mode.
+    (embark-collect-mode . consult-preview-at-point-mode)
+   )
+
+  (use-package wgrep
+    :config
+    (setq wgrep-auto-save-buffer t)
+    (setq wgrep-change-readonly-file nil))
+
+  (use-package helpful
+    :bind
+    (([remap describe-function] . helpful-callable)
+     ([remap describe-command]  . helpful-command)
+     ([remap describe-variable] . helpful-variable)
+     ([remap describe-key]      . helpful-key)))
 #+end_src
 
 
@@ -537,37 +587,6 @@ tools (Embark, Helpful).
 
 (use-package paredit
   :hook (emacs-lisp-mode . paredit-mode))
-#+end_src
-
-** Embark, wgrep, helpful
-
-#+begin_src emacs-lisp
-(use-package embark
-  :bind
-  (("C-." . embark-act)
-   ("M-;" . embark-dwim)
-   ("C-h B" . embark-bindings))
-  :init
-  (setq prefix-help-command #'embark-prefix-help-command)
-  :config
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
-
-(use-package embark-consult)
-
-(use-package wgrep
-  :config
-  (setq wgrep-auto-save-buffer t)
-  (setq wgrep-change-readonly-file nil))
-
-(use-package helpful
-  :bind
-  (([remap describe-function] . helpful-callable)
-   ([remap describe-command]  . helpful-command)
-   ([remap describe-variable] . helpful-variable)
-   ([remap describe-key]      . helpful-key)))
 #+end_src
 
 * File management
