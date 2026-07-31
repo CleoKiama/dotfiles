@@ -224,6 +224,33 @@ generated one.
      )))
 #+end_src
 
+**  Isearch 
+ 
+#+begin_src emacs-lisp
+;; In this configuration, we're setting up isearch, Emacs's incremental search feature.
+;; Since we're utilizing Vim bindings, keep in mind that classic Vim search commands
+;; (like `/' and `?') are not bound in the same way. Instead, you'll need to use
+;; the standard Emacs shortcuts:
+;; - `C-s' to initiate a forward search
+;; - `C-r' to initiate a backward search
+;; The following settings enhance the isearch experience:
+(use-package isearch
+  ;; This is built-in, no need to fetch it.
+  :straight nil       
+  :config
+  ;; Enable lazy counting to show current match information.
+  (setq isearch-lazy-count t)
+  ;; Format for displaying current match count.
+  (setq lazy-count-prefix-format "(%s/%s) ")
+  ;; Disable suffix formatting for match count.
+  (setq lazy-count-suffix-format nil)       
+  ;; Allow searching across whitespace.
+  (setq search-whitespace-regexp ".*?")
+  ;; Bind C-s to forward isearch.
+  :bind (("C-s" . isearch-forward)
+         ("C-r" . isearch-backward)))  ;; Bind C-r to backward isearch.
+#+end_src
+
 * Fonts
 
 #+begin_src emacs-lisp
