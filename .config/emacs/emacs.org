@@ -272,15 +272,22 @@ generated one.
 
 * Line numbers, which-key,  escape
 
+ which-key is an Emacs package that displays available keybindings in a popup window whenever you partially type a key sequence. This is particularly useful for discovering commands and shortcuts, making it easier to learn Emacs and improve your workflow. It helps users remember key combinations and reduces the cognitive load of memorizing every command.
+
 #+begin_src emacs-lisp
+ ;; (which-key-mode 1)
+(use-package which-key
+  :straight nil     ;; This is built-in, no need to fetch it.
+  :defer t          ;; Defer loading Which-Key until after init.
+  :hook
+  (after-init . which-key-mode)) ;; Enable which-key mode after initialization.
+  
 
-(which-key-mode 1)
+  ;; Disable line numbers in Org mode
+  (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode 0)))
 
-;; Disable line numbers in Org mode
-(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode 0)))
-
-;; "make ESC quit prompts and other temporary windows"
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  ;; "make ESC quit prompts and other temporary windows"
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 
 * Modeline and Theming
@@ -407,19 +414,35 @@ separate leader per package.
 Vertico + Consult + Orderless + Marginalia, minibuffer-first
 completion. 
 
-#+begin_src emacs-lisp
-(use-package vertico
-  :custom
-  (vertico-scroll-margin 0)
-  (vertico-count 20)
-  (vertico-resize t)
-  (vertico-cycle t)
-  :init
-  (vertico-mode))
+**  Vertico  
 
-(use-package savehist
-  :init
-  (savehist-mode))
+#+begin_src emacs-lisp
+  (use-package vertico
+    :custom
+    (vertico-scroll-margin 0)
+    (vertico-count 10)        ;; Number of candidates to display in the completion list.
+    (vertico-resize nil)      ;; Disable resizing of the vertico minibuffer.
+    ;; Do not cycle through candidates when reaching the end of the list.
+    (vertico-cycle nil)
+    :hook 
+     (after-init . vertico-mode)           ;; Enable vertico after Emacs has initialized.
+    :config
+     ;; Customize the display of the current candidate in the completion list.
+     ;; This will prefix the current candidate with “» ” to make it stand out.
+     ;; Reference: https://github.com/minad/vertico/wiki#prefix-current-candidate-with-arrow
+     (advice-add #'vertico--format-candidate :around
+              (lambda (orig cand prefix suffix index _start)
+                (setq cand (funcall orig cand prefix suffix index _start))
+                (concat
+                 (if (= vertico--index index)
+                     (propertize "» " 'face '(:foreground "#80adf0" :weight bold))
+                   "  ")
+                 cand)))
+    )
+
+  (use-package savehist
+    :init
+    (savehist-mode))
 
 #+end_src
 
@@ -501,6 +524,7 @@ completion.
   :config
   (nerd-icons-completion-mode))
 #+end_src
+
 
 * Editing helpers
 
