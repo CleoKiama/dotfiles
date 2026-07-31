@@ -532,37 +532,39 @@ separate leader per package.
 * Modeline and Theming
 
 #+begin_src emacs-lisp
-  (use-package doom-themes
-    :custom
-    (doom-themes-enable-bold t)
-    (doom-themes-enable-italic t)
-    (doom-themes-treemacs-theme "doom-atom")
-    :config
-    (load-theme 'doom-one t)
-   ;; (doom-themes-neotree-config)
-   ;; (doom-themes-treemacs-config)
-    (doom-themes-org-config))
+  (use-package catppuccin-theme
+  :custom
+  (catppuccin-flavor 'mocha)
+   :config
+   ;; Load the Catppuccin theme without prompting for confirmation.
+   (load-theme 'catppuccin :no-confirm)
+   (custom-set-faces
+    `(diff-hl-change ((t (:background unspecified :foreground ,(catppuccin-get-color 'blue)))))
+     `(diff-hl-delete ((t (:background unspecified :foreground ,(catppuccin-get-color 'red)))))
+     `(diff-hl-insert ((t (:background unspecified :foreground ,(catppuccin-get-color 'green))))))
+   )
 
-  (use-package doom-modeline
-    :defer t
-    :init (doom-modeline-mode 1)
-    :custom
-  ;; Set the buffer file name style to just the buffer name (without path).
-  (doom-modeline-buffer-file-name-style 'buffer-name) 
-  ;; Enable project detection for displaying the project name.
-  (doom-modeline-project-detection 'project) 
-  ;; Show the buffer name in the mode line.
-  (doom-modeline-buffer-name t)                     
-   ;; Limit the version control system (VCS) branch name length to 25 characters.
-  (doom-modeline-vcs-max-length 25)                  
-    :config
-  ;; Check if nerd fonts are being used.
-  (if cl/use-nerd-fonts
-      (setq doom-modeline-icon t)       ;; Enable icons in the mode line if nerd fonts are used.
-         (setq doom-modeline-icon nil)) ;; Disable icons if nerd fonts are not being used.
-    :hook
-    (after-init . doom-modeline-mode)
-    )
+
+   (use-package doom-modeline
+     :defer t
+     :init (doom-modeline-mode 1)
+     :custom
+   ;; Set the buffer file name style to just the buffer name (without path).
+   (doom-modeline-buffer-file-name-style 'buffer-name) 
+   ;; Enable project detection for displaying the project name.
+   (doom-modeline-project-detection 'project) 
+   ;; Show the buffer name in the mode line.
+   (doom-modeline-buffer-name t)                     
+    ;; Limit the version control system (VCS) branch name length to 25 characters.
+   (doom-modeline-vcs-max-length 25)                  
+     :config
+   ;; Check if nerd fonts are being used.
+   (if cl/use-nerd-fonts
+       (setq doom-modeline-icon t)       ;; Enable icons in the mode line if nerd fonts are used.
+          (setq doom-modeline-icon nil)) ;; Disable icons if nerd fonts are not being used.
+     :hook
+     (after-init . doom-modeline-mode)
+     )
 #+end_src
 
 * Hydras
@@ -908,6 +910,7 @@ It’s particularly useful for README files, as it can be set to use GitHub Flav
 #+begin_src emacs-lisp
   (use-package magit  
   :straight nil
+ :defer t
   :commands (magit-status magit-branch-checkout magit-pull magit-push)
   :custom
     (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
@@ -978,33 +981,33 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
   (lsp-enable-links nil)                           ;; Disable links.
   (lsp-eldoc-enable-hover t)                       ;; Enable ElDoc hover.
   (lsp-enable-file-watchers nil)                   ;; Disable file watchers.
-  (lsp-enable-folding nil)                         ;; Disable folding.
-  (lsp-enable-imenu t)                             ;; Enable Imenu support.
-  (lsp-enable-indentation nil)                     ;; Disable indentation.
-  (lsp-enable-on-type-formatting nil)              ;; Disable on-type formatting.
-  (lsp-enable-suggest-server-download t)           ;; Enable server download suggestion.
-  (lsp-enable-symbol-highlighting t)               ;; Enable symbol highlighting.
-  (lsp-enable-text-document-color t)               ;; Enable text document color.
+  (lsp-enable-folding nil)                                              ;; Disable folding.
+  (lsp-enable-imenu t)                                                  ;; Enable Imenu support.
+  (lsp-enable-indentation nil)                                     ;; Disable indentation.
+  (lsp-enable-on-type-formatting nil)                        ;; Disable on-type formatting.
+  (lsp-enable-suggest-server-download t)          ;; Enable server download suggestion.
+  (lsp-enable-symbol-highlighting t)                    ;; Enable symbol highlighting.
+  (lsp-enable-text-document-color t)                    ;; Enable text document color.
   ;; Modeline settings
-  (lsp-modeline-code-actions-enable nil)           ;; Keep modeline clean.
-  (lsp-modeline-diagnostics-enable nil)            ;; Use `flymake' instead.
-  (lsp-modeline-workspace-status-enable t)         ;; Display "LSP" in the modeline when enabled.
-  (lsp-signature-doc-lines 1)                      ;; Limit echo area to one line.
-  (lsp-eldoc-render-all t)                         ;; Render all ElDoc messages.
+  (lsp-modeline-code-actions-enable nil)             ;; Keep modeline clean.
+  (lsp-modeline-diagnostics-enable nil)                ;; Use `flymake' instead.
+  (lsp-modeline-workspace-status-enable t)        ;; Display "LSP" in the modeline when enabled.
+  (lsp-signature-doc-lines 1)                                    ;; Limit echo area to one line.
+  (lsp-eldoc-render-all t)                                           ;; Render all ElDoc messages.
   ;; Completion settings
-  (lsp-completion-enable t)                        ;; Enable completion.
+  (lsp-completion-enable t)                                      ;; Enable completion.
   (lsp-completion-enable-additional-text-edit t)   ;; Enable additional text edits for completions.
-  (lsp-enable-snippet nil)                              ;; Disable snippets
-  (lsp-completion-show-kind t)                          ;; Show kind in completions.
+  (lsp-enable-snippet nil)                                           ;; Disable snippets
+  (lsp-completion-show-kind t)                                 ;; Show kind in completions.
   ;; Lens settings
-  (lsp-lens-enable t)                                   ;; Enable lens support.
+  (lsp-lens-enable t)                                                   ;; Enable lens support.
   ;; Headerline settings
-  (lsp-headerline-breadcrumb-enable-symbol-numbers t) ;; Enable symbol numbers in the headerline.
-  (lsp-headerline-arrow "▶")                           ;; Set arrow for headerline.
-  (lsp-headerline-breadcrumb-enable-diagnostics nil)    ;; Disable diagnostics in headerline.
-  (lsp-headerline-breadcrumb-icons-enable nil)          ;; Disable icons in breadcrumb.
+  (lsp-headerline-breadcrumb-enable-symbol-numbers t)         ;; Enable symbol numbers in the headerline.
+  (lsp-headerline-arrow "▶")                                                               ;; Set arrow for headerline.
+  (lsp-headerline-breadcrumb-enable-diagnostics nil)                 ;; Disable diagnostics in headerline.
+  (lsp-headerline-breadcrumb-icons-enable nil)                            ;; Disable icons in breadcrumb.
   ;; Semantic settings
-  (lsp-semantic-tokens-enable nil))                     ;; Disable semantic tokens.
+  (lsp-semantic-tokens-enable nil))                                                    ;; Disable semantic tokens.
 #+end_src
 
 
@@ -1080,9 +1083,7 @@ Corfu provides a minimal, snappy popup completion UI.
           ("TAB" . corfu-next)
           ([backtab] . corfu-previous)
           ("RET" . corfu-insert)
-          ("M-SPC" . corfu-insert-separator)
-          ("M-h" . corfu-show-documentation)
-          ("M-l" . corfu-show-location))
+          )
     :init
     (global-corfu-mode)
     (corfu-popupinfo-mode t)
@@ -1095,7 +1096,6 @@ Corfu provides a minimal, snappy popup completion UI.
 ;; Provides Nerd Icons to be used with CORFU.
 (use-package nerd-icons-corfu
   :if cl/use-nerd-fonts
-  :straight t
   :defer t
   :after (:all corfu))
   
