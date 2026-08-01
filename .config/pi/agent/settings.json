@@ -1,9 +1,9 @@
 {
-  "lastChangelogVersion": "0.80.6",
+  "lastChangelogVersion": "0.82.1",
   "theme": "dark",
   "defaultProvider": "opencode",
   "defaultModel": "deepseek-v4-flash-free",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "max",
   "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\"",
   "npmCommand": [
     "pnpm"
