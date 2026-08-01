@@ -33,7 +33,5 @@
 
 (straight-use-package 'use-package)
 
-;; (dolist (pkg '(xref eldoc flymake seq jsonrpc external-completion compat))
-  ;; (straight-use-package `(,pkg :type built-in)))
 
 (org-babel-load-file (expand-file-name "emacs.org" user-emacs-directory))
