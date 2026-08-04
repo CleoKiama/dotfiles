@@ -26,8 +26,8 @@
 
 (straight-use-package '(org :branch "bugfix"))
 
-(straight-use-package 'project)
-(require 'project)
+;; (straight-use-package 'project)
+;; (require 'project)
 
 (setq straight-use-package-by-default t)
 

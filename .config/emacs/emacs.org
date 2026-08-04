@@ -10,34 +10,36 @@ generated one.
 * Perfomance & System Defaults
 
 #+begin_src emacs-lisp
-;; Restore GC after startup (complements early-init.el maximization)
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold (* 32 1024 1024)
-                  gc-cons-percentage 0.6)))
+  ;; Restore GC after startup (complements early-init.el maximization)
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq gc-cons-threshold (* 32 1024 1024)
+                    gc-cons-percentage 0.6)))
+  ;;https://emacs-lsp.github.io/lsp-mode/page/performance/#increase-the-amount-of-data-which-emacs-reads-from-the-process
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+  
+  ;; Help — don't autoload for completion
+  (setq help-enable-completion-autoload nil)
 
-;; Help — don't autoload for completion
-(setq help-enable-completion-autoload nil)
 
+  ;; Process IO
+  (setq process-adaptive-read-buffering nil)
+  (setq ffap-machine-p-known 'reject)
 
-;; Process IO
-(setq process-adaptive-read-buffering nil)
-(setq ffap-machine-p-known 'reject)
+  ;; Search
+  (setq lazy-highlight-initial-delay 0)
 
-;; Search
-(setq lazy-highlight-initial-delay 0)
+  ;; Suppress noisy warnings
+  (setq ad-redefinition-action 'accept)
+  (setq warning-suppress-types '((defvaralias) (lexical-binding)))
+  (setq warning-inhibit-types '((files missing-lexbind-cookie)))
 
-;; Suppress noisy warnings
-(setq ad-redefinition-action 'accept)
-(setq warning-suppress-types '((defvaralias) (lexical-binding)))
-(setq warning-inhibit-types '((files missing-lexbind-cookie)))
+  ;; use-package macro optimizations
+  (setq use-package-expand-minimally t
+        use-package-verbose nil)
 
-;; use-package macro optimizations
-(setq use-package-expand-minimally t
-      use-package-verbose nil)
-
-;; Default input method 
-(setq default-input-method nil)
+  ;; Default input method 
+  (setq default-input-method nil)
 
 #+end_src
 
@@ -203,71 +205,76 @@ generated one.
 
 **  Windows Management
 #+begin_src emacs-lisp
-(use-package window
-  :straight nil  
-  :custom
-  (display-buffer-alist
-   '(
-     ;; Catch help, logs, warnings, and messages; pin to bottom side-window (25% height)
-     ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . 0.25)
-      (side . bottom)
-      (slot . 0))
+  (use-package window
+    :straight nil  
+    :custom
+    (display-buffer-alist
+     '(
+       ;; Catch help, logs, warnings, and messages; pin to bottom side-window (25% height)
+       ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
+        (display-buffer-in-side-window)
+        (window-height . 0.25)
+        (side . bottom)
+        (slot . 0))
 
-     ;; Catch diagnostics, completions, and xref results; pin to bottom side-window next to help
-     ("\\*\\(Flycheck.*\\|Flymake.*\\|xref\\|Completions\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . 0.25)
-      (side . bottom)
-      (slot . 1))
-     )))
+       ;; Catch diagnostics, completions, and xref results; pin to bottom side-window next to help
+       ("\\*\\(Flycheck.*\\|Flymake.*\\|xref\\|Completions\\)\\*"
+        (display-buffer-in-side-window)
+        (window-height . 0.25)
+        (side . bottom)
+        (slot . 1))
+       )))
 #+end_src
 
 **  Isearch 
  
 #+begin_src emacs-lisp
-;; In this configuration, we're setting up isearch, Emacs's incremental search feature.
-;; Since we're utilizing Vim bindings, keep in mind that classic Vim search commands
-;; (like `/' and `?') are not bound in the same way. Instead, you'll need to use
-;; the standard Emacs shortcuts:
-;; - `C-s' to initiate a forward search
-;; - `C-r' to initiate a backward search
-;; The following settings enhance the isearch experience:
-(use-package isearch
-  ;; This is built-in, no need to fetch it.
-  :straight nil       
-  :config
-  ;; Enable lazy counting to show current match information.
-  (setq isearch-lazy-count t)
-  ;; Format for displaying current match count.
-  (setq lazy-count-prefix-format "(%s/%s) ")
-  ;; Disable suffix formatting for match count.
-  (setq lazy-count-suffix-format nil)       
-  ;; Allow searching across whitespace.
-  (setq search-whitespace-regexp ".*?")
-  ;; Bind C-s to forward isearch.
-  :bind (("C-s" . isearch-forward)
-         ("C-r" . isearch-backward)))  ;; Bind C-r to backward isearch.
+  ;; In this configuration, we're setting up isearch, Emacs's incremental search feature.
+  ;; Since we're utilizing Vim bindings, keep in mind that classic Vim search commands
+  ;; (like `/' and `?') are not bound in the same way. Instead, you'll need to use
+  ;; the standard Emacs shortcuts:
+  ;; - `C-s' to initiate a forward search
+  ;; - `C-r' to initiate a backward search
+  ;; The following settings enhance the isearch experience:
+  (use-package isearch
+    ;; This is built-in, no need to fetch it.
+    :straight nil       
+    :config
+    ;; Enable lazy counting to show current match information.
+    (setq isearch-lazy-count t)
+    ;; Format for displaying current match count.
+    (setq lazy-count-prefix-format "(%s/%s) ")
+    ;; Disable suffix formatting for match count.
+    (setq lazy-count-suffix-format nil)       
+    ;; Allow searching across whitespace.
+    (setq search-whitespace-regexp ".*?")
+    ;; Bind C-s to forward isearch.
+    :bind (("C-s" . isearch-forward)
+           ("C-r" . isearch-backward)))  ;; Bind C-r to backward isearch.
 #+end_src
 
 * Fonts
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil
-                    :font "Hasklug Nerd Font Mono"
-                    :height 130
-                    :weight 'medium)
+  (defun cl/setup-fonts (&optional frame)
+    (when (display-graphic-p frame)
+      (set-face-attribute 'default frame
+                           :font "Hasklug Nerd Font Mono"
+                           :height 130
+                           :weight 'medium)
+      (set-face-attribute 'fixed-pitch frame
+                          :font "Hasklug Nerd Font Mono"
+                          :height 130
+                          :weight 'medium)
+      (set-face-attribute 'variable-pitch frame
+                          :font "Cantarell"
+                          :height 140
+                          :weight 'regular)))
 
-(set-face-attribute 'variable-pitch nil
-                    :font "Cantarell"
-                    :height 140
-                    :weight 'regular)
-
-(set-face-attribute 'fixed-pitch nil
-                    :font "Hasklug Nerd Font Mono"
-                    :height 130
-                    :weight 'medium)
+  (add-hook 'after-make-frame-functions #'cl/setup-fonts)
+  ;; also run once for the case where a graphical frame already exists
+  ;; (e.g. non-daemon startup)
+  (cl/setup-fonts)
 #+end_src
 
 * Line numbers, which-key,  escape
@@ -275,41 +282,41 @@ generated one.
  which-key is an Emacs package that displays available keybindings in a popup window whenever you partially type a key sequence. This is particularly useful for discovering commands and shortcuts, making it easier to learn Emacs and improve your workflow. It helps users remember key combinations and reduces the cognitive load of memorizing every command.
 
 #+begin_src emacs-lisp
- ;; (which-key-mode 1)
-(use-package which-key
-  :straight nil     ;; This is built-in, no need to fetch it.
-  :defer t          ;; Defer loading Which-Key until after init.
-  :hook
-  (after-init . which-key-mode)) ;; Enable which-key mode after initialization.
-  
+  ;; (which-key-mode 1)
+  (use-package which-key
+    :straight nil     ;; This is built-in, no need to fetch it.
+    :defer t          ;; Defer loading Which-Key until after init.
+    :hook
+    (after-init . which-key-mode)) ;; Enable which-key mode after initialization.
+    
 
-  ;; Disable line numbers in Org mode
-  (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode 0)))
+    ;; Disable line numbers in Org mode
+    (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode 0)))
 
-  ;; "make ESC quit prompts and other temporary windows"
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+    ;; "make ESC quit prompts and other temporary windows"
+    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 
 * Globals 
 Mostly reusable functions throughout the config
 #+begin_src emacs-lisp
-;; Define a global customizable variable `cl/use-nerd-fonts' to control the use of
-;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
-;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
-;; flexibility in appearance settings. By setting it to `t', we enable Nerd Fonts
-;; symbols; setting it to `nil' would disable them.
-(defcustom cl/use-nerd-fonts t
-  "Configuration for using Nerd Fonts Symbols."
-  :type 'boolean
-  :group 'appearance)
+  ;; Define a global customizable variable `cl/use-nerd-fonts' to control the use of
+  ;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
+  ;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
+  ;; flexibility in appearance settings. By setting it to `t', we enable Nerd Fonts
+  ;; symbols; setting it to `nil' would disable them.
+  (defcustom cl/use-nerd-fonts t
+    "Configuration for using Nerd Fonts Symbols."
+    :type 'boolean
+    :group 'appearance)
 
- (defvar cl/ignored-directories
-    '(;; JavaScript/TypeScript
-      "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
-      ;; Rust
-      "target"
-      ;; Python
-      "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
+   (defvar cl/ignored-directories
+      '(;; JavaScript/TypeScript
+        "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
+        ;; Rust
+        "target"
+        ;; Python
+        "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
 #+end_src
 
 * Evil Mode
@@ -317,7 +324,7 @@ Mostly reusable functions throughout the config
 #+begin_src emacs-lisp
 
     ;; may the motions be with you
-    (use-package evil
+  (use-package evil
       :defer t
       :init
       ;; Integrate `evil' with other Emacs features (optional as it's true by default).
@@ -341,14 +348,14 @@ Mostly reusable functions throughout the config
 
        ;; global binds
 
-       ;; Go to next Flymake error
-       (evil-define-key 'normal 'global (kbd "]d") 'flymake-goto-next-error) 
-       ;; Go to previous Flymake error
-       (evil-define-key 'normal 'global (kbd "[d") 'flymake-goto-prev-error) 
+      ;; Go to next Flymake error
+      (evil-define-key 'normal 'global (kbd "]d") 'flymake-goto-next-error) 
+      ;; Go to previous Flymake error
+      (evil-define-key 'normal 'global (kbd "[d") 'flymake-goto-prev-error) 
 
-       ;; Diff-HL navigation for version control
-       (evil-define-key 'normal 'global (kbd "]c") 'diff-hl-next-hunk)       ;; Next diff hunk
-       (evil-define-key 'normal 'global (kbd "[c") 'diff-hl-previous-hunk)   ;; Previous diff hunk
+      ;; Diff-HL navigation for version control
+      (evil-define-key 'normal 'global (kbd "]c") 'diff-hl-next-hunk)       ;; Next diff hunk
+      (evil-define-key 'normal 'global (kbd "[c") 'diff-hl-previous-hunk)   ;; Previous diff hunk
 
        ;; kill ring 
        (evil-define-key 'normal 'global (kbd "P") 'consult-yank-from-kill-ring)
@@ -462,14 +469,14 @@ separate leader per package.
       :prefix "SPC"
       :global-prefix "C-SPC")
 
-     ;; global leader based keybinds 
+    ;; global leader based keybinds 
     (cl/leader-keys
       "t"  '(:ignore t :which-key "toggles")
       "ts" '(hydra-text-scale/body :which-key "scale text")
 
       "w"  '(:ignore t :which-key "windows")
       "wr" '(hydra-window-resize/body :which-key "resize window")
-
+      
       "b"  '(:ignore t :which-key "buffers")
       "bb" '(consult-buffer :which-key "switch buffer")
       "bk" '(kill-current-buffer :which-key "kill buffer")
@@ -523,7 +530,7 @@ separate leader per package.
       "rn" '(lsp-rename :which-key "lsp rename")
       "ca" '(lsp-execute-code-action :which-key "lsp code action")
       ;; "lf" '(lsp-format-buffer :which-key "lsp based format")
-
+      
      )
 
   )
@@ -549,22 +556,22 @@ separate leader per package.
      :defer t
      :init (doom-modeline-mode 1)
      :custom
-   ;; Set the buffer file name style to just the buffer name (without path).
-   (doom-modeline-buffer-file-name-style 'buffer-name) 
-   ;; Enable project detection for displaying the project name.
+     ;; Set the buffer file name style to just the buffer name (without path).
+     (doom-modeline-buffer-file-name-style 'buffer-name) 
+     ;; Enable project detection for displaying the project name.
    (doom-modeline-project-detection 'project) 
    ;; Show the buffer name in the mode line.
    (doom-modeline-buffer-name t)                     
-    ;; Limit the version control system (VCS) branch name length to 25 characters.
+   ;; Limit the version control system (VCS) branch name length to 25 characters.
    (doom-modeline-vcs-max-length 25)                  
-     :config
+   :config
    ;; Check if nerd fonts are being used.
    (if cl/use-nerd-fonts
        (setq doom-modeline-icon t)       ;; Enable icons in the mode line if nerd fonts are used.
-          (setq doom-modeline-icon nil)) ;; Disable icons if nerd fonts are not being used.
-     :hook
-     (after-init . doom-modeline-mode)
-     )
+     (setq doom-modeline-icon nil)) ;; Disable icons if nerd fonts are not being used.
+   :hook
+   (after-init . doom-modeline-mode)
+   )
 #+end_src
 
 * Hydras
@@ -603,19 +610,19 @@ completion,embark and embark consult
     ;; Do not cycle through candidates when reaching the end of the list.
     (vertico-cycle nil)
     :hook 
-     (after-init . vertico-mode)           ;; Enable vertico after Emacs has initialized.
+    (after-init . vertico-mode)           ;; Enable vertico after Emacs has initialized.
     :config
      ;; Customize the display of the current candidate in the completion list.
      ;; This will prefix the current candidate with “» ” to make it stand out.
      ;; Reference: https://github.com/minad/vertico/wiki#prefix-current-candidate-with-arrow
-     (advice-add #'vertico--format-candidate :around
-              (lambda (orig cand prefix suffix index _start)
-                (setq cand (funcall orig cand prefix suffix index _start))
-                (concat
-                 (if (= vertico--index index)
-                     (propertize "» " 'face '(:foreground "#80adf0" :weight bold))
-                   "  ")
-                 cand)))
+    (advice-add #'vertico--format-candidate :around
+                (lambda (orig cand prefix suffix index _start)
+                  (setq cand (funcall orig cand prefix suffix index _start))
+                  (concat
+                   (if (= vertico--index index)
+                       (propertize "» " 'face '(:foreground "#80adf0" :weight bold))
+                     "  ")
+                   cand)))
     )
 
   (use-package savehist
@@ -675,19 +682,19 @@ navigating buffers, files, and xrefs with ease.
  This combination provides a powerful and customizable completion experience.
 
 #+begin_src emacs-lisp
-(use-package orderless
-  :defer t
-  :after vertico
-  :init
- (setq completion-styles '(orderless basic)  ;; Set the completion styles.
-        completion-category-defaults nil     ;; Clear default category settings.
-        ;; Customize file completion styles.
-        completion-category-overrides '((file (styles partial-completion)))) 
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil)
-  (completion-pcm-leading-wildcard t))
+  (use-package orderless
+    :defer t
+    :after vertico
+    :init
+    (setq completion-styles '(orderless basic)  ;; Set the completion styles.
+          completion-category-defaults nil     ;; Clear default category settings.
+          ;; Customize file completion styles.
+          completion-category-overrides '((file (styles partial-completion)))) 
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles partial-completion))))
+    (completion-category-defaults nil)
+    (completion-pcm-leading-wildcard t))
 #+end_src
 
 ** Marginalia 
@@ -698,11 +705,11 @@ navigating buffers, files, and xrefs with ease.
 #+begin_src emacs-lisp
   (use-package marginalia
     :bind (:map minibuffer-local-map
-           ("M-A" . marginalia-cycle))
+                ("M-A" . marginalia-cycle))
     :init
     (marginalia-mode)
     :hook
-     (after-init . marginalia-mode)
+    (after-init . marginalia-mode)
     )
  #+end_src
 
@@ -752,12 +759,12 @@ Rainbow delimiters, paredit, and the "tell me what's under point"
 tools (Embark, Helpful).
 
 #+begin_src emacs-lisp
-(use-package rainbow-delimiters
-  :defer t
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package paredit
-  :hook (emacs-lisp-mode . paredit-mode))
+  (use-package rainbow-delimiters
+    :defer t
+    :hook (prog-mode . rainbow-delimiters-mode))
+  
+  (use-package paredit
+    :hook (emacs-lisp-mode . paredit-mode))
 #+end_src
 
 * Nerd icons 
@@ -766,7 +773,7 @@ tools (Embark, Helpful).
    :if cl/use-nerd-fonts     ;; Load the package only if the user has configured to use nerd fonts.
    :defer t
      )
-
+  
    (use-package nerd-icons-completion
      ;; Load after `nerd-icons' and `marginalia' to ensure proper integration.
      :after (:all nerd-icons marginalia)
@@ -795,7 +802,7 @@ tools (Embark, Helpful).
      (dired-guess-shell-alist-user
       ;; Open image files with `feh' or the default viewer.
      '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
-     ;; Open audio and video files with `mpv'.
+       ;; Open audio and video files with `mpv'.
      ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
      ;; Default opening command for other files.
      (".*" "open" "xdg-open"))) 
@@ -814,18 +821,20 @@ tools (Embark, Helpful).
 Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell (Fish), so eglot can find binaries like =gopls= that only live in shell-managed PATH additions.
 
 #+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :config
-  (exec-path-from-shell-initialize))
+  (use-package exec-path-from-shell
+    :defer t
+    :config
+    (add-to-list 'exec-path-from-shell-variables "LSP_USE_PLISTS")
+    (exec-path-from-shell-initialize))
 #+end_src
 
 **   Dotenv 
  A simple major mode to provide .env files with color highlighting
 
 #+begin_src emacs-lisp
-(use-package dotenv-mode
-  :defer t
-  :mode ("\\.env\\(\\.[^.]+\\)?\\'" . dotenv-mode))
+  (use-package dotenv-mode
+    :defer t
+    :mode ("\\.env\\(\\.[^.]+\\)?\\'" . dotenv-mode))
 #+end_src
 
 ** Projects
@@ -841,7 +850,7 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
     (projectile-switch-project-action #'projectile-find-file)
     (projectile-auto-cleanup-known-projects t)
     (projectile-git-submodule-command nil)       ;; disable submodule scanning (perf)
-
+    
     :config
     ;; 1. Add ignored directories to Projectile's native ignore list
     (dolist (dir cl/ignored-directories)
@@ -882,14 +891,14 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
 
 ** Treesitter 
 #+begin_src emacs-lisp
- (use-package treesit-auto
-  :after emacs
-  :custom
-  (treesit-auto-install 'prompt)
-  (treesit-auto-langs '(go rust typescript javascript tsx json bash yaml dockerfile css html markdown toml python))  
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode)) 
+  (use-package treesit-auto
+   :after emacs
+   :custom
+   (treesit-auto-install 'prompt)
+   (treesit-auto-langs '(go rust typescript javascript tsx json bash yaml dockerfile css html markdown toml python))  
+   :config
+   (treesit-auto-add-to-auto-mode-alist 'all)
+   (global-treesit-auto-mode)) 
 #+end_src
 
 ** Markdown
@@ -897,50 +906,35 @@ Markdown Mode provides support for editing Markdown files in Emacs, enabling fea
 It’s particularly useful for README files, as it can be set to use GitHub Flavored Markdown for enhanced compatibility.
 
 #+begin_src emacs-lisp
-(use-package markdown-mode
-  :defer t
-  :mode ("README\\.md\\'" . gfm-mode)            ;; Use gfm-mode for README.md files.
-  :init (setq markdown-command "multimarkdown")) ;; Set the Markdown processing command.
+  (use-package markdown-mode
+    :defer t
+    :mode ("README\\.md\\'" . gfm-mode)            ;; Use gfm-mode for README.md files.
+    :init (setq markdown-command "multimarkdown")) ;; Set the Markdown processing command.
 #+end_src
 
 ** Magit
 
 #+begin_src emacs-lisp
-  (use-package magit  
-  :straight nil
- :defer t
+   (use-package magit  
+   :straight nil
+  :defer t
   :commands (magit-status magit-branch-checkout magit-pull magit-push)
-  :custom
-    (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  :config
-  (if cl/use-nerd-fonts   ;; Check if nerd fonts are being used
-  (setopt magit-format-file-function #'magit-format-file-nerd-icons)) ;; Turns on magit nerd-icons
-  )
+   :custom
+     (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+   :config
+   (if cl/use-nerd-fonts   ;; Check if nerd fonts are being used
+   (setopt magit-format-file-function #'magit-format-file-nerd-icons)) ;; Turns on magit nerd-icons
+   )
 
 
 
 
-  (use-package forge
-    :after magit)
+   (use-package forge
+     :after magit)
 #+end_src
 
 ** Lsp and completion 
 ***  Lsp mode 
-
-#+begin_src emacs-lisp
-  ;;TODO see if this are require after full setp since mostly used with eglot
-  (defvar cl/lsp--read-process-output-max nil)
-  (defvar cl/lsp--gcmh-high-cons-threshold nil)
-
-  (defun cl/lsp-optimize ()
-    "Boost IPC buffer and GC threshold for eglot."
-    (setq cl/lsp--read-process-output-max (default-value 'read-process-output-max)
-          read-process-output-max (* 1024 1024))  ; 1 MB
-    (when (boundp 'gcmh-high-cons-threshold)
-      (setq cl/lsp--gcmh-high-cons-threshold (default-value 'gcmh-high-cons-threshold)
-            gcmh-high-cons-threshold (* 2 (default-value 'gcmh-high-cons-threshold))
-            gcmh-low-cons-threshold (* 2 (default-value 'gcmh-low-cons-threshold)))))
-#+end_src
 
 Emacs comes with an integrated LSP client called `eglot', which offers basic LSP functionality.
 However, `eglot' has limitations, such as not supporting multiple language servers simultaneously within the same buffer (e.g., handling both TypeScript, Tailwind and ESLint
@@ -971,7 +965,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
   (lsp-completion-provider :none)                  ;; Disable the default completion provider.
   (lsp-session-file (locate-user-emacs-file ".lsp-session")) ;; Specify session file location.
   (lsp-log-io nil)                                 ;; Disable IO logging for speed.
-  (lsp-idle-delay 0.5)                             ;; Set the delay for LSP to 0 (debouncing).
+  (lsp-idle-delay 0.7)                             ;; Set the delay for LSP to 0 (debouncing).
   (lsp-keep-workspace-alive nil)                   ;; Disable keeping the workspace alive.
   ;; Core settings
   (lsp-enable-xref t)                              ;; Enable cross-references.
@@ -979,55 +973,55 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
   (lsp-enable-links nil)                           ;; Disable links.
   (lsp-eldoc-enable-hover t)                       ;; Enable ElDoc hover.
   (lsp-enable-file-watchers nil)                   ;; Disable file watchers.
-  (lsp-enable-folding nil)                                              ;; Disable folding.
-  (lsp-enable-imenu t)                                                  ;; Enable Imenu support.
-  (lsp-enable-indentation nil)                                     ;; Disable indentation.
-  (lsp-enable-on-type-formatting nil)                        ;; Disable on-type formatting.
-  (lsp-enable-suggest-server-download t)          ;; Enable server download suggestion.
-  (lsp-enable-symbol-highlighting t)                    ;; Enable symbol highlighting.
-  (lsp-enable-text-document-color t)                    ;; Enable text document color.
+  (lsp-enable-folding nil)                         ;; Disable folding.
+  (lsp-enable-imenu t)                             ;; Enable Imenu support.
+  (lsp-enable-indentation nil)                     ;; Disable indentation.
+  (lsp-enable-on-type-formatting nil)              ;; Disable on-type formatting.
+  (lsp-enable-suggest-server-download t)           ;; Enable server download suggestion.
+  (lsp-enable-symbol-highlighting t)               ;; Enable symbol highlighting.
+  (lsp-enable-text-document-color t)               ;; Enable text document color.
   ;; Modeline settings
-  (lsp-modeline-code-actions-enable nil)             ;; Keep modeline clean.
-  (lsp-modeline-diagnostics-enable nil)                ;; Use `flymake' instead.
+  (lsp-modeline-code-actions-enable nil)          ;; Keep modeline clean.
+  (lsp-modeline-diagnostics-enable nil)           ;; Use `flymake' instead.
   (lsp-modeline-workspace-status-enable t)        ;; Display "LSP" in the modeline when enabled.
-  (lsp-signature-doc-lines 1)                                    ;; Limit echo area to one line.
-  (lsp-eldoc-render-all t)                                           ;; Render all ElDoc messages.
+  (lsp-signature-doc-lines 1)                     ;; Limit echo area to one line.
+  (lsp-eldoc-render-all t)                        ;; Render all ElDoc messages.
   ;; Completion settings
-  (lsp-completion-enable t)                                      ;; Enable completion.
-  (lsp-completion-enable-additional-text-edit t)   ;; Enable additional text edits for completions.
-  (lsp-enable-snippet nil)                                           ;; Disable snippets
-  (lsp-completion-show-kind t)                                 ;; Show kind in completions.
+  (lsp-completion-enable t)                      ;; Enable completion.
+  (lsp-completion-enable-additional-text-edit t) ;; Enable additional text edits for completions.
+  (lsp-enable-snippet nil)                         ;; Disable snippets
+  (lsp-completion-show-kind t)                     ;; Show kind in completions.
   ;; Lens settings
-  (lsp-lens-enable t)                                                   ;; Enable lens support.
+  (lsp-lens-enable t)                              ;; Enable lens support.
   ;; Headerline settings
-  (lsp-headerline-breadcrumb-enable-symbol-numbers t)         ;; Enable symbol numbers in the headerline.
-  (lsp-headerline-arrow "▶")                                                               ;; Set arrow for headerline.
-  (lsp-headerline-breadcrumb-enable-diagnostics nil)                 ;; Disable diagnostics in headerline.
-  (lsp-headerline-breadcrumb-icons-enable nil)                            ;; Disable icons in breadcrumb.
+  (lsp-headerline-breadcrumb-enable-symbol-numbers t) ;; Enable symbol numbers in the headerline.
+  (lsp-headerline-arrow "▶")                            ;; Set arrow for headerline.
+  (lsp-headerline-breadcrumb-enable-diagnostics nil)     ;; Disable diagnostics in headerline.
+  (lsp-headerline-breadcrumb-icons-enable nil)           ;; Disable icons in breadcrumb.
   ;; Semantic settings
-  (lsp-semantic-tokens-enable nil))                                                    ;; Disable semantic tokens.
+  (lsp-semantic-tokens-enable nil))                      ;; Disable semantic tokens.
 #+end_src
 
 
 #+begin_src emacs-lisp
-(use-package lsp-tailwindcss
-  :after lsp-mode
-  :config
-  ;; Associate ERB files with HTML.
-  (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html"))
-  :init
-  (setq lsp-tailwindcss-add-on-mode t))
+  (use-package lsp-tailwindcss
+    :after lsp-mode
+    :config
+    ;; Associate ERB files with HTML.
+    (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html"))
+    :init
+    (setq lsp-tailwindcss-add-on-mode t))
 
 #+end_src
 
 Uses the project's local =node_modules/.bin= (eslint, tsserver, etc.) instead of whatever's installed globally. Different projects often pin different tool versions, so this keeps Emacs using the right one per project. Hooked into TS/TSX/JS modes below — loads lazily on first file visit.
 
 #+begin_src emacs-lisp
-(use-package add-node-modules-path
-  :hook ((typescript-ts-mode
-          tsx-ts-mode
-          js-mode
-          js-ts-mode) . add-node-modules-path))
+  (use-package add-node-modules-path
+    :hook ((typescript-ts-mode
+            tsx-ts-mode
+            js-mode
+            js-ts-mode) . add-node-modules-path))
 #+end_src
 
 *** Eldoc  
@@ -1035,15 +1029,15 @@ Uses the project's local =node_modules/.bin= (eslint, tsserver, etc.) instead of
 Provides inline helpful 
 
   #+begin_src emacs-lisp
-(use-package eldoc
-  :straight nil                                ;; This is built-in, no need to fetch it.
-  :config
-  (setq eldoc-idle-delay 0)                  ;; Automatically fetch doc help
-  (setq eldoc-echo-area-use-multiline-p nil) ;; We use the "K" floating help instead
-                                             ;; set to t if you want docs on the echo area
-  (setq eldoc-echo-area-display-truncation-message nil)
-  :init
-  (global-eldoc-mode))
+    (use-package eldoc
+      :straight nil                              ;; This is built-in, no need to fetch it.
+      :config
+      (setq eldoc-idle-delay 0)                  ;; Automatically fetch doc help
+      (setq eldoc-echo-area-use-multiline-p nil) ;; We use the "K" floating help instead
+                                                 ;; set to t if you want docs on the echo area
+      (setq eldoc-echo-area-display-truncation-message nil)
+      :init
+      (global-eldoc-mode))
   #+end_src
 
   
@@ -1051,8 +1045,8 @@ Provides inline helpful
 
 #+begin_src emacs-lisp
   (use-package eldoc-box
-  :defer t
-  )
+    :defer t
+    )
 #+end_src
 
 *** Corfu (Completion UI)
@@ -1060,99 +1054,98 @@ Provides inline helpful
 Corfu provides a minimal, snappy popup completion UI.
 
 #+begin_src emacs-lisp
-  (use-package corfu
-    :defer t
-    :custom
-    (corfu-cycle t)                     ; cycle through candidates
-    (corfu-auto t)                      ; show completions automatically
-    (corfu-auto-prefix 1)               ; trigger after 1 char (snappy!)
-    (corfu-auto-delay 0.7)              ; no delay (snappy!)
-    (corfu-preview-current nil)         ; don't preview in buffer
-    (corfu-preselect-first t)           ; preselect first candidate
-    (corfu-on-exact-match nil)          ; don't auto-insert on exact match
-    (corfu-quit-no-match t)             ; quit if no match
-    (corfu-min-width 50)                ; Minimum width of completion popup
-    (corfu-max-width 50)                ; Maximum width of completion popup
-    (corfu-popupinfo-delay 0.6)         ; Delay before showing documentation popup
-    :bind
-    (:map corfu-map
-          ("TAB" . corfu-next)
-          ([backtab] . corfu-previous)
-          ("RET" . corfu-insert)
-          )
-    :init
-    (global-corfu-mode)
-    (corfu-popupinfo-mode t)
-    :config
-     (if cl/use-nerd-fonts
-       (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-    )
+    (use-package corfu
+      :defer t
+      :custom
+      (corfu-cycle t)                     ; cycle through candidates
+      (corfu-auto t)                      ; show completions automatically
+      (corfu-auto-prefix 1)               ; trigger after 1 char (snappy!)
+      (corfu-auto-delay 0.7)              ; no delay (snappy!)
+      (corfu-preview-current nil)         ; don't preview in buffer
+      (corfu-preselect-first t)           ; preselect first candidate
+      (corfu-on-exact-match nil)          ; don't auto-insert on exact match
+      (corfu-quit-no-match t)             ; quit if no match
+      (corfu-min-width 50)                ; Minimum width of completion popup
+      (corfu-max-width 50)                ; Maximum width of completion popup
+      (corfu-popupinfo-delay 0.6)         ; Delay before showing documentation popup
+      :bind
+      (:map corfu-map
+            ("TAB" . corfu-next)
+            ([backtab] . corfu-previous)
+            ("RET" . corfu-insert)
+            )
+      :init
+      (global-corfu-mode)
+      (corfu-popupinfo-mode t)
+      :config
+       (if cl/use-nerd-fonts
+         (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+      )
 
-;;; NERD-ICONS-CORFU
-;; Provides Nerd Icons to be used with CORFU.
-(use-package nerd-icons-corfu
-  :if cl/use-nerd-fonts
-  :defer t
-  :after (:all corfu))
-  
-;; Popup documentation for Corfu for auto complete docs
-(use-package corfu-popupinfo
-    :straight nil                          ; part of corfu package
-    :after corfu
-    :custom
-    (corfu-popupinfo-delay '(0.25 . 0.1))  ; show docs after 250ms
-    :config
-    (corfu-popupinfo-mode 1))
+  ;;; NERD-ICONS-CORFU
+  ;; Provides Nerd Icons to be used with CORFU.
+  (use-package nerd-icons-corfu
+    :if cl/use-nerd-fonts
+    :defer t
+    :after (:all corfu))
+    
+  ;; Popup documentation for Corfu for auto complete docs
+  (use-package corfu-popupinfo
+      :straight nil                          ; part of corfu package
+      :after corfu
+      :custom
+      (corfu-popupinfo-delay '(0.25 . 0.1))  ; show docs after 250ms
+      :config
+      (corfu-popupinfo-mode 1))
 #+end_src
 
 *** Cape 
 #+begin_src emacs-lisp
-(use-package cape
-  :after corfu
-  :init
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  :config
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+  (use-package cape
+    :after corfu
+    :init
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    :config
+    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
 #+end_src
 
 *** Kind Icon
 
 #+begin_src emacs-lisp
-(use-package kind-icon
-  :after corfu
-  :custom
-  (kind-icon-use-icons t)
-  (kind-icon-default-face 'corfu-default)
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+  (use-package kind-icon
+    :after corfu
+    :custom
+    (kind-icon-use-icons t)
+    (kind-icon-default-face 'corfu-default)
+    :config
+    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
 
 *** Mason
 #+begin_src emacs-lisp
-  (use-package mason
-    :straight t
-    :commands (mason-log
-               mason-info
-               mason-doctor
-               mason-update
-               mason-install
-               mason-manager
-               mason-uninstall
-               mason-update-all
-               mason-update-registry)
-    :config
-    ;; can bind this to some key later
-      (defun cl/mason-install-servers ()
-    "Ensure all required LSP servers are installed via mason."
-           (interactive)
-             (require 'mason)
-                   (mason-setup
-                     (dolist (pkg '("tsgo" "rust-analyzer" "basedpyright" "gopls"))
-                       (unless (mason-installed-p pkg)
-                         (ignore-errors (mason-install pkg))))))
-)
+    (use-package mason
+      :commands (mason-log
+                 mason-info
+                 mason-doctor
+                 mason-update
+                 mason-install
+                 mason-manager
+                 mason-uninstall
+                 mason-update-all
+                 mason-update-registry)
+      :config
+      ;; can bind this to some key later
+        (defun cl/mason-install-servers ()
+      "Ensure all required LSP servers are installed via mason."
+             (interactive)
+               (require 'mason)
+                     (mason-setup
+                       (dolist (pkg '("tsgo" "rust-analyzer" "basedpyright" "gopls"))
+                         (unless (mason-installed-p pkg)
+                           (ignore-errors (mason-install pkg))))))
+  )
 
 #+end_src
 
@@ -1161,12 +1154,12 @@ The `indent-guide' package provides visual indicators for indentation levels in 
 It draws vertical lines (by default, a character of your choice) at each level of indentation, helping to improve readability and navigation within the code.
 
 #+begin_src emacs-lisp
-(use-package indent-guide
-  :defer t
-  :hook
-  (prog-mode . indent-guide-mode)  ;; Activate indent-guide in programming modes.
-  :config
-  (setq indent-guide-char "│"))    ;; Set the character used for the indent guide.
+  (use-package indent-guide
+    :defer t
+    :hook
+    (prog-mode . indent-guide-mode)  ;; Activate indent-guide in programming modes.
+    :config
+    (setq indent-guide-char "│"))    ;; Set the character used for the indent guide.
 #+end_src
 
 **  Formatting and linters 
@@ -1174,42 +1167,42 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ***  Aphelia
 
 #+begin_src emacs-lisp
-(use-package apheleia
-  :commands (apheleia-format-buffer apheleia-mode)
-  :init
-  (apheleia-global-mode +1))
+  (use-package apheleia
+    :commands (apheleia-format-buffer apheleia-mode)
+    :init
+    (apheleia-global-mode +1))
 #+end_src
 
 ***  flycheck
  Flymake is an on-the-fly syntax checking extension that provides real-time feedback about errors and warnings in your code as you write. This can greatly enhance your  coding experience by catching issues early.
 
 #+begin_src emacs-lisp
-(use-package flymake
-  :straight nil          ;; This is built-in, no need to fetch it.
-  :defer t
-  :hook (prog-mode . flymake-mode)
-  :custom
-  (flymake-margin-indicators-string
-   '((error "!»" compilation-error) (warning "»" compilation-warning)
-     (note "»" compilation-info))))
+  (use-package flymake
+    :straight nil          ;; This is built-in, no need to fetch it.
+    :defer t
+    :hook (prog-mode . flymake-mode)
+    :custom
+    (flymake-margin-indicators-string
+     '((error "!»" compilation-error) (warning "»" compilation-warning)
+       (note "»" compilation-info))))
 #+end_src
 
 ** QOL 
 ***  harpoon 
 #+begin_src emacs-lisp
-(use-package harpoon
-  :config
-  (cl/leader-keys
-    "h"  '(:ignore t :which-key "harpoon")
-    "ha" '(harpoon-add-file :which-key "add file")
-    "hh" '(harpoon-quick-menu-hydra :which-key "quick menu")
-    "hc" '(harpoon-clear :which-key "clear"))
+  (use-package harpoon
+    :config
+    (cl/leader-keys
+      "h"  '(:ignore t :which-key "harpoon")
+      "ha" '(harpoon-add-file :which-key "add file")
+      "hh" '(harpoon-quick-menu-hydra :which-key "quick menu")
+      "hc" '(harpoon-clear :which-key "clear"))
 
-  ;; Direct jumps, mirroring your <A-j/k/l/;> muscle memory from Neovim
-  (global-set-key (kbd "M-j") 'harpoon-go-to-1)
-  (global-set-key (kbd "M-k") 'harpoon-go-to-2)
-  (global-set-key (kbd "M-l") 'harpoon-go-to-3)
-  (global-set-key (kbd "M-;") 'harpoon-go-to-4))
+    ;; Direct jumps, mirroring your <A-j/k/l/;> muscle memory from Neovim
+    (global-set-key (kbd "M-j") 'harpoon-go-to-1)
+    (global-set-key (kbd "M-k") 'harpoon-go-to-2)
+    (global-set-key (kbd "M-l") 'harpoon-go-to-3)
+    (global-set-key (kbd "M-;") 'harpoon-go-to-4))
 #+end_src
 
 
@@ -1218,34 +1211,35 @@ The `pulsar' package enhances the user experience in Emacs by providing ;; visua
 This feature is especially useful in programming modes, where it can help users easily track actions such as scrolling, error navigation, yanking, deleting, and  jumping to definitions.
 
 #+begin_src emacs-lisp
-(use-package pulsar
-  :defer t
-  :hook
-  (after-init . pulsar-global-mode)
-  :config
-  (setq pulsar-pulse t)
-  (setq pulsar-delay 0.025)
-  (setq pulsar-iterations 10)
-  (setq pulsar-face 'evil-ex-lazy-highlight)
+  (use-package pulsar
+    :defer t
+    :hook
+    (after-init . pulsar-global-mode)
+    :config
+    (setq pulsar-pulse t)
+    (setq pulsar-delay 0.025)
+    (setq pulsar-iterations 10)
+    (setq pulsar-face 'evil-ex-lazy-highlight)
 
-  (add-to-list 'pulsar-pulse-functions 'evil-scroll-down)
-  (add-to-list 'pulsar-pulse-functions 'flymake-goto-next-error)
-  (add-to-list 'pulsar-pulse-functions 'flymake-goto-prev-error)
-  (add-to-list 'pulsar-pulse-functions 'evil-yank)
-  (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
-  (add-to-list 'pulsar-pulse-functions 'evil-delete)
-  (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
-  (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
-  )
+    (add-to-list 'pulsar-pulse-functions 'evil-scroll-down)
+    (add-to-list 'pulsar-pulse-functions 'flymake-goto-next-error)
+    (add-to-list 'pulsar-pulse-functions 'flymake-goto-prev-error)
+    (add-to-list 'pulsar-pulse-functions 'evil-yank)
+    (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
+    (add-to-list 'pulsar-pulse-functions 'evil-delete)
+    (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
+    (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
+    )
 #+end_src
 
 * Miscellaneous 
 
 ** Wakatime
 #+BEGIN_SRC emacs-lisp
-(use-package wakatime-mode
- :config
-  (global-wakatime-mode))
+  (use-package wakatime-mode
+  :defer t
+  :config
+   (global-wakatime-mode))
 #+END_SRC
 
 * Org Mode
@@ -1272,7 +1266,7 @@ This feature is especially useful in programming modes, where it can help users 
     (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
-
+  
   (use-package visual-fill-column
     :straight (visual-fill-column
                :type git
@@ -1289,13 +1283,13 @@ This feature is especially useful in programming modes, where it can help users 
 ** Structure templates — quickly inserting source blocks
 
 #+begin_src emacs-lisp
-(require 'org-tempo)
+  (require 'org-tempo)
 
-;; Shortcut specifically for the block you'll type most in this file:
-;; "<el TAB" -> an emacs-lisp source block, one keystroke shorter than
-;; "<s TAB emacs-lisp RET".
-(add-to-list 'org-structure-template-alist
-             '("el" . "src emacs-lisp"))
+  ;; Shortcut specifically for the block you'll type most in this file:
+  ;; "<el TAB" -> an emacs-lisp source block, one keystroke shorter than
+  ;; "<s TAB emacs-lisp RET".
+  (add-to-list 'org-structure-template-alist
+               '("el" . "src emacs-lisp"))
 #+end_src
 
 ** Tangle this file on save
@@ -1307,14 +1301,13 @@ even though =init.el= itself doesn't strictly need it thanks to
 ~org-babel-load-file~'s own mtime check at startup.
 
 #+begin_src emacs-lisp
-(defun cl/org-babel-tangle-config ()
-  (when (string-equal (file-truename buffer-file-name)
-                       (file-truename (expand-file-name "emacs.org" user-emacs-directory)))
-    (let ((org-confirm-babel-evaluate nil))
-      (org-babel-tangle))))
-
-(add-hook 'org-mode-hook
-          (lambda ()
-            (add-hook 'after-save-hook #'cl/org-babel-tangle-config nil 'local)))
+  (defun cl/org-babel-tangle-config ()
+    (when (string-equal (file-truename buffer-file-name)
+                         (file-truename (expand-file-name "emacs.org" user-emacs-directory)))
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle))))
+  
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook #'cl/org-babel-tangle-config nil 'local)))
 #+end_src
-
