@@ -473,6 +473,7 @@ separate leader per package.
     (cl/leader-keys
       "t"  '(:ignore t :which-key "toggles")
       "ts" '(hydra-text-scale/body :which-key "scale text")
+      "tc" '(my/centered-cursor :which-key "toggle centered cursor")
 
       "w"  '(:ignore t :which-key "windows")
       "wr" '(hydra-window-resize/body :which-key "resize window")
@@ -540,17 +541,17 @@ separate leader per package.
 
 #+begin_src emacs-lisp
   (use-package catppuccin-theme
-  :custom
-  (catppuccin-flavor 'mocha)
-   :config
-   ;; Load the Catppuccin theme without prompting for confirmation.
-   (load-theme 'catppuccin :no-confirm)
-   (custom-set-faces
-    `(diff-hl-change ((t (:background unspecified :foreground ,(catppuccin-get-color 'blue)))))
+    :demand f
+    :custom
+    (catppuccin-flavor 'mocha)
+    :config
+    ;; Load the Catppuccin theme without prompting for confirmation.
+    (load-theme 'catppuccin :no-confirm)
+    (custom-set-faces
+     `(diff-hl-change ((t (:background unspecified :foreground ,(catppuccin-get-color 'blue)))))
      `(diff-hl-delete ((t (:background unspecified :foreground ,(catppuccin-get-color 'red)))))
      `(diff-hl-insert ((t (:background unspecified :foreground ,(catppuccin-get-color 'green))))))
    )
-
 
    (use-package doom-modeline
      :defer t
@@ -1168,6 +1169,7 @@ It draws vertical lines (by default, a character of your choice) at each level o
 
 #+begin_src emacs-lisp
   (use-package apheleia
+    :defer t
     :commands (apheleia-format-buffer apheleia-mode)
     :init
     (apheleia-global-mode +1))
@@ -1230,6 +1232,36 @@ This feature is especially useful in programming modes, where it can help users 
     (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
     (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
     )
+#+end_src
+
+***  Center cursor
+#+begin_src emacs-lisp
+  (defvar cl/centered-cursor-enabled t)
+
+  (defun my/centered-cursor ()
+    (interactive)
+    (if cl/centered-cursor-enabled
+        (progn
+          (setq scroll-preserve-screen-position nil
+                scroll-conservatively 0
+                maximum-scroll-margin 0.0
+                scroll-margin 0)
+          (setq cl/centered-cursor-enabled nil)
+          (message "centered-cursor off"))
+      (progn
+        (setq scroll-preserve-screen-position t
+              scroll-conservatively 101
+              maximum-scroll-margin 0.5
+              scroll-margin 99999)
+        (setq cl/centered-cursor-enabled t)
+        (message "centered-cursor on"))))
+
+  ;; Apply the "on" state immediately at startup, since the defvar above
+  ;; only sets the tracking variable — it doesn't touch scroll-margin etc.
+  (setq scroll-preserve-screen-position t
+        scroll-conservatively 101
+        maximum-scroll-margin 0.5
+        scroll-margin 99999)
 #+end_src
 
 * Miscellaneous 
