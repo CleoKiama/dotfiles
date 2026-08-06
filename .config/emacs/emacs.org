@@ -948,7 +948,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
          (lsp-mode . lsp-enable-which-key-integration)  ;; Integrate with Which Key
          ((
            tsx-ts-mode                                  ;; Enable LSP for TSX
-           typescript-ts-base-mode                      ;; Enable LSP for TypeScript
+           typescript-ts-mode                           ;; Enable LSP for TypeScript
            css-ts-mode                                  ;; Enable LSP for CSS
            go-ts-mode                                   ;; Enable LSP for Go
            js-ts-mode                                   ;; Enable LSP for JavaScript (TS mode)
@@ -1002,13 +1002,21 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
 
 
 #+begin_src emacs-lisp
-(use-package lsp-tailwindcss
-  :after lsp-mode
-  :config
-  ;; Associate ERB files with HTML.
-  (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html"))
-  :init
-  (setq lsp-tailwindcss-add-on-mode t))
+  (use-package lsp-tailwindcss
+    :after lsp-mode
+    :config
+    ;; Associate ERB files with HTML.
+    (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html"))
+    :init
+    (setq lsp-tailwindcss-add-on-mode t))
+
+  (use-package lsp-pyright
+  :ensure t
+  :custom (lsp-pyright-langserver-command "basedpyright") 
+  :hook (python-ts-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp)))
+  )  ; or lsp-deferred
 
 #+end_src
 
