@@ -18,8 +18,8 @@
 (include defsrc/pc.kbd)
 (include defalias/qwerty.kbd)
 ;; Layout: pick one base layer, comment the other
-;;(include deflayer/base.kbd)              ;; QWERTY
-(include deflayer/colemak-dh-base.kbd)  ;; Colemak-DH
+(include deflayer/base.kbd)              ;; QWERTY
+;;(include deflayer/colemak-dh-base.kbd)  ;; Colemak-DH
 (include deflayer/symbols.kbd)
 (include deflayer/navigation.kbd)
 (include deflayer/media.kbd)
