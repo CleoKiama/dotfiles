@@ -1186,6 +1186,22 @@ It draws vertical lines (by default, a character of your choice) at each level o
      (note "»" compilation-info))))
 #+end_src
 
+** Terminal support with ghostel  
+
+#+begin_src emacs-lisp
+  (use-package ghostel
+    :defer t
+    :commands (ghostel)
+    )
+
+  (use-package evil-ghostel
+    :defer t
+    :after (ghostel evil)
+    :hook (ghostel-mode . evil-ghostel-mode)
+    )
+
+#+end_src
+
 ** QOL 
 ***  harpoon 
 #+begin_src emacs-lisp
@@ -1232,6 +1248,7 @@ This feature is especially useful in programming modes, where it can help users 
 #+end_src
 
 * Workspaces workflows
+
 #+begin_src emacs-lisp
   (use-package perspective
   :defer t
