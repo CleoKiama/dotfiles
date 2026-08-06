@@ -39,6 +39,9 @@
 ;;; File-name-handler-alist — strip during startup, restore after
 (defvar cl/early-init--file-name-handler-alist file-name-handler-alist)
 
+;; lsp-mode
+(setenv "LSP_USE_PLISTS" "true")
+
 (defun cl/early-init--respect-file-handlers (fn args-left)
   "Restore file handlers when processing command-line args (TRAMP safety)."
   (let ((file-name-handler-alist (if args-left

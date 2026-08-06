@@ -10,34 +10,34 @@ generated one.
 * Perfomance & System Defaults
 
 #+begin_src emacs-lisp
-;; Restore GC after startup (complements early-init.el maximization)
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold (* 32 1024 1024)
-                  gc-cons-percentage 0.6)))
+  ;; Restore GC after startup (complements early-init.el maximization)
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq gc-cons-threshold (* 32 1024 1024)
+                    gc-cons-percentage 0.6)))
 
-;; Help — don't autoload for completion
-(setq help-enable-completion-autoload nil)
+  ;; Help — don't autoload for completion
+  (setq help-enable-completion-autoload nil)
 
 
-;; Process IO
-(setq process-adaptive-read-buffering nil)
-(setq ffap-machine-p-known 'reject)
+  ;; Process IO
+  (setq process-adaptive-read-buffering nil)
+  (setq ffap-machine-p-known 'reject)
 
-;; Search
-(setq lazy-highlight-initial-delay 0)
+  ;; Search
+  (setq lazy-highlight-initial-delay 0)
 
-;; Suppress noisy warnings
-(setq ad-redefinition-action 'accept)
-(setq warning-suppress-types '((defvaralias) (lexical-binding)))
-(setq warning-inhibit-types '((files missing-lexbind-cookie)))
+  ;; Suppress noisy warnings
+  (setq ad-redefinition-action 'accept)
+  (setq warning-suppress-types '((defvaralias) (lexical-binding)))
+  (setq warning-inhibit-types '((files missing-lexbind-cookie)))
 
-;; use-package macro optimizations
-(setq use-package-expand-minimally t
-      use-package-verbose nil)
+  ;; use-package macro optimizations
+  (setq use-package-expand-minimally t
+        use-package-verbose nil)
 
-;; Default input method 
-(setq default-input-method nil)
+  ;; Default input method 
+  (setq default-input-method nil)
 
 #+end_src
 
@@ -65,6 +65,9 @@ generated one.
     (find-file-visit-truename t)                    
     ;; Automatically follow version-controlled symlinks without prompting.
     (vc-follow-symlinks t)
+
+    ;; for lsp-mode perfomance 
+    (read-process-output-max (* 1024 1024)) ;; 1mb
 
     ;; --- UI & Layout ---
 
@@ -706,7 +709,6 @@ navigating buffers, files, and xrefs with ease.
     )
  #+end_src
 
-
 ** Embark, wgrep, helpful
 
 Embark provides a powerful contextual action menu for Emacs, allowing you to perform various operations on completion candidates and other items.
@@ -819,7 +821,7 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
   (exec-path-from-shell-initialize))
 #+end_src
 
-**   Dotenv 
+** Dotenv 
  A simple major mode to provide .env files with color highlighting
 
 #+begin_src emacs-lisp
@@ -927,21 +929,6 @@ It’s particularly useful for README files, as it can be set to use GitHub Flav
 ** Lsp and completion 
 ***  Lsp mode 
 
-#+begin_src emacs-lisp
-  ;;TODO see if this are require after full setp since mostly used with eglot
-  (defvar cl/lsp--read-process-output-max nil)
-  (defvar cl/lsp--gcmh-high-cons-threshold nil)
-
-  (defun cl/lsp-optimize ()
-    "Boost IPC buffer and GC threshold for eglot."
-    (setq cl/lsp--read-process-output-max (default-value 'read-process-output-max)
-          read-process-output-max (* 1024 1024))  ; 1 MB
-    (when (boundp 'gcmh-high-cons-threshold)
-      (setq cl/lsp--gcmh-high-cons-threshold (default-value 'gcmh-high-cons-threshold)
-            gcmh-high-cons-threshold (* 2 (default-value 'gcmh-high-cons-threshold))
-            gcmh-low-cons-threshold (* 2 (default-value 'gcmh-low-cons-threshold)))))
-#+end_src
-
 Emacs comes with an integrated LSP client called `eglot', which offers basic LSP functionality.
 However, `eglot' has limitations, such as not supporting multiple language servers simultaneously within the same buffer (e.g., handling both TypeScript, Tailwind and ESLint
 LSPs together in a React project). For this reason, the more mature and capable `lsp-mode' is included as a third-party package, providing advanced IDE-like features and better support for multiple language servers and configurations.
@@ -979,33 +966,33 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
   (lsp-enable-links nil)                           ;; Disable links.
   (lsp-eldoc-enable-hover t)                       ;; Enable ElDoc hover.
   (lsp-enable-file-watchers nil)                   ;; Disable file watchers.
-  (lsp-enable-folding nil)                                              ;; Disable folding.
-  (lsp-enable-imenu t)                                                  ;; Enable Imenu support.
-  (lsp-enable-indentation nil)                                     ;; Disable indentation.
-  (lsp-enable-on-type-formatting nil)                        ;; Disable on-type formatting.
+  (lsp-enable-folding nil)                        ;; Disable folding.
+  (lsp-enable-imenu t)                            ;; Enable Imenu support.
+  (lsp-enable-indentation nil)                    ;; Disable indentation.
+  (lsp-enable-on-type-formatting nil)             ;; Disable on-type formatting.
   (lsp-enable-suggest-server-download t)          ;; Enable server download suggestion.
-  (lsp-enable-symbol-highlighting t)                    ;; Enable symbol highlighting.
-  (lsp-enable-text-document-color t)                    ;; Enable text document color.
+  (lsp-enable-symbol-highlighting t)              ;; Enable symbol highlighting.
+  (lsp-enable-text-document-color t)              ;; Enable text document color.
   ;; Modeline settings
-  (lsp-modeline-code-actions-enable nil)             ;; Keep modeline clean.
-  (lsp-modeline-diagnostics-enable nil)                ;; Use `flymake' instead.
+  (lsp-modeline-code-actions-enable nil)          ;; Keep modeline clean.
+  (lsp-modeline-diagnostics-enable nil)           ;; Use `flymake' instead.
   (lsp-modeline-workspace-status-enable t)        ;; Display "LSP" in the modeline when enabled.
-  (lsp-signature-doc-lines 1)                                    ;; Limit echo area to one line.
-  (lsp-eldoc-render-all t)                                           ;; Render all ElDoc messages.
+  (lsp-signature-doc-lines 1)                     ;; Limit echo area to one line.
+  (lsp-eldoc-render-all t)                        ;; Render all ElDoc messages.
   ;; Completion settings
   (lsp-completion-enable t)                                      ;; Enable completion.
   (lsp-completion-enable-additional-text-edit t)   ;; Enable additional text edits for completions.
-  (lsp-enable-snippet nil)                                           ;; Disable snippets
-  (lsp-completion-show-kind t)                                 ;; Show kind in completions.
+  (lsp-enable-snippet nil)                         ;; Disable snippets
+  (lsp-completion-show-kind t)                     ;; Show kind in completions.
   ;; Lens settings
-  (lsp-lens-enable t)                                                   ;; Enable lens support.
+  (lsp-lens-enable t)                              ;; Enable lens support.
   ;; Headerline settings
-  (lsp-headerline-breadcrumb-enable-symbol-numbers t)         ;; Enable symbol numbers in the headerline.
-  (lsp-headerline-arrow "▶")                                                               ;; Set arrow for headerline.
-  (lsp-headerline-breadcrumb-enable-diagnostics nil)                 ;; Disable diagnostics in headerline.
-  (lsp-headerline-breadcrumb-icons-enable nil)                            ;; Disable icons in breadcrumb.
+  (lsp-headerline-breadcrumb-enable-symbol-numbers t) ;; Enable symbol numbers in the headerline.
+  (lsp-headerline-arrow "▶")                         ;; Set arrow for headerline.
+  (lsp-headerline-breadcrumb-enable-diagnostics nil)  ;; Disable diagnostics in headerline.
+  (lsp-headerline-breadcrumb-icons-enable nil)        ;; Disable icons in breadcrumb.
   ;; Semantic settings
-  (lsp-semantic-tokens-enable nil))                                                    ;; Disable semantic tokens.
+  (lsp-semantic-tokens-enable nil))                 ;; Disable semantic tokens.
 #+end_src
 
 
@@ -1156,7 +1143,7 @@ Corfu provides a minimal, snappy popup completion UI.
 
 #+end_src
 
-**  Indent mode
+** Indent mode
 The `indent-guide' package provides visual indicators for indentation levels in programming modes, making it easier to see code structure at a glance.
 It draws vertical lines (by default, a character of your choice) at each level of indentation, helping to improve readability and navigation within the code.
 
@@ -1169,7 +1156,7 @@ It draws vertical lines (by default, a character of your choice) at each level o
   (setq indent-guide-char "│"))    ;; Set the character used for the indent guide.
 #+end_src
 
-**  Formatting and linters 
+** Formatting and linters 
 
 ***  Aphelia
 
