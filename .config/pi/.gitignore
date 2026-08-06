@@ -15,9 +15,9 @@ agent/npm/
 
 # Local state — machine-specific trust decisions
 agent/trust.json
+agent/models-store.json
 
 # Temp / runtime
 *.tmp
 
 
-agent/models-store.json
