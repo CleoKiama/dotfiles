@@ -474,8 +474,8 @@ separate leader per package.
       "wr" '(hydra-window-resize/body :which-key "resize window")
 
       "b"  '(:ignore t :which-key "buffers")
-      "bb" '(consult-buffer :which-key "switch buffer")
-      "bk" '(kill-current-buffer :which-key "kill buffer")
+      "bb" '(persp-switch-to-buffer* :which-key "switch buffer")
+      "bk" '(persp-kill-buffer* :which-key "kill buffer")
       "bi" '(ibuffer :which-key "ibuffer")
 
       "s"  '(:ignore t :which-key "search")
@@ -486,7 +486,7 @@ separate leader per package.
       "fw" '(consult-ripgrep :which-key "live grep")
       "fW" '(consult-git-grep :which-key "git grep")
       "fh" '(consult-info :which-key "Search info manuals")
-      "/" '(consult-line :which-key "search line")
+      "/"  '(consult-line :which-key "search line")
 
       ;; Flymake navigation
       "x"  '(:ignore t :which-key "toggles")
@@ -526,6 +526,12 @@ separate leader per package.
       "rn" '(lsp-rename :which-key "lsp rename")
       "ca" '(lsp-execute-code-action :which-key "lsp code action")
       ;; "lf" '(lsp-format-buffer :which-key "lsp based format")
+
+      ;; persp  
+      "a"  '(:ignore t :which-key "perspective")
+      "ac" '(persp-kill :which-key "persp-kill")
+      "ar" '(persp-rename :which-key "persp-kill")
+      "aw" '(persp-switch :which-key "persp-kill")
 
      )
 
@@ -928,7 +934,6 @@ It’s particularly useful for README files, as it can be set to use GitHub Flav
 
 ** Lsp and completion 
 ***  Lsp mode 
-
 Emacs comes with an integrated LSP client called `eglot', which offers basic LSP functionality.
 However, `eglot' has limitations, such as not supporting multiple language servers simultaneously within the same buffer (e.g., handling both TypeScript, Tailwind and ESLint
 LSPs together in a React project). For this reason, the more mature and capable `lsp-mode' is included as a third-party package, providing advanced IDE-like features and better support for multiple language servers and configurations.
@@ -939,19 +944,19 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
 #+begin_src emacs-lisp
   (use-package lsp-mode
   :defer t
-  :hook (;; Replace XXX-mode with concrete major mode (e.g. python-mode)
+  :hook (
          (lsp-mode . lsp-enable-which-key-integration)  ;; Integrate with Which Key
          ((
            tsx-ts-mode                                  ;; Enable LSP for TSX
            typescript-ts-base-mode                      ;; Enable LSP for TypeScript
-           css-ts-mode                                     ;; Enable LSP for CSS
+           css-ts-mode                                  ;; Enable LSP for CSS
            go-ts-mode                                   ;; Enable LSP for Go
            js-ts-mode                                   ;; Enable LSP for JavaScript (TS mode)
            prisma-mode                                  ;; Enable LSP for Prisma
            python-base-mode                             ;; Enable LSP for Python
            rust-ts-mode                                 ;; Enable LSP for Rust
            web-mode) . lsp-deferred))                   ;; Enable LSP for Web (HTML)
-  :commands lsp
+  :commands (lsp)
   :custom
   (lsp-keymap-prefix "C-c l")                      ;; Set the prefix for LSP commands.
   (lsp-inlay-hint-enable nil)                      ;; Usage of inlay hints.
@@ -1223,6 +1228,27 @@ This feature is especially useful in programming modes, where it can help users 
   (add-to-list 'pulsar-pulse-functions 'evil-delete)
   (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
   (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
+  )
+#+end_src
+
+* Workspaces workflows
+#+begin_src emacs-lisp
+  (use-package perspective
+  :defer t
+  :hook
+  (after-init . persp-mode)
+  :config
+  ;; Filter out buffers not belonging to current perspective
+  (setq switch-to-prev-buffer-skip
+        (lambda (win buff bury-or-kill)
+          (not (persp-is-current-buffer buffer))))
+
+  ;; Group buffers by persp-name in ibuffer
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (persp-ibuffer-set-filter-groups)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic))))
   )
 #+end_src
 
