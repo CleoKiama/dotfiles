@@ -18,3 +18,6 @@ agent/trust.json
 
 # Temp / runtime
 *.tmp
+
+
+agent/models-store.json
