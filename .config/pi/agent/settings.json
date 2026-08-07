@@ -1,9 +1,9 @@
 {
   "lastChangelogVersion": "0.82.1",
   "theme": "dark",
-  "defaultProvider": "opencode",
-  "defaultModel": "deepseek-v4-flash-free",
-  "defaultThinkingLevel": "max",
+  "defaultProvider": "google-antigravity",
+  "defaultModel": "antigravity-gemini-3.6-flash",
+  "defaultThinkingLevel": "high",
   "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\"",
   "npmCommand": [
     "pnpm"
@@ -17,7 +17,8 @@
   },
   "enabledModels": [
     "opencode/*-free",
-    "opencode-go/*"
+    "opencode-go/*",
+    "google-antigravity/*"
   ],
   "skills": [
     "~/dotfiles/.config/pi/agent/skills/git-commit",
@@ -37,7 +38,8 @@
     "npm:@tintinweb/pi-subagents",
     "npm:@tintinweb/pi-tasks",
     "npm:pi-dynamic-workflows",
-    "npm:@yusukeshib/pi-stash"
+    "npm:@yusukeshib/pi-stash",
+    "npm:@cortexkit/pi-antigravity-auth"
   ],
   "hideThinkingBlock": true
 }
