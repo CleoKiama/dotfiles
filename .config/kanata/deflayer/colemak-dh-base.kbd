@@ -22,14 +22,14 @@
 )
 
 (defalias
-  a (tap-hold-release-keys $tap-time $hold-time a lsft $left-hand-keys)
-  s (tap-hold-release-keys $tap-time $hold-time r lalt $left-hand-keys)
+  a (tap-hold-release-keys $tap-time $hold-time a lalt $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time r lsft $left-hand-keys)
   d (tap-hold-release-keys $tap-time $hold-time s lmet $left-hand-keys)
   f (tap-hold-release-keys $tap-time $hold-time t lctl $left-hand-keys)
   j (tap-hold-release-keys $tap-time $hold-time n rctl $right-hand-keys)
   k (tap-hold-release-keys $tap-time $hold-time e rmet $right-hand-keys)
-  l (tap-hold-release-keys $tap-time $hold-time i ralt $right-hand-keys)
-  ; (tap-hold-release-keys $tap-time $hold-time o rsft $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time i rsft $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time o ralt $right-hand-keys)
   nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
   sym (tap-hold-press $tap-time $hold-time ret (layer-while-held symbols))
   m (tap-hold $tap-time $hold-time h (layer-while-held media))
