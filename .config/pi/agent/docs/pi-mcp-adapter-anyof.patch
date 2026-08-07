@@ -1,0 +1,25 @@
+--- a/node_modules/.pnpm/pi-mcp-adapter@2.20.1_typebox@1.3.8/node_modules/pi-mcp-adapter/index.ts
++++ b/node_modules/.pnpm/pi-mcp-adapter@2.20.1_typebox@1.3.8/node_modules/pi-mcp-adapter/index.ts
+@@ -674,13 +674,15 @@
+       renderCall: renderMcpProxyToolCall,
+       parameters: Type.Object({
+         tool: Type.Optional(Type.String({ description: "Tool name to call (e.g., 'xcodebuild_list_sims')" })),
+-        args: Type.Optional(Type.Union([
+-          Type.String({ description: "Arguments as a JSON string (e.g., '{\"key\": \"value\"}')" }),
+-          Type.Object({}, {
+-            additionalProperties: true,
+-            description: 'Arguments as a JSON object (e.g., { "key": "value" })',
+-          }),
+-        ], { description: "Tool arguments as a JSON object, or as a JSON string encoding one" })),
++        // NOTE: local patch (2026-08-07): was Type.Union([...]) which emits `anyOf`.
++        // The Antigravity proxy mangles `anyOf` when converting Gemini tool schemas to
++        // Anthropic input_schema, causing "tools.N.custom.input_schema: JSON schema is
++        // invalid (draft 2020-12)" for Claude models. Object-only schema avoids anyOf;
++        // the runtime still accepts JSON strings (see execute handler).
++        args: Type.Optional(Type.Object({}, {
++          additionalProperties: true,
++          description: 'Tool arguments as a JSON object, or a JSON string encoding one (strings are parsed as JSON)',
++        })),
+         connect: Type.Optional(Type.String({ description: "Server name to connect (lazy connect + metadata refresh)" })),
+         describe: Type.Optional(Type.String({ description: "Tool name to describe (shows parameters)" })),
+         instructions: Type.Optional(Type.String({ description: "Server name to show that server's usage instructions" })),

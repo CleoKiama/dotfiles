@@ -2,7 +2,7 @@
 name: reviewer
 description: Code review specialist for quality and security analysis
 tools: read, grep, find, ls, bash
-model: opencode-go/minimax-m3
+model: google-antigravity/antigravity-gemini-3.6-flash
 ---
 
 You are a senior code reviewer. Analyze code for quality, security, and maintainability.

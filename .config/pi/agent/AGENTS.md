@@ -138,3 +138,11 @@ Use `curl -sL <url>` from bash to fetch docs inline when you need details.
 
 Access via the `mcp` built-in tool. Use `mcp({ server: "name" })` to list a server's tools,
 `mcp({ tool: "name", args: "..." })` to call one.
+
+## Known Issues & Local Patches
+
+- **`docs/antigravity-mcp-anyof-bug.md`** — `mcp` tool's `anyOf` schema broke Claude models
+  via the Antigravity proxy ("tools.N.custom.input_schema: JSON schema is invalid... draft 2020-12").
+  Root-caused + patched locally in pi-mcp-adapter (pnpm store copy — **wiped on extension update**).
+  Re-apply with `cd ~/.config/pi/agent/npm && patch -p1 < ~/.config/pi/agent/docs/pi-mcp-adapter-anyof.patch`;
+  restore the `Type.Union` block to undo.
