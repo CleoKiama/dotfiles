@@ -1,0 +1,36 @@
+;; Colemak-DH base layer — same structure as base.kbd but with
+;; Colemak-DH alpha remapping. Layer is named "base" so all shared
+;; layers (symbols, navigation, numrow, numpad, media, workspace)
+;; reference it correctly.
+;;
+;; Home-row mods stay on the same physical keys.
+;; Thumb keys unchanged. All non-34-key positions are XX (no-op).
+
+(deflayer base
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  q    w    f    p    b         j    l    u    y    ;
+  XX   @a   @s   @d   @f   g         m    @j   @k   @l   @;
+  x    c    d    v    z    <    k    @m   ,    .    /
+            @num               @nav             @sym
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   lrld   XX
+  XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX
+)
+
+(defalias
+  a (tap-hold-release-keys $tap-time $hold-time a lalt $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time r lsft $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time s lmet $left-hand-keys)
+  f (tap-hold-release-keys $tap-time $hold-time t lctl $left-hand-keys)
+  j (tap-hold-release-keys $tap-time $hold-time n rctl $right-hand-keys)
+  k (tap-hold-release-keys $tap-time $hold-time e rmet $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time i rsft $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time o ralt $right-hand-keys)
+  nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
+  sym (tap-hold-press $tap-time $hold-time ret (layer-while-held symbols))
+  m (tap-hold $tap-time $hold-time h (layer-while-held media))
+)

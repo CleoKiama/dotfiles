@@ -60,6 +60,10 @@
 (advice-add 'command-line-1 :around #'cl/early-init--respect-file-handlers)
 
 
+;; https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
+(setenv "LSP_USE_PLISTS" "true")
+
+
 ;;; Startup benchmark
 (add-hook 'emacs-startup-hook
           (lambda ()
