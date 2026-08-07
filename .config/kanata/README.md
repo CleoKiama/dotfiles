@@ -34,14 +34,14 @@ Home-row modifier keys on a hold-tap with `tap-hold-release-keys` and same-hand 
 
 | Key | Tap | Hold          |
 | --- | --- | ------------- |
-| A   | a   | Shift (left)  |
-| S   | s   | Alt (left)    |
+| A   | a   | Alt (left)    |
+| S   | s   | Shift (left)  |
 | D   | d   | Super (left)  |
 | F   | f   | Ctrl (left)   |
 | J   | j   | Ctrl (right)  |
 | K   | k   | Super (right) |
-| L   | l   | Alt (right)   |
-| ;   | ;   | Shift (right) |
+| L   | l   | Shift (right) |
+| ;   | ;   | Alt (right)   |
 
 Caps Lock is disabled (XX). Physical Delete is disabled (XX). Escape is on `j`+`k` chord.
 
