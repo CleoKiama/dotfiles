@@ -465,6 +465,12 @@ separate leader per package.
       :prefix "SPC"
       :global-prefix "C-SPC")
 
+    (general-create-definer cl/local-leader-keys
+      :states '(normal insert visual emacs)
+      :keymaps 'override
+      :prefix "SPC m"
+      :global-prefix "C-c m")
+
      ;; global leader based keybinds 
     (cl/leader-keys
       "t"  '(:ignore t :which-key "toggles")
@@ -1013,7 +1019,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
   (use-package lsp-pyright
   :ensure t
   :custom (lsp-pyright-langserver-command "basedpyright") 
-  :hook (python-ts-mode . (lambda ()
+  :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp)))
   )  ; or lsp-deferred
@@ -1214,18 +1220,27 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ***  harpoon 
 #+begin_src emacs-lisp
 (use-package harpoon
+  :defer t 
   :config
   (cl/leader-keys
     "h"  '(:ignore t :which-key "harpoon")
     "ha" '(harpoon-add-file :which-key "add file")
     "hh" '(harpoon-quick-menu-hydra :which-key "quick menu")
-    "hc" '(harpoon-clear :which-key "clear"))
+    "hc" '(harpoon-clear :which-key "clear")
+    )
 
-  ;; Direct jumps, mirroring your <A-j/k/l/;> muscle memory from Neovim
-  (global-set-key (kbd "M-j") 'harpoon-go-to-1)
-  (global-set-key (kbd "M-k") 'harpoon-go-to-2)
-  (global-set-key (kbd "M-l") 'harpoon-go-to-3)
-  (global-set-key (kbd "M-;") 'harpoon-go-to-4))
+  (cl/local-leader-keys
+    "1"  '(harpoon-go-to-1 :which-key "harpoon file 1")
+    "2"  '(harpoon-go-to-2 :which-key "harpoon file 2")
+    "3"  '(harpoon-go-to-3 :which-key "harpoon file 3")
+    "4"  '(harpoon-go-to-4 :which-key "harpoon file 4")
+    "5"  '(harpoon-go-to-5 :which-key "harpoon file 5")
+    "6"  '(harpoon-go-to-6 :which-key "harpoon file 6")
+    "7"  '(harpoon-go-to-7 :which-key "harpoon file 7")
+    "8"  '(harpoon-go-to-8 :which-key "harpoon file 8")
+    "9"  '(harpoon-go-to-9 :which-key "harpoon file 9"))
+  
+  )
 #+end_src
 
 
