@@ -1297,8 +1297,10 @@ This feature is especially useful in programming modes, where it can help users 
 ** Wakatime
 #+BEGIN_SRC emacs-lisp
 (use-package wakatime-mode
- :config
-  (global-wakatime-mode))
+  :defer t
+  :init
+  (setq wakatime-cli-path (expand-file-name "~/.wakatime/wakatime-cli"))
+  :hook (find-file-hook . global-wakatime-mode))
 #+END_SRC
 
 * Org Mode
