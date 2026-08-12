@@ -1278,30 +1278,25 @@ It draws vertical lines (by default, a character of your choice) at each level o
 
 ** Formatting and linters 
 
-***  Aphelia
+***  Apheleia
 
 #+begin_src emacs-lisp
   (use-package apheleia
-  :commands (apheleia-format-buffer apheleia-mode)
-  :hook (prog-mode . apheleia-global-mode)
-  :config
-  ;; Custom Lisp-based formatter wrapper for LSP formatting (Go and Rust)
-  (setf (alist-get 'lsp-format apheleia-formatters)
-        (lambda ()
-          (when (bound-and-true-p lsp-mode)
-            (lsp-format-buffer))))
+    :defer t
+    :init
+    (apheleia-global-mode +1)
+    :config
+    ;; Register Mason / CLI formatters & dynamic fallbacks
+    (setf (alist-get 'oxfmt apheleia-formatters) '("oxfmt" filepath))
+    (setf (alist-get 'prettierd apheleia-formatters) '("prettierd" filepath))
+    (setf (alist-get 'oxfmt-or-prettierd apheleia-formatters)
+          '((if (executable-find "oxfmt") "oxfmt" "prettierd") filepath))
 
-  ;; Register Mason CLI formatters
-  (setf (alist-get 'oxfmt apheleia-formatters) '("oxfmt" filepath))
-  (setf (alist-get 'prettierd apheleia-formatters) '("prettierd" filepath))
-
-  ;; Map major modes to formatters
-  (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) '(or oxfmt prettierd))
-  (setf (alist-get 'tsx-ts-mode apheleia-mode-alist) '(or oxfmt prettierd))
-  (setf (alist-get 'js-ts-mode apheleia-mode-alist) '(or oxfmt prettierd))
-  (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
-  (setf (alist-get 'go-ts-mode apheleia-mode-alist) 'lsp-format)
-  (setf (alist-get 'rust-ts-mode apheleia-mode-alist) 'lsp-format))
+    ;; Map major modes to formatters
+    (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'oxfmt-or-prettierd)
+    (setf (alist-get 'tsx-ts-mode apheleia-mode-alist) 'oxfmt-or-prettierd)
+    (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'oxfmt-or-prettierd)
+    (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff))
 #+end_src
 
 ***  flycheck
