@@ -9,6 +9,7 @@ set -gx fish_history ""
 # Path
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/.config/emacs/mason/bin
 
 
 # vi mode

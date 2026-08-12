@@ -296,23 +296,23 @@ generated one.
 * Globals 
 Mostly reusable functions throughout the config
 #+begin_src emacs-lisp
-;; Define a global customizable variable `cl/use-nerd-fonts' to control the use of
-;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
-;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
-;; flexibility in appearance settings. By setting it to `t', we enable Nerd Fonts
-;; symbols; setting it to `nil' would disable them.
-(defcustom cl/use-nerd-fonts t
-  "Configuration for using Nerd Fonts Symbols."
-  :type 'boolean
-  :group 'appearance)
+  ;; Define a global customizable variable `cl/use-nerd-fonts' to control the use of
+  ;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
+  ;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
+  ;; flexibility in appearance settings. By setting it to `t', we enable Nerd Fonts
+  ;; symbols; setting it to `nil' would disable them.
+  (defcustom cl/use-nerd-fonts t
+    "Configuration for using Nerd Fonts Symbols."
+    :type 'boolean
+    :group 'appearance)
 
- (defvar cl/ignored-directories
-    '(;; JavaScript/TypeScript
-      "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
-      ;; Rust
-      "target"
-      ;; Python
-      "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
+   (defvar cl/ignored-directories
+      '(;; JavaScript/TypeScript
+        "node_modules" ".pnpm" "dist" "build" ".next" ".turbo" "coverage"
+        ;; Rust
+        "target"
+        ;; Python
+        "__pycache__" ".venv" "venv" ".mypy_cache" ".pytest_cache" ".ruff_cache" ".tox"))
 #+end_src
 
 * Evil Mode
@@ -900,7 +900,7 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
   :after emacs
   :custom
   (treesit-auto-install 'prompt)
-  (treesit-auto-langs '(go rust typescript javascript tsx json bash yaml dockerfile css html markdown toml python))  
+  (treesit-auto-langs '(python typescript javascript tsx go rust lua css html json bash yaml dockerfile markdown toml))  
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode)) 
@@ -955,12 +955,21 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
          ((
            tsx-ts-mode                                  ;; Enable LSP for TSX
            typescript-ts-mode                           ;; Enable LSP for TypeScript
+           js-ts-mode                                   ;; Enable LSP for JavaScript
            css-ts-mode                                  ;; Enable LSP for CSS
+           html-ts-mode                                 ;; Enable LSP for HTML
            go-ts-mode                                   ;; Enable LSP for Go
-           js-ts-mode                                   ;; Enable LSP for JavaScript (TS mode)
-           prisma-mode                                  ;; Enable LSP for Prisma
            python-base-mode                             ;; Enable LSP for Python
+           python-ts-mode                               ;; Enable LSP for Python (TS mode)
            rust-ts-mode                                 ;; Enable LSP for Rust
+           lua-ts-mode                                  ;; Enable LSP for Lua
+           dockerfile-ts-mode                           ;; Enable LSP for Docker
+           bash-ts-mode                                 ;; Enable LSP for Bash
+           json-ts-mode                                 ;; Enable LSP for JSON
+           yaml-ts-mode                                 ;; Enable LSP for YAML
+           gfm-mode                                     ;; Enable LSP for GitHub Markdown
+           markdown-ts-mode                             ;; Enable LSP for Markdown (TS mode)
+           prisma-mode                                  ;; Enable LSP for Prisma
            web-mode) . lsp-deferred))                   ;; Enable LSP for Web (HTML)
   :commands (lsp)
   :custom
@@ -1010,19 +1019,83 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
 #+begin_src emacs-lisp
   (use-package lsp-tailwindcss
     :after lsp-mode
-    :config
-    ;; Associate ERB files with HTML.
-    (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html"))
     :init
-    (setq lsp-tailwindcss-add-on-mode t))
+    (setq lsp-tailwindcss-add-on-mode t)
+    :config
+    ;; Associate ERB files with HTML language ID
+    (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html"))
+
+    ;; Ensure Tailwind LSP activates for tree-sitter UI modes (excluding pure JS/TS files)
+    (dolist (mode '(tsx-ts-mode css-ts-mode html-ts-mode web-mode))
+      (add-to-list 'lsp-tailwindcss-major-modes mode))
+
+    ;; Enable class autocompletion inside cn(...), clsx(...), cva(...) helpers and tw`...` tags
+    (setq lsp-tailwindcss-experimental-class-regex
+          ["cva\\(([^)]*)\\)"
+           "cn\\(([^)]*)\\)"
+           "clsx\\(([^)]*)\\)"
+           "tw`([^`]*)"
+           "tw=\"([^\"]*)"]))
 
   (use-package lsp-pyright
-  :ensure t
-  :custom (lsp-pyright-langserver-command "basedpyright") 
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp)))
-  )  ; or lsp-deferred
+    :custom
+    ;; Use the basedpyright binary managed by Mason
+    (lsp-pyright-langserver-command "basedpyright")
+
+    ;; Type checking intensity: "off", "basic", "standard", "strict", or "all"
+    (lsp-pyright-type-checking-mode "standard")
+
+    ;; Diagnostic scope: "workspace" or "openFilesOnly"
+    (lsp-pyright-diagnostic-mode "workspace")
+
+    ;; Basedpyright inlay hints configuration
+    (lsp-pyright-basedpyright-inlay-hints-variable-types t)
+    (lsp-pyright-basedpyright-inlay-hints-call-argument-names t)
+    (lsp-pyright-basedpyright-inlay-hints-function-return-types t)
+    (lsp-pyright-basedpyright-inlay-hints-generic-types nil)
+
+    :hook (python-ts-mode . (lambda ()
+                              (require 'lsp-pyright)
+                              (lsp-deferred))))
+
+  (use-package lsp-go
+    :straight nil
+    :custom
+    ;; Enable gofumpt formatting directly inside gopls
+    (lsp-go-use-gofumpt t)
+
+    ;; Add parameter placeholders when autocompleting function signatures
+    (lsp-go-use-placeholders t)
+
+    ;; Enable extra static analyzer passes (shadowed variables, unused params)
+    (lsp-go-analyses '((shadow . t)
+                       (unusedparams . t)
+                       (fieldalignment . t)))
+
+    ;; Enable useful CodeLens actions (Run Test, Go Mod Tidy)
+    (lsp-go-codelenses '((gc_details . t)
+                         (generate . t)
+                         (test . t)
+                         (tidy . t)
+                         (upgrade_dependency . t))))
+
+  (use-package lsp-rust
+    :straight nil
+    :custom
+    ;; Use `cargo clippy` instead of basic `cargo check` on save for rich lints
+    (lsp-rust-analyzer-cargo-watch-command "clippy")
+
+    ;; Enable procedural macro expansion (essential for Serde, Tokio, Actix, etc.)
+    (lsp-rust-analyzer-proc-macro-enable t)
+
+    ;; Inlay hints configuration (types, parameter names, and method chains)
+    (lsp-rust-analyzer-display-inlay-hints t)
+    (lsp-rust-analyzer-display-parameter-hints t)
+    (lsp-rust-analyzer-display-chaining-hints t)
+    (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+
+    ;; Auto reload cargo project structure on Cargo.toml changes
+    (lsp-rust-analyzer-cargo-auto-reload t))
 
 #+end_src
 
@@ -1138,7 +1211,7 @@ Corfu provides a minimal, snappy popup completion UI.
 *** Mason
 #+begin_src emacs-lisp
   (use-package mason
-    :straight t
+    :defer t
     :commands (mason-log
                mason-info
                mason-doctor
@@ -1147,18 +1220,43 @@ Corfu provides a minimal, snappy popup completion UI.
                mason-manager
                mason-uninstall
                mason-update-all
-               mason-update-registry)
+               mason-update-registry
+               cl/mason-install-servers)
+    :custom
+    (cl/mason-ensure-packages '("basedpyright"
+                                "ruff"
+                                "gopls"
+                                "golangci-lint"
+                                "rust-analyzer"
+                                "codelldb"
+                                "tsgo"
+                                "tailwindcss"
+                                "lua-language-server"
+                                "dockerfile-language-server"
+                                "bash-language-server"
+                                "marksman"
+                                "html-lsp"
+                                "css-lsp"
+                                "json-lsp"
+                                "yaml-language-server"
+                                "oxlint"
+                                "oxfmt"
+                                "eslint_d"
+                                "prettierd"
+                                "js-debug-adapter"
+                                "debugpy"))
     :config
-    ;; can bind this to some key later
-      (defun cl/mason-install-servers ()
-    "Ensure all required LSP servers are installed via mason."
-           (interactive)
-             (require 'mason)
-                   (mason-setup
-                     (dolist (pkg '("tsgo" "rust-analyzer" "basedpyright" "gopls"))
-                       (unless (mason-installed-p pkg)
-                         (ignore-errors (mason-install pkg))))))
-)
+    (defun cl/mason-install-servers ()
+      "Ensure all required LSP servers are installed via mason."
+      (interactive)
+      (require 'mason)
+      (mason-setup
+        (dolist (pkg cl/mason-ensure-packages)
+          (unless (mason-installed-p pkg)
+            (message "Mason: Installing missing package '%s'..." pkg)
+            (ignore-errors (mason-install pkg))))))
+
+    (mason-setup))
 
 #+end_src
 
