@@ -6,6 +6,7 @@ eln-cache/
 # 2. Ignore local runtime history and crash recovery lists
 auto-save-list/
 history
+.lsp-session
 
 # 3. Ignore Emacs backup files (like init.el~)
 *~
