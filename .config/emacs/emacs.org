@@ -1225,8 +1225,8 @@ Corfu provides a minimal, snappy popup completion UI.
                mason-update-all
                mason-update-registry
                cl/mason-install-servers)
-    :custom
-    (cl/mason-ensure-packages '("basedpyright"
+    :config
+      (defvar cl/mason-packages '("basedpyright"
                                 "ruff"
                                 "gopls"
                                 "golangci-lint"
@@ -1248,13 +1248,12 @@ Corfu provides a minimal, snappy popup completion UI.
                                 "prettierd"
                                 "js-debug-adapter"
                                 "debugpy"))
-    :config
     (defun cl/mason-install-servers ()
       "Ensure all required LSP servers are installed via mason."
       (interactive)
       (require 'mason)
       (mason-setup
-        (dolist (pkg cl/mason-ensure-packages)
+        (dolist (pkg cl/mason-packages)
           (unless (mason-installed-p pkg)
             (message "Mason: Installing missing package '%s'..." pkg)
             (ignore-errors (mason-install pkg))))))
