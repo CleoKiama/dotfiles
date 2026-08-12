@@ -900,9 +900,9 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
   :after emacs
   :custom
   (treesit-auto-install 'prompt)
-  (treesit-auto-langs '(python typescript javascript tsx go rust lua css html json bash yaml dockerfile markdown toml))  
+  (treesit-auto-langs '(python typescript javascript tsx go gomod gowork rust lua css html json bash yaml dockerfile markdown toml))  
   :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
+  (treesit-auto-add-to-auto-mode-alist treesit-auto-langs)
   (global-treesit-auto-mode)) 
 #+end_src
 
