@@ -973,6 +973,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
            web-mode) . lsp-deferred))                   ;; Enable LSP for Web (HTML)
   :commands (lsp)
   :custom
+  (lsp-disabled-clients '(ruff ruff-lsp))          ;; Blocklist ruff from attaching as LSP (use basedpyright instead).
   (lsp-keymap-prefix "C-c l")                      ;; Set the prefix for LSP commands.
   (lsp-inlay-hint-enable nil)                      ;; Usage of inlay hints.
   (lsp-completion-provider :none)                  ;; Disable the default completion provider.
@@ -1005,7 +1006,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
   (lsp-enable-snippet nil)                         ;; Disable snippets
   (lsp-completion-show-kind t)                     ;; Show kind in completions.
   ;; Lens settings
-  (lsp-lens-enable t)                              ;; Enable lens support.
+  (lsp-lens-enable nil)                            ;; Disable lens support to prevent idle timer errors.
   ;; Headerline settings
   (lsp-headerline-breadcrumb-enable-symbol-numbers t) ;; Enable symbol numbers in the headerline.
   (lsp-headerline-arrow "▶")                         ;; Set arrow for headerline.
