@@ -531,7 +531,7 @@ separate leader per package.
       ;; lsp 
       "rn" '(lsp-rename :which-key "lsp rename")
       "ca" '(lsp-execute-code-action :which-key "lsp code action")
-      ;; "lf" '(lsp-format-buffer :which-key "lsp based format")
+      "lf" '(apheleia-format-buffer :which-key "format buffer")
 
       ;; persp  
       "a"  '(:ignore t :which-key "perspective")
@@ -1038,6 +1038,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
            "tw=\"([^\"]*)"]))
 
   (use-package lsp-pyright
+    :defer t
     :custom
     ;; Use the basedpyright binary managed by Mason
     (lsp-pyright-langserver-command "basedpyright")
@@ -1060,6 +1061,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
 
   (use-package lsp-go
     :straight nil
+    :defer t
     :custom
     ;; Enable gofumpt formatting directly inside gopls
     (lsp-go-use-gofumpt t)
@@ -1081,6 +1083,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
 
   (use-package lsp-rust
     :straight nil
+    :defer t
     :custom
     ;; Use `cargo clippy` instead of basic `cargo check` on save for rich lints
     (lsp-rust-analyzer-cargo-watch-command "clippy")
@@ -1278,10 +1281,27 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ***  Aphelia
 
 #+begin_src emacs-lisp
-(use-package apheleia
+  (use-package apheleia
   :commands (apheleia-format-buffer apheleia-mode)
-  :init
-  (apheleia-global-mode +1))
+  :hook (prog-mode . apheleia-global-mode)
+  :config
+  ;; Custom Lisp-based formatter wrapper for LSP formatting (Go and Rust)
+  (setf (alist-get 'lsp-format apheleia-formatters)
+        (lambda ()
+          (when (bound-and-true-p lsp-mode)
+            (lsp-format-buffer))))
+
+  ;; Register Mason CLI formatters
+  (setf (alist-get 'oxfmt apheleia-formatters) '("oxfmt" filepath))
+  (setf (alist-get 'prettierd apheleia-formatters) '("prettierd" filepath))
+
+  ;; Map major modes to formatters
+  (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) '(or oxfmt prettierd))
+  (setf (alist-get 'tsx-ts-mode apheleia-mode-alist) '(or oxfmt prettierd))
+  (setf (alist-get 'js-ts-mode apheleia-mode-alist) '(or oxfmt prettierd))
+  (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
+  (setf (alist-get 'go-ts-mode apheleia-mode-alist) 'lsp-format)
+  (setf (alist-get 'rust-ts-mode apheleia-mode-alist) 'lsp-format))
 #+end_src
 
 ***  flycheck
