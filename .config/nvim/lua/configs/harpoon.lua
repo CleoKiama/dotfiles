@@ -1,8 +1,6 @@
 local harpoon = require("harpoon")
-
 -- REQUIRED
 harpoon:setup()
-
 local map = vim.keymap.set
 
 map("n", "<leader>ha", function()
@@ -11,16 +9,16 @@ end, { desc = "[p] Add current file to Harpoon list" })
 map("n", "<A-i>", function()
 	harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = "[p] Toggle Harpoon quick menu" })
-map("n", "<A-j>", function()
+map("n", "<A-1>", function()
 	harpoon:list():select(1)
 end, { desc = "[p] Select first file in Harpoon list" })
-map("n", "<A-k>", function()
+map("n", "<A-2>", function()
 	harpoon:list():select(2)
 end, { desc = "[p] Select second file in Harpoon list" })
-map("n", "<A-l>", function()
+map("n", "<A-3>", function()
 	harpoon:list():select(3)
 end, { desc = "[p] Select third file in Harpoon list" })
-map("n", "<A-;>", function()
+map("n", "<A-4>", function()
 	harpoon:list():select(4)
 end, { desc = "[p] Select fourth file in Harpoon list" })
 map("n", "<leader>5", function()
