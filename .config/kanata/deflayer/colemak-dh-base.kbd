@@ -1,36 +1,41 @@
-;; Colemak-DH base layer — same structure as base.kbd but with
-;; Colemak-DH alpha remapping. Layer is named "base" so all shared
-;; layers (symbols, navigation, numrow, numpad, media, workspace)
-;; reference it correctly.
+;; Colemak-DH base layer (ergonomic-shift layout). Layer is named "base"
+;; so all shared layers (symbols, navigation, numrow, numpad, media,
+;; workspace) reference it correctly.
 ;;
-;; Home-row mods stay on the same physical keys.
-;; Thumb keys unchanged. All non-34-key positions are XX (no-op).
+;; ergonomic-shift: alpha block shifted up one physical row; right hand
+;; one column right with the full physical column 6 y h n dead — a clean
+;; vertical gap between the hands. Home-row mods live on the new top row
+;; (physical qwert/iop[). Thumbs: c=num, v=workspace, m=nav, ,=symbols.
+;; Pinky column: - (;), [ (o/Alt), ' (/). Spacebar row all XX.
 
 (deflayer base
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  q    w    f    p    b         j    l    u    y    ;
-  XX   @a   @s   @d   @f   g         m    @j   @k   @l   @;
-  x    c    d    v    z    <    k    @m   ,    .    /
-            @num               @nav             @sym
+  q    w    f    p    b    XX   XX   j    l    u    y
+  @a   @r   @s   @t   g    XX   m    @n   @e   @i
+  XX   x    c    d    v    z    XX   @med h    ,    .
+  XX   XX   @num @escwsp XX  XX   XX   @nav @sym XX  XX
+  XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   lrld   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
+  /    ;    XX   XX   @o   XX   XX
 )
 
 (defalias
-  a (tap-hold-release-keys $tap-time $hold-time a lalt $left-hand-keys)
-  s (tap-hold-release-keys $tap-time $hold-time r lsft $left-hand-keys)
-  d (tap-hold-release-keys $tap-time $hold-time s lmet $left-hand-keys)
-  f (tap-hold-release-keys $tap-time $hold-time t lctl $left-hand-keys)
-  j (tap-hold-release-keys $tap-time $hold-time n rctl $right-hand-keys)
-  k (tap-hold-release-keys $tap-time $hold-time e rmet $right-hand-keys)
-  l (tap-hold-release-keys $tap-time $hold-time i rsft $right-hand-keys)
-  ; (tap-hold-release-keys $tap-time $hold-time o ralt $right-hand-keys)
+  ;; Home-row mods — order: Shift / Alt / Super / Control (Pinky to Index)
+  a (tap-hold-release-keys $tap-time $hold-time a lsft $left-hand-keys)
+  r (tap-hold-release-keys $tap-time $hold-time r lalt $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time s lmet $left-hand-keys)
+  t (tap-hold-release-keys $tap-time $hold-time t lctl $left-hand-keys)
+  n (tap-hold-release-keys $tap-time $hold-time n rctl $right-hand-keys)
+  e (tap-hold-release-keys $tap-time $hold-time e rmet $right-hand-keys)
+  i (tap-hold-release-keys $tap-time $hold-time i ralt $right-hand-keys)
+  o (tap-hold-release-keys $tap-time $hold-time o rsft $right-hand-keys)
+  ;; Thumbs
+  escwsp (tap-hold $tap-time $hold-time esc (layer-while-held workspace))
   nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
   sym (tap-hold-press $tap-time $hold-time ret (layer-while-held symbols))
-  m (tap-hold $tap-time $hold-time h (layer-while-held media))
+  med (tap-hold $tap-time $hold-time k (layer-while-held media))
 )

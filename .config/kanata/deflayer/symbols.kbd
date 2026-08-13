@@ -1,36 +1,39 @@
 ;; Symbol layer: Lafayette/Ergo-L AltGr programmation layer
 ;; but enables a NumRow.
+;;
+;; ergonomic-shift: shifted up one row; right hand one column right
+;; (physical column 6 y h n dead).
 
 (deflayer symbols
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  @^   @<   @>   @$   @%        @@   @&   @*   @'   @`
-  _    @{   @pl  @pr  @}   @=        @\   @+   @-   @/   @''
-  @~   @[   @]   @_   @#   XX   @|   @!   @scl   @:   @?
-            @num          spc             _
+  @^   @<   @>   @$   @%   XX   XX   @@   @&   @*   @'
+  @{   @pl  @pr  @}   @=   XX   @\   @+   @-   @/
+  XX   @~   @[   @]   @_   @#   XX   @|   @!   @scl  @:
+  XX   XX   _    _    XX   XX   XX   _    _    XX   XX
+  XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
+  @?   @`   XX   XX   @''  XX   XX
 )
 
 ;; Numrow layer
 
 (deflayer numrow
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  @6   @7   @8   @9   @0        _    _    _    _    _
-  _    @1   @2   @3   @4   @5   _    _    _    _    _
-  @dk1 @dk2 @dk3 @dk4 @dk5  _   XX   @-   @,   @.   @/
-            _              @nbs           @sym
+  @6   @7   @8   @9   @0   XX   XX   _    _    _    _
+  @1   @2   @3   @4   @5   XX   _    _    _    _
+  XX   @dk1 @dk2 @dk3 @dk4 @dk5 XX   XX   @-   @,   @.
+  XX   XX   _    _    XX   XX   XX   _    _    XX   XX
+  XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
+  @/   _    XX   XX   _    XX   XX
 )
 
 (defalias

@@ -1,32 +1,23 @@
 (defcfg
   process-unmapped-keys yes
   concurrent-tap-hold yes
-  ;; NOTE: tap-hold-require-prior-idle (equivalent to ZMK's require-prior-idle-ms
-  ;; from urob's timeless homerow mods) lands in kanata v1.12.0-prerelease-2.
-  ;; On v1.11.0 it is unavailable, so same-hand suppression via
-  ;; tap-hold-release-keys + hand-key lists is the active anti-misfire mechanism.
-  ;; Upgrade to v1.12.0+ and add: tap-hold-require-prior-idle 150
+  ;; v1.12.0+: require 150ms idle before a tap-hold key activates its hold
+  ;; (ZMK-style require-prior-idle). Supplements same-hand suppression via
+  ;; tap-hold-release-keys + hand-key lists.
+  tap-hold-require-prior-idle 150
 )
 
 (defvar
   tap-time 150
   hold-time 200
   left-hand-keys (1 2 3 4 5 q w e r t a s d f g z x c v b <)
-  right-hand-keys (6 7 8 9 0 y u i o p h j k l ; n m , . / bspc)
+  right-hand-keys (6 7 8 9 0 - y u i o p [ ] ' h j k l ; n m , . / bspc)
 )
 
 (include defsrc/pc.kbd)
 (include defalias/qwerty.kbd)
-;; Layout: pick one base layer, comment the other
-;;(include deflayer/base.kbd)              ;; QWERTY
+;; Layout: base layer
 (include deflayer/colemak-dh-base.kbd)  ;; Colemak-DH
 (include deflayer/symbols.kbd)
 (include deflayer/navigation.kbd)
 (include deflayer/media.kbd)
-
-;; Workspace chord: hold both thumbs (lalt + ralt) → workspace layer
-;; Home row sends Super+1..0 for workspace switching
-(defchordsv2
-  (lalt ralt) (layer-while-held workspace) 350 all-released ()
-  (j k) esc 100 all-released ()
-)

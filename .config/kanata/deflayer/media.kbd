@@ -1,13 +1,13 @@
 ;; Media layer: MPRIS playback + volume/brightness control
-;; Activated by holding m (tap-hold: tap = m, hold = this layer)
-;; Left hand only, since m itself is a right-hand key.
+;; Activated by holding physical j key (tap-hold: tap = k, hold = this layer)
+;; Shifted up one physical row for ergonomic-shift layout.
 
 (deflayer media
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX        XX   XX   XX   XX   XX
-  XX   prev pp   next brdn brup XX   XX   XX   XX   XX
-  vold volu mute XX   XX   XX   XX   _    XX   XX   XX
-            XX              XX             XX
+  prev   pp   next   brdn   brup   XX   XX   XX   XX   XX
+  XX   vold   volu   mute   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   _   _   XX   XX   XX   _   _   XX   XX
+  XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX
@@ -15,6 +15,18 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 )
 
 ;; vim: set ft=lisp:

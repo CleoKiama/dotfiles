@@ -1,228 +1,243 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="90 60 720 240">
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 350">
   <style>
-    :root {
-      color-scheme: light dark;
-    }
-    rect {
-      fill: #f8f8f8;
-      stroke: #666;
-      stroke-width: .5px;
-    }
-    text {
-      fill: #bbb;
-      font: normal 20px sans-serif;
-      text-align: center;
-      text-anchor: middle;
-    }
-    .dualKey { fill: #ddd; transform: translateY(26px); }
-
-    #row_AD { transform: translate(64px,  64px); }
-    #row_AC { transform: translate(64px, 124px); }
-    #row_AB { transform: translate(64px, 184px); }
-    #row_AA { transform: translate(64px, 244px); }
-    .left   { transform: translate(-15px, 0); }
-    .right  { transform: translate(+15px, 0); }
-
-    .layer  { font-size: 14px; font-weight: bold; fill: #f8f8f8; }
-    .layerNum { fill: green; }
-    .layerSym { font-weight: normal; }
-    .layerMod { font-weight: bold; font-size: 14px; }
-
-    .layerSym, .colorSym { fill: blue; }
-
+    :root { color-scheme: light dark; }
+    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; rx: 8px; ry: 8px; }
+    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; rx: 8px; ry: 8px; }
+    rect.active { fill: #f0f9ff; stroke: #0284c7; stroke-width: 2px; rx: 8px; ry: 8px; }
+    text { font-family: system-ui, -apple-system, sans-serif; text-anchor: middle; }
+    text.title { font-size: 19px; font-weight: 800; fill: #0f172a; }
+    text.subtitle { font-size: 13px; font-weight: 500; fill: #64748b; }
+    text.phys { font-size: 9px; font-weight: 700; fill: #94a3b8; text-anchor: start; }
+    text.main { font-size: 16px; font-weight: 800; fill: #0284c7; }
+    text.sub { font-size: 11px; font-weight: 600; fill: #64748b; }
+    text.dead { font-size: 11px; fill: #cbd5e1; }
     @media (prefers-color-scheme: dark) {
-      text                 { fill: #666; }
-      rect                 { fill: #444; }
-      .dualKey             { fill: #666; }
-      .layerMod            { fill: #eee; }
-      .layerNum            { fill: #6d6; }
-      .layerSym, .colorSym { fill: #99f; }
+      rect.key { fill: #1e293b; stroke: #334155; }
+      rect.gap { fill: #0f172a; stroke: #334155; }
+      rect.active { fill: #0c4a6e; stroke: #38bdf8; }
+      text.title { fill: #f8fafc; }
+      text.subtitle { fill: #94a3b8; }
+      text.phys { fill: #64748b; }
+      text.main { fill: #38bdf8; }
+      text.sub { fill: #94a3b8; }
+      text.dead { fill: #475569; }
     }
   </style>
-
-  <g id="row_AD">
-    <g class="left">
-      <g transform="translate(90)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">Q</text>
-        <text x="38.0" y="43.4" class="layerNum">6</text>
-      </g>
-      <g transform="translate(150)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">W</text>
-        <text x="38.0" y="43.4" class="layerNum">7</text>
-      </g>
-      <g transform="translate(210)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">E</text>
-        <text x="38.0" y="43.4" class="layerNum">8</text>
-      </g>
-      <g transform="translate(270)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">R</text>
-        <text x="38.0" y="43.4" class="layerNum">9</text>
-      </g>
-      <g transform="translate(330)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">T</text>
-        <text x="38.0" y="43.4" class="layerNum">0</text>
-      </g>
-    </g>
-    <g class="right">
-      <g transform="translate(390)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">Y</text>
-      </g>
-      <g transform="translate(450)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">U</text>
-      </g>
-      <g transform="translate(510)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">I</text>
-      </g>
-      <g transform="translate(570)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">O</text>
-      </g>
-      <g transform="translate(630)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">P</text>
-      </g>
-    </g>
+  <text x="390" y="28" class="title">NumRow Layer</text>
+  <text x="390" y="48" class="subtitle">Activated by Holding Left Mid Thumb (c) — Digits 1..0</text>
+  <g transform="translate(20,70)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">1</text>
+    <text x="30" y="36" class="main">6</text>
   </g>
-
-  <g id="row_AC">
-    <g class="left">
-      <g transform="translate(90)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">A</text>
-        <text x="38.0" y="43.4" class="layerNum">1</text>
-      </g>
-      <g transform="translate(150)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">S</text>
-        <text x="38.0" y="43.4" class="layerNum">2</text>
-      </g>
-      <g transform="translate(210)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">D</text>
-        <text x="38.0" y="43.4" class="layerNum">3</text>
-      </g>
-      <g transform="translate(270)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">F</text>
-        <text x="38.0" y="43.4" class="layerNum">4</text>
-      </g>
-      <g transform="translate(330)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">G</text>
-        <text x="38.0" y="43.4" class="layerNum">5</text>
-      </g>
-    </g>
-    <g class="right">
-      <g transform="translate(390)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">H</text>
-      </g>
-      <g transform="translate(450)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">J</text>
-      </g>
-      <g transform="translate(510)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">K</text>
-      </g>
-      <g transform="translate(570)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">L</text>
-      </g>
-      <g transform="translate(630)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="43.4" class="level1">;</text>
-        <text x="12.8" y="20.6" class="level2">:</text>
-      </g>
-    </g>
+  <g transform="translate(86,70)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">2</text>
+    <text x="30" y="36" class="main">7</text>
   </g>
-
-  <g id="row_AB">
-    <g class="left">
-      <g transform="translate(90)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">Z</text>
-        </g>
-      </g>
-      <g transform="translate(150)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">X</text>
-        </g>
-      </g>
-      <g transform="translate(210)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">C</text>
-        </g>
-      </g>
-      <g transform="translate(270)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">V</text>
-        </g>
-      </g>
-      <g transform="translate(330)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">B</text>
-        </g>
-      </g>
-    </g>
-    <g class="right">
-      <g transform="translate(390)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">N</text>
-      </g>
-      <g transform="translate(450)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">M</text>
-        <text x="38.0" y="43.4" class="layerNum">-</text>
-      </g>
-      <g transform="translate(510)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="43.4" class="level1">,</text>
-        <text x="12.8" y="20.6" class="level2">&lt;</text>
-        <text x="38.0" y="43.4" class="layerNum">,</text>
-      </g>
-      <g transform="translate(570)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="43.4" class="level1">.</text>
-        <text x="12.8" y="20.6" class="level2">&gt;</text>
-        <text x="38.0" y="43.4" class="layerNum">.</text>
-      </g>
-      <g transform="translate(630)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="43.4" class="level1">/</text>
-        <text x="12.8" y="20.6" class="level2">?</text>
-        <text x="38.0" y="43.4" class="layerNum">/</text>
-      </g>
-    </g>
+  <g transform="translate(152,70)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">3</text>
+    <text x="30" y="36" class="main">8</text>
   </g>
-
-  <g id="row_AA">
-    <g transform="translate(180)">
-      <rect width="82" height="52" rx="5" ry="5" class="layerNum"/>
-      <text x="20.5" y="42.8" class="layer">num</text>
-    </g>
-    <g transform="translate(270)">
-      <rect width="232" height="52" rx="5" ry="5"/>
-      <text x="20.5" y="42.8" class="layer layerNum">⍽</text>
-    </g>
-    <g transform="translate(510)">
-      <rect width="82" height="52" rx="5" ry="5" class="layerSym"/>
-      <text x="20.5" y="42.8" class="layer">sym</text>
-    </g>
+  <g transform="translate(218,70)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">4</text>
+    <text x="30" y="36" class="main">9</text>
   </g>
-
+  <g transform="translate(284,70)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">5</text>
+    <text x="30" y="36" class="main">0</text>
+  </g>
+  <g transform="translate(350,70)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">6</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(446,70)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">7</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(512,70)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">8</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(578,70)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">9</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(644,70)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">0</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(710,70)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">-</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(20,136)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">q</text>
+    <text x="30" y="36" class="main">1</text>
+  </g>
+  <g transform="translate(86,136)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">w</text>
+    <text x="30" y="36" class="main">2</text>
+  </g>
+  <g transform="translate(152,136)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">e</text>
+    <text x="30" y="36" class="main">3</text>
+  </g>
+  <g transform="translate(218,136)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">r</text>
+    <text x="30" y="36" class="main">4</text>
+  </g>
+  <g transform="translate(284,136)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">t</text>
+    <text x="30" y="36" class="main">5</text>
+  </g>
+  <g transform="translate(350,136)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">y</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(446,136)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">u</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(512,136)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">i</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(578,136)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">o</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(644,136)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">p</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(710,136)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">[</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(20,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">a</text>
+    <text x="30" y="36" class="main">dk1</text>
+  </g>
+  <g transform="translate(86,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">s</text>
+    <text x="30" y="36" class="main">dk2</text>
+  </g>
+  <g transform="translate(152,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">d</text>
+    <text x="30" y="36" class="main">dk3</text>
+  </g>
+  <g transform="translate(218,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">f</text>
+    <text x="30" y="36" class="main">dk4</text>
+  </g>
+  <g transform="translate(284,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">g</text>
+    <text x="30" y="36" class="main">dk5</text>
+  </g>
+  <g transform="translate(350,202)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">h</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(446,202)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">j</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(512,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">k</text>
+    <text x="30" y="36" class="main">-</text>
+  </g>
+  <g transform="translate(578,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">l</text>
+    <text x="30" y="36" class="main">@,</text>
+  </g>
+  <g transform="translate(644,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">;</text>
+    <text x="30" y="36" class="main">@.</text>
+  </g>
+  <g transform="translate(710,202)">
+    <rect width="60" height="60" class="active"/>
+    <text x="6" y="12" class="phys">&#x27;</text>
+    <text x="30" y="36" class="main">/</text>
+  </g>
+  <g transform="translate(20,268)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">z</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(86,268)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">x</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(152,268)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">c</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(218,268)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">v</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(284,268)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">b</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(350,268)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">n</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(446,268)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">m</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(512,268)">
+    <rect width="60" height="60" class="key"/>
+    <text x="6" y="12" class="phys">,</text>
+    <text x="30" y="36" class="main">·</text>
+  </g>
+  <g transform="translate(578,268)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">.</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
+  <g transform="translate(644,268)">
+    <rect width="60" height="60" class="gap"/>
+    <text x="6" y="12" class="phys">/</text>
+    <text x="30" y="36" class="dead">XX</text>
+  </g>
 </svg>

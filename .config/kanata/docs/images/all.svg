@@ -1,295 +1,349 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="90 60 720 240">
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 440">
   <style>
-    :root {
-      color-scheme: light dark;
-    }
-    rect {
-      fill: #f8f8f8;
-      stroke: #666;
-      stroke-width: .5px;
-    }
-    text {
-      fill: #bbb;
-      font: normal 20px sans-serif;
-      text-align: center;
-      text-anchor: middle;
-    }
-    .dualKey { fill: #ddd; transform: translateY(26px); }
-
-    #row_AD { transform: translate(48px,  64px); }
-    #row_AC { transform: translate(64px, 124px); }
-    #row_AB { transform: translate(32px, 184px); }
-    #row_AA { transform: translate(62px, 244px); }
-
-    .shortcut { font-size: 10px; transform: translate(-3px,  -1px); }
-    .layerSym { font-weight: normal; }
-    .layerMod { font-weight: bold; font-size: 14px; }
-    .layerNav { font-weight: bold; }
-    .right .layerNav { font-weight: normal; }
-
-    .layerMod, .colorMod { fill: #333; }
-    .layerSym, .colorSym { fill: blue; }
-    .layerNav, .colorNav { fill: #e83; }
-    #row_AA    .level2   { fill: #333; }
-
+    :root { color-scheme: light dark; }
+    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; rx: 8px; ry: 8px; }
+    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; rx: 8px; ry: 8px; }
+    rect.hrm { fill: #fff7ed; stroke: #f97316; stroke-width: 1.5px; rx: 8px; ry: 8px; }
+    rect.thumb { fill: #eff6ff; stroke: #3b82f6; stroke-width: 2px; rx: 8px; ry: 8px; }
+    text { font-family: system-ui, -apple-system, sans-serif; text-anchor: middle; }
+    text.title { font-size: 20px; font-weight: 800; fill: #0f172a; }
+    text.subtitle { font-size: 13px; font-weight: 500; fill: #64748b; }
+    text.phys { font-size: 9px; font-weight: 700; fill: #94a3b8; text-anchor: start; }
+    text.base { font-size: 15px; font-weight: 800; fill: #0f172a; }
+    text.mod { font-size: 10px; font-weight: 700; fill: #ea580c; }
+    text.sym { font-size: 12px; font-weight: 700; fill: #7c3aed; }
+    text.nav { font-size: 11px; font-weight: 700; fill: #059669; }
+    text.num { font-size: 11px; font-weight: 700; fill: #0284c7; }
+    text.dead { font-size: 12px; font-weight: 600; fill: #cbd5e1; }
+    text.legend { font-size: 12px; font-weight: 600; text-anchor: start; }
     @media (prefers-color-scheme: dark) {
-      text                 { fill: #666; }
-      rect                 { fill: #444; }
-      .dualKey             { fill: #666; }
-      .layerMod, .colorMod { fill: #eee; }
-      .layerSym, .colorSym { fill: #99f; }
-      .layerNav, .colorNav { fill: #e83; }
-      #row_AA .level2      { fill: #ccc; }
+      rect.key { fill: #1e293b; stroke: #334155; }
+      rect.gap { fill: #0f172a; stroke: #334155; }
+      rect.hrm { fill: #2e1065; stroke: #a855f7; }
+      rect.thumb { fill: #172554; stroke: #3b82f6; }
+      text.title { fill: #f8fafc; }
+      text.subtitle { fill: #94a3b8; }
+      text.phys { fill: #64748b; }
+      text.base { fill: #f8fafc; }
+      text.mod { fill: #c084fc; }
+      text.sym { fill: #a78bfa; }
+      text.nav { fill: #34d399; }
+      text.num { fill: #38bdf8; }
+      text.dead { fill: #475569; }
     }
   </style>
-
-  <g id="row_AD">
-    <g class="left">
-      <g transform="translate(90)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">Q</text>
-        <text x="38.0" y="20.6" class="layerNav">↹</text>
-        <text x="38.0" y="43.4" class="layerSym">^</text>
-      </g>
-      <g transform="translate(150)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">W</text>
-        <text x="38.0" y="20.6" class="layerNav">⇱</text>
-        <text x="38.0" y="43.4" class="layerSym">&lt;</text>
-      </g>
-      <g transform="translate(210)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">E</text>
-        <text x="38.0" y="20.6" class="layerNav">↑</text>
-        <text x="38.0" y="43.4" class="layerSym">&gt;</text>
-      </g>
-      <g transform="translate(270)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">R</text>
-        <text x="38.0" y="20.6" class="layerNav">⇲</text>
-        <text x="38.0" y="43.4" class="layerSym">$</text>
-      </g>
-      <g transform="translate(330)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">T</text>
-        <text x="38.0" y="20.6" class="layerNav">⇞</text>
-        <text x="38.0" y="43.4" class="layerSym">%</text>
-      </g>
-    </g>
-    <g class="right">
-      <g transform="translate(390)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">Y</text>
-        <text x="38.0" y="20.6" class="layerNav">/</text>
-        <text x="38.0" y="43.4" class="layerSym">@</text>
-      </g>
-      <g transform="translate(450)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">U</text>
-        <text x="38.0" y="20.6" class="layerNav">7</text>
-        <text x="38.0" y="43.4" class="layerSym">&amp;</text>
-      </g>
-      <g transform="translate(510)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">I</text>
-        <text x="38.0" y="20.6" class="layerNav">8</text>
-        <text x="38.0" y="43.4" class="layerSym">*</text>
-      </g>
-      <g transform="translate(570)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">O</text>
-        <text x="38.0" y="20.6" class="layerNav">9</text>
-        <text x="38.0" y="43.4" class="layerSym">'</text>
-      </g>
-      <g transform="translate(630)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">P</text>
-        <text x="38.0" y="43.4" class="layerSym">`</text>
-      </g>
-    </g>
+  <text x="425" y="32" class="title">Ergonomic-Shift Colemak-DH — Master Multi-Layer Map</text>
+  <text x="425" y="52" class="subtitle">Row Shift-Up  •  Col 6 Split Gap (XX)  •  Color-Coded Dual Roles</text>
+  <g transform="translate(45, 72)">
+    <circle cx="0" cy="0" r="5" fill="#0f172a"/>
+    <text x="10" y="4" class="legend" fill="#0f172a">Base Alpha</text>
+    <circle cx="110" cy="0" r="5" fill="#ea580c"/>
+    <text x="120" y="4" class="legend" fill="#ea580c">🟠 Home-Row Mod</text>
+    <circle cx="270" cy="0" r="5" fill="#7c3aed"/>
+    <text x="280" y="4" class="legend" fill="#7c3aed">🟣 Symbol Layer (,)</text>
+    <circle cx="430" cy="0" r="5" fill="#059669"/>
+    <text x="440" y="4" class="legend" fill="#059669">🟢 Nav Layer (m)</text>
+    <circle cx="580" cy="0" r="5" fill="#0284c7"/>
+    <text x="590" y="4" class="legend" fill="#0284c7">🩵 NumRow Layer (c)</text>
+    <circle cx="730" cy="0" r="5" fill="#3b82f6"/>
+    <text x="740" y="4" class="legend" fill="#3b82f6">🔵 Thumbs</text>
   </g>
-
-  <g id="row_AC">
-    <g class="left">
-      <g transform="translate(90)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">A</text>
-        <text x="38.0" y="20.6" class="layerNav shortcut">all</text>
-        <text x="38.0" y="43.4" class="layerSym">{</text>
-      </g>
-      <g transform="translate(150)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <rect width="26" height="26" rx="2" ry="2" class="dualKey"/>
-        <text x="12.8" y="20.6" class="level2">S</text>
-        <text x="12.8" y="43.4" class="layerMod">⌘</text>
-        <text x="38.0" y="20.6" class="layerNav">←</text>
-        <text x="38.0" y="43.4" class="layerSym">(</text>
-      </g>
-      <g transform="translate(210)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <rect width="26" height="26" rx="2" ry="2" class="dualKey"/>
-        <text x="12.8" y="20.6" class="level2">D</text>
-        <text x="12.8" y="43.4" class="layerMod">⌥</text>
-        <text x="38.0" y="20.6" class="layerNav">↓</text>
-        <text x="38.0" y="43.4" class="layerSym">)</text>
-      </g>
-      <g transform="translate(270)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <rect width="26" height="26" rx="2" ry="2" class="dualKey"/>
-        <text x="12.8" y="20.6" class="level2">F</text>
-        <text x="12.8" y="43.4" class="layerMod">⌃</text>
-        <text x="38.0" y="20.6" class="layerNav">→</text>
-        <text x="38.0" y="43.4" class="layerSym">}</text>
-      </g>
-      <g transform="translate(330)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">G</text>
-        <text x="38.0" y="20.6" class="layerNav">⇟</text>
-        <text x="38.0" y="43.4" class="layerSym">=</text>
-      </g>
-    </g>
-    <g class="right">
-      <g transform="translate(390)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">H</text>
-        <text x="38.0" y="20.6" class="layerNav">-</text>
-        <text x="38.0" y="43.4" class="layerSym">\</text>
-      </g>
-      <g transform="translate(450)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <rect width="26" height="26" rx="2" ry="2" class="dualKey"/>
-        <text x="12.8" y="20.6" class="level2">J</text>
-        <text x="12.8" y="43.4" class="layerMod">⌃</text>
-        <text x="38.0" y="20.6" class="layerNav">4</text>
-        <text x="38.0" y="43.4" class="layerSym">+</text>
-      </g>
-      <g transform="translate(510)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <rect width="26" height="26" rx="2" ry="2" class="dualKey"/>
-        <text x="12.8" y="20.6" class="level2">K</text>
-        <text x="12.8" y="43.4" class="layerMod">⌥</text>
-        <text x="38.0" y="20.6" class="layerNav">5</text>
-        <text x="38.0" y="43.4" class="layerSym">-</text>
-      </g>
-      <g transform="translate(570)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <rect width="26" height="26" rx="2" ry="2" class="dualKey"/>
-        <text x="12.8" y="20.6" class="level2">L</text>
-        <text x="12.8" y="43.4" class="layerMod">⌘</text>
-        <text x="38.0" y="20.6" class="layerNav">6</text>
-        <text x="38.0" y="43.4" class="layerSym">/</text>
-      </g>
-      <g transform="translate(630)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="43.4" class="level1">;</text>
-        <text x="12.8" y="20.6" class="level2">:</text>
-        <text x="38.0" y="20.6" class="layerNav">0</text>
-        <text x="38.0" y="43.4" class="layerSym">"</text>
-      </g>
-    </g>
+  <g transform="translate(24,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">1</text>
+    <text x="24" y="36" class="base">q</text>
+    <text x="52" y="16" class="sym">^</text>
+    <text x="52" y="58" class="nav">NumPad</text>
+    <text x="12" y="58" class="num">6</text>
   </g>
-
-  <g id="row_AB">
-    <g class="left">
-      <g transform="translate(150)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">Z</text>
-          <text x="38.0" y="20.6" class="layerNav shortcut">undo</text>
-          <text x="38.0" y="43.4" class="layerSym">~</text>
-        </g>
-      </g>
-      <g transform="translate(210)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">X</text>
-          <text x="38.0" y="20.6" class="layerNav shortcut">cut</text>
-          <text x="38.0" y="43.4" class="layerSym">[</text>
-        </g>
-      </g>
-      <g transform="translate(270)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">C</text>
-          <text x="38.0" y="20.6" class="layerNav shortcut">copy</text>
-          <text x="38.0" y="43.4" class="layerSym">]</text>
-        </g>
-      </g>
-      <g transform="translate(330)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">V</text>
-          <text x="38.0" y="20.6" class="layerNav shortcut">paste</text>
-          <text x="38.0" y="43.4" class="layerSym">_</text>
-        </g>
-      </g>
-      <g transform="translate(390)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <g>
-          <text x="12.8" y="20.6" class="level2">B</text>
-          <text x="38.0" y="20.6" class="layerNav">⇤</text>
-          <text x="38.0" y="43.4" class="layerSym">#</text>
-        </g>
-      </g>
-    </g>
-    <g class="right">
-      <g transform="translate(450)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">N</text>
-        <text x="38.0" y="20.6" class="layerNav">,</text>
-        <text x="38.0" y="43.4" class="layerSym">|</text>
-      </g>
-      <g transform="translate(510)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="20.6" class="level2">M</text>
-        <text x="38.0" y="20.6" class="layerNav">1</text>
-        <text x="38.0" y="43.4" class="layerSym">!</text>
-      </g>
-      <g transform="translate(570)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="43.4" class="level1">,</text>
-        <text x="12.8" y="20.6" class="level2">&lt;</text>
-        <text x="38.0" y="20.6" class="layerNav">2</text>
-        <text x="38.0" y="43.4" class="layerSym">;</text>
-      </g>
-      <g transform="translate(630)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="43.4" class="level1">.</text>
-        <text x="12.8" y="20.6" class="level2">&gt;</text>
-        <text x="38.0" y="20.6" class="layerNav">3</text>
-        <text x="38.0" y="43.4" class="layerSym">:</text>
-      </g>
-      <g transform="translate(690)">
-        <rect width="52" height="52" rx="5" ry="5"/>
-        <text x="12.8" y="43.4" class="level1">/</text>
-        <text x="12.8" y="20.6" class="level2">?</text>
-        <text x="38.0" y="20.6" class="layerNav">.</text>
-        <text x="38.0" y="43.4" class="layerSym">?</text>
-      </g>
-    </g>
+  <g transform="translate(96,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">2</text>
+    <text x="24" y="36" class="base">w</text>
+    <text x="52" y="16" class="sym">&lt;</text>
+    <text x="52" y="58" class="nav">@cls</text>
+    <text x="12" y="58" class="num">7</text>
   </g>
-
-  <g id="row_AA">
-    <g transform="translate(180)">
-      <rect width="82" height="52" rx="5" ry="5"/>
-      <rect width="41" height="26" rx="2" ry="2" class="dualKey"/>
-      <text x="20.5" y="42.8" class="layerMod">shift</text>
-      <text x="61.5" y="20.6" class="layerNav" style="font-size: 14px;">⌦</text>
-      <text x="20.5" y="20.6" class="level2" style="font-size: 14px;">⌫</text>
-    </g>
-    <g transform="translate(270)">
-      <rect width="232" height="52" rx="5" ry="5"/>
-      <rect width="41" height="26" rx="2" ry="2" class="dualKey"/>
-      <text x="20.5" y="42.8" class="layerMod colorNav">nav</text>
-    </g>
-    <g transform="translate(510)">
-      <rect width="82" height="52" rx="5" ry="5"/>
-      <rect width="41" height="26" rx="2" ry="2" class="dualKey"/>
-      <text x="20.5" y="42.8" class="layerMod colorSym">sym</text>
-      <text x="61.5" y="20.6" class="layerNav" style="font-weight: normal;">⎋</text>
-      <text x="20.5" y="22.6" class="level2">⏎</text>
-    </g>
+  <g transform="translate(168,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">3</text>
+    <text x="24" y="36" class="base">f</text>
+    <text x="52" y="16" class="sym">&gt;</text>
+    <text x="52" y="58" class="nav">Alt+←</text>
+    <text x="12" y="58" class="num">8</text>
   </g>
-
+  <g transform="translate(240,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">4</text>
+    <text x="24" y="36" class="base">p</text>
+    <text x="52" y="16" class="sym">$</text>
+    <text x="52" y="58" class="nav">Alt+→</text>
+    <text x="12" y="58" class="num">9</text>
+  </g>
+  <g transform="translate(312,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">5</text>
+    <text x="24" y="36" class="base">b</text>
+    <text x="52" y="16" class="sym">%</text>
+    <text x="12" y="58" class="num">0</text>
+  </g>
+  <g transform="translate(384,100)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">6</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
+  <g transform="translate(488,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">7</text>
+    <text x="24" y="36" class="base">j</text>
+    <text x="52" y="16" class="sym">@</text>
+    <text x="52" y="58" class="nav">Home</text>
+  </g>
+  <g transform="translate(560,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">8</text>
+    <text x="24" y="36" class="base">l</text>
+    <text x="52" y="16" class="sym">&amp;</text>
+    <text x="52" y="58" class="nav">PgDn</text>
+  </g>
+  <g transform="translate(632,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">9</text>
+    <text x="24" y="36" class="base">u</text>
+    <text x="52" y="16" class="sym">*</text>
+    <text x="52" y="58" class="nav">PgUp</text>
+  </g>
+  <g transform="translate(704,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">0</text>
+    <text x="24" y="36" class="base">y</text>
+    <text x="52" y="16" class="sym">&#x27;</text>
+    <text x="52" y="58" class="nav">End</text>
+  </g>
+  <g transform="translate(776,100)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">-</text>
+    <text x="24" y="36" class="base">;</text>
+    <text x="52" y="16" class="sym">`</text>
+    <text x="52" y="58" class="nav">Run</text>
+  </g>
+  <g transform="translate(24,172)">
+    <rect width="64" height="64" class="hrm"/>
+    <text x="6" y="12" class="phys">q</text>
+    <text x="32" y="30" class="base">a</text>
+    <text x="32" y="44" class="mod">Shift</text>
+    <text x="52" y="16" class="sym">{</text>
+    <text x="52" y="58" class="nav">All</text>
+  </g>
+  <g transform="translate(96,172)">
+    <rect width="64" height="64" class="hrm"/>
+    <text x="6" y="12" class="phys">w</text>
+    <text x="32" y="30" class="base">r</text>
+    <text x="32" y="44" class="mod">Alt</text>
+    <text x="52" y="16" class="sym">(</text>
+    <text x="52" y="58" class="nav">Save</text>
+  </g>
+  <g transform="translate(168,172)">
+    <rect width="64" height="64" class="hrm"/>
+    <text x="6" y="12" class="phys">e</text>
+    <text x="32" y="30" class="base">s</text>
+    <text x="32" y="44" class="mod">Super</text>
+    <text x="52" y="16" class="sym">)</text>
+    <text x="52" y="58" class="nav">S-Tab</text>
+  </g>
+  <g transform="translate(240,172)">
+    <rect width="64" height="64" class="hrm"/>
+    <text x="6" y="12" class="phys">r</text>
+    <text x="32" y="30" class="base">t</text>
+    <text x="32" y="44" class="mod">Ctrl</text>
+    <text x="52" y="16" class="sym">}</text>
+    <text x="52" y="58" class="nav">Tab</text>
+  </g>
+  <g transform="translate(312,172)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">t</text>
+    <text x="24" y="36" class="base">g</text>
+    <text x="52" y="16" class="sym">=</text>
+    <text x="12" y="58" class="num">5</text>
+  </g>
+  <g transform="translate(384,172)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">y</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
+  <g transform="translate(488,172)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">u</text>
+    <text x="24" y="36" class="base">m</text>
+    <text x="52" y="16" class="sym">\</text>
+    <text x="52" y="58" class="nav">←</text>
+  </g>
+  <g transform="translate(560,172)">
+    <rect width="64" height="64" class="hrm"/>
+    <text x="6" y="12" class="phys">i</text>
+    <text x="32" y="30" class="base">n</text>
+    <text x="32" y="44" class="mod">Ctrl</text>
+    <text x="52" y="16" class="sym">+</text>
+    <text x="52" y="58" class="nav">↓</text>
+  </g>
+  <g transform="translate(632,172)">
+    <rect width="64" height="64" class="hrm"/>
+    <text x="6" y="12" class="phys">o</text>
+    <text x="32" y="30" class="base">e</text>
+    <text x="32" y="44" class="mod">Super</text>
+    <text x="52" y="16" class="sym">-</text>
+    <text x="52" y="58" class="nav">↑</text>
+  </g>
+  <g transform="translate(704,172)">
+    <rect width="64" height="64" class="hrm"/>
+    <text x="6" y="12" class="phys">p</text>
+    <text x="32" y="30" class="base">i</text>
+    <text x="32" y="44" class="mod">Alt</text>
+    <text x="52" y="16" class="sym">/</text>
+    <text x="52" y="58" class="nav">→</text>
+  </g>
+  <g transform="translate(776,172)">
+    <rect width="64" height="64" class="hrm"/>
+    <text x="6" y="12" class="phys">[</text>
+    <text x="32" y="30" class="base">o</text>
+    <text x="32" y="44" class="mod">Shift</text>
+    <text x="52" y="16" class="sym">&quot;</text>
+    <text x="52" y="58" class="nav">FunPad</text>
+  </g>
+  <g transform="translate(24,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">a</text>
+    <text x="24" y="36" class="base">x</text>
+    <text x="52" y="16" class="sym">~</text>
+    <text x="52" y="58" class="nav">Undo</text>
+    <text x="12" y="58" class="num">dk1</text>
+  </g>
+  <g transform="translate(96,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">s</text>
+    <text x="24" y="36" class="base">c</text>
+    <text x="52" y="16" class="sym">[</text>
+    <text x="52" y="58" class="nav">Cut</text>
+    <text x="12" y="58" class="num">dk2</text>
+  </g>
+  <g transform="translate(168,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">d</text>
+    <text x="24" y="36" class="base">d</text>
+    <text x="52" y="16" class="sym">]</text>
+    <text x="52" y="58" class="nav">Copy</text>
+    <text x="12" y="58" class="num">dk3</text>
+  </g>
+  <g transform="translate(240,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">f</text>
+    <text x="24" y="36" class="base">v</text>
+    <text x="52" y="16" class="sym">_</text>
+    <text x="52" y="58" class="nav">Paste</text>
+    <text x="12" y="58" class="num">dk4</text>
+  </g>
+  <g transform="translate(312,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">g</text>
+    <text x="24" y="36" class="base">z</text>
+    <text x="52" y="16" class="sym">#</text>
+    <text x="12" y="58" class="num">dk5</text>
+  </g>
+  <g transform="translate(384,244)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">h</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
+  <g transform="translate(488,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">j</text>
+    <text x="24" y="36" class="base">@med</text>
+    <text x="52" y="16" class="sym">|</text>
+    <text x="52" y="58" class="nav">WhlL</text>
+  </g>
+  <g transform="translate(560,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">k</text>
+    <text x="24" y="36" class="base">h</text>
+    <text x="52" y="16" class="sym">!</text>
+    <text x="52" y="58" class="nav">WhlD</text>
+    <text x="12" y="58" class="num">-</text>
+  </g>
+  <g transform="translate(632,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">l</text>
+    <text x="24" y="36" class="base">,</text>
+    <text x="52" y="16" class="sym">;</text>
+    <text x="52" y="58" class="nav">WhlU</text>
+    <text x="12" y="58" class="num">@,</text>
+  </g>
+  <g transform="translate(704,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">;</text>
+    <text x="24" y="36" class="base">.</text>
+    <text x="52" y="16" class="sym">:</text>
+    <text x="52" y="58" class="nav">WhlR</text>
+    <text x="12" y="58" class="num">@.</text>
+  </g>
+  <g transform="translate(776,244)">
+    <rect width="64" height="64" class="key"/>
+    <text x="6" y="12" class="phys">&#x27;</text>
+    <text x="24" y="36" class="base">/</text>
+    <text x="52" y="16" class="sym">?</text>
+    <text x="12" y="58" class="num">/</text>
+  </g>
+  <g transform="translate(24,316)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">z</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
+  <g transform="translate(96,316)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">x</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
+  <g transform="translate(168,316)">
+    <rect width="64" height="64" class="thumb"/>
+    <text x="6" y="12" class="phys">c</text>
+    <text x="32" y="32" class="base">Bspc</text>
+    <text x="32" y="50" class="nav">Num</text>
+  </g>
+  <g transform="translate(240,316)">
+    <rect width="64" height="64" class="thumb"/>
+    <text x="6" y="12" class="phys">v</text>
+    <text x="32" y="32" class="base">Esc</text>
+    <text x="32" y="50" class="nav">Wksp</text>
+  </g>
+  <g transform="translate(312,316)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">b</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
+  <g transform="translate(384,316)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">n</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
+  <g transform="translate(488,316)">
+    <rect width="64" height="64" class="thumb"/>
+    <text x="6" y="12" class="phys">m</text>
+    <text x="32" y="32" class="base">Spc</text>
+    <text x="32" y="50" class="nav">Nav</text>
+  </g>
+  <g transform="translate(560,316)">
+    <rect width="64" height="64" class="thumb"/>
+    <text x="6" y="12" class="phys">,</text>
+    <text x="32" y="32" class="base">Ret</text>
+    <text x="32" y="50" class="nav">Sym</text>
+  </g>
+  <g transform="translate(632,316)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">.</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
+  <g transform="translate(704,316)">
+    <rect width="64" height="64" class="gap"/>
+    <text x="6" y="12" class="phys">/</text>
+    <text x="32" y="38" class="dead">XX</text>
+  </g>
 </svg>
