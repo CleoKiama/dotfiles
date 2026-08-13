@@ -2,8 +2,8 @@
   "lastChangelogVersion": "0.82.1",
   "theme": "dark",
   "defaultProvider": "google-antigravity",
-  "defaultModel": "antigravity-claude-sonnet-4-6-thinking",
-  "defaultThinkingLevel": "medium",
+  "defaultModel": "antigravity-gemini-3.5-flash",
+  "defaultThinkingLevel": "high",
   "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\"",
   "npmCommand": [
     "pnpm"
@@ -21,8 +21,7 @@
     "google-antigravity/*"
   ],
   "skills": [
-    "~/dotfiles/.config/pi/agent/skills/git-commit",
-    "~/.config/pi/agent/git/github.com/badlogic/pi-skills"
+    "~/dotfiles/.config/pi/agent/skills/git-commit"
   ],
   "extensions": [
     "~/.config/pi/agent/extensions/custom-compaction.ts"
@@ -31,7 +30,6 @@
     "~/dotfiles/.config/pi/agent/prompts"
   ],
   "packages": [
-    "git:github.com/badlogic/pi-skills",
     "npm:pi-wakatime",
     "git:github.com/obra/superpowers",
     "npm:pi-mcp-adapter",
@@ -39,7 +37,9 @@
     "npm:@tintinweb/pi-tasks",
     "npm:pi-dynamic-workflows",
     "npm:@yusukeshib/pi-stash",
-    "npm:@cortexkit/pi-antigravity-auth"
+    "npm:@cortexkit/pi-antigravity-auth",
+    "npm:@gotgenes/pi-github-tools",
+    "npm:@gotgenes/pi-permission-system"
   ],
   "hideThinkingBlock": true
 }

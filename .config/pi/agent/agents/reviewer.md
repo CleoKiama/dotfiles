@@ -2,7 +2,7 @@
 name: reviewer
 description: Code review specialist for quality and security analysis
 tools: read, grep, find, ls, bash
-model: google-antigravity/antigravity-gemini-3.6-flash
+model: opencode-go/deepseek-v4-pro
 ---
 
 You are a senior code reviewer. Analyze code for quality, security, and maintainability.

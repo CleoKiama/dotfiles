@@ -1,6 +1,11 @@
 # Bug: `mcp` tool's `anyOf` schema breaks Claude models via Antigravity
 
 **Status:** ROOT-CAUSED + PATCHED locally (2026-08-07). Patch verified live; review verdict appended below.
+**Patch history:** 2.20.1 (original) → 2.21.2 (**RE-APPLIED 2026-08-07** after `pi update` bumped
+the adapter and wiped the store; block was byte-identical, patch file refreshed for 2.21.2) →
+**RE-APPLIED again 12:33 local** (a patch-file validation step clobbered the store copy with a
+pristine backup — restore mistakes are the #1 way this fix silently disappears; always re-verify
+`grep -c Type.Union` == 1 after any write).
 **Affects:** `pi` sessions using `@cortexkit/pi-antigravity-auth` with **Claude-family** wire models
 (`antigravity-claude-sonnet-4-6-thinking`, `claude-sonnet-4-6`, `claude-opus-4-6-thinking`, …).
 Gemini/GPT-OSS models are unaffected (Gemini API accepts the schema).
@@ -95,6 +100,7 @@ args: Type.Optional(Type.Object({}, {
 
 **Verification:** full 36-tool list rebuilt with the patched `mcp` schema replayed live → **HTTP 200**,
 Claude answers. Control probe (`anyOf` + null) still 400 → diagnosis confirmed.
+Second verification (2.21.2): TypeBox compile of the patched `args` block → no `anyOf` in output.
 
 **Apply at runtime:** restart pi or `/reload` (reloads extensions).
 

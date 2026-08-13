@@ -1,6 +1,6 @@
---- a/node_modules/.pnpm/pi-mcp-adapter@2.20.1_typebox@1.3.8/node_modules/pi-mcp-adapter/index.ts
-+++ b/node_modules/.pnpm/pi-mcp-adapter@2.20.1_typebox@1.3.8/node_modules/pi-mcp-adapter/index.ts
-@@ -674,13 +674,15 @@
+--- a/node_modules/.pnpm/pi-mcp-adapter@2.21.2_typebox@1.3.8/node_modules/pi-mcp-adapter/index.ts
++++ b/node_modules/.pnpm/pi-mcp-adapter@2.21.2_typebox@1.3.8/node_modules/pi-mcp-adapter/index.ts
+@@ -686,13 +686,16 @@
        renderCall: renderMcpProxyToolCall,
        parameters: Type.Object({
          tool: Type.Optional(Type.String({ description: "Tool name to call (e.g., 'xcodebuild_list_sims')" })),
@@ -16,6 +16,7 @@
 +        // Anthropic input_schema, causing "tools.N.custom.input_schema: JSON schema is
 +        // invalid (draft 2020-12)" for Claude models. Object-only schema avoids anyOf;
 +        // the runtime still accepts JSON strings (see execute handler).
++        // RE-APPLIED 2026-08-07 after pi update bumped pi-mcp-adapter 2.20.1 -> 2.21.2 (store wiped).
 +        args: Type.Optional(Type.Object({}, {
 +          additionalProperties: true,
 +          description: 'Tool arguments as a JSON object, or a JSON string encoding one (strings are parsed as JSON)',

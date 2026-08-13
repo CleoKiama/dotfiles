@@ -10,6 +10,10 @@
     "codebase-memory": {
       "command": "codebase-memory-mcp",
       "directTools": true
+    },
+    "searxng": {
+      "url": "http://localhost:8081/mcp",
+      "directTools": true
     }
   }
 }

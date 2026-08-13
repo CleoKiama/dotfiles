@@ -12,49 +12,50 @@ import { compact } from "@earendil-works/pi-coding-agent";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
-	pi.on("session_before_compact", async (event, ctx) => {
-		const { preparation, signal } = event;
+  pi.on("session_before_compact", async (event, ctx) => {
+    const { preparation, signal } = event;
 
-		// Find the dedicated compaction model
-		const model = ctx.modelRegistry.find("opencode", "deepseek-v4-flash-free");
-		if (!model) {
-			ctx.ui.notify(
-				"Compaction model 'opencode/deepseek-v4-flash-free' not found, using default",
-				"warning",
-			);
-			return; // fall back to default compaction
-		}
+    // Find the dedicated compaction model
+    ctx.ui.notify("🚀 Compacting with antigravity-gemini-3.6 model....", "warning");
+    const model = ctx.modelRegistry.find("google-antigravity", "antigravity-gemini-3.6-flash");
+    if (!model) {
+      ctx.ui.notify(
+        "Compaction model 'opencode/deepseek-v4-flash-free' not found, using default",
+        "warning",
+      );
+      return; // fall back to default compaction
+    }
 
-		// Resolve API key and request headers for the model
-		const auth = await ctx.modelRegistry.getApiKeyAndHeaders(model);
-		if (!auth.ok) {
-			ctx.ui.notify(`Compaction auth failed: ${auth.error}`, "warning");
-			return; // fall back to default compaction
-		}
+    // Resolve API key and request headers for the model
+    const auth = await ctx.modelRegistry.getApiKeyAndHeaders(model);
+    if (!auth.ok) {
+      ctx.ui.notify(`Compaction auth failed: ${auth.error}`, "warning");
+      return; // fall back to default compaction
+    }
 
-		try {
-			const result = await compact(
-				preparation,
-				model,
-				auth.apiKey,
-				auth.headers,
-				undefined, // customInstructions
-				signal,
-				undefined, // thinkingLevel
-				undefined, // streamFn
-				auth.env,
-			);
+    try {
+      const result = await compact(
+        preparation,
+        model,
+        auth.apiKey,
+        auth.headers,
+        undefined, // customInstructions
+        signal,
+        undefined, // thinkingLevel
+        undefined, // streamFn
+        auth.env,
+      );
 
-			ctx.ui.notify(
-				`Compacted with opencode/deepseek-v4-flash-free (${result.tokensBefore.toLocaleString()} tokens summarized)`,
-				"info",
-			);
+      ctx.ui.notify(
+        `Compacted with opencode/deepseek-v4-flash-free (${result.tokensBefore.toLocaleString()} tokens summarized)`,
+        "info",
+      );
 
-			return { compaction: result };
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			ctx.ui.notify(`Compaction failed: ${message}, falling back to default`, "warning");
-			return; // fall back to default compaction
-		}
-	});
+      return { compaction: result };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      ctx.ui.notify(`Compaction failed: ${message}, falling back to default`, "warning");
+      return; // fall back to default compaction
+    }
+  });
 }
