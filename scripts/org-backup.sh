@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO_DIR="/data/org"
+REPO_DIR="/home/cleo/Projects/org-notes"
 FAIL_COUNT_FILE="$REPO_DIR/.git/push_fail_count"
 
 cd "$REPO_DIR" || exit 1
