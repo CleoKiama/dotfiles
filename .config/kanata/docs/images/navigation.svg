@@ -201,9 +201,9 @@
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(152,268)">
-    <rect width="60" height="60" class="key"/>
+    <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">c</text>
-    <text x="30" y="36" class="main">·</text>
+    <text x="30" y="36" class="main">Del</text>
   </g>
   <g transform="translate(218,268)">
     <rect width="60" height="60" class="key"/>

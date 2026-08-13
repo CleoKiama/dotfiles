@@ -43,7 +43,7 @@ LABEL_MAP = {
     '@1': '1', '@2': '2', '@3': '3', '@4': '4', '@5': '5',
     '@dk1': 'dk1', '@dk2': 'dk2', '@dk3': 'dk3', '@dk4': 'dk4', '@dk5': 'dk5',
     'lft': '←', 'down': '↓', 'up': '↑', 'rght': '→',
-    'bck': 'Alt+←', 'fwd': 'Alt+→', 'cls': 'Ctrl+W', 'S-tab': 'S-Tab', 'tab': 'Tab',
+    'bck': 'Alt+←', 'fwd': 'Alt+→', 'cls': 'Ctrl+W', 'S-tab': 'S-Tab', 'tab': 'Tab', 'del': 'Del',
     'home': 'Home', 'pgdn': 'PgDn', 'pgup': 'PgUp', 'end': 'End',
     'M-1': 'Wksp 1', 'M-2': 'Wksp 2', 'M-3': 'Wksp 3', 'M-4': 'Wksp 4', 'M-5': 'Wksp 5',
     'M-6': 'Wksp 6', 'M-7': 'Wksp 7', 'M-8': 'Wksp 8', 'M-9': 'Wksp 9', 'M-0': 'Wksp 10'
