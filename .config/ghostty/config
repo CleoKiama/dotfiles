@@ -57,3 +57,5 @@ quit-after-last-window-closed = true
 quit-after-last-window-closed-delay = 5m
 
 #gtk-single-instance = true
+
+term = xterm-256color
