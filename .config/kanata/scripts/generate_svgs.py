@@ -8,7 +8,9 @@ key_to_idx = {tok: idx for idx, tok in enumerate(defsrc_toks)}
 def get_layer(filename, lname):
     txt = open(filename).read()
     m = re.search(r'\(deflayer '+lname+r'\n(.*?)\n\)', txt, re.S)
-    return m.group(1).split() if m else []
+    if not m: return []
+    lines = [l for l in m.group(1).splitlines() if not l.strip().startswith(';')]
+    return re.findall(r'\([^)]+\)|\S+', '\n'.join(lines))
 
 base_toks = get_layer('deflayer/colemak-dh-base.kbd', 'base')
 sym_toks  = get_layer('deflayer/symbols.kbd', 'symbols')
@@ -29,11 +31,12 @@ GRID_KEYS = [
 # Map kanata aliases to user-friendly display labels
 LABEL_MAP = {
     'XX': '', '_': '·',
-    '@a': 'a', '@r': 'r', '@s': 's', '@t': 't',
-    '@n': 'n', '@e': 'e', '@i': 'i', '@o': 'o',
-    '@num': 'Bspc / Num', '@escwsp': 'Esc / Wksp', '@nav': 'Spc / Nav', '@sym': 'Ret / Sym',
+    '(chord fp-esc 3)': 'f', '(chord fp-esc 4)': 'p',
+    '@r': 'r', '@s': 's', '@t': 't',
+    '@n': 'n', '@e': 'e', '@i': 'i',
+    '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@entnum': 'Ret / Num',
     '@pl': '(', '@pr': ')', '@cl': '{', '@cr': '}', '@sl': '[', '@sr': ']',
-    '@scl': ';', '@ndo': 'Undo', '@cut': 'Cut', '@cpy': 'Copy', '@pst': 'Paste',
+    '@scl': ';', '@ndo': 'Undo', '@cut': 'Cut', '@cpy': 'Copy', '@rdo': 'Redo', '@pst': 'Paste',
     '@all': 'All', '@sav': 'Save', '@run': 'Run', '@fun': 'FunPad', '@pad': 'NumPad',
     '@std': 'Base', '@mwl': 'WhlL', '@mwd': 'WhlD', '@mwu': 'WhlU', '@mwr': 'WhlR',
     '@^': '^', '@<': '<', '@>': '>', '@$': '$', '@%': '%', '@@': '@', '@&': '&', '@*': '*', '@\'': '\'',
@@ -41,7 +44,7 @@ LABEL_MAP = {
     '@~': '~', '@[': '[', '@]': ']', '@_': '_', '@#': '#', '@|': '|', '@!': '!', '@:': ':',
     '@?': '?', '@`': '`', '@\'\'': '"', '@6': '6', '@7': '7', '@8': '8', '@9': '9', '@0': '0',
     '@1': '1', '@2': '2', '@3': '3', '@4': '4', '@5': '5',
-    '@dk1': 'dk1', '@dk2': 'dk2', '@dk3': 'dk3', '@dk4': 'dk4', '@dk5': 'dk5',
+    '@dk1': '', '@dk2': '', '@dk3': '', '@dk4': '', '@dk5': '',
     'lft': '←', 'down': '↓', 'up': '↑', 'rght': '→',
     'bck': 'Alt+←', 'fwd': 'Alt+→', 'cls': 'Ctrl+W', 'S-tab': 'S-Tab', 'tab': 'Tab', 'del': 'Del',
     'home': 'Home', 'pgdn': 'PgDn', 'pgup': 'PgUp', 'end': 'End',
@@ -50,8 +53,8 @@ LABEL_MAP = {
 }
 
 HRM_MODS = {
-    'q': 'Shift', 'w': 'Alt', 'e': 'Super', 'r': 'Ctrl',
-    'i': 'Ctrl', 'o': 'Super', 'p': 'Alt', '[': 'Shift'
+    'w': 'Alt', 'e': 'Super', 'r': 'Ctrl',
+    'i': 'Ctrl', 'o': 'Super', 'p': 'Alt'
 }
 
 def fmt(tok):
@@ -132,6 +135,12 @@ def render_all_svg():
         for c_idx, pkey in enumerate(row):
             is_right = (c_idx >= 6)
             is_dead_col = (c_idx == 5)
+            is_thumb = (pkey in ('c', 'v', 'm', ','))
+
+            # Skip rendering non-active layout keys (dead center column & non-thumb bottom keys)
+            if is_dead_col or (r_idx == 3 and not is_thumb):
+                continue
+
             x = margin_x + c_idx * stride_x + (gap_extra if is_right else 0)
 
             src_idx = key_to_idx[pkey]
@@ -140,19 +149,18 @@ def render_all_svg():
             n_tok = nav_toks[src_idx]  if src_idx < len(nav_toks) else 'XX'
             num_tok = num_toks[src_idx] if src_idx < len(num_toks) else 'XX'
 
-            is_thumb = (pkey in ('c', 'v', 'm', ','))
             is_hrm = (pkey in HRM_MODS)
 
             rect_cls = ' class="key"'
-            if is_dead_col or b_tok == 'XX': rect_cls = ' class="gap"'
-            elif is_thumb: rect_cls = ' class="thumb"'
+            if is_thumb: rect_cls = ' class="thumb"'
             elif is_hrm: rect_cls = ' class="hrm"'
+            elif b_tok == 'XX': rect_cls = ' class="gap"'
 
             svg.append(f'  <g transform="translate({x},{y})">')
             svg.append(f'    <rect width="{kw}" height="{kh}"{rect_cls}/>')
             svg.append(f'    <text x="6" y="12" class="phys">{esc(pkey)}</text>')
 
-            if is_dead_col or b_tok == 'XX':
+            if b_tok == 'XX':
                 svg.append(f'    <text x="32" y="38" class="dead">XX</text>')
             elif is_thumb:
                 b_lbl = fmt(b_tok)
@@ -162,28 +170,34 @@ def render_all_svg():
             elif is_hrm:
                 b_lbl = fmt(b_tok)
                 mod_lbl = HRM_MODS[pkey]
-                svg.append(f'    <text x="32" y="30" class="base">{esc(b_lbl)}</text>')
-                svg.append(f'    <text x="32" y="44" class="mod">{esc(mod_lbl)}</text>')
+                svg.append(f'    <text x="26" y="30" class="base">{esc(b_lbl)}</text>')
+                svg.append(f'    <text x="26" y="46" class="mod">{esc(mod_lbl)}</text>')
                 if s_tok != 'XX':
-                    svg.append(f'    <text x="52" y="16" class="sym">{esc(fmt(s_tok))}</text>')
+                    svg.append(f'    <text x="50" y="16" class="sym">{esc(fmt(s_tok))}</text>')
                 if n_tok != 'XX':
-                    svg.append(f'    <text x="52" y="58" class="nav">{esc(fmt(n_tok))}</text>')
+                    nav_str = fmt(n_tok)
+                    fsize = "8.5px" if len(nav_str) > 4 else "10px"
+                    svg.append(f'    <text x="44" y="56" class="nav" font-size="{fsize}">{esc(nav_str)}</text>')
             else:
                 # Normal Alpha Key with Multi-Layer Badges
                 b_lbl = fmt(b_tok)
-                svg.append(f'    <text x="24" y="36" class="base">{esc(b_lbl)}</text>')
+                svg.append(f'    <text x="20" y="36" class="base">{esc(b_lbl)}</text>')
 
                 # Top Right: Symbol Layer Output
                 if s_tok != 'XX' and s_tok != '_':
-                    svg.append(f'    <text x="52" y="16" class="sym">{esc(fmt(s_tok))}</text>')
+                    svg.append(f'    <text x="50" y="16" class="sym">{esc(fmt(s_tok))}</text>')
                 
                 # Bottom Right: Navigation Layer Output
                 if n_tok != 'XX' and n_tok != '_':
-                    svg.append(f'    <text x="52" y="58" class="nav">{esc(fmt(n_tok))}</text>')
+                    nav_str = fmt(n_tok)
+                    fsize = "8.5px" if len(nav_str) > 4 else "10px"
+                    svg.append(f'    <text x="44" y="56" class="nav" font-size="{fsize}">{esc(nav_str)}</text>')
 
                 # Bottom Left: NumRow Layer Output
                 if num_tok != 'XX' and num_tok != '_':
-                    svg.append(f'    <text x="12" y="58" class="num">{esc(fmt(num_tok))}</text>')
+                    num_str = fmt(num_tok)
+                    if num_str:
+                        svg.append(f'    <text x="14" y="56" class="num">{esc(num_str)}</text>')
 
             svg.append('  </g>')
 
@@ -248,6 +262,12 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
         for c_idx, pkey in enumerate(row):
             is_right = (c_idx >= 6)
             is_dead_col = (c_idx == 5)
+            is_thumb = (pkey in ('c', 'v', 'm', ','))
+
+            # Skip rendering non-active layout keys (dead center column & non-thumb bottom keys)
+            if is_dead_col or (r_idx == 3 and not is_thumb):
+                continue
+
             x = margin_x + c_idx * stride_x + (gap_extra if is_right else 0)
 
             src_idx = key_to_idx[pkey]
@@ -256,21 +276,27 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
 
             is_active = (raw_tok != 'XX' and raw_tok != '_')
             rect_cls = ' class="key"'
-            if is_dead_col or raw_tok == 'XX': rect_cls = ' class="gap"'
+            if is_thumb: rect_cls = ' class="active"'
             elif is_active: rect_cls = ' class="active"'
+            else: rect_cls = ' class="gap"'
 
             svg.append(f'  <g transform="translate({x},{y})">')
             svg.append(f'    <rect width="{kw}" height="{kh}"{rect_cls}/>')
             svg.append(f'    <text x="6" y="12" class="phys">{esc(pkey)}</text>')
 
-            if is_dead_col or raw_tok == 'XX':
+            if raw_tok == 'XX':
                 svg.append(f'    <text x="30" y="36" class="dead">XX</text>')
             elif theme_color == 'thumbs' and ' / ' in val:
                 parts = val.split(' / ')
-                svg.append(f'    <text x="30" y="32" class="main">{esc(parts[0])}</text>')
+                svg.append(f'    <text x="30" y="30" class="main">{esc(parts[0])}</text>')
                 svg.append(f'    <text x="30" y="48" class="sub">{esc(parts[1])}</text>')
+            elif pkey in HRM_MODS:
+                mod_lbl = HRM_MODS[pkey]
+                svg.append(f'    <text x="30" y="28" class="main">{esc(val)}</text>')
+                svg.append(f'    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">{esc(mod_lbl)}</text>')
             else:
-                svg.append(f'    <text x="30" y="36" class="main">{esc(val)}</text>')
+                fsize_style = ' font-size="11px"' if len(val) > 5 else ''
+                svg.append(f'    <text x="30" y="36" class="main"{fsize_style}>{esc(val)}</text>')
 
             svg.append('  </g>')
 
@@ -283,16 +309,15 @@ os.makedirs('docs/images', exist_ok=True)
 
 svgs = {
     'all.svg': render_all_svg(),
-    'hrm.svg': render_layer_svg('Home-Row Mods (Top Row)', 'q w e r → Shift Alt Super Ctrl  |  i o p [ → Ctrl Super Alt Shift', base_toks, 'hrm'),
-    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'c: Bspc / Num  |  v: Esc / Wksp  |  m: Spc / Nav  |  ,: Ret / Sym', base_toks, 'thumbs'),
-    'symbols.svg': render_layer_svg('Symbols Layer', 'Activated by Holding Right Mid Thumb (,)', sym_toks, 'symbols'),
-    'navigation.svg': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Right Index Thumb (m)', nav_toks, 'navigation'),
-    'numrow.svg': render_layer_svg('NumRow Layer', 'Activated by Holding Left Mid Thumb (c) — Digits 1..0', num_toks, 'numrow'),
-    'workspace.svg': render_layer_svg('Workspace Layer', 'Activated by Holding Left Index Thumb (v) — Super+1..0', wsp_toks, 'workspace'),
+    'hrm.svg': render_layer_svg('Home-Row Mods (Top Row)', 'w e r → Alt Super Ctrl  |  i o p → Ctrl Super Alt', base_toks, 'hrm'),
+    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'c: Bspc / Sym  |  v: Spc / Nav  |  m: Shf / Wksp  |  ,: Ret / Num', base_toks, 'thumbs'),
+    'symbols.svg': render_layer_svg('Symbols Layer', 'Activated by Holding Left Mid Thumb (c)', sym_toks, 'symbols'),
+    'navigation.svg': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Left Index Thumb (v)', nav_toks, 'navigation'),
+    'numrow.svg': render_layer_svg('NumRow Layer', 'Activated by Holding Right Mid Thumb (,) — Digits 1..0', num_toks, 'numrow'),
+    'workspace.svg': render_layer_svg('Workspace Layer', 'Activated by Holding Right Index Thumb (m) — Super+1..0', wsp_toks, 'workspace'),
     'media.svg': render_layer_svg('Media Layer', 'Activated by Holding Physical j Key — Playback & Volume', med_toks, 'symbols'),
     'numpad.svg': render_layer_svg('NumPad Sub-Layer', 'Calculator Layout & Arrow Navigation', np_toks, 'numpad'),
     'fn.svg': render_layer_svg('FunPad Sub-Layer', 'F1..F12 Function Keys', fp_toks, 'funpad'),
-    'angle_mod.svg': render_layer_svg('Angle Mod (Left Hand)', 'Physical Home Row (a s d f g) → x c d v z', base_toks, 'hrm')
 }
 
 for filename, content in svgs.items():

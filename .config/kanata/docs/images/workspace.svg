@@ -24,36 +24,31 @@
     }
   </style>
   <text x="390" y="28" class="title">Workspace Layer</text>
-  <text x="390" y="48" class="subtitle">Activated by Holding Left Index Thumb (v) — Super+1..0</text>
+  <text x="390" y="48" class="subtitle">Activated by Holding Right Index Thumb (m) — Super+1..0</text>
   <g transform="translate(20,70)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">1</text>
-    <text x="30" y="36" class="main">Wksp 6</text>
+    <text x="30" y="36" class="main" font-size="11px">Wksp 6</text>
   </g>
   <g transform="translate(86,70)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">2</text>
-    <text x="30" y="36" class="main">Wksp 7</text>
+    <text x="30" y="36" class="main" font-size="11px">Wksp 7</text>
   </g>
   <g transform="translate(152,70)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">3</text>
-    <text x="30" y="36" class="main">Wksp 8</text>
+    <text x="30" y="36" class="main" font-size="11px">Wksp 8</text>
   </g>
   <g transform="translate(218,70)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">4</text>
-    <text x="30" y="36" class="main">Wksp 9</text>
+    <text x="30" y="36" class="main" font-size="11px">Wksp 9</text>
   </g>
   <g transform="translate(284,70)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">5</text>
-    <text x="30" y="36" class="main">Wksp 10</text>
-  </g>
-  <g transform="translate(350,70)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">6</text>
-    <text x="30" y="36" class="dead">XX</text>
+    <text x="30" y="36" class="main" font-size="11px">Wksp 10</text>
   </g>
   <g transform="translate(446,70)">
     <rect width="60" height="60" class="gap"/>
@@ -83,32 +78,30 @@
   <g transform="translate(20,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">q</text>
-    <text x="30" y="36" class="main">Wksp 1</text>
+    <text x="30" y="36" class="main" font-size="11px">Wksp 1</text>
   </g>
   <g transform="translate(86,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">w</text>
-    <text x="30" y="36" class="main">Wksp 2</text>
+    <text x="30" y="28" class="main">Wksp 2</text>
+    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Alt</text>
   </g>
   <g transform="translate(152,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">e</text>
-    <text x="30" y="36" class="main">Wksp 3</text>
+    <text x="30" y="28" class="main">Wksp 3</text>
+    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Super</text>
   </g>
   <g transform="translate(218,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">r</text>
-    <text x="30" y="36" class="main">Wksp 4</text>
+    <text x="30" y="28" class="main">Wksp 4</text>
+    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Ctrl</text>
   </g>
   <g transform="translate(284,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">t</text>
-    <text x="30" y="36" class="main">Wksp 5</text>
-  </g>
-  <g transform="translate(350,136)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">y</text>
-    <text x="30" y="36" class="dead">XX</text>
+    <text x="30" y="36" class="main" font-size="11px">Wksp 5</text>
   </g>
   <g transform="translate(446,136)">
     <rect width="60" height="60" class="gap"/>
@@ -160,11 +153,6 @@
     <text x="6" y="12" class="phys">g</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
-  <g transform="translate(350,202)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">h</text>
-    <text x="30" y="36" class="dead">XX</text>
-  </g>
   <g transform="translate(446,202)">
     <rect width="60" height="60" class="gap"/>
     <text x="6" y="12" class="phys">j</text>
@@ -190,54 +178,24 @@
     <text x="6" y="12" class="phys">&#x27;</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
-  <g transform="translate(20,268)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">z</text>
-    <text x="30" y="36" class="dead">XX</text>
-  </g>
-  <g transform="translate(86,268)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">x</text>
-    <text x="30" y="36" class="dead">XX</text>
-  </g>
   <g transform="translate(152,268)">
-    <rect width="60" height="60" class="key"/>
+    <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">c</text>
     <text x="30" y="36" class="main">·</text>
   </g>
   <g transform="translate(218,268)">
-    <rect width="60" height="60" class="key"/>
+    <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">v</text>
     <text x="30" y="36" class="main">·</text>
   </g>
-  <g transform="translate(284,268)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">b</text>
-    <text x="30" y="36" class="dead">XX</text>
-  </g>
-  <g transform="translate(350,268)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">n</text>
-    <text x="30" y="36" class="dead">XX</text>
-  </g>
   <g transform="translate(446,268)">
-    <rect width="60" height="60" class="key"/>
+    <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">m</text>
     <text x="30" y="36" class="main">·</text>
   </g>
   <g transform="translate(512,268)">
-    <rect width="60" height="60" class="key"/>
+    <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">,</text>
     <text x="30" y="36" class="main">·</text>
-  </g>
-  <g transform="translate(578,268)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">.</text>
-    <text x="30" y="36" class="dead">XX</text>
-  </g>
-  <g transform="translate(644,268)">
-    <rect width="60" height="60" class="gap"/>
-    <text x="6" y="12" class="phys">/</text>
-    <text x="30" y="36" class="dead">XX</text>
   </g>
 </svg>

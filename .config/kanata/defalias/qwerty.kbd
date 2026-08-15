@@ -1,6 +1,6 @@
 (defalias
   ;; Navigation layer helper aliases
-  all C-a   sav C-s   cls C-w   ndo C-z
+  all C-a   sav C-s   cls C-w   ndo C-z   rdo C-y
   cut C-x   cpy C-c   pst C-v
 
   ;; Numpad digits

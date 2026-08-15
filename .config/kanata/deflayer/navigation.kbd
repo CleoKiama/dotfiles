@@ -6,7 +6,7 @@
 (deflayer navigation
   @pad @cls bck  fwd  XX   XX   XX   home pgdn pgup end
   @all @sav S-tab tab  XX   XX   lft  down up   rght
-  XX   @ndo @cut @cpy @pst XX   XX   @mwl @mwd @mwu @mwr
+  XX   @ndo @cut @cpy @rdo @pst XX   @mwl @mwd @mwu @mwr
   XX   XX   del  _    XX   XX   XX   _    _    XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX

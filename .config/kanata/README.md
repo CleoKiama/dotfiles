@@ -20,13 +20,14 @@ Ergonomic-Shift transforms a standard staggered keyboard into an ergonomic colum
 ### Key Features
 
 - **Colemak-DH Base**: Ergonomic layout optimized for English typing.
-- **Angle Mod**: Preserved on the left hand (`x c d v z` mapped to physical `a s d f g`).
-- **Home-Row Mods**: Shifted to the top physical row (`q w e r` left, `i o p [` right) in the order: **Shift, Alt, Super, Ctrl** (Pinky to Index).
+- **Un-Angled Bottom Alpha Row**: Standard Colemak-DH columns (`z x c d v` mapped to physical `a s d f g`). Because physical Row 3 staggers 0.25U to the right of Row 2, standard fingering naturally matches left arm ergonomics without requiring an angle mod.
+- **Home-Row Mods**: Shifted to top physical row (`w e r` left, `i o p` right) in the order: **Alt, Super, Ctrl** (Ring to Index). Pinkies (`q` and `[`) are plain `a` and `o` with zero tap-hold delay.
+- **Escape Combo**: Physical keys `3` + `4` (`f` + `p`) pressed together emit **Escape** with 100% zero-collision reliability.
 - **4 Thumb Keys**:
-  - `c` (Left Middle): Tap = Backspace, Hold = **NumRow** layer
-  - `v` (Left Index): Tap = Escape, Hold = **Workspace** layer (Super+1..0)
-  - `m` (Right Index): Tap = Space, Hold = **Navigation** layer
-  - `,` (Right Middle): Tap = Enter, Hold = **Symbols** layer
+  - `c` (Left Middle): Tap = Backspace, Hold = **Symbols** layer
+  - `v` (Left Index): Tap = Space, Hold = **Navigation** layer
+  - `m` (Right Index - Rest): Tap = Sticky Shift (`one-shot 2000 lsft`), Hold = **Workspace** layer (Super+1..0)
+  - `,` (Right Middle - Angled): Tap = Enter, Hold = **NumRow** layer
 - **Full Capture (`process-unmapped-keys yes`)**: Outer physical keys (arrows, F-keys, numpad, original spacebar row) are silenced (`XX`).
 - **Same-Hand Suppression**: Home-row mods use `$left-hand-keys` and `$right-hand-keys` lists plus `tap-hold-require-prior-idle 150` to prevent misfires during fast typing.
 
@@ -40,9 +41,9 @@ Ergonomic-Shift transforms a standard staggered keyboard into an ergonomic colum
 Physical Row            Mapping (Output)
 ─────────────────────────────────────────────────────────────
 1  2  3  4  5          q  w  f  p  b          (Number row)
-q  w  e  r  t         @a @r @s @t  g          (Top row — HOME: Shift Alt Super Ctrl)
-a  s  d  f  g          x  c  d  v  z          (Home row — Angle mod)
-z  x  c  v  b  <      XX XX @num @escwsp XX XX (Bottom row — Thumbs on c and v)
+q  w  e  r  t          a @r @s @t  g          (Top row — HOME: a, Alt, Super, Ctrl, g)
+a  s  d  f  g          z  x  c  d  v          (Home row — Bottom alpha row)
+z  x  c  v  b  <      XX XX @bspsym @nav XX XX    (Bottom row — Thumbs on c and v)
 ```
 
 ### Right Hand (Columns 7–11, Column 6 Dead)
@@ -51,9 +52,9 @@ z  x  c  v  b  <      XX XX @num @escwsp XX XX (Bottom row — Thumbs on c and v
 Physical Row            Mapping (Output)
 ─────────────────────────────────────────────────────────────
 6 (XX)  7  8  9  0  -     XX  j  l  u  y  ;   (Number row)
-y (XX)  u  i  o  p  [     XX  m @n @e @i @o   (Top row — HOME: Ctrl Super Alt Shift)
+y (XX)  u  i  o  p  [     XX  m @n @e @i  o   (Top row — HOME: XX, m, Ctrl, Super, Alt, o)
 h (XX)  j  k  l  ;  '     XX  k  h  ,  .  /   (Home row)
-n (XX)  m  ,  .  /        XX @nav @sym XX XX  (Bottom row — Thumbs on m and ,)
+n (XX)  m  ,  .  /        XX @shfwsp @entnum XX XX (Bottom row — Thumbs on m and ,)
 ```
 
 - **Gap Column**: Physical `6`, `y`, `h`, `n` are `XX` in all layers.
@@ -71,36 +72,36 @@ Home-row modifiers live on physical top row (`q w e r` and `i o p [`):
 
 | Hand  | Key | Tap | Hold Mod      |
 | ----- | --- | --- | ------------- |
-| Left  | `q` | `a` | Shift (left)  |
+| Left  | `q` | `a` | *(None — Plain alpha)* |
 | Left  | `w` | `r` | Alt (left)    |
 | Left  | `e` | `s` | Super (left)  |
 | Left  | `r` | `t` | Ctrl (left)   |
 | Right | `i` | `n` | Ctrl (right)  |
 | Right | `o` | `e` | Super (right) |
 | Right | `p` | `i` | Alt (right)   |
-| Right | `[` | `o` | Shift (right) |
+| Right | `[` | `o` | *(None — Plain alpha)* |
 
 ### Thumb Keys
 
 ![Thumb Keys](docs/images/layer_taps.svg)
 
-| Thumb Key   | Physical Key | Tap       | Hold Layer                 |
-| ----------- | ------------ | --------- | -------------------------- |
-| Left Mid    | `c`          | Backspace | **NumRow**                 |
-| Left Idx    | `v`          | Escape    | **Workspace** (Super+1..0) |
-| Right Idx   | `m`          | Space     | **Navigation**             |
-| Right Mid   | `,`          | Enter     | **Symbols**                |
+| Thumb Key   | Physical Key | Tap                  | Hold Layer                 |
+| ----------- | ------------ | -------------------- | -------------------------- |
+| Left Mid    | `c`          | Backspace            | **Symbols**                |
+| Left Idx    | `v`          | Space                | **Navigation**             |
+| Right Idx   | `m` (Rest)   | Sticky Shift (1-shot)| **Workspace** (Super+1..0) |
+| Right Mid   | `,` (Angled) | Enter                | **NumRow**                 |
 
 ### Symbols Layer
 
 ![Symbols Layer](docs/images/symbols.svg)
 
-Activated by holding `,` (Right Mid thumb). Provides Lafayette / Ergo-L inspired programming symbols:
+Activated by holding `c` (Left Mid thumb). Provides Lafayette / Ergo-L inspired programming symbols:
 
 ```
-Number row:  ^  <  >  $  %  | (col 6 dead) |  @  &  *  '
+Number row:  _  <  >  $  %  | (col 6 dead) |  @  &  *  '
 Top row:     {  (  )  }  =  | (col 6 dead) |  \  +  -  /  "
-Home row:    ~  [  ]  _  #  | (col 6 dead) |  |  !  ;  :
+Home row:    ~  ;  :  ^  #  | (col 6 dead) |  |  !  [  ]
 Bottom row:  ?  `           | (col 6 dead) |  "
 ```
 
@@ -108,12 +109,12 @@ Bottom row:  ?  `           | (col 6 dead) |  "
 
 ![Navigation Layer](docs/images/navigation.svg)
 
-Activated by holding `m` (Right Idx thumb). Vim-style navigation on the right hand, editor shortcuts on the left hand:
+Activated by holding `v` (Left Idx thumb). Vim-style navigation on the right hand, editor shortcuts on the left hand:
 
 ```
 Top row:     NumPad(switch)  Close(Ctrl+W)  Back(Alt+←)  Fwd(Alt+→)  |  Home  PgDn  PgUp  End
-Home row:    SelectAll       Save           S-Tab        Tab         |  Left  Down  Up    Right
-Bottom row:  Undo            Cut            Copy         Paste       |  WheelL WheelD WheelU WheelR
+Home row:    SelectAll(Ctrl+A) Save(Ctrl+S) S-Tab        Tab         |  Left  Down  Up    Right
+Bottom row:  Undo(Ctrl+Z)    Cut(Ctrl+X)    Copy(Ctrl+C) Redo(Ctrl+Y) Paste(Ctrl+V) | WheelL WheelD WheelU WheelR
 ```
 
 - **NumPad**: Switch to full numpad layout via `@pad` (physical `1`/`q`).
@@ -123,7 +124,7 @@ Bottom row:  Undo            Cut            Copy         Paste       |  WheelL W
 
 ![NumRow Layer](docs/images/numrow.svg)
 
-Activated by holding `c` (Left Mid thumb). Numbers 1..0 on the left hand:
+Activated by holding `,` (Right Mid thumb). Numbers 1..0 on the left hand:
 
 ```
 Top row:     6  7  8  9  0
@@ -136,7 +137,7 @@ Right-hand keys pass through as plain letters (`_`) so vim relative movement com
 
 ![Workspace Layer](docs/images/workspace.svg)
 
-Activated by holding `v` (Left Idx thumb). Sends Super+1 through Super+0 on the left hand for window manager workspace switching:
+Activated by holding `m` (Right Idx thumb). Sends Super+1 through Super+0 on the left hand for window manager workspace switching:
 
 ```
 Top row:     Super+6  Super+7  Super+8  Super+9  Super+0

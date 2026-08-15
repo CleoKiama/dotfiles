@@ -4,15 +4,16 @@
 ;;
 ;; ergonomic-shift: alpha block shifted up one physical row; right hand
 ;; one column right with the full physical column 6 y h n dead — a clean
-;; vertical gap between the hands. Home-row mods live on the new top row
-;; (physical qwert/iop[). Thumbs: c=num, v=workspace, m=nav, ,=symbols.
-;; Pinky column: - (;), [ (o/Alt), ' (/). Spacebar row all XX.
+;; vertical gap between the hands. Home-row mods live on top row (qwert/iop[):
+;; Alt, Super, Ctrl on ring, middle, index fingers; pinkies are plain a and o.
+;; Thumbs: c=bspsym (bspc / symbols), v=nav (spc), m=shfwsp (one-shot shift / workspace), ,=entnum (ret / numrow).
+;; Combos: physical 3+4 (f+p) = Escape.
 
 (deflayer base
-  q    w    f    p    b    XX   XX   j    l    u    y
-  @a   @r   @s   @t   g    XX   m    @n   @e   @i
-  XX   x    c    d    v    z    XX   @med h    ,    .
-  XX   XX   @num @escwsp XX  XX   XX   @nav @sym XX  XX
+  q    w    (chord fp-esc 3) (chord fp-esc 4) b    XX   XX   j    l    u    y
+  a    @r   @s   @t   g    XX   m    @n   @e   @i
+  XX   z    x    c    d    v    XX   @med h    ,    .
+  XX   XX   @bspsym @nav XX  XX   XX   @shfwsp @entnum XX  XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   lrld   XX
@@ -20,22 +21,21 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  /    ;    XX   XX   @o   XX   XX
+  /    ;    XX   XX   o    XX   XX
 )
 
 (defalias
-  ;; Home-row mods — order: Shift / Alt / Super / Control (Pinky to Index)
-  a (tap-hold-release-keys $tap-time $hold-time a lsft $left-hand-keys)
+  ;; Home-row mods — order: Alt / Super / Control (Ring to Index)
   r (tap-hold-release-keys $tap-time $hold-time r lalt $left-hand-keys)
   s (tap-hold-release-keys $tap-time $hold-time s lmet $left-hand-keys)
   t (tap-hold-release-keys $tap-time $hold-time t lctl $left-hand-keys)
   n (tap-hold-release-keys $tap-time $hold-time n rctl $right-hand-keys)
   e (tap-hold-release-keys $tap-time $hold-time e rmet $right-hand-keys)
   i (tap-hold-release-keys $tap-time $hold-time i ralt $right-hand-keys)
-  o (tap-hold-release-keys $tap-time $hold-time o rsft $right-hand-keys)
   ;; Thumbs
-  escwsp (tap-hold $tap-time $hold-time esc (layer-while-held workspace))
+  bspsym (tap-hold-press $tap-time $hold-time bspc (layer-while-held symbols))
+  shfwsp (tap-hold $tap-time $hold-time (one-shot 2000 lsft) (layer-while-held workspace))
+  entnum (tap-hold-press $tap-time $hold-time ret (layer-while-held numrow))
   nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
-  sym (tap-hold-press $tap-time $hold-time ret (layer-while-held symbols))
   med (tap-hold $tap-time $hold-time k (layer-while-held media))
 )

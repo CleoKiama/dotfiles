@@ -16,6 +16,13 @@
 
 (include defsrc/pc.kbd)
 (include defalias/qwerty.kbd)
+
+(defchords fp-esc 40
+  (3 4) esc
+  (3) f
+  (4) p
+)
+
 ;; Layout: base layer
 (include deflayer/colemak-dh-base.kbd)  ;; Colemak-DH
 (include deflayer/symbols.kbd)

@@ -5,9 +5,9 @@
 ;; (physical column 6 y h n dead).
 
 (deflayer symbols
-  @^   @<   @>   @$   @%   XX   XX   @@   @&   @*   @'
+  @_   @<   @>   @$   @%   XX   XX   @@   @&   @*   @'
   @{   @pl  @pr  @}   @=   XX   @\   @+   @-   @/
-  XX   @~   @[   @]   @_   @#   XX   @|   @!   @scl  @:
+  XX   @~   @scl @:   @^   @#   XX   @|   @!   @[   @]
   XX   XX   _    _    XX   XX   XX   _    _    XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
@@ -34,10 +34,6 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
   @/   _    XX   XX   _    XX   XX
-)
-
-(defalias
-  num (tap-hold-press $tap-time $hold-time bspc (layer-while-held numrow))
 )
 
 ;; vim: set ft=lisp:
