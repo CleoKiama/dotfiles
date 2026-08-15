@@ -25,6 +25,8 @@ hypridle >/dev/null 2>&1 & # screen idle management
 sunsetr > /dev/null 2>&1 & # night light
 
 
+$HOME/.config/mango/scripts/ai-router.sh >/dev/null 2>&1 &
+
 # Start polkit agent
 # trying hyprpolkitagent enabled via systemd user service
 #/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
