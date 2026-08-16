@@ -816,9 +816,10 @@ tools (Embark, Helpful).
     ;; Close the previous buffer when opening a new `dired' instance.
     (dired-kill-when-opening-new-dired-buffer t)              
     :config
-    (evil-collection-define-key 'normal 'dired-mode-map
-      "h" 'dired-up-directory
-      "l" 'dired-find-file)
+    (with-eval-after-load 'evil-collection
+      (evil-collection-define-key 'normal 'dired-mode-map
+        "h" 'dired-up-directory
+        "l" 'dired-find-file))
     )
 
 #+end_src
@@ -1415,6 +1416,41 @@ This feature is especially useful in programming modes, where it can help users 
   (setq wakatime-cli-path (expand-file-name "~/.wakatime/wakatime-cli"))
   :hook (find-file-hook . global-wakatime-mode))
 #+END_SRC
+
+* Documentation & Reading
+
+Enhance built-in Info mode and EWW browser with vibrant colors, centered layout, proportional fonts, and transient menus.
+
+#+begin_src emacs-lisp
+  ;; Colorize Info headers, code blocks, quotes, and links
+  (use-package info-colors
+    :commands (info-colors-fontify-node)
+    :hook (Info-selection . info-colors-fontify-node))
+
+  ;; Transient visual menus for Emacs (including Info mode)
+  (use-package casual
+    :straight (casual :type git :host github :repo "kickingvegas/casual")
+    :bind (:map Info-mode-map ("?" . casual-info-tmenu)))
+
+  ;; Centered reading layout & proportional font for Info manuals
+  (use-package info
+    :straight nil
+    :hook (Info-mode . (lambda ()
+                         (visual-fill-column-mode 1)
+                         (variable-pitch-mode 1)
+                         (visual-line-mode 1)))
+    :config
+    ;; Preserve monospaced font for code snippets & quoted symbols
+    (set-face-attribute 'Info-quoted nil :inherit 'fixed-pitch))
+
+  ;; Centered reading layout & proportional font for EWW web browser
+  (use-package eww
+    :straight nil
+    :hook (eww-mode . (lambda ()
+                        (visual-fill-column-mode 1)
+                        (variable-pitch-mode 1)
+                        (visual-line-mode 1))))
+#+end_src
 
 * Org Mode
 
