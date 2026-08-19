@@ -24,7 +24,7 @@
     }
   </style>
   <text x="390" y="28" class="title">Workspace Layer</text>
-  <text x="390" y="48" class="subtitle">Activated by Holding Right Index Thumb (m) — Super+1..0</text>
+  <text x="390" y="48" class="subtitle">Activated by Holding Right Pinky (/) — Super+1..0</text>
   <g transform="translate(20,70)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">1</text>
@@ -78,7 +78,8 @@
   <g transform="translate(20,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">q</text>
-    <text x="30" y="36" class="main" font-size="11px">Wksp 1</text>
+    <text x="30" y="28" class="main">Wksp 1</text>
+    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Shift</text>
   </g>
   <g transform="translate(86,136)">
     <rect width="60" height="60" class="active"/>

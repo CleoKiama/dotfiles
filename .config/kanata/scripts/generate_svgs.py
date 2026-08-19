@@ -16,6 +16,7 @@ base_toks = get_layer('deflayer/colemak-dh-base.kbd', 'base')
 sym_toks  = get_layer('deflayer/symbols.kbd', 'symbols')
 num_toks  = get_layer('deflayer/symbols.kbd', 'numrow')
 nav_toks  = get_layer('deflayer/navigation.kbd', 'navigation')
+mod_toks  = get_layer('deflayer/navigation.kbd', 'modifiers')
 np_toks   = get_layer('deflayer/navigation.kbd', 'numpad')
 fp_toks   = get_layer('deflayer/navigation.kbd', 'funpad')
 wsp_toks  = get_layer('deflayer/navigation.kbd', 'workspace')
@@ -32,9 +33,11 @@ GRID_KEYS = [
 LABEL_MAP = {
     'XX': '', '_': '·',
     '(chord fp-esc 3)': 'f', '(chord fp-esc 4)': 'p',
-    '@r': 'r', '@s': 's', '@t': 't',
-    '@n': 'n', '@e': 'e', '@i': 'i',
+    '@a': 'a', '@r': 'r', '@s': 's', '@t': 't',
+    '@n': 'n', '@e': 'e', '@i': 'i', '@o': 'o',
     '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@entnum': 'Ret / Num',
+    '@shf': 'Shift', '@wsp': '/',
+    '@os-sft': 'Shift', '@os-alt': 'Alt', '@os-met': 'Super', '@os-ctl': 'Ctrl',
     '@pl': '(', '@pr': ')', '@cl': '{', '@cr': '}', '@sl': '[', '@sr': ']',
     '@scl': ';', '@ndo': 'Undo', '@cut': 'Cut', '@cpy': 'Copy', '@rdo': 'Redo', '@pst': 'Paste',
     '@all': 'All', '@sav': 'Save', '@run': 'Run', '@fun': 'FunPad', '@pad': 'NumPad',
@@ -53,8 +56,8 @@ LABEL_MAP = {
 }
 
 HRM_MODS = {
-    'w': 'Alt', 'e': 'Super', 'r': 'Ctrl',
-    'i': 'Ctrl', 'o': 'Super', 'p': 'Alt'
+    'q': 'Shift', 'w': 'Alt', 'e': 'Super', 'r': 'Ctrl',
+    'i': 'Ctrl', 'o': 'Super', 'p': 'Alt', '[': 'Shift'
 }
 
 def fmt(tok):
@@ -165,8 +168,11 @@ def render_all_svg():
             elif is_thumb:
                 b_lbl = fmt(b_tok)
                 parts = b_lbl.split(' / ')
-                svg.append(f'    <text x="32" y="32" class="base">{esc(parts[0])}</text>')
-                svg.append(f'    <text x="32" y="50" class="nav">{esc(parts[1])}</text>')
+                if len(parts) > 1:
+                    svg.append(f'    <text x="32" y="32" class="base">{esc(parts[0])}</text>')
+                    svg.append(f'    <text x="32" y="50" class="nav">{esc(parts[1])}</text>')
+                else:
+                    svg.append(f'    <text x="32" y="38" class="base">{esc(parts[0])}</text>')
             elif is_hrm:
                 b_lbl = fmt(b_tok)
                 mod_lbl = HRM_MODS[pkey]
@@ -310,11 +316,12 @@ os.makedirs('docs/images', exist_ok=True)
 svgs = {
     'all.svg': render_all_svg(),
     'hrm.svg': render_layer_svg('Home-Row Mods (Top Row)', 'w e r → Alt Super Ctrl  |  i o p → Ctrl Super Alt', base_toks, 'hrm'),
-    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'c: Bspc / Sym  |  v: Spc / Nav  |  m: Shf / Wksp  |  ,: Ret / Num', base_toks, 'thumbs'),
+    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'c: Bspc / Sym  |  v: Spc / Nav  |  m: Mods  |  ,: Ret / Num', base_toks, 'thumbs'),
     'symbols.svg': render_layer_svg('Symbols Layer', 'Activated by Holding Left Mid Thumb (c)', sym_toks, 'symbols'),
     'navigation.svg': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Left Index Thumb (v)', nav_toks, 'navigation'),
+    'modifiers.svg': render_layer_svg('Modifiers Layer (Callum-style)', 'Activated by Holding Right Index Thumb (m)', mod_toks, 'symbols'),
     'numrow.svg': render_layer_svg('NumRow Layer', 'Activated by Holding Right Mid Thumb (,) — Digits 1..0', num_toks, 'numrow'),
-    'workspace.svg': render_layer_svg('Workspace Layer', 'Activated by Holding Right Index Thumb (m) — Super+1..0', wsp_toks, 'workspace'),
+    'workspace.svg': render_layer_svg('Workspace Layer', 'Activated by Holding Right Pinky (/) — Super+1..0', wsp_toks, 'workspace'),
     'media.svg': render_layer_svg('Media Layer', 'Activated by Holding Physical j Key — Playback & Volume', med_toks, 'symbols'),
     'numpad.svg': render_layer_svg('NumPad Sub-Layer', 'Calculator Layout & Arrow Navigation', np_toks, 'numpad'),
     'fn.svg': render_layer_svg('FunPad Sub-Layer', 'F1..F12 Function Keys', fp_toks, 'funpad'),

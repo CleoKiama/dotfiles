@@ -4,8 +4,8 @@
 ;; moved to `v` hold layer.
 
 (deflayer navigation
-  @pad @cls bck  fwd  XX   XX   XX   home pgdn pgup end
-  @all @sav S-tab tab  XX   XX   lft  down up   rght
+  @pad @cls S-tab tab  bck  XX   XX   home pgdn pgup end
+  @os-sft @os-alt @os-met @os-ctl fwd  XX   lft  down up   rght
   XX   @ndo @cut @cpy @rdo @pst XX   @mwl @mwd @mwu @mwr
   XX   XX   del  _    XX   XX   XX   _    _    XX   XX
   XX   XX   XX
@@ -65,7 +65,7 @@
 )
 
 ;; Workspace layer — Super+1..0, left hand only
-;; Activated by holding v thumb (escwsp)
+;; Activated by holding right pinky (/)
 
 (deflayer workspace
   M-6  M-7  M-8  M-9  M-0  XX   XX   XX   XX   XX   XX
@@ -80,6 +80,23 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
+)
+
+;; Modifiers layer (Callum-style)
+;; Activated by holding physical m key (Right Index thumb)
+(deflayer modifiers
+  _    _    _    _    _    _    _    _    _    _    _
+  @os-sft @os-alt @os-met @os-ctl _    _    _    @os-ctl @os-met @os-alt
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _
+  _    _    _    _    _    _    _    _    _    _
+  _    _    _
+  _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _
+  _    _    _    _    @os-sft _    _
 )
 
 ;; vim: set ft=lisp:

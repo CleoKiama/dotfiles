@@ -1,10 +1,10 @@
 (defcfg
   process-unmapped-keys yes
   concurrent-tap-hold yes
-  ;; v1.12.0+: require 150ms idle before a tap-hold key activates its hold
+  ;; v1.12.0+: require 100ms idle before a tap-hold key activates its hold
   ;; (ZMK-style require-prior-idle). Supplements same-hand suppression via
   ;; tap-hold-release-keys + hand-key lists.
-  tap-hold-require-prior-idle 150
+  tap-hold-require-prior-idle 100
 )
 
 (defvar

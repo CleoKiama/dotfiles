@@ -72,14 +72,14 @@ Home-row modifiers live on physical top row (`q w e r` and `i o p [`):
 
 | Hand  | Key | Tap | Hold Mod      |
 | ----- | --- | --- | ------------- |
-| Left  | `q` | `a` | *(None — Plain alpha)* |
+| Left  | `q` | `a` | Shift (left)  |
 | Left  | `w` | `r` | Alt (left)    |
 | Left  | `e` | `s` | Super (left)  |
 | Left  | `r` | `t` | Ctrl (left)   |
 | Right | `i` | `n` | Ctrl (right)  |
 | Right | `o` | `e` | Super (right) |
 | Right | `p` | `i` | Alt (right)   |
-| Right | `[` | `o` | *(None — Plain alpha)* |
+| Right | `[` | `o` | Shift (right) |
 
 ### Thumb Keys
 
@@ -89,7 +89,7 @@ Home-row modifiers live on physical top row (`q w e r` and `i o p [`):
 | ----------- | ------------ | -------------------- | -------------------------- |
 | Left Mid    | `c`          | Backspace            | **Symbols**                |
 | Left Idx    | `v`          | Space                | **Navigation**             |
-| Right Idx   | `m` (Rest)   | Sticky Shift (1-shot)| **Workspace** (Super+1..0) |
+| Right Idx   | `m` (Rest)   | *(None)*             | **Modifiers (Callum-style)** |
 | Right Mid   | `,` (Angled) | Enter                | **NumRow**                 |
 
 ### Symbols Layer
@@ -104,6 +104,17 @@ Top row:     {  (  )  }  =  | (col 6 dead) |  \  +  -  /  "
 Home row:    ~  ;  :  ^  #  | (col 6 dead) |  |  !  [  ]
 Bottom row:  ?  `           | (col 6 dead) |  "
 ```
+
+### Modifiers Layer (Callum-style)
+
+![Modifiers Layer](docs/images/modifiers.svg)
+
+Activated by holding `m` (Right Idx thumb). Provides instant, sequential, one-shot modifiers on both hands to eliminate timing delays or roll issues for shortcuts:
+
+* **Left Hand Home-Row Mods:** `Shift` (Pinky), `Alt` (Ring), `Super` (Middle), `Ctrl` (Index)
+* **Right Hand Home-Row Mods:** `Ctrl` (Index), `Super` (Middle), `Alt` (Ring), `Shift` (Pinky)
+
+To type a shortcut like `Ctrl+s`, hold `m`, tap `s` (Middle finger), release `m`, tap `s` on base. Or tap multiple modifiers sequentially while holding `m`.
 
 ### Navigation & NumPad Layer
 
@@ -137,7 +148,7 @@ Right-hand keys pass through as plain letters (`_`) so vim relative movement com
 
 ![Workspace Layer](docs/images/workspace.svg)
 
-Activated by holding `m` (Right Idx thumb). Sends Super+1 through Super+0 on the left hand for window manager workspace switching:
+Activated by holding `/` (Right Pinky, physical quote key `'`). Sends Super+1 through Super+0 on the left hand for window manager workspace switching:
 
 ```
 Top row:     Super+6  Super+7  Super+8  Super+9  Super+0

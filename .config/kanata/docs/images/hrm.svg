@@ -78,7 +78,8 @@
   <g transform="translate(20,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">q</text>
-    <text x="30" y="36" class="main">a</text>
+    <text x="30" y="28" class="main">a</text>
+    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Shift</text>
   </g>
   <g transform="translate(86,136)">
     <rect width="60" height="60" class="active"/>
@@ -129,7 +130,8 @@
   <g transform="translate(710,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">[</text>
-    <text x="30" y="36" class="main">o</text>
+    <text x="30" y="28" class="main">o</text>
+    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Shift</text>
   </g>
   <g transform="translate(20,202)">
     <rect width="60" height="60" class="active"/>
@@ -194,7 +196,7 @@
   <g transform="translate(446,268)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">m</text>
-    <text x="30" y="36" class="main" font-size="11px">Shf / Wksp</text>
+    <text x="30" y="36" class="main">@mod</text>
   </g>
   <g transform="translate(512,268)">
     <rect width="60" height="60" class="active"/>

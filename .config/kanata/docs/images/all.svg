@@ -123,12 +123,12 @@
     <text x="44" y="56" class="nav" font-size="10px">Run</text>
   </g>
   <g transform="translate(24,172)">
-    <rect width="64" height="64" class="key"/>
+    <rect width="64" height="64" class="hrm"/>
     <text x="6" y="12" class="phys">q</text>
-    <text x="20" y="36" class="base">a</text>
+    <text x="26" y="30" class="base">a</text>
+    <text x="26" y="46" class="mod">Shift</text>
     <text x="50" y="16" class="sym">{</text>
     <text x="44" y="56" class="nav" font-size="10px">All</text>
-    <text x="14" y="56" class="num">1</text>
   </g>
   <g transform="translate(96,172)">
     <rect width="64" height="64" class="hrm"/>
@@ -193,9 +193,10 @@
     <text x="44" y="56" class="nav" font-size="10px">→</text>
   </g>
   <g transform="translate(776,172)">
-    <rect width="64" height="64" class="key"/>
+    <rect width="64" height="64" class="hrm"/>
     <text x="6" y="12" class="phys">[</text>
-    <text x="20" y="36" class="base">o</text>
+    <text x="26" y="30" class="base">o</text>
+    <text x="26" y="46" class="mod">Shift</text>
     <text x="50" y="16" class="sym">&quot;</text>
     <text x="44" y="56" class="nav" font-size="8.5px">FunPad</text>
   </g>
@@ -287,8 +288,7 @@
   <g transform="translate(488,316)">
     <rect width="64" height="64" class="thumb"/>
     <text x="6" y="12" class="phys">m</text>
-    <text x="32" y="32" class="base">Shf</text>
-    <text x="32" y="50" class="nav">Wksp</text>
+    <text x="32" y="38" class="base">@mod</text>
   </g>
   <g transform="translate(560,316)">
     <rect width="64" height="64" class="thumb"/>
