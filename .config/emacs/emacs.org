@@ -60,7 +60,7 @@ generated one.
     ;; Disable creation of backup files (filename~).
     (make-backup-files nil)
     ;; Move deleted files to the system trash instead of permanently deleting them.
-    (delete-by-moving-to-trash t)
+    (delete-by-moving-to-trash nil)
     ;; Resolve symlinks when opening files to visit the real file path.
     (find-file-visit-truename t)                    
     ;; Automatically follow version-controlled symlinks without prompting.
@@ -537,7 +537,7 @@ separate leader per package.
       "a"  '(:ignore t :which-key "perspective")
       "ac" '(persp-kill :which-key "persp-kill")
       "ar" '(persp-rename :which-key "persp-kill")
-      "aw" '(persp-switch :which-key "persp-kill")
+      "aw" '(persp-switch :which-key "persp-switch")
 
      )
 
@@ -831,6 +831,7 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :config
+  (add-to-list 'exec-path-from-shell-variables "SSH_AUTH_SOCK")
   (exec-path-from-shell-initialize))
 #+end_src
 
@@ -1394,7 +1395,7 @@ This feature is especially useful in programming modes, where it can help users 
   :config
   ;; Filter out buffers not belonging to current perspective
   (setq switch-to-prev-buffer-skip
-        (lambda (win buff bury-or-kill)
+        (lambda (win buffer bury-or-kill)
           (not (persp-is-current-buffer buffer))))
 
   ;; Group buffers by persp-name in ibuffer
@@ -1427,10 +1428,15 @@ Enhance built-in Info mode and EWW browser with vibrant colors, centered layout,
     :commands (info-colors-fontify-node)
     :hook (Info-selection . info-colors-fontify-node))
 
-  ;; Transient visual menus for Emacs (including Info mode)
+  ;; Transient visual menus for Emacs (C-o to open transient menu)
   (use-package casual
     :straight (casual :type git :host github :repo "kickingvegas/casual")
-    :bind (:map Info-mode-map ("?" . casual-info-tmenu)))
+    :bind (:map Info-mode-map  ("C-o" . casual-info-tmenu)
+           :map dired-mode-map ("C-o" . casual-dired-tmenu))
+    :config
+    (with-eval-after-load 'evil
+      (evil-define-key 'normal Info-mode-map (kbd "C-o") #'casual-info-tmenu)
+      (evil-define-key 'normal dired-mode-map (kbd "C-o") #'casual-dired-tmenu)))
 
   ;; Centered reading layout & proportional font for Info manuals
   (use-package info
