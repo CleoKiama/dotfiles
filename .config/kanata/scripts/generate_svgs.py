@@ -16,31 +16,30 @@ base_toks = get_layer('deflayer/colemak-dh-base.kbd', 'base')
 sym_toks  = get_layer('deflayer/symbols.kbd', 'symbols')
 num_toks  = get_layer('deflayer/symbols.kbd', 'numrow')
 nav_toks  = get_layer('deflayer/navigation.kbd', 'navigation')
-mod_toks  = get_layer('deflayer/navigation.kbd', 'modifiers')
-np_toks   = get_layer('deflayer/navigation.kbd', 'numpad')
 fp_toks   = get_layer('deflayer/navigation.kbd', 'funpad')
 wsp_toks  = get_layer('deflayer/navigation.kbd', 'workspace')
 med_toks  = get_layer('deflayer/media.kbd', 'media')
 
 GRID_KEYS = [
-    ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-'],
-    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '['],
-    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'"],
-    ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/']
+    ['`','1','2','3','4','6','7','8','9','0','-'],
+    ['tab','q','w','e','r','y','u','i','o','p','['],
+    ['caps','a','s','d','f','h','j','k','l',';',"'"],
+    ['lshift','z','x','c','v','n','m',',','.','/']
 ]
 
 # Map kanata aliases to user-friendly display labels
 LABEL_MAP = {
     'XX': '', '_': '·',
-    '(chord fp-esc 3)': 'f', '(chord fp-esc 4)': 'p',
+    '(chord fp-esc 2)': 'f', '(chord fp-esc 3)': 'p',
     '@a': 'a', '@r': 'r', '@s': 's', '@t': 't',
     '@n': 'n', '@e': 'e', '@i': 'i', '@o': 'o',
-    '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@entnum': 'Ret / Num',
-    '@shf': 'Shift', '@wsp': '/',
+    'rsft': 'Shift', 'lsft': 'Shift', 'lshift': 'Shift', 'rshift': 'Shift',
+    '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@shf': 'Shift', '@entnum': 'Ret / Num',
+    '@wsp': '/',
     '@os-sft': 'Shift', '@os-alt': 'Alt', '@os-met': 'Super', '@os-ctl': 'Ctrl',
     '@pl': '(', '@pr': ')', '@cl': '{', '@cr': '}', '@sl': '[', '@sr': ']',
     '@scl': ';', '@ndo': 'Undo', '@cut': 'Cut', '@cpy': 'Copy', '@rdo': 'Redo', '@pst': 'Paste',
-    '@all': 'All', '@sav': 'Save', '@run': 'Run', '@fun': 'FunPad', '@pad': 'NumPad',
+    '@all': 'All', '@sav': 'Save', '@run': 'Run', '@fun': 'FunPad',
     '@std': 'Base', '@mwl': 'WhlL', '@mwd': 'WhlD', '@mwu': 'WhlU', '@mwr': 'WhlR',
     '@^': '^', '@<': '<', '@>': '>', '@$': '$', '@%': '%', '@@': '@', '@&': '&', '@*': '*', '@\'': '\'',
     '@{': '{', '@}': '}', '@=': '=', '@\\': '\\', '@+': '+', '@-': '-', '@/': '/',
@@ -55,10 +54,7 @@ LABEL_MAP = {
     'M-6': 'Wksp 6', 'M-7': 'Wksp 7', 'M-8': 'Wksp 8', 'M-9': 'Wksp 9', 'M-0': 'Wksp 10'
 }
 
-HRM_MODS = {
-    'q': 'Shift', 'w': 'Alt', 'e': 'Super', 'r': 'Ctrl',
-    'i': 'Ctrl', 'o': 'Super', 'p': 'Alt', '[': 'Shift'
-}
+HRM_MODS = {'tab':'Shift','q':'Alt','w':'Super','e':'Ctrl','i':'Ctrl','o':'Super','p':'Alt','[':'Shift'}
 
 def fmt(tok):
     return LABEL_MAP.get(tok, tok)
@@ -126,9 +122,9 @@ def render_all_svg():
     svg.append('    <circle cx="270" cy="0" r="5" fill="#7c3aed"/>')
     svg.append('    <text x="280" y="4" class="legend" fill="#7c3aed">🟣 Symbol Layer (,)</text>')
     svg.append('    <circle cx="430" cy="0" r="5" fill="#059669"/>')
-    svg.append('    <text x="440" y="4" class="legend" fill="#059669">🟢 Nav Layer (m)</text>')
+    svg.append('    <text x="440" y="4" class="legend" fill="#059669">🟢 Nav Layer (c)</text>')
     svg.append('    <circle cx="580" cy="0" r="5" fill="#0284c7"/>')
-    svg.append('    <text x="590" y="4" class="legend" fill="#0284c7">🩵 NumRow Layer (c)</text>')
+    svg.append('    <text x="590" y="4" class="legend" fill="#0284c7">🩵 NumRow Layer (,)</text>')
     svg.append('    <circle cx="730" cy="0" r="5" fill="#3b82f6"/>')
     svg.append('    <text x="740" y="4" class="legend" fill="#3b82f6">🔵 Thumbs</text>')
     svg.append('  </g>')
@@ -138,10 +134,11 @@ def render_all_svg():
         for c_idx, pkey in enumerate(row):
             is_right = (c_idx >= 6)
             is_dead_col = (c_idx == 5)
-            is_thumb = (pkey in ('c', 'v', 'm', ','))
+            is_thumb = (pkey in ('x', 'c', ','))
 
             # Skip rendering non-active layout keys (dead center column & non-thumb bottom keys)
-            if is_dead_col or (r_idx == 3 and not is_thumb):
+            # Note: physical m is now plain Shift (rsft), not a thumb key — rendered as regular key.
+            if is_dead_col or (r_idx == 3 and not is_thumb and pkey != 'm'):
                 continue
 
             x = margin_x + c_idx * stride_x + (gap_extra if is_right else 0)
@@ -223,7 +220,6 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
         'navigation':('fill: #ecfdf5; stroke: #059669;', 'fill: #064e3b; stroke: #34d399;', '#059669', '#34d399'),
         'numrow':    ('fill: #f0f9ff; stroke: #0284c7;', 'fill: #0c4a6e; stroke: #38bdf8;', '#0284c7', '#38bdf8'),
         'workspace': ('fill: #fff1f2; stroke: #e11d48;', 'fill: #4c0519; stroke: #fb7185;', '#e11d48', '#fb7185'),
-        'numpad':    ('fill: #f0fdf4; stroke: #16a34a;', 'fill: #052e16; stroke: #4ade80;', '#16a34a', '#4ade80'),
         'funpad':    ('fill: #fefce8; stroke: #ca8a04;', 'fill: #422006; stroke: #facc15;', '#ca8a04', '#facc15'),
         'thumbs':    ('fill: #eff6ff; stroke: #2563eb;', 'fill: #172554; stroke: #60a5fa;', '#2563eb', '#60a5fa')
     }
@@ -268,10 +264,11 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
         for c_idx, pkey in enumerate(row):
             is_right = (c_idx >= 6)
             is_dead_col = (c_idx == 5)
-            is_thumb = (pkey in ('c', 'v', 'm', ','))
+            is_thumb = (pkey in ('x', 'c', ','))
 
             # Skip rendering non-active layout keys (dead center column & non-thumb bottom keys)
-            if is_dead_col or (r_idx == 3 and not is_thumb):
+            # Note: physical m is now plain Shift (rsft), not a thumb key.
+            if is_dead_col or (r_idx == 3 and not is_thumb and pkey != 'm'):
                 continue
 
             x = margin_x + c_idx * stride_x + (gap_extra if is_right else 0)
@@ -315,15 +312,13 @@ os.makedirs('docs/images', exist_ok=True)
 
 svgs = {
     'all.svg': render_all_svg(),
-    'hrm.svg': render_layer_svg('Home-Row Mods (Top Row)', 'w e r → Alt Super Ctrl  |  i o p → Ctrl Super Alt', base_toks, 'hrm'),
-    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'c: Bspc / Sym  |  v: Spc / Nav  |  m: Mods  |  ,: Ret / Num', base_toks, 'thumbs'),
+    'hrm.svg': render_layer_svg('Home-Row Mods (Top Row)', 'tab q w e → Shift Alt Super Ctrl  |  i o p → Ctrl Super Alt', base_toks, 'hrm'),
+    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'x: Bspc / Sym  |  c: Spc / Nav  |  m: Shift  |  ,: Ret / Num', base_toks, 'thumbs'),
     'symbols.svg': render_layer_svg('Symbols Layer', 'Activated by Holding Left Mid Thumb (c)', sym_toks, 'symbols'),
-    'navigation.svg': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Left Index Thumb (v)', nav_toks, 'navigation'),
-    'modifiers.svg': render_layer_svg('Modifiers Layer (Callum-style)', 'Activated by Holding Right Index Thumb (m)', mod_toks, 'symbols'),
+    'navigation.svg': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Left Index Thumb (c)', nav_toks, 'navigation'),
     'numrow.svg': render_layer_svg('NumRow Layer', 'Activated by Holding Right Mid Thumb (,) — Digits 1..0', num_toks, 'numrow'),
     'workspace.svg': render_layer_svg('Workspace Layer', 'Activated by Holding Right Pinky (/) — Super+1..0', wsp_toks, 'workspace'),
     'media.svg': render_layer_svg('Media Layer', 'Activated by Holding Physical j Key — Playback & Volume', med_toks, 'symbols'),
-    'numpad.svg': render_layer_svg('NumPad Sub-Layer', 'Calculator Layout & Arrow Navigation', np_toks, 'numpad'),
     'fn.svg': render_layer_svg('FunPad Sub-Layer', 'F1..F12 Function Keys', fp_toks, 'funpad'),
 }
 

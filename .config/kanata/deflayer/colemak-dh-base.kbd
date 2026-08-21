@@ -1,5 +1,5 @@
 ;; Colemak-DH base layer (ergonomic-shift layout). Layer is named "base"
-;; so all shared layers (symbols, navigation, numrow, numpad, media,
+;; so all shared layers (symbols, navigation, numrow, media,
 ;; workspace) reference it correctly.
 ;;
 ;; ergonomic-shift: alpha block shifted up one physical row; right hand
@@ -9,19 +9,20 @@
 ;; Thumbs: c=bspsym (bspc / symbols), v=nav (spc), m=shf (shift), ,=entnum (ret / numrow).
 ;; Combos: physical 3+4 (f+p) = Escape.
 
+;; tab-origin: 1-col left shift
 (deflayer base
-  q    w    (chord fp-esc 3) (chord fp-esc 4) b    XX   XX   j    l    u    y
-  @a   @r   @s   @t   g    XX   m    @n   @e   @i
-  XX   z    x    c    d    v    XX   @med h    ,    .
-  XX   XX   @bspsym @nav XX  XX   XX   @mod @entnum XX  XX
+  w    (chord fp-esc 2) (chord fp-esc 3) b    XX   XX   XX   j    l    u    y
+  @r   @s   @t   g    XX   XX   m    @n   @e   @i
+  z    x    c    d    v    XX   XX   @med h    ,    .
+  XX   @bspsym @nav XX XX  XX   XX   rsft @entnum XX  XX
   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @a   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   lrld   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  @wsp    ;    XX   XX   @o    XX   XX
+  @wsp    ;    XX   q    @o    XX   XX
 )
 
 (defalias
@@ -41,7 +42,6 @@
   nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
   med (tap-hold $tap-time $hold-time k (layer-while-held media))
   wsp (tap-hold $tap-time $hold-time / (layer-while-held workspace))
-  mod (layer-while-held modifiers)
   os-sft (one-shot 2000 lsft)
   os-alt (one-shot 2000 lalt)
   os-met (one-shot 2000 lmet)

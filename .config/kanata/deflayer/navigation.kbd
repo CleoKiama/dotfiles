@@ -3,57 +3,45 @@
 ;; row; right hand one column right (column 6 y h n dead). Workspace keys
 ;; moved to `v` hold layer.
 
+;; tab-origin: 1-col left shift
 (deflayer navigation
-  @pad @cls S-tab tab  bck  XX   XX   home pgdn pgup end
-  @os-sft @os-alt @os-met @os-ctl fwd  XX   lft  down up   rght
-  XX   @ndo @cut @cpy @rdo @pst XX   @mwl @mwd @mwu @mwr
-  XX   XX   del  _    XX   XX   XX   _    _    XX   XX
+  @cls S-tab tab  bck  XX   XX   XX   home pgdn pgup end
+  @os-alt @os-met @os-ctl fwd XX XX   lft  down up   rght
+  @ndo @cut @cpy @rdo @pst XX   XX   @mwl @mwd @mwu @mwr
+  XX   del  _    XX   XX   XX   XX   _    _    XX   XX
   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @os-sft XX XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  XX   @run XX   XX   @fun XX   XX
+  XX   @run XX   XX @fun XX   XX
 )
 
-;; NumPad
-(deflayer numpad
-  XX   home up   end  pgup XX   XX   @/   @7   @8   @9
-  XX   lft  down rght pgdn XX   @-   @4   @5   @6
-  XX   XX   XX   XX   XX   XX   XX   @,   @1   @2   @3
-  XX   XX   _    _    XX   XX   XX   _    _    XX   XX
-  XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
-  @.   XX   XX   XX   @0   XX   XX
-)
+;; numpad — REMOVED (unused).
 
 ;; Function keys — layer-while-held
 
+;; tab-origin: 1-col left shift
 (deflayer funpad
-  f1   f2   f3   f4   XX   XX   XX   XX   XX   XX   XX
-  f5   f6   f7   f8   XX   XX   XX   lalt lctl lmet
-  XX   f9   f10  f11  f12  XX   XX   XX   XX   XX   XX
-  XX   XX   _    _    XX   XX   XX   _    _    XX   XX
+  f2   f3   f4   XX   XX   XX   XX   XX   XX   XX   XX
+  f6   f7   f8   XX   XX   XX   XX   lalt lctl lmet
+  f9   f10  f11  f12  XX   XX   XX   XX   XX   XX   XX
+  XX   _    _    XX   XX   XX   XX   _    _    XX   XX
   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  f5   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   _    XX   XX
+  XX   XX   XX   f1   _    XX   XX
 )
 
 (defalias
   std (layer-switch base)
-  pad (layer-switch numpad)
+  pad XX ;; REMOVED
   fun (layer-while-held funpad)
 
   mwu (mwheel-up    50 120)
@@ -67,11 +55,30 @@
 ;; Workspace layer — Super+1..0, left hand only
 ;; Activated by holding right pinky (/)
 
+;; tab-origin: 1-col left shift
 (deflayer workspace
-  M-6  M-7  M-8  M-9  M-0  XX   XX   XX   XX   XX   XX
-  M-1  M-2  M-3  M-4  M-5  XX   XX   XX   XX   XX
+  M-7  M-8  M-9  M-0  XX   XX   XX   XX   XX   XX   XX
+  M-2  M-3  M-4  M-5  XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   _    _    XX   XX   XX   _    _    XX   XX
+  XX   _    _    XX   XX   XX   XX   _    _    XX   XX
+  XX   XX   XX
+  M-1  XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   M-6  XX   XX   XX
+)
+
+;; Modifiers layer (Callum-style) — DISABLED: physical m is now plain rsft
+;; Activated by holding physical m key (Right Index thumb) — INERT
+;; tab-origin: 1-col left shift
+(deflayer modifiers
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
@@ -80,23 +87,6 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-)
-
-;; Modifiers layer (Callum-style)
-;; Activated by holding physical m key (Right Index thumb)
-(deflayer modifiers
-  _    _    _    _    _    _    _    _    _    _    _
-  @os-sft @os-alt @os-met @os-ctl _    _    _    @os-ctl @os-met @os-alt
-  _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _
-  _    _    _
-  _    _    _    _    _    _    _    _    _    _
-  _    _    _
-  _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _
-  _    _    _    _    @os-sft _    _
 )
 
 ;; vim: set ft=lisp:

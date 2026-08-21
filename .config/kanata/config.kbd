@@ -10,7 +10,7 @@
 (defvar
   tap-time 150
   hold-time 200
-  left-hand-keys (1 2 3 4 5 q w e r t a s d f g z x c v b <)
+  left-hand-keys (` 1 2 3 4 tab q w e r caps a s d f lshift z x c)
   right-hand-keys (6 7 8 9 0 - y u i o p [ ] ' h j k l ; n m , . / bspc)
 )
 
@@ -18,9 +18,9 @@
 (include defalias/qwerty.kbd)
 
 (defchords fp-esc 40
-  (3 4) esc
-  (3) f
-  (4) p
+  (2 3) esc
+  (2) f
+  (3) p
 )
 
 ;; Layout: base layer

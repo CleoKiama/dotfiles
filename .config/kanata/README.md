@@ -4,14 +4,15 @@ A [Kanata](https://github.com/jtroo/kanata) implementation of the **Ergonomic-Sh
 
 ## Overview & Design Philosophy
 
-Ergonomic-Shift transforms a standard staggered keyboard into an ergonomic columnar-like layout by applying two primary shifts:
+Ergonomic-Shift transforms a standard staggered keyboard into an ergonomic columnar-like layout by applying hand-position shifts:
 
-1. **Shift-Up**: The entire alpha block is shifted up by one physical row.
-   - The home row moves to the physical QWERTY top row (`qwert` / `iop[`).
-   - The physical bottom row (`c`, `v`, `m`, `,`) becomes four dedicated thumb keys.
-2. **Split Hands (Dead Column 6)**: The right hand is shifted right by one physical column.
-   - The entire physical column `6`, `y`, `h`, `n` (along with `bspc`) is dead (`XX`).
-   - This creates a clean, vertical gap between the hands while keeping the Colemak-DH finger-to-letter column assignments straight.
+1. **Shift-Up & Tab-Origin (1-Col Left Shift)**: The entire alpha block is shifted up by one physical row. For the left hand, keys are shifted left by 1 column (Tab-Origin) for natural palm-on-edge resting posture.
+   - Left hand home row starts on `tab`: `tab q w e r` → `a r s t g`.
+   - Left hand top row starts on `` ` ``: `` ` 1 2 3 4 `` → `q w f p b`.
+   - Left hand bottom alpha row starts on `caps`: `caps a s d f` → `z x c d v`.
+   - Dedicated thumb keys move inward: left thumbs on `x` and `c`, right thumb on `,` (physical `m` is now plain **Shift**).
+2. **Split Hands (Double Dead Gap)**: Physical columns `5, t, g, b` (left dead gap) and `6, y, h, n` (plus `bspc`) are dead (`XX`).
+   - This creates a wide 2-column vertical gap between the hands while keeping Colemak-DH finger-to-letter column assignments straight.
 
 ### Layout Overview
 
@@ -20,30 +21,30 @@ Ergonomic-Shift transforms a standard staggered keyboard into an ergonomic colum
 ### Key Features
 
 - **Colemak-DH Base**: Ergonomic layout optimized for English typing.
-- **Un-Angled Bottom Alpha Row**: Standard Colemak-DH columns (`z x c d v` mapped to physical `a s d f g`). Because physical Row 3 staggers 0.25U to the right of Row 2, standard fingering naturally matches left arm ergonomics without requiring an angle mod.
-- **Home-Row Mods**: Shifted to top physical row (`w e r` left, `i o p` right) in the order: **Alt, Super, Ctrl** (Ring to Index). Pinkies (`q` and `[`) are plain `a` and `o` with zero tap-hold delay.
-- **Escape Combo**: Physical keys `3` + `4` (`f` + `p`) pressed together emit **Escape** with 100% zero-collision reliability.
-- **4 Thumb Keys**:
-  - `c` (Left Middle): Tap = Backspace, Hold = **Symbols** layer
-  - `v` (Left Index): Tap = Space, Hold = **Navigation** layer
-  - `m` (Right Index - Rest): Tap = Sticky Shift (`one-shot 2000 lsft`), Hold = **Workspace** layer (Super+1..0)
+- **Un-Angled Bottom Alpha Row**: Standard Colemak-DH columns (`z x c d v` mapped to physical `caps a s d f`). Because physical Row 3 staggers 0.25U to the right of Row 2, standard fingering naturally matches left arm ergonomics without requiring an angle mod.
+- **Home-Row Mods**: Left hand mods live on `tab q w e` (`tab` = `a`/Shift, `q` = `r`/Alt, `w` = `s`/Super, `e` = `t`/Ctrl). Right hand mods live on `i o p [` (Ctrl, Super, Alt, Shift). Pinkies have zero tap-hold delay when plain tapping.
+- **Escape Combo**: Physical keys `2` + `3` (`f` + `p`) pressed together emit **Escape** with 100% zero-collision reliability.
+- **3 Thumb Keys + Shift**:
+  - `x` (Left Middle): Tap = Backspace, Hold = **Symbols** layer
+  - `c` (Left Index): Tap = Space, Hold = **Navigation** layer
+  - `m` (Right Index - Rest): **Shift** (plain `rsft`, no layer)
   - `,` (Right Middle - Angled): Tap = Enter, Hold = **NumRow** layer
 - **Full Capture (`process-unmapped-keys yes`)**: Outer physical keys (arrows, F-keys, numpad, original spacebar row) are silenced (`XX`).
-- **Same-Hand Suppression**: Home-row mods use `$left-hand-keys` and `$right-hand-keys` lists plus `tap-hold-require-prior-idle 150` to prevent misfires during fast typing.
+- **Same-Hand Suppression**: Home-row mods use `$left-hand-keys` and `$right-hand-keys` lists plus `tap-hold-require-prior-idle 100` to prevent misfires during fast typing.
 
 ---
 
 ## Physical Keyboard Mapping
 
-### Left Hand (Columns 1–5)
+### Left Hand (Tab-Origin Shift & Dead Column 5)
 
 ```
-Physical Row            Mapping (Output)
-─────────────────────────────────────────────────────────────
-1  2  3  4  5          q  w  f  p  b          (Number row)
-q  w  e  r  t          a @r @s @t  g          (Top row — HOME: a, Alt, Super, Ctrl, g)
-a  s  d  f  g          z  x  c  d  v          (Home row — Bottom alpha row)
-z  x  c  v  b  <      XX XX @bspsym @nav XX XX    (Bottom row — Thumbs on c and v)
+Physical Row                Mapping (Output)
+─────────────────────────────────────────────────────────────────
+`  1  2  3  4  5            q  w  f  p  b XX      (Number row — 2+3 = Esc combo)
+tab q  w  e  r  t           @a @r @s @t  g XX      (Top row — HOME: Shift, Alt, Super, Ctrl, g)
+caps a  s  d  f  g          z  x  c  d  v XX      (Home row — Bottom alpha row)
+lshift z  x  c  v  b  <     XX XX @bspsym @nav XX XX XX (Bottom row — Thumbs on x and c)
 ```
 
 ### Right Hand (Columns 7–11, Column 6 Dead)
@@ -54,10 +55,10 @@ Physical Row            Mapping (Output)
 6 (XX)  7  8  9  0  -     XX  j  l  u  y  ;   (Number row)
 y (XX)  u  i  o  p  [     XX  m @n @e @i  o   (Top row — HOME: XX, m, Ctrl, Super, Alt, o)
 h (XX)  j  k  l  ;  '     XX  k  h  ,  .  /   (Home row)
-n (XX)  m  ,  .  /        XX @shfwsp @entnum XX XX (Bottom row — Thumbs on m and ,)
+n (XX)  m  ,  .  /        XX rsft    @entnum XX XX (Bottom row — m = Shift plain, , = Ret/Num thumb)
 ```
 
-- **Gap Column**: Physical `6`, `y`, `h`, `n` are `XX` in all layers.
+- **Double Dead Gap**: Physical columns `5`, `t`, `g`, `b` and `6`, `y`, `h`, `n` are `XX` in all layers.
 - **Spacebar Row**: `lalt`, `spc`, `ralt` are all `XX`.
 
 ---
@@ -68,18 +69,18 @@ n (XX)  m  ,  .  /        XX @shfwsp @entnum XX XX (Bottom row — Thumbs on m a
 
 ![Home-Row Mods](docs/images/hrm.svg)
 
-Home-row modifiers live on physical top row (`q w e r` and `i o p [`):
+Home-row modifiers live on left `tab q w e` and right `i o p [`:
 
-| Hand  | Key | Tap | Hold Mod      |
-| ----- | --- | --- | ------------- |
-| Left  | `q` | `a` | Shift (left)  |
-| Left  | `w` | `r` | Alt (left)    |
-| Left  | `e` | `s` | Super (left)  |
-| Left  | `r` | `t` | Ctrl (left)   |
-| Right | `i` | `n` | Ctrl (right)  |
-| Right | `o` | `e` | Super (right) |
-| Right | `p` | `i` | Alt (right)   |
-| Right | `[` | `o` | Shift (right) |
+| Hand  | Key   | Tap | Hold Mod      |
+| ----- | ----- | --- | ------------- |
+| Left  | `tab` | `a` | Shift (left)  |
+| Left  | `q`   | `r` | Alt (left)    |
+| Left  | `w`   | `s` | Super (left)  |
+| Left  | `e`   | `t` | Ctrl (left)   |
+| Right | `i`   | `n` | Ctrl (right)  |
+| Right | `o`   | `e` | Super (right) |
+| Right | `p`   | `i` | Alt (right)   |
+| Right | `[`   | `o` | Shift (right) |
 
 ### Thumb Keys
 
@@ -87,16 +88,16 @@ Home-row modifiers live on physical top row (`q w e r` and `i o p [`):
 
 | Thumb Key   | Physical Key | Tap                  | Hold Layer                 |
 | ----------- | ------------ | -------------------- | -------------------------- |
-| Left Mid    | `c`          | Backspace            | **Symbols**                |
-| Left Idx    | `v`          | Space                | **Navigation**             |
-| Right Idx   | `m` (Rest)   | *(None)*             | **Modifiers (Callum-style)** |
+| Left Mid    | `x`          | Backspace            | **Symbols**                |
+| Left Idx    | `c`          | Space                | **Navigation**             |
+| Right Idx   | `m` (Rest)   | Shift (plain `rsft`)| *(none — plain Shift)*     |
 | Right Mid   | `,` (Angled) | Enter                | **NumRow**                 |
 
 ### Symbols Layer
 
 ![Symbols Layer](docs/images/symbols.svg)
 
-Activated by holding `c` (Left Mid thumb). Provides Lafayette / Ergo-L inspired programming symbols:
+Activated by holding `x` (Left Mid thumb). Provides Lafayette / Ergo-L inspired programming symbols:
 
 ```
 Number row:  _  <  >  $  %  | (col 6 dead) |  @  &  *  '
@@ -105,30 +106,23 @@ Home row:    ~  ;  :  ^  #  | (col 6 dead) |  |  !  [  ]
 Bottom row:  ?  `           | (col 6 dead) |  "
 ```
 
-### Modifiers Layer (Callum-style)
+### Modifiers Layer (Callum-style) — **REMOVED**
 
-![Modifiers Layer](docs/images/modifiers.svg)
+> Removed: physical `m` is now plain **Shift** (`rsft`). The Callum-style Modifiers layer was inert (all `XX`) and its `docs/images/modifiers.svg` has been deleted. Use home-row mods or the remaining thumb layers instead.
 
-Activated by holding `m` (Right Idx thumb). Provides instant, sequential, one-shot modifiers on both hands to eliminate timing delays or roll issues for shortcuts:
-
-* **Left Hand Home-Row Mods:** `Shift` (Pinky), `Alt` (Ring), `Super` (Middle), `Ctrl` (Index)
-* **Right Hand Home-Row Mods:** `Ctrl` (Index), `Super` (Middle), `Alt` (Ring), `Shift` (Pinky)
-
-To type a shortcut like `Ctrl+s`, hold `m`, tap `s` (Middle finger), release `m`, tap `s` on base. Or tap multiple modifiers sequentially while holding `m`.
-
-### Navigation & NumPad Layer
+### Navigation Layer
 
 ![Navigation Layer](docs/images/navigation.svg)
 
-Activated by holding `v` (Left Idx thumb). Vim-style navigation on the right hand, editor shortcuts on the left hand:
+Activated by holding `c` (Left Idx thumb). Vim-style navigation on the right hand, editor shortcuts on the left hand:
 
 ```
-Top row:     NumPad(switch)  Close(Ctrl+W)  Back(Alt+←)  Fwd(Alt+→)  |  Home  PgDn  PgUp  End
-Home row:    SelectAll(Ctrl+A) Save(Ctrl+S) S-Tab        Tab         |  Left  Down  Up    Right
+Top row:     XX  Close(Ctrl+W)  S-Tab        Tab         Back(Alt+←) |  Home  PgDn  PgUp  End
+Home row:    Shift(Sticky)   Alt(Sticky)    Super(Sticky) Ctrl(Sticky) Fwd(Alt+→)  |  Left  Down  Up    Right
 Bottom row:  Undo(Ctrl+Z)    Cut(Ctrl+X)    Copy(Ctrl+C) Redo(Ctrl+Y) Paste(Ctrl+V) | WheelL WheelD WheelU WheelR
 ```
 
-- **NumPad**: Switch to full numpad layout via `@pad` (physical `1`/`q`).
+- **NumPad — REMOVED (unused)**: `@pad` is now `XX`; numpad layer deleted from `navigation.kbd`. Use **NumRow** (`,`) for digits. Formerly `NumPad(switch)` on physical `1`/`q` — removed to avoid confusion with NumRow.
 - **FunPad**: Hold physical `'` (`@fun`) to access F1–F12 keys.
 
 ### NumRow Layer
@@ -165,14 +159,14 @@ Home row:    Super+1  Super+2  Super+3  Super+4  Super+5
 (defvar
   tap-time 150          ;; ms to register a tap
   hold-time 200         ;; ms to register a hold
-  left-hand-keys (1 2 3 4 5 q w e r t a s d f g z x c v b <)
+  left-hand-keys (` 1 2 3 4 tab q w e r caps a s d f lshift z x c)
   right-hand-keys (6 7 8 9 0 - y u i o p [ ] ' h j k l ; n m , . / bspc)
 )
 ```
 
 ### Kanata Settings
 
-- `tap-hold-require-prior-idle 150`: requires 150ms of idle time before a hold activates, preventing accidental mod triggers during fast typing rolls.
+- `tap-hold-require-prior-idle 100`: requires 100ms of idle time before a hold activates, preventing accidental mod triggers during fast typing rolls.
 - **Live Reload**: `prtsc` is mapped to `lrld` to reload config without restarting Kanata.
 
 ---
@@ -189,7 +183,7 @@ Home row:    Super+1  Super+2  Super+3  Super+4  Super+5
 └── deflayer/
     ├── colemak-dh-base.kbd # Base Colemak-DH layer + home-row mods + thumbs
     ├── symbols.kbd         # Symbols + NumRow layers
-    └── navigation.kbd      # Navigation + NumPad + FunPad + Workspace layers
+    └── navigation.kbd      # Navigation + FunPad + Workspace layers (NumPad removed — unused)
 ```
 
 ---

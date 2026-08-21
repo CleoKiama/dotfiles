@@ -4,36 +4,38 @@
 ;; ergonomic-shift: shifted up one row; right hand one column right
 ;; (physical column 6 y h n dead).
 
+;; tab-origin: 1-col left shift
 (deflayer symbols
-  @_   @<   @>   @$   @%   XX   XX   @@   @&   @*   @'
-  @{   @pl  @pr  @}   @=   XX   @\   @+   @-   @/
-  XX   @~   @scl @:   @^   @#   XX   @|   @!   @[   @]
-  XX   XX   _    _    XX   XX   XX   _    _    XX   XX
+  @<   @>   @$   @%   XX   XX   XX   @@   @&   @*   @'
+  @pl  @pr  @}   @=   XX   XX   @\   @+   @-   @/
+  @~   @scl @:   @^   @#   XX   XX   @|   @!   @[   @]
+  XX   _    _    XX   XX   XX   XX   _    _    XX   XX
   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @{   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  @?   @`   XX   XX   @''  XX   XX
+  @?   @`   XX   @_   @''  XX   XX
 )
 
 ;; Numrow layer
 
+;; tab-origin: 1-col left shift
 (deflayer numrow
-  @6   @7   @8   @9   @0   XX   XX   _    _    _    _
-  @1   @2   @3   @4   @5   XX   _    _    _    _
-  XX   @dk1 @dk2 @dk3 @dk4 @dk5 XX   XX   @-   @,   @.
-  XX   XX   _    _    XX   XX   XX   _    _    XX   XX
+  @7   @8   @9   @0   XX   XX   XX   _    _    _    _
+  @2   @3   @4   @5   XX   XX   _    _    _    _
+  @dk1 @dk2 @dk3 @dk4 @dk5 XX   XX   XX   @-   @,   @.
+  XX   _    _    XX   XX   XX   XX   _    _    XX   XX
   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @1   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  @/   _    XX   XX   _    XX   XX
+  @/   _    XX   @6   _    XX   XX
 )
 
 ;; vim: set ft=lisp:
