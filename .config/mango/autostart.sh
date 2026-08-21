@@ -2,8 +2,8 @@
 
 set +e
 
-# something to do with scale value for xwayland apps
-echo "Xft.dpi: 115" | xrdb -merge
+# Text scaling factor for GTK/Wayland applications
+gsettings set org.gnome.desktop.interface text-scaling-factor 1.15
 
 # Claim the PAM-unlocked keyring before it times out / before D-Bus activation spawns a fresh one
 gnome-keyring-daemon --start --components=secrets,ssh,pkcs11 >/dev/null 2>&1
@@ -34,7 +34,7 @@ $HOME/.config/mango/scripts/ai-router.sh >/dev/null 2>&1 &
 
 # wallpaper slideshow fow swww
 $HOME/.local/bin/wallpaper_slider $HOME/Pictures/wallpapers 1800 >/dev/null 2>&1 &
-$HOME/.local/bin/battery_watcher-bin >/dev/null 2>&1 &
+$HOME/.local/bin/battery-watcher.sh >/dev/null 2>&1 &
 
 cliphist wipe
 
