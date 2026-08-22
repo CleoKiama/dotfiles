@@ -460,10 +460,10 @@ separate leader per package.
     :defer t
     :config
     (general-create-definer cl/leader-keys
-      :states '(normal insert visual emacs)
+      :states '(normal visual emacs)
       :keymaps 'override
       :prefix "SPC"
-      :global-prefix "C-SPC")
+      )
 
     (general-create-definer cl/local-leader-keys
       :states '(normal insert visual emacs)
@@ -1334,28 +1334,31 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ** QOL 
 ***  harpoon 
 #+begin_src emacs-lisp
-(use-package harpoon
-  :defer t 
-  :config
-  (cl/leader-keys
-    "h"  '(:ignore t :which-key "harpoon")
-    "ha" '(harpoon-add-file :which-key "add file")
-    "hh" '(harpoon-quick-menu-hydra :which-key "quick menu")
-    "hc" '(harpoon-clear :which-key "clear")
-    )
+  (use-package harpoon
+    :hook (
+             (prog-mode . harpoon-mode)
+             (org-mode . harpoon-mode)
+           )
+    :config
+    (cl/leader-keys
+      "h"  '(:ignore t :which-key "harpoon")
+      "ha" '(harpoon-add-file :which-key "add file")
+      "hh" '(harpoon-quick-menu-hydra :which-key "quick menu")
+      "hc" '(harpoon-clear :which-key "clear")
+      )
 
-  (cl/local-leader-keys
-    "1"  '(harpoon-go-to-1 :which-key "harpoon file 1")
-    "2"  '(harpoon-go-to-2 :which-key "harpoon file 2")
-    "3"  '(harpoon-go-to-3 :which-key "harpoon file 3")
-    "4"  '(harpoon-go-to-4 :which-key "harpoon file 4")
-    "5"  '(harpoon-go-to-5 :which-key "harpoon file 5")
-    "6"  '(harpoon-go-to-6 :which-key "harpoon file 6")
-    "7"  '(harpoon-go-to-7 :which-key "harpoon file 7")
-    "8"  '(harpoon-go-to-8 :which-key "harpoon file 8")
-    "9"  '(harpoon-go-to-9 :which-key "harpoon file 9"))
-  
-  )
+     (general-define-key
+      :states '(normal insert visual emacs)
+      :keymaps 'override
+      :prefix "C-SPC"
+      "a" '(harpoon-go-to-1 :wk "harpoon 1")
+      "r" '(harpoon-go-to-2 :wk "harpoon 2")
+      "s" '(harpoon-go-to-3 :wk "harpoon 3")
+      "t" '(harpoon-go-to-4 :wk "harpoon 4")
+      "g" '(harpoon-go-to-5 :wk "harpoon 5")
+      "q" '(harpoon-go-to-6 :wk "harpoon 6")
+      ))
+
 #+end_src
 
 
