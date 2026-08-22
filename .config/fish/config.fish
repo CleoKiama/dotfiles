@@ -108,3 +108,26 @@ end
 
 # pi coding agent config directory (instead of ~/.pi/agent)
 set -gx PI_CODING_AGENT_DIR $HOME/.config/pi/agent
+
+
+
+if test "$INSIDE_EMACS" = ghostel
+    # Open a file in Emacs from the terminal
+    function e
+        ghostel_cmd find-file-other-window $argv
+    end
+
+    # Open dired in another window
+    function dow
+        if test (count $argv) -eq 0
+            ghostel_cmd dired-other-window (pwd)
+        else
+            ghostel_cmd dired-other-window $argv
+        end
+    end
+
+    # Open magit for the current directory
+    function gst
+        ghostel_cmd magit-status-setup-buffer (pwd)
+    end
+end

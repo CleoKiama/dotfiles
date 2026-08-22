@@ -961,8 +961,6 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
            css-ts-mode                                  ;; Enable LSP for CSS
            html-ts-mode                                 ;; Enable LSP for HTML
            go-ts-mode                                   ;; Enable LSP for Go
-           python-base-mode                             ;; Enable LSP for Python
-           python-ts-mode                               ;; Enable LSP for Python (TS mode)
            rust-ts-mode                                 ;; Enable LSP for Rust
            lua-ts-mode                                  ;; Enable LSP for Lua
            dockerfile-ts-mode                           ;; Enable LSP for Docker
@@ -1041,7 +1039,6 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
            "tw=\"([^\"]*)"]))
 
   (use-package lsp-pyright
-    :defer t
     :custom
     ;; Use the basedpyright binary managed by Mason
     (lsp-pyright-langserver-command "basedpyright")
@@ -1319,15 +1316,22 @@ It draws vertical lines (by default, a character of your choice) at each level o
 
 #+begin_src emacs-lisp
   (use-package ghostel
-    :defer t
     :commands (ghostel)
     )
 
   (use-package evil-ghostel
-    :defer t
     :after (ghostel evil)
     :hook (ghostel-mode . evil-ghostel-mode)
     )
+
+    ;; buit-ins 
+   (use-package ghostel-compile
+      :straight nil
+      :hook (after-init . ghostel-compile-global-mode))
+
+   (use-package ghostel-eshell
+      :straight nil
+       :hook (eshell-load . ghostel-eshell-visual-command-mode))
 
 #+end_src
 
@@ -1335,10 +1339,7 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ***  harpoon 
 #+begin_src emacs-lisp
   (use-package harpoon
-    :hook (
-             (prog-mode . harpoon-mode)
-             (org-mode . harpoon-mode)
-           )
+    :commands (harpoon-add-file harpoon-quick-menu-hydra harpoon-clear)
     :config
     (cl/leader-keys
       "h"  '(:ignore t :which-key "harpoon")
