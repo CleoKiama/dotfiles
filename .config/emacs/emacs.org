@@ -1467,49 +1467,82 @@ Enhance built-in Info mode and EWW browser with vibrant colors, centered layout,
 ** Base org config
 
 #+begin_src emacs-lisp
-  (defun cleo/org-mode-setup ()
-    (org-indent-mode)
-    (variable-pitch-mode 1)
-    (auto-fill-mode 0)
-    (visual-line-mode 1)
-    (setq evil-auto-indent nil))
+    (defun cleo/org-mode-setup ()
+      (org-indent-mode)
+      (variable-pitch-mode 1)
+      (auto-fill-mode 0)
+      (visual-line-mode 1)
+      (setq evil-auto-indent t))
 
-  (use-package org
-    :straight (:branch "bugfix") ;; make sure this matches the one in init.el
-    :defer t 
-    :hook (org-mode . cleo/org-mode-setup)
-    :config
-    (setq org-ellipsis " ▾")
-    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+    (use-package org
+      :straight (:branch "bugfix") ;; make sure this matches the one in init.el
+      :hook (org-mode . cleo/org-mode-setup)
+      :custom
+        (org-confirm-babel-evaluate nil)
+      :config
+      (setq org-ellipsis " ▾")
+      (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+      (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+      (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+      (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+      )
 
-  (use-package visual-fill-column
-    :straight (visual-fill-column
-               :type git
-               :host nil
-               :repo "https://codeberg.org/joostkremers/visual-fill-column.git")
-               :init
-  	     ;; Set these globally so they apply to any new buffer where the mode is activated
-  	     (setq-default visual-fill-column-width 100)
-  	     (setq-default visual-fill-column-center-text t)
-  	     :hook (org-mode . visual-fill-column-mode)
-  	     )
+    (use-package visual-fill-column
+      :straight (visual-fill-column
+                 :type git
+                 :host nil
+                 :repo "https://codeberg.org/joostkremers/visual-fill-column.git")
+                 :init
+    	;; Set these globally so they apply to any new buffer where the mode is activated
+    	     (setq-default visual-fill-column-width 100)
+    	     (setq-default visual-fill-column-center-text t)
+    	     :hook (org-mode . visual-fill-column-mode)
+    	     )
+
 #+end_src
 
-** Structure templates — quickly inserting source blocks
+**  Org babel (code evaluation and languages)
+#+begin_src emacs-lisp
+;; External Babel backends
+(use-package ob-go
+  :after org)
+
+(use-package ob-rust
+  :after org)
+
+;; Configure Babel once Org is loaded
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python     . t)
+     (C          . t)
+     (shell      . t)
+     (eshell     . t)
+     (js         . t)
+     (sql        . t)
+     (sqlite     . t)
+     (go         . t)
+     (rust       . t))))
+#+end_src
+
+** Structure templates (quick block insertions)
 
 #+begin_src emacs-lisp
-(require 'org-tempo)
-
-;; Shortcut specifically for the block you'll type most in this file:
-;; "<el TAB" -> an emacs-lisp source block, one keystroke shorter than
-;; "<s TAB emacs-lisp RET".
-(add-to-list 'org-structure-template-alist
-             '("el" . "src emacs-lisp"))
+  (use-package org-tempo
+   :straight nil 
+   :after org
+   :config
+   (dolist (template '(("el"     . "src emacs-lisp")
+                       ("py"     . "src python")
+                       ("go"     . "src go")
+                       ("rs"     . "src rust")
+                       ("js"     . "src js")
+                       ("sql"    . "src sql")
+                       ("sqlite" . "src sqlite")))
+     (add-to-list 'org-structure-template-alist template)))
 #+end_src
 
 ** Tangle this file on save
