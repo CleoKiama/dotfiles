@@ -6,9 +6,9 @@
 
 ;; tab-origin: 1-col left shift
 (deflayer symbols
-  @<   @>   @$   @%   XX   XX   XX   @@   @&   @*   @'
-  @pl  @pr  @}   @=   XX   XX   @\   @+   @-   @/
-  @~   @scl @:   @^   @#   XX   XX   @|   @!   @[   @]
+  @<   @>   @@   @%   XX   XX   XX   @$   @&   @*   @'
+  @pl  @pr  @}   @=   XX   XX   @\   @+   @-   @_
+  @~   @/   @?   @scl @#   XX   XX   @|   @!   @[   @]
   XX   _    _    XX   XX   XX   XX   _    _    XX   XX
   XX   XX   XX
   @{   XX   XX   XX   XX   XX   XX   XX   XX   XX
@@ -17,7 +17,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX
-  @?   @`   XX   @_   @''  XX   XX
+  @:   @`   XX   @^   @''  XX   XX
 )
 
 ;; Numrow layer
