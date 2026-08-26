@@ -544,6 +544,29 @@ separate leader per package.
   )
 #+end_src
 
+* Clipboard
+#+begin_src emacs-lisp
+  ;; do not sync to the system clipboard by default
+  (setq select-enable-clipboard nil)
+
+  (defun cl/copy-to-clipboard ()
+    "Copy the current region to the system clipboard explicitly."
+    (interactive)
+    (when (region-active-p)
+      (let ((select-enable-clipboard t))
+        (kill-ring-save (region-beginning) (region-end)))))
+
+  (defun cl/paste-from-clipboard ()
+    "Paste from the system clipboard explicitly."
+    (interactive)
+    (let ((select-enable-clipboard t))
+      (yank)))
+
+  (cl/leader-keys
+    "c" '(:ignore t :which-key "clipboard")
+    "cy" '(cl/copy-to-clipboard :which-key "yank to clipboard")
+    "cp" '(cl/paste-from-clipboard :which-key "paste from clipboard"))
+#+end_src
 * Modeline and Theming
 
 #+begin_src emacs-lisp
@@ -1122,7 +1145,7 @@ Provides inline helpful
   :config
   (setq eldoc-idle-delay 0)                  ;; Automatically fetch doc help
   (setq eldoc-echo-area-use-multiline-p nil) ;; We use the "K" floating help instead
-                                             ;; set to t if you want docs on the echo area
+                                            ;; set to t if you want docs on the echo area
   (setq eldoc-echo-area-display-truncation-message nil)
   :init
   (global-eldoc-mode))
@@ -1268,7 +1291,6 @@ It draws vertical lines (by default, a character of your choice) at each level o
 
 #+begin_src emacs-lisp
 (use-package indent-guide
-  :defer t
   :hook
   (prog-mode . indent-guide-mode)  ;; Activate indent-guide in programming modes.
   :config
@@ -1281,9 +1303,7 @@ It draws vertical lines (by default, a character of your choice) at each level o
 
 #+begin_src emacs-lisp
   (use-package apheleia
-    :defer t
-    :init
-    (apheleia-global-mode +1)
+    :hook (prog-mode . apheleia-mode)
     :config
     ;; Register Mason / CLI formatters & dynamic fallbacks
     (setf (alist-get 'oxfmt apheleia-formatters) '("oxfmt" filepath))
@@ -1312,6 +1332,21 @@ It draws vertical lines (by default, a character of your choice) at each level o
      (note "»" compilation-info))))
 #+end_src
 
+** Complile  function setup
+#+begin_src emacs-lisp
+  ;; disable the verification promp for editing the commands
+  (setq compilation-read-command nil)
+
+    (defun cl/set-python-compile-command ()
+      (unless (or (file-exists-p "Makefile") (file-exists-p "makefile"))
+        (setq-local compile-command
+                    (concat "uv run "
+                            (if buffer-file-name
+                                (shell-quote-argument buffer-file-name)
+                              "")))))
+
+    (add-hook 'python-ts-mode-hook #'cl/set-python-compile-command)
+#+end_src
 ** Terminal support with ghostel  
 
 #+begin_src emacs-lisp
@@ -1362,7 +1397,6 @@ It draws vertical lines (by default, a character of your choice) at each level o
 
 #+end_src
 
-
 ***  Pulsar
 The `pulsar' package enhances the user experience in Emacs by providing ;; visual feedback through pulsating highlights.
 This feature is especially useful in programming modes, where it can help users easily track actions such as scrolling, error navigation, yanking, deleting, and  jumping to definitions.
@@ -1387,6 +1421,20 @@ This feature is especially useful in programming modes, where it can help users 
   (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
   (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
   )
+#+end_src
+
+***  Devdocs
+#+begin_src emacs-lisp
+  (use-package devdocs
+    :commands (devdocs-lookup devdocs-peruse devdocs-install)
+    :hook ((python-ts-mode     . (lambda () (setq-local devdocs-current-docs '("python~3.14"))))
+           )
+    :init
+    (cl/leader-keys
+      "d"  '(:ignore t :which-key "docs")
+      "dd" '(devdocs-lookup :which-key "lookup")
+      "dp" '(devdocs-peruse :which-key "peruse")
+      "di" '(devdocs-install :which-key "install docs")))
 #+end_src
 
 * Workspaces workflows
