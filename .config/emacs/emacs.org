@@ -1459,6 +1459,71 @@ This feature is especially useful in programming modes, where it can help users 
   )
 #+end_src
 
+* AI
+#+begin_src emacs-lisp
+  (use-package gptel
+      :commands (gptel-send)
+      :bind
+      ("C-c g s" . gptel-send)
+      ("C-c g m" . gptel-menu)
+      ("C-c g g" . gptel)
+      :init
+      (defun cl/bedrock-mantle-key ()
+        "Read the Bedrock bearer token from ~/.authinfo.gpg."
+        (when-let* ((entry (car (auth-source-search
+                                 :host
+  "bedrock-mantle.us-east-1.api.aws"
+                                 :user "apikey"
+                                 :require '(:secret))))
+                    (secret (plist-get entry :secret)))
+          (if (functionp secret) (funcall secret) secret)))
+
+      (defun cl/bedrock-runtime-key ()
+        "Read the BedrockAPIKey bearer token from ~/.authinfo.gpg."
+        (when-let* ((entry (car (auth-source-search
+                                 :host "bedrock-runtime.us-east-1.amazonaws.com"
+                                 :user "apikey"
+                                 :require '(:secret))))
+                    (secret (plist-get entry :secret)))
+          (if (functionp secret) (funcall secret) secret))) 
+
+
+      :config
+
+      (setenv "AWS_BEARER_TOKEN_BEDROCK"
+              (cl/bedrock-runtime-key))   
+
+      
+      (gptel-make-bedrock "Bedrock-Runtime"
+        :stream t
+        :region "us-east-1"
+        :models '(claude-haiku-4-5-20251001) 
+        :model-region 'us)
+      
+      
+      (gptel-make-openai "Bedrock-Mantle"
+        :host "bedrock-mantle.us-east-1.api.aws"
+        :endpoint "/v1/chat/completions"
+        :stream t
+        :key #'cl/bedrock-mantle-key
+        :models '(mistral.devstral-2-123b
+                  deepseek.v3.2
+                  deepseek.v3.1
+                  google.gemma-3-27b-it
+                  google.gemma-3-12b-it
+                  mistral.mistral-large-3-675b-instruct
+                  nvidia.nemotron-super-3-120b
+                  qwen.qwen3-32b-v1:0
+                  zai.glm-5
+                  zai.glm-4.7-flash
+                  moonshotai.kimi-k2.5))
+
+      (setq gptel-backend (gptel-get-backend "Bedrock-Runtime")  
+  gptel-model 'us.anthropic.claude-haiku-4-5-20251001)
+
+      )
+   
+  #+end_src
 * Miscellaneous 
 
 ** Wakatime
