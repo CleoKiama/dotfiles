@@ -47,6 +47,8 @@ generated one.
   (use-package emacs
     ;; Built-in package configuration; do not download via straight.el.
     :straight nil                    
+    :bind
+    ("C-c u" . universal-argument)
     ;; Set custom variables to configure Emacs behavior.
     :custom          
     ;; --- Startup & Files ---
