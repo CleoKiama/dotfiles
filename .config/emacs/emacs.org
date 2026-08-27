@@ -75,8 +75,10 @@ generated one.
 
     ;; Display the current column number in the mode line.
     (column-number-mode t) 
+
     ;; Use relative line numbering in buffers with line numbers enabled.
-    (display-line-numbers-type 'relative)
+    ;; (display-line-numbers-type t) using flash.el now 
+
     ;; Disable word wrapping and truncate long lines horizontally
     (truncate-lines t)
     ;; Silence the audible bell entirely.
@@ -1437,6 +1439,37 @@ This feature is especially useful in programming modes, where it can help users 
       "dd" '(devdocs-lookup :which-key "lookup")
       "dp" '(devdocs-peruse :which-key "peruse")
       "di" '(devdocs-install :which-key "install docs")))
+#+end_src
+
+***  flash.el 
+#+begin_src emacs-lisp
+  (use-package flash
+    :straight (:host github :repo "Prgebish/flash")
+    :after evil
+    :custom
+    (flash-multi-window t)         ; Jump across visible windows/splits
+    (flash-backdrop t)             ; Dim background text during jump
+    (flash-case-fold t)            ; Case-insensitive search
+    (flash-autojump t)             ; Automatically jump if there is only 1 match
+    (flash-highlight-matches t)    ; Highlight search matches
+    (flash-label-position 'overlay); Show label directly on top of match
+    (flash-jump-position 'start)   ; Land cursor at start of match
+    (flash-char-jump-labels t)     ; Show labels for extra f/t/F/T matches
+    (flash-char-multi-line t)      ; Allow f/t/F/T to search across lines
+    (flash-nohlsearch t)           ; Clear highlight on jump finish
+    (flash-jumplist t)             ; Add jump to evil/emacs jump list
+    :config
+    ;; Evil integration: binds `gs` -> jump, `gS` -> remote action, plus enhanced f/t/F/T
+    (flash-evil-setup t)
+    
+    ;; Search integration: shows labels during `C-s`, `/`, `?`
+    (flash-isearch-mode 1)
+    
+    ;; Optional: Uncomment if you prefer `s` over `gs` for jumping
+    (evil-define-key '(normal visual operator) 'global (kbd "s") #'flash-evil-jump)
+    (evil-define-key 'normal 'global (kbd "S") #'flash-action)
+    (evil-define-key 'visual 'global (kbd "S") #'flash-treesitter)
+  ) 
 #+end_src
 
 * Workspaces workflows
