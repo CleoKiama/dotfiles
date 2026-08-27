@@ -1,40 +1,37 @@
-;; Colemak-DH base layer (ergonomic-shift layout). Layer is named "base"
-;; so all shared layers (symbols, navigation, numrow, media,
-;; workspace) reference it correctly.
+;; Base layer. Named "base" so every shared layer refers to it.
 ;;
-;; ergonomic-shift: alpha block shifted up one physical row; right hand
-;; one column right with the full physical column 6 y h n dead — a clean
-;; vertical gap between the hands. Home-row mods live on top row (qwert/iop[):
-;; Alt, Super, Ctrl on ring, middle, index fingers; pinkies are plain a and o.
-;; Thumbs: c=bspsym (bspc / symbols), v=nav (spc), m=shf (shift), ,=entnum (ret / numrow).
-;; Combos: physical 3+4 (f+p) = Escape.
+;; alpha block shifted up one physical row, right hand
+;; one column right, column 6 (y h n) dead — a clean gap between hands.
+;; Home-row mods therefore sit on the top row (qwert / iop[):
+;; Alt/Super/Ctrl ring-to-index, Shift on pinkies (a, o).
+;;
+;; Grid order (matches defsrc/pc.kbd):
+;;   8 top num  |  8 top alpha  |  9 home alpha  |  4 thumbs  |  tab prtsc ' |  - ` [
 
-;; tab-origin: 1-col left shift
 (deflayer base
-  w    (chord fp-esc 2) (chord fp-esc 3) b    XX   XX   XX   j    l    u    y
-  @r   @s   @t   g    XX   XX   m    @n   @e   @i
-  z    x    c    d    v    XX   XX   @med h    ,    .
-  XX   @bspsym @nav XX XX  XX   XX   rsft @entnum XX  XX
-  XX   XX   XX
-  @a   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   lrld   XX
-  XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
-  @wsp    ;    XX   q    @o    XX   XX
+  w    (chord fp-esc 2) (chord fp-esc 3) b    j    l    u    y
+  @r   @s   @t   g    m    @n   @e   @i
+  z    x    c    d    v    @med h    ,    .
+  @bspsym @nav @m-thumb @entnum
+  @a
+  lrld
+  @wsp
+  ;    q    @o
 )
 
 (defalias
-  ;; Home-row mods — order: Alt / Super / Control (Ring to Index)
-  a (tap-hold-release-keys $tap-time $hold-time a lsft $left-hand-keys)
-  r (tap-hold-release-keys $tap-time $hold-time r lalt $left-hand-keys)
-  s (tap-hold-release-keys $tap-time $hold-time s lmet $left-hand-keys)
-  t (tap-hold-release-keys $tap-time $hold-time t lctl $left-hand-keys)
-  n (tap-hold-release-keys $tap-time $hold-time n rctl $right-hand-keys)
-  e (tap-hold-release-keys $tap-time $hold-time e rmet $right-hand-keys)
-  i (tap-hold-release-keys $tap-time $hold-time i ralt $right-hand-keys)
-  o (tap-hold-release-keys $tap-time $hold-time o rsft $right-hand-keys)
+  ;; Home-row mods — Alt / Super / Ctrl, ring to index:
+  ;; tap-hold-opposite-hand-release defers the hold until the
+  ;; interrupting opposite-hand key is released, avoiding misfires on
+  ;; fast rolling keystrokes.
+  a (tap-hold-opposite-hand $hold-time a lsft (timeout hold) (require-prior-idle 50))
+  r (tap-hold-opposite-hand-release $hold-time r lalt (timeout hold) (require-prior-idle 150))
+  s (tap-hold-opposite-hand-release $hold-time s lmet (timeout hold) (require-prior-idle 150))
+  t (tap-hold-opposite-hand-release $hold-time t lctl (timeout hold) (require-prior-idle 180))
+  n (tap-hold-opposite-hand $hold-time n rctl (timeout hold) (require-prior-idle 150))
+  e (tap-hold-opposite-hand-release $hold-time e rmet (timeout hold) (require-prior-idle 150))
+  i (tap-hold-opposite-hand-release $hold-time i ralt (timeout hold) (require-prior-idle 150))
+  o (tap-hold-opposite-hand $hold-time o rsft (timeout hold) (require-prior-idle 50))
   ;; Thumbs
   bspsym (tap-hold-press $tap-time $hold-time bspc (layer-while-held symbols))
   shf (one-shot 2000 lsft)
@@ -43,6 +40,7 @@
   med (tap-hold $tap-time $hold-time k (layer-while-held media))
   wsp (tap-hold $tap-time $hold-time / (layer-while-held workspace))
   os-sft (one-shot 2000 lsft)
+  m-thumb (tap-hold-press $tap-time $hold-time @os-sft (layer-while-held modifiers))
   os-alt (one-shot 2000 lalt)
   os-met (one-shot 2000 lmet)
   os-ctl (one-shot 2000 lctl)

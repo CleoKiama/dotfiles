@@ -36,19 +36,19 @@
     <text x="30" y="36" class="main">@cls</text>
   </g>
   <g transform="translate(152,70)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" class="gap"/>
     <text x="6" y="12" class="phys">2</text>
-    <text x="30" y="36" class="main">S-Tab</text>
+    <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(218,70)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" class="gap"/>
     <text x="6" y="12" class="phys">3</text>
-    <text x="30" y="36" class="main">Tab</text>
+    <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(284,70)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" class="gap"/>
     <text x="6" y="12" class="phys">4</text>
-    <text x="30" y="36" class="main">Alt+←</text>
+    <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(446,70)">
     <rect width="60" height="60" class="active"/>
@@ -71,38 +71,38 @@
     <text x="30" y="36" class="main">End</text>
   </g>
   <g transform="translate(710,70)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" class="gap"/>
     <text x="6" y="12" class="phys">-</text>
-    <text x="30" y="36" class="main">Run</text>
+    <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(20,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">tab</text>
-    <text x="30" y="28" class="main">Shift</text>
+    <text x="30" y="28" class="main">Alt+←</text>
     <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Shift</text>
   </g>
   <g transform="translate(86,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">q</text>
-    <text x="30" y="28" class="main">Alt</text>
+    <text x="30" y="28" class="main">S-Tab</text>
     <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Alt</text>
   </g>
   <g transform="translate(152,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">w</text>
-    <text x="30" y="28" class="main">Super</text>
+    <text x="30" y="28" class="main">Tab</text>
     <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Super</text>
   </g>
   <g transform="translate(218,136)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">e</text>
-    <text x="30" y="28" class="main">Ctrl</text>
+    <text x="30" y="28" class="main">Alt+→</text>
     <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Ctrl</text>
   </g>
   <g transform="translate(284,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" class="gap"/>
     <text x="6" y="12" class="phys">r</text>
-    <text x="30" y="36" class="main">Alt+→</text>
+    <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(446,136)">
     <rect width="60" height="60" class="active"/>
@@ -194,7 +194,7 @@
     <text x="30" y="36" class="main">·</text>
   </g>
   <g transform="translate(446,268)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">m</text>
     <text x="30" y="36" class="main">·</text>
   </g>

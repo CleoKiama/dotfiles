@@ -1,92 +1,66 @@
-;; Navigation layer: Vim-style HJKL arrows, mouse wheel, editor shortcuts
-;; Activated by holding Space thumb (m). ergonomic-shift: shifted up one
-;; row; right hand one column right (column 6 y h n dead). Workspace keys
-;; moved to `v` hold layer.
+;; Navigation layer: Vim-style HJKL arrows, mouse wheel, editor shortcuts.
+;; Activated by holding the `c` thumb (Spc/Nav). FunPad: hold `[` here
+;; (@fun). Modifiers: hold `m` thumb. Workspace: hold `'` right pinky (@wsp).
+;;
+;; Grid order (matches defsrc/pc.kbd):
+;;   8 top num  |  8 top alpha  |  9 home alpha  |  4 thumbs  |  tab prtsc ' |  - ` [
 
-;; tab-origin: 1-col left shift
 (deflayer navigation
-  @cls S-tab tab  bck  XX   XX   XX   home pgdn pgup end
-  @os-alt @os-met @os-ctl fwd XX XX   lft  down up   rght
-  @ndo @cut @cpy @rdo @pst XX   XX   @mwl @mwd @mwu @mwr
-  XX   del  _    XX   XX   XX   XX   _    _    XX   XX
-  XX   XX   XX
-  @os-sft XX XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
-  XX   @run XX   XX @fun XX   XX
+  @cls XX   XX   XX   home pgdn pgup end
+  S-tab tab  fwd  XX   lft  down up   rght
+  @ndo @cut @cpy @rdo @pst @mwl @mwd @mwu @mwr
+  del  _    _    _
+  bck
+  XX
+  XX
+  XX   XX   @fun
 )
 
-;; numpad — REMOVED (unused).
-
-;; Function keys — layer-while-held
-
-;; tab-origin: 1-col left shift
+;; Function keys — hold `[` while on the navigation layer
 (deflayer funpad
-  f2   f3   f4   XX   XX   XX   XX   XX   XX   XX   XX
-  f6   f7   f8   XX   XX   XX   XX   lalt lctl lmet
-  f9   f10  f11  f12  XX   XX   XX   XX   XX   XX   XX
-  XX   _    _    XX   XX   XX   XX   _    _    XX   XX
-  XX   XX   XX
-  f5   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   f1   _    XX   XX
+  f2   f3   f4   XX   XX   XX   XX   XX
+  f6   f7   f8   XX   XX   lalt lctl lmet
+  f9   f10  f11  f12  XX   XX   XX   XX   XX
+  _    _    _    _
+  f5
+  XX
+  XX
+  XX   f1   _
 )
 
 (defalias
-  std (layer-switch base)
-  pad XX ;; REMOVED
   fun (layer-while-held funpad)
 
   mwu (mwheel-up    50 120)
   mwd (mwheel-down  50 120)
   mwl (mwheel-left  50 120)
   mwr (mwheel-right 50 120)
-
-  run XX
 )
 
-;; Workspace layer — Super+1..0, left hand only
-;; Activated by holding right pinky (/)
-
-;; tab-origin: 1-col left shift
+;; Workspace layer — Super+1..0
+;; Activated by holding `'` (right pinky)
 (deflayer workspace
-  M-7  M-8  M-9  M-0  XX   XX   XX   XX   XX   XX   XX
-  M-2  M-3  M-4  M-5  XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   _    _    XX   XX   XX   XX   _    _    XX   XX
-  XX   XX   XX
-  M-1  XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   M-6  XX   XX   XX
+  M-7  M-8  M-9  M-0  XX   XX   XX   XX
+  M-2  M-3  M-4  M-5  XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX
+  _    _    _    _
+  M-1
+  XX
+  XX
+  XX   M-6   XX
 )
 
-;; Modifiers layer (Callum-style) — DISABLED: physical m is now plain rsft
-;; Activated by holding physical m key (Right Index thumb) — INERT
-;; tab-origin: 1-col left shift
+;; Modifiers layer — one-shot / held modifiers
+;; Activated by holding `m` thumb
 (deflayer modifiers
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX
+  @os-alt @os-met @os-ctl XX   XX   @os-ctl @os-met @os-alt
+  XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX
+  @os-sft
+  XX
+  XX
+  XX   XX   @os-sft
 )
 
 ;; vim: set ft=lisp:

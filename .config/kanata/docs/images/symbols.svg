@@ -24,7 +24,7 @@
     }
   </style>
   <text x="390" y="28" class="title">Symbols Layer</text>
-  <text x="390" y="48" class="subtitle">Activated by Holding Left Mid Thumb (c)</text>
+  <text x="390" y="48" class="subtitle">Activated by Holding Left Mid Thumb (x)</text>
   <g transform="translate(20,70)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">`</text>
@@ -194,7 +194,7 @@
     <text x="30" y="36" class="main">·</text>
   </g>
   <g transform="translate(446,268)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">m</text>
     <text x="30" y="36" class="main">·</text>
   </g>

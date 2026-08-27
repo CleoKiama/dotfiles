@@ -68,7 +68,6 @@
     <text x="6" y="12" class="phys">2</text>
     <text x="20" y="36" class="base">f</text>
     <text x="50" y="16" class="sym">&gt;</text>
-    <text x="44" y="56" class="nav" font-size="8.5px">S-Tab</text>
     <text x="14" y="56" class="num">8</text>
   </g>
   <g transform="translate(240,100)">
@@ -76,7 +75,6 @@
     <text x="6" y="12" class="phys">3</text>
     <text x="20" y="36" class="base">p</text>
     <text x="50" y="16" class="sym">@</text>
-    <text x="44" y="56" class="nav" font-size="10px">Tab</text>
     <text x="14" y="56" class="num">9</text>
   </g>
   <g transform="translate(312,100)">
@@ -84,7 +82,6 @@
     <text x="6" y="12" class="phys">4</text>
     <text x="20" y="36" class="base">b</text>
     <text x="50" y="16" class="sym">%</text>
-    <text x="44" y="56" class="nav" font-size="8.5px">Alt+←</text>
     <text x="14" y="56" class="num">0</text>
   </g>
   <g transform="translate(488,100)">
@@ -120,7 +117,6 @@
     <text x="6" y="12" class="phys">-</text>
     <text x="20" y="36" class="base">;</text>
     <text x="50" y="16" class="sym">`</text>
-    <text x="44" y="56" class="nav" font-size="10px">Run</text>
   </g>
   <g transform="translate(24,172)">
     <rect width="64" height="64" class="hrm"/>
@@ -128,7 +124,7 @@
     <text x="26" y="30" class="base">a</text>
     <text x="26" y="46" class="mod">Shift</text>
     <text x="50" y="16" class="sym">{</text>
-    <text x="44" y="56" class="nav" font-size="8.5px">Shift</text>
+    <text x="44" y="56" class="nav" font-size="8.5px">Alt+←</text>
   </g>
   <g transform="translate(96,172)">
     <rect width="64" height="64" class="hrm"/>
@@ -136,7 +132,7 @@
     <text x="26" y="30" class="base">r</text>
     <text x="26" y="46" class="mod">Alt</text>
     <text x="50" y="16" class="sym">(</text>
-    <text x="44" y="56" class="nav" font-size="10px">Alt</text>
+    <text x="44" y="56" class="nav" font-size="8.5px">S-Tab</text>
   </g>
   <g transform="translate(168,172)">
     <rect width="64" height="64" class="hrm"/>
@@ -144,7 +140,7 @@
     <text x="26" y="30" class="base">s</text>
     <text x="26" y="46" class="mod">Super</text>
     <text x="50" y="16" class="sym">)</text>
-    <text x="44" y="56" class="nav" font-size="8.5px">Super</text>
+    <text x="44" y="56" class="nav" font-size="10px">Tab</text>
   </g>
   <g transform="translate(240,172)">
     <rect width="64" height="64" class="hrm"/>
@@ -152,14 +148,13 @@
     <text x="26" y="30" class="base">t</text>
     <text x="26" y="46" class="mod">Ctrl</text>
     <text x="50" y="16" class="sym">}</text>
-    <text x="44" y="56" class="nav" font-size="10px">Ctrl</text>
+    <text x="44" y="56" class="nav" font-size="8.5px">Alt+→</text>
   </g>
   <g transform="translate(312,172)">
     <rect width="64" height="64" class="key"/>
     <text x="6" y="12" class="phys">r</text>
     <text x="20" y="36" class="base">g</text>
     <text x="50" y="16" class="sym">=</text>
-    <text x="44" y="56" class="nav" font-size="8.5px">Alt+→</text>
     <text x="14" y="56" class="num">5</text>
   </g>
   <g transform="translate(488,172)">
@@ -287,9 +282,10 @@
     <text x="32" y="50" class="nav">Nav</text>
   </g>
   <g transform="translate(488,316)">
-    <rect width="64" height="64" class="key"/>
+    <rect width="64" height="64" class="thumb"/>
     <text x="6" y="12" class="phys">m</text>
-    <text x="20" y="36" class="base">Shift</text>
+    <text x="32" y="32" class="base">Shf</text>
+    <text x="32" y="50" class="nav">Mod</text>
   </g>
   <g transform="translate(560,316)">
     <rect width="64" height="64" class="thumb"/>

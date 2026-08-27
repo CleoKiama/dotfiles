@@ -24,7 +24,7 @@
     }
   </style>
   <text x="390" y="28" class="title">Thumb Layer Taps</text>
-  <text x="390" y="48" class="subtitle">x: Bspc / Sym  |  c: Spc / Nav  |  m: Shift  |  ,: Ret / Num</text>
+  <text x="390" y="48" class="subtitle">x: Bspc / Sym  |  c: Spc / Nav  |  m: Shf / Mod  |  ,: Ret / Num</text>
   <g transform="translate(20,70)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">`</text>
@@ -198,7 +198,8 @@
   <g transform="translate(446,268)">
     <rect width="60" height="60" class="active"/>
     <text x="6" y="12" class="phys">m</text>
-    <text x="30" y="36" class="main">Shift</text>
+    <text x="30" y="30" class="main">Shf</text>
+    <text x="30" y="48" class="sub">Mod</text>
   </g>
   <g transform="translate(512,268)">
     <rect width="60" height="60" class="active"/>

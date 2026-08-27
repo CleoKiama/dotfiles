@@ -1,15 +1,23 @@
+;; Source key capture — Ergonomic-Shift cluster only (35 keys).
+;;
+;; Everything outside this list is a hard no-op via block-unmapped-keys:
+;; - Arrows, F-row (brightness/speaker are firmware Fn combos), numpad,
+;;   spacebar row, deduplicated mods, `= ] \` and other outer keys.
+;; - Keys that remain in defsrc MUST be mapped in every deflayer below.
+;;
+;; Flat order (matches every deflayer token-for-token):
+;;   top num row:    1 2 3 4 | 7 8 9 0
+;;   top alpha:      q w e r | u i o p
+;;   home alpha:     caps a s d f | j k l ;
+;;   bottom alpha:   x c | m ,
+;;   misc:           tab prtsc ' | - ` [
 (defsrc
-  1    2    3    4    5  bspc   6    7    8    9    0
-  q    w    e    r    t         y    u    i    o    p
-  caps  a    s    d    f    g         h    j    k    l    ;
-  z    x    c    v    b    <    n    m    ,    .    /
-            lalt          spc             ralt
-  tab  lshift rshift lctl  rctl  lmet  rmet  enter  del  esc
-  ins  prtsc  pause
-  up   down   left   right home  end   pgup  pgdn
-  f1   f2     f3     f4    f5    f6    f7    f8    f9    f10   f11   f12
-  kp0  kp1    kp2    kp3   kp4   kp5   kp6   kp7   kp8   kp9
-  kprt kp+    kp-    kp*   kp/   kp.   nlk
+  1    2    3    4    7    8    9    0
+  q    w    e    r    u    i    o    p
+  caps a    s    d    f    j    k    l    ;
+  x    c    m    ,
+  tab
+  prtsc
   '
-  -    =    `    [    ]    \
+  -    `    [
 )

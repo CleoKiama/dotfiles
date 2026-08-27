@@ -1,17 +1,16 @@
 (defcfg
   process-unmapped-keys yes
+  block-unmapped-keys yes
   concurrent-tap-hold yes
-  ;; v1.12.0+: require 100ms idle before a tap-hold key activates its hold
-  ;; (ZMK-style require-prior-idle). Supplements same-hand suppression via
-  ;; tap-hold-release-keys + hand-key lists.
-  tap-hold-require-prior-idle 100
 )
 
+(defhands
+  (left  ` 1 2 3 4 tab q w e r caps a s d f x c)
+  (right 7 8 9 0 - u i o p [ ' j k l ; m ,))
+
 (defvar
-  tap-time 150
-  hold-time 200
-  left-hand-keys (` 1 2 3 4 tab q w e r caps a s d f lshift z x c)
-  right-hand-keys (6 7 8 9 0 - y u i o p [ ] ' h j k l ; n m , . / bspc)
+  tap-time 180
+  hold-time 180          
 )
 
 (include defsrc/pc.kbd)
@@ -23,8 +22,7 @@
   (3) p
 )
 
-;; Layout: base layer
-(include deflayer/colemak-dh-base.kbd)  ;; Colemak-DH
+(include deflayer/colemak-dh-base.kbd)
 (include deflayer/symbols.kbd)
 (include deflayer/navigation.kbd)
 (include deflayer/media.kbd)

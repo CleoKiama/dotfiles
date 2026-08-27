@@ -9,7 +9,7 @@ def get_layer(filename, lname):
     txt = open(filename).read()
     m = re.search(r'\(deflayer '+lname+r'\n(.*?)\n\)', txt, re.S)
     if not m: return []
-    lines = [l for l in m.group(1).splitlines() if not l.strip().startswith(';')]
+    lines = [l for l in m.group(1).splitlines() if not l.strip().startswith(';;')]
     return re.findall(r'\([^)]+\)|\S+', '\n'.join(lines))
 
 base_toks = get_layer('deflayer/colemak-dh-base.kbd', 'base')
@@ -19,6 +19,7 @@ nav_toks  = get_layer('deflayer/navigation.kbd', 'navigation')
 fp_toks   = get_layer('deflayer/navigation.kbd', 'funpad')
 wsp_toks  = get_layer('deflayer/navigation.kbd', 'workspace')
 med_toks  = get_layer('deflayer/media.kbd', 'media')
+mod_toks  = get_layer('deflayer/navigation.kbd', 'modifiers')
 
 GRID_KEYS = [
     ['`','1','2','3','4','6','7','8','9','0','-'],
@@ -34,7 +35,7 @@ LABEL_MAP = {
     '@a': 'a', '@r': 'r', '@s': 's', '@t': 't',
     '@n': 'n', '@e': 'e', '@i': 'i', '@o': 'o',
     'rsft': 'Shift', 'lsft': 'Shift', 'lshift': 'Shift', 'rshift': 'Shift',
-    '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@shf': 'Shift', '@entnum': 'Ret / Num',
+    '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@shf': 'Shift', '@entnum': 'Ret / Num', '@m-thumb': 'Shf / Mod',
     '@wsp': '/',
     '@os-sft': 'Shift', '@os-alt': 'Alt', '@os-met': 'Super', '@os-ctl': 'Ctrl',
     '@pl': '(', '@pr': ')', '@cl': '{', '@cr': '}', '@sl': '[', '@sr': ']',
@@ -134,11 +135,10 @@ def render_all_svg():
         for c_idx, pkey in enumerate(row):
             is_right = (c_idx >= 6)
             is_dead_col = (c_idx == 5)
-            is_thumb = (pkey in ('x', 'c', ','))
+            is_thumb = (pkey in ('x', 'c', 'm', ','))
 
             # Skip rendering non-active layout keys (dead center column & non-thumb bottom keys)
-            # Note: physical m is now plain Shift (rsft), not a thumb key — rendered as regular key.
-            if is_dead_col or (r_idx == 3 and not is_thumb and pkey != 'm'):
+            if is_dead_col or (r_idx == 3 and not is_thumb):
                 continue
 
             x = margin_x + c_idx * stride_x + (gap_extra if is_right else 0)
@@ -264,11 +264,10 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
         for c_idx, pkey in enumerate(row):
             is_right = (c_idx >= 6)
             is_dead_col = (c_idx == 5)
-            is_thumb = (pkey in ('x', 'c', ','))
+            is_thumb = (pkey in ('x', 'c', 'm', ','))
 
             # Skip rendering non-active layout keys (dead center column & non-thumb bottom keys)
-            # Note: physical m is now plain Shift (rsft), not a thumb key.
-            if is_dead_col or (r_idx == 3 and not is_thumb and pkey != 'm'):
+            if is_dead_col or (r_idx == 3 and not is_thumb):
                 continue
 
             x = margin_x + c_idx * stride_x + (gap_extra if is_right else 0)
@@ -313,9 +312,10 @@ os.makedirs('docs/images', exist_ok=True)
 svgs = {
     'all.svg': render_all_svg(),
     'hrm.svg': render_layer_svg('Home-Row Mods (Top Row)', 'tab q w e → Shift Alt Super Ctrl  |  i o p → Ctrl Super Alt', base_toks, 'hrm'),
-    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'x: Bspc / Sym  |  c: Spc / Nav  |  m: Shift  |  ,: Ret / Num', base_toks, 'thumbs'),
-    'symbols.svg': render_layer_svg('Symbols Layer', 'Activated by Holding Left Mid Thumb (c)', sym_toks, 'symbols'),
+    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'x: Bspc / Sym  |  c: Spc / Nav  |  m: Shf / Mod  |  ,: Ret / Num', base_toks, 'thumbs'),
+    'symbols.svg': render_layer_svg('Symbols Layer', 'Activated by Holding Left Mid Thumb (x)', sym_toks, 'symbols'),
     'navigation.svg': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Left Index Thumb (c)', nav_toks, 'navigation'),
+    'modifiers.svg': render_layer_svg('Modifiers Layer (One-Shot / Held)', 'Activated by Holding Right Index Thumb (m)', mod_toks, 'hrm'),
     'numrow.svg': render_layer_svg('NumRow Layer', 'Activated by Holding Right Mid Thumb (,) — Digits 1..0', num_toks, 'numrow'),
     'workspace.svg': render_layer_svg('Workspace Layer', 'Activated by Holding Right Pinky (/) — Super+1..0', wsp_toks, 'workspace'),
     'media.svg': render_layer_svg('Media Layer', 'Activated by Holding Physical j Key — Playback & Volume', med_toks, 'symbols'),
