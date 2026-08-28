@@ -1378,26 +1378,32 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ***  harpoon 
 #+begin_src emacs-lisp
   (use-package harpoon
-    :commands (harpoon-add-file harpoon-quick-menu-hydra harpoon-clear)
+    :straight (harpoon :type git :host github :repo "C-Hipple/harpoon.el")
+    :after evil
     :config
+    (general-define-key
+     :states '(normal insert visual emacs)
+     :keymaps 'override
+     :prefix "C-SPC"
+     "a" (lambda () (interactive) (harpoon-open-entry 1))
+     "r" (lambda () (interactive) (harpoon-open-entry 2))
+     "s" (lambda () (interactive) (harpoon-open-entry 3))
+     "t" (lambda () (interactive) (harpoon-open-entry 4))
+     "g" (lambda () (interactive) (harpoon-open-entry 5))
+     "q" (lambda () (interactive) (harpoon-open-entry 6))
+     )
+
     (cl/leader-keys
       "h"  '(:ignore t :which-key "harpoon")
-      "ha" '(harpoon-add-file :which-key "add file")
-      "hh" '(harpoon-quick-menu-hydra :which-key "quick menu")
-      "hc" '(harpoon-clear :which-key "clear")
-      )
+      "ha" (lambda () (interactive) (harpoon-add-file-or-buffer 1))
+      "hr" (lambda () (interactive) (harpoon-add-file-or-buffer 2))
+      "hs" (lambda () (interactive) (harpoon-add-file-or-buffer 3))
+      "ht" (lambda () (interactive) (harpoon-add-file-or-buffer 4))
+      "hg" (lambda () (interactive) (harpoon-add-file-or-buffer 5))
+      "hq" (lambda () (interactive) (harpoon-add-file-or-buffer 6))
+      "hA" '(harpoon-open-or-create :which-key "edit file"))
+    )
 
-     (general-define-key
-      :states '(normal insert visual emacs)
-      :keymaps 'override
-      :prefix "C-SPC"
-      "a" '(harpoon-go-to-1 :wk "harpoon 1")
-      "r" '(harpoon-go-to-2 :wk "harpoon 2")
-      "s" '(harpoon-go-to-3 :wk "harpoon 3")
-      "t" '(harpoon-go-to-4 :wk "harpoon 4")
-      "g" '(harpoon-go-to-5 :wk "harpoon 5")
-      "q" '(harpoon-go-to-6 :wk "harpoon 6")
-      ))
 
 #+end_src
 
@@ -1472,6 +1478,18 @@ This feature is especially useful in programming modes, where it can help users 
   ) 
 #+end_src
 
+***  verb for sending http requests
+#+begin_src emacs-lisp
+  (use-package verb
+    :commands (verb-send-request-on-point-display)
+    :init
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
+    :custom 
+    (verb-auto-kill-response-buffers 3)
+    )
+    
+#+end_src
+
 * Workspaces workflows
 
 #+begin_src emacs-lisp
@@ -1497,68 +1515,205 @@ This feature is especially useful in programming modes, where it can help users 
 * AI
 #+begin_src emacs-lisp
   (use-package gptel
-      :commands (gptel-send)
-      :bind
-      ("C-c g s" . gptel-send)
-      ("C-c g m" . gptel-menu)
-      ("C-c g g" . gptel)
-      :init
-      (defun cl/bedrock-mantle-key ()
-        "Read the Bedrock bearer token from ~/.authinfo.gpg."
-        (when-let* ((entry (car (auth-source-search
-                                 :host
-  "bedrock-mantle.us-east-1.api.aws"
-                                 :user "apikey"
-                                 :require '(:secret))))
-                    (secret (plist-get entry :secret)))
-          (if (functionp secret) (funcall secret) secret)))
+    :commands (gptel-send)
+    :custom
+    (gptel-default-mode 'org-mode)
+    :bind
+    ("C-c g s" . gptel-send)
+    ("C-c g m" . gptel-menu)
+    ("C-c g p" . gptel-preset)
+    ("C-c g a" . gptel-ask)            
+    ("C-c g c" . gptel-abort)            
+    ("C-c g g" . gptel)
+    :init
+    (defun cl/bedrock-mantle-key ()
+      "Read the Bedrock bearer token from ~/.authinfo.gpg."
+      (when-let* ((entry (car (auth-source-search
+                               :host
+                               "bedrock-mantle.us-east-1.api.aws"
+                               :user "apikey"
+                               :require '(:secret))))
+                  (secret (plist-get entry :secret)))
+        (if (functionp secret) (funcall secret) secret)))
+    
+    (defun cl/bedrock-runtime-key ()
+      "Read the BedrockAPIKey bearer token from ~/.authinfo.gpg."
+      (when-let* ((entry (car (auth-source-search
+                               :host "bedrock-runtime.us-east-1.amazonaws.com"
+                               :user "apikey"
+                               :require '(:secret))))
+                  (secret (plist-get entry :secret)))
+        (if (functionp secret) (funcall secret) secret))) 
+    :config
+    (setenv "AWS_BEARER_TOKEN_BEDROCK"
+            (cl/bedrock-runtime-key))   
+    
+    (gptel-make-bedrock "Bedrock-Runtime"
+      :stream t
+      :region "us-east-1"
+      :models '(claude-haiku-4-5-20251001) 
+      :model-region 'us)
+    
+    
+    (gptel-make-openai "Bedrock-Mantle"
+      :host "bedrock-mantle.us-east-1.api.aws"
+      :endpoint "/v1/chat/completions"
+      :stream t
+      :key #'cl/bedrock-mantle-key
+      :models '(mistral.devstral-2-123b
+                deepseek.v3.2
+                deepseek.v3.1
+                google.gemma-3-27b-it
+                google.gemma-3-12b-it
+                mistral.mistral-large-3-675b-instruct
+                nvidia.nemotron-super-3-120b
+                qwen.qwen3-32b-v1:0
+                zai.glm-5
+                zai.glm-4.7-flash
+                moonshotai.kimi-k2.5))
+    
+    (setq gptel-backend (gptel-get-backend "Bedrock-Runtime")  
+          gptel-model 'us.anthropic.claude-haiku-4-5-20251001)
 
-      (defun cl/bedrock-runtime-key ()
-        "Read the BedrockAPIKey bearer token from ~/.authinfo.gpg."
-        (when-let* ((entry (car (auth-source-search
-                                 :host "bedrock-runtime.us-east-1.amazonaws.com"
-                                 :user "apikey"
-                                 :require '(:secret))))
-                    (secret (plist-get entry :secret)))
-          (if (functionp secret) (funcall secret) secret))) 
+    ;; -----------------------------------------------------------------
+    ;; 2. Presets (@prog, @fast, @reason, @explain)
+    ;; -----------------------------------------------------------------
+    (gptel-make-preset 'fast
+      :description "MODEL: GLM Flash for instantaneous queries"
+      :backend "Bedrock-Mantle"
+      :model 'zai.glm-4.7-flash
+      :stream t)
+    
+    (gptel-make-preset 'explain
+      :description "PROMPT: Clear, concise explanation mode"
+      :backend "Bedrock-Runtime"
+      :model 'claude-haiku-4-5-20251001 
+      :system "You are a clear, concise teacher. Explain concepts plainly without fluff.")
+    
+    
+    ;; -----------------------------------------------------------------
+    ;; 3. Dynamic Context Inclusion (@include & Visible Windows)
+    ;; -----------------------------------------------------------------
+    ;; Context preset to include visible frame text
+    (gptel-make-preset 'visible-text
+      :description "CONTEXT: Include visible text from all active windows."
+      :context
+      '(:eval (mapcar (lambda (win)
+                        `(,(window-buffer win)
+                          :bounds ((,(window-start win) . ,(window-end win)))))
+                      (window-list))))
 
+    ;; Helper for @include "filename" or @include *buffer*
+    (defun cl/gptel-include-parse (context)
+      (skip-syntax-forward " " (line-end-position))
+      (while-let ((_ (not (or (eolp) (eobp))))
+                  (source (if (eq (char-after) ?\")
+                              (read (current-buffer))
+                            (prog1 (thing-at-point 'filename)
+                              (goto-char (match-end 0))))))
+        (skip-syntax-forward " " (line-end-position))
+        (cond
+         ((file-readable-p source) (push source context))
+         ((get-buffer source) (push (get-buffer source) context))))
+      context)
 
-      :config
+    (gptel-make-preset 'include
+      :description "CONTEXT: Include file or buffer following @include"
+      :context `(:function ,#'cl/gptel-include-parse))
+    
+    
+    ;; -----------------------------------------------------------------
+    ;; 4. Quick Side-Window Buffer (gptel-ask)
+    ;; -----------------------------------------------------------------
+    (defvar cl/gptel-ask-buffer "*gptel-ask*")
 
-      (setenv "AWS_BEARER_TOKEN_BEDROCK"
-              (cl/bedrock-runtime-key))   
+    (defun gptel-ask (prompt)
+      "Prompt for a quick question and display output in a right side-window."
+      (interactive "sAsk AI: ")
+      (let ((buf (get-buffer-create cl/gptel-ask-buffer)))
+        (display-buffer buf `((display-buffer-in-side-window) (side . right) (window-width . 0.35)))
+        (gptel-request prompt
+          :buffer buf
+          :position (with-current-buffer buf (point-max))
+          :callback
+          (lambda (resp info)
+            (when resp
+              (with-current-buffer (plist-get info :buffer)
+                (goto-char (point-max))
+                (insert "\n\nQ: " prompt "\n\n" resp "\n\n---")))))))
+    )
 
-      
-      (gptel-make-bedrock "Bedrock-Runtime"
-        :stream t
-        :region "us-east-1"
-        :models '(claude-haiku-4-5-20251001) 
-        :model-region 'us)
-      
-      
-      (gptel-make-openai "Bedrock-Mantle"
-        :host "bedrock-mantle.us-east-1.api.aws"
-        :endpoint "/v1/chat/completions"
-        :stream t
-        :key #'cl/bedrock-mantle-key
-        :models '(mistral.devstral-2-123b
-                  deepseek.v3.2
-                  deepseek.v3.1
-                  google.gemma-3-27b-it
-                  google.gemma-3-12b-it
-                  mistral.mistral-large-3-675b-instruct
-                  nvidia.nemotron-super-3-120b
-                  qwen.qwen3-32b-v1:0
-                  zai.glm-5
-                  zai.glm-4.7-flash
-                  moonshotai.kimi-k2.5))
-
-      (setq gptel-backend (gptel-get-backend "Bedrock-Runtime")  
-  gptel-model 'us.anthropic.claude-haiku-4-5-20251001)
-
-      )
-   
   #+end_src
+
+
+#+begin_src emacs-lisp
+  (use-package gptel-agent 
+    :after gptel
+    :config
+    ;; Tool presets accessible via @files, @web, @shell
+    (gptel-make-preset 'files
+      :description "TOOLS: File editing (Read, Glob, Write, Edit, Insert)"
+      :pre (lambda () (require 'gptel-agent-tools))
+      :tools '(:append ("Read" "Glob" "Write" "Edit" "Insert")))
+
+    (gptel-make-preset 'files-ro
+      :description "TOOLS: Read-only files (Read, Glob)"
+      :pre (lambda () (require 'gptel-agent-tools))
+      :tools '(:append ("Read" "Glob")))
+
+    (gptel-make-preset 'web
+      :description "TOOLS: Web access (WebSearch, WebFetch)"
+      :pre (lambda () (require 'gptel-agent-tools))
+      :tools '(:append ("WebSearch" "WebFetch")))
+    
+    (gptel-make-preset 'shell
+      :description "TOOLS: Terminal command execution (Bash)"
+      :pre (lambda () (require 'gptel-agent-tools))
+      :tools '(:append ("Bash")))
+
+    (gptel-make-preset 'introspect
+      :description "TOOLS: Introspect live Emacs Elisp runtime & APIs"
+      :pre (lambda () (require 'gptel-agent-tools-introspection))
+      :tools '("introspection")
+      :system
+      "You are pair programming with the user in Emacs and on Emacs.
+
+  Your job is to dive into Elisp code and understand the APIs and
+  structure of elisp libraries and Emacs. Use the provided tools to do
+  so, but do not make duplicate tool calls for information already
+  available in the chat.
+
+  <tone>
+  1. Be terse and to the point. Speak directly.
+  2. Explain your reasoning.
+  3. Do NOT hedge or qualify.
+  4. If you don't know, say you don't know.
+  5. Do not offer unprompted advice or clarifications.
+  6. Never apologize.
+  7. Do NOT summarize your answers.
+  </tone>
+
+  <code_generation>
+  When generating code:
+  1. Create a plan first: list briefly the design steps or ideas involved.
+  2. Use the provided tools to check that functions or variables you use
+  in your code exist.
+  3. Also check their calling convention and function-arity before you use them.
+  </code_generation>")
+
+    ;; -----------------------------------------------------------------
+    ;; 5. Auto-Approve Agent Edits in Git Repositories
+    ;; -----------------------------------------------------------------
+    (defun cl/gptel-agent-git-auto-confirm (path &rest _)
+      (not (and (file-readable-p path)
+                (locate-dominating-file path ".git")
+                (eql (call-process "git" nil nil nil "ls-files" "--error-unmatch" path) 0))))
+    
+    (setf (gptel-tool-confirm (gptel-get-tool "Edit")) #'cl/gptel-agent-git-auto-confirm
+          (gptel-tool-confirm (gptel-get-tool "Insert")) #'cl/gptel-agent-git-auto-confirm)
+    )
+#+end_src
+
 * Miscellaneous 
 
 ** Wakatime
