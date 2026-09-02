@@ -1,15 +1,14 @@
+  ;; -*- lexical-binding: t; -*-
+
 #+TITLE: CL  Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle yes :comments org
 
-This is the literate source for =init.el=. Every =emacs-lisp= block
-below with a live =:tangle= (the file-wide property line above turns
-that on by default) gets written out to =emacs.el= and loaded by
-=init.el= via ~org-babel-load-file~. Edit this file, not the
-generated one.
 
 * Perfomance & System Defaults
 
 #+begin_src emacs-lisp
+
+  
   ;; Restore GC after startup (complements early-init.el maximization)
   (add-hook 'emacs-startup-hook
             (lambda ()
@@ -1000,7 +999,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
            web-mode) . lsp-deferred))                   ;; Enable LSP for Web (HTML)
   :commands (lsp)
   :custom
-  (lsp-disabled-clients '(ruff ruff-lsp))          ;; Blocklist ruff from attaching as LSP (use basedpyright instead).
+  (lsp-disabled-clients '(ruff ruff-lsp deno-ls ts-ls vtsls semgrep-ls))          ;; Blocklist ruff from attaching as LSP (use basedpyright instead).
   (lsp-keymap-prefix "C-c l")                      ;; Set the prefix for LSP commands.
   (lsp-inlay-hint-enable nil)                      ;; Usage of inlay hints.
   (lsp-completion-provider :none)                  ;; Disable the default completion provider.
@@ -1040,7 +1039,74 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
   (lsp-headerline-breadcrumb-enable-diagnostics nil)  ;; Disable diagnostics in headerline.
   (lsp-headerline-breadcrumb-icons-enable nil)        ;; Disable icons in breadcrumb.
   ;; Semantic settings
-  (lsp-semantic-tokens-enable nil))                 ;; Disable semantic tokens.
+  (lsp-semantic-tokens-enable nil)
+  :config
+  ;; Register the native tsc language server
+
+  ;; tsgo rejects nulls where the LSP spec says object-or-absent — e.g.
+  ;; `"inlineCompletion": null' in capabilities and `"params": null' on
+  ;; paramless requests.  Recursively strip nils from outgoing messages,
+  ;; scoped to strict-null servers so others are unaffected.
+  ;; Track upstream fix: https://github.com/emacs-lsp/lsp-mode/issues/5081
+  ;; see also https://github.com/emacs-lsp/lsp-mode/issues/5099#issuecomment-5299586174 
+
+  (defvar cl/lsp-strict-null-server-ids '(tsc-native-lsp)
+    "Server IDs whose outgoing LSP messages should have nil values stripped.")
+
+  (defun cl/lsp--strip-nil-values (data)
+    "Recursively remove nil values from DATA (plist, alist, hash-table, or vector)."
+    (cond
+     ((hash-table-p data)
+      (let ((new (make-hash-table :test 'equal)))
+        (maphash (lambda (k v)
+                   (unless (null v)
+                     (puthash k (cl/lsp--strip-nil-values v) new)))
+                 data)
+        new))
+     ;; plist: keyword-keyed list
+     ((and (consp data) (keywordp (car data)))
+      (let (result)
+        (cl-loop for (k v) on data by #'cddr
+                 unless (null v)
+                 do (push k result)
+                    (push (cl/lsp--strip-nil-values v) result))
+        (nreverse result)))
+     ;; alist: ((symbol-or-string . val) ...)
+     ((and (consp data) (consp (car data)) (atom (caar data)))
+      (delq nil (mapcar (lambda (pair)
+                          (unless (null (cdr pair))
+                            (cons (car pair)
+                                  (cl/lsp--strip-nil-values (cdr pair)))))
+                        data)))
+     ((vectorp data)
+      (cl-map 'vector #'cl/lsp--strip-nil-values data))
+     (t data)))
+
+  (defun cl/lsp--strict-null-server-p ()
+    "Non-nil when the current workspace uses a strict-null server."
+    (and (boundp 'lsp--cur-workspace)
+         lsp--cur-workspace
+         (memq (lsp--client-server-id (lsp--workspace-client lsp--cur-workspace))
+               cl/lsp-strict-null-server-ids)))
+
+  (defun cl/lsp--make-message-strip-nils (args)
+    "Strip nil values from outgoing message body for strict-null servers."
+    (if (cl/lsp--strict-null-server-p)
+        (list (cl/lsp--strip-nil-values (car args)))
+      args))
+
+  (advice-add 'lsp--make-message :filter-args #'cl/lsp--make-message-strip-nils)
+
+
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection '("tsc" "--lsp" "--stdio"))
+    :major-modes '(typescript-ts-mode
+                   tsx-ts-mode
+                   js-ts-mode)
+    :priority 1
+    :server-id 'tsc-native-lsp))
+  )                 
 #+end_src
 
 
@@ -1144,15 +1210,14 @@ Uses the project's local =node_modules/.bin= (eslint, tsserver, etc.) instead of
 Provides inline helpful 
 
   #+begin_src emacs-lisp
-(use-package eldoc
-  :straight nil                                ;; This is built-in, no need to fetch it.
-  :config
-  (setq eldoc-idle-delay 0)                  ;; Automatically fetch doc help
-  (setq eldoc-echo-area-use-multiline-p nil) ;; We use the "K" floating help instead
-                                            ;; set to t if you want docs on the echo area
-  (setq eldoc-echo-area-display-truncation-message nil)
-  :init
-  (global-eldoc-mode))
+    (use-package eldoc
+       :straight nil                                ;; This is built-in, no need to fetch
+       :config
+       (setq eldoc-idle-delay 0.5)                  ;; Automatically fetch doc help
+       (setq eldoc-echo-area-use-multiline-p nil)   ;; We use the "K" floating help instead
+       (setq eldoc-echo-area-display-truncation-message nil)
+       :init
+       (global-eldoc-mode)) 
   #+end_src
 
   
@@ -1160,8 +1225,9 @@ Provides inline helpful
 
 #+begin_src emacs-lisp
   (use-package eldoc-box
-  :defer t
-  )
+    :defer t
+    :commands (eldoc-box-help-at-point)
+    )
 #+end_src
 
 *** Corfu (Completion UI)
@@ -1493,6 +1559,9 @@ This feature is especially useful in programming modes, where it can help users 
 * Workspaces workflows
 
 #+begin_src emacs-lisp
+  (setq persp-suppress-no-persp-prefix-key-warning t) 
+  (setq persp-suppress-no-prefix-key-warning t)
+
   (use-package perspective
   :defer t
   :hook
@@ -1866,5 +1935,20 @@ even though =init.el= itself doesn't strictly need it thanks to
 (add-hook 'org-mode-hook
           (lambda ()
             (add-hook 'after-save-hook #'cl/org-babel-tangle-config nil 'local)))
+#+end_src
+
+#+begin_src emacs-lisp
+(defun cl/ensure-lexical-binding ()
+  "Ensure the tangled emacs.el file starts with the lexical-binding cookie."
+  (let ((tangled-file (expand-file-name "emacs.el" user-emacs-directory)))
+    (when (file-exists-p tangled-file)
+      (with-current-buffer (find-file-noselect tangled-file)
+        (goto-char (point-min))
+        (unless (looking-at-p ";; -*- lexical-binding: t; -*-")
+          (insert ";; -*- lexical-binding: t; -*-\n")
+          (save-buffer))
+        (kill-buffer)))))
+
+(add-hook 'org-babel-post-tangle-hook #'cl/ensure-lexical-binding)
 #+end_src
 
