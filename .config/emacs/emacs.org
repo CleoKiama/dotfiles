@@ -378,13 +378,8 @@ Mostly reusable functions throughout the config
         (when (get-buffer help-buffer)
           (switch-to-buffer-other-window help-buffer))))
 
-      ;; Emacs 31 finaly brings us support for 'floating windows' (a.k.a. "child frames")
-      ;; to terminal Emacs. If you're still using 30, docs will be shown in a buffer at the
-      ;; inferior part of your frame.
-      (evil-define-key 'normal 'global (kbd "K")
-      (if (>= emacs-major-version 31)
-          #'eldoc-box-help-at-point
-          #'cl/lsp-describe-and-jump)) 
+      ;; Use native eldoc buffer for viewing long documentation/signatures.
+      (evil-define-key 'normal 'global (kbd "K") #'eldoc-doc-buffer) 
 
 
      ;; Commenting functionality for single and multiple lines
@@ -499,7 +494,7 @@ separate leader per package.
 
       ;; Flymake navigation
       "x"  '(:ignore t :which-key "toggles")
-      "xx" '(consult-flymake :which-key "search line") ;; gives something like trouble.nvim
+      "xx" '(consult-flymake :which-key "show all the trouble");; gives something like trouble.nvim
 
       ;; Dired commands for file management
       "xd" '(dired :which-key "dired") 
@@ -1115,6 +1110,7 @@ NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As wi
     :after lsp-mode
     :init
     (setq lsp-tailwindcss-add-on-mode t)
+    (setq lsp-tailwindcss-server-path (executable-find "tailwindcss-language-server"))
     :config
     ;; Associate ERB files with HTML language ID
     (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html"))
@@ -1214,94 +1210,38 @@ Provides inline helpful
        :straight nil                                ;; This is built-in, no need to fetch
        :config
        (setq eldoc-idle-delay 0.5)                  ;; Automatically fetch doc help
-       (setq eldoc-echo-area-use-multiline-p nil)   ;; We use the "K" floating help instead
        (setq eldoc-echo-area-display-truncation-message nil)
        :init
        (global-eldoc-mode)) 
   #+end_src
 
   
-****  eldoc-box
+*** Completion Preview (Built-in)
+
+Distraction-free inline ghost-text completion, introduced in Emacs 30.
+Replaces popups like Corfu to keep the code below the cursor visible.
 
 #+begin_src emacs-lisp
-  (use-package eldoc-box
-    :defer t
-    :commands (eldoc-box-help-at-point)
-    )
-#+end_src
-
-*** Corfu (Completion UI)
-
-Corfu provides a minimal, snappy popup completion UI.
-
-#+begin_src emacs-lisp
-  (use-package corfu
-    :defer t
-    :custom
-    (corfu-cycle t)                     ; cycle through candidates
-    (corfu-auto t)                      ; show completions automatically
-    (corfu-auto-prefix 1)               ; trigger after 1 char (snappy!)
-    (corfu-auto-delay 0.7)              ; no delay (snappy!)
-    (corfu-preview-current nil)         ; don't preview in buffer
-    (corfu-preselect-first t)           ; preselect first candidate
-    (corfu-on-exact-match nil)          ; don't auto-insert on exact match
-    (corfu-quit-no-match t)             ; quit if no match
-    (corfu-min-width 50)                ; Minimum width of completion popup
-    (corfu-max-width 50)                ; Maximum width of completion popup
-    (corfu-popupinfo-delay 0.6)         ; Delay before showing documentation popup
-    :bind
-    (:map corfu-map
-          ("TAB" . corfu-next)
-          ([backtab] . corfu-previous)
-          ("RET" . corfu-insert)
-          )
-    :init
-    (global-corfu-mode)
-    (corfu-popupinfo-mode t)
-    :config
-     (if cl/use-nerd-fonts
-       (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-    )
-
-;;; NERD-ICONS-CORFU
-;; Provides Nerd Icons to be used with CORFU.
-(use-package nerd-icons-corfu
-  :if cl/use-nerd-fonts
-  :defer t
-  :after (:all corfu))
-  
-;; Popup documentation for Corfu for auto complete docs
-(use-package corfu-popupinfo
-    :straight nil                          ; part of corfu package
-    :after corfu
-    :custom
-    (corfu-popupinfo-delay '(0.25 . 0.1))  ; show docs after 250ms
-    :config
-    (corfu-popupinfo-mode 1))
+  (use-package completion-preview
+    :straight (:type built-in)
+    :hook ((prog-mode . completion-preview-mode)
+           (text-mode . completion-preview-mode))
+    :bind (:map completion-preview-active-mode-map
+                ("M-n" . completion-preview-next-candidate)
+                ("M-p" . completion-preview-prev-candidate)
+                ("M-i" . completion-preview-insert-word)))
 #+end_src
 
 *** Cape 
 #+begin_src emacs-lisp
-(use-package cape
-  :after corfu
-  :init
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  :config
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
-#+end_src
-
-*** Kind Icon
-
-#+begin_src emacs-lisp
-(use-package kind-icon
-  :after corfu
-  :custom
-  (kind-icon-use-icons t)
-  (kind-icon-default-face 'corfu-default)
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+  (use-package cape
+    :defer t
+    :init
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    :config
+    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
 #+end_src
 
 *** Mason
