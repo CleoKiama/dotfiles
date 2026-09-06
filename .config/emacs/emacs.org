@@ -1535,6 +1535,11 @@ This feature is especially useful in programming modes, where it can help users 
     ("C-c g c" . gptel-abort)            
     ("C-c g g" . gptel)
     :init
+    ;; Eagerly define the `gptel-tool' struct so `setf' on its accessors
+    ;; (used in the gptel-agent block below) macroexpands to the inline
+    ;; setter at load time instead of a call to a nonexistent function.
+    (require 'gptel-request)
+
     (defun cl/bedrock-mantle-key ()
       "Read the Bedrock bearer token from ~/.authinfo.gpg."
       (when-let* ((entry (car (auth-source-search
