@@ -1,46 +1,61 @@
 ;; Base layer. Named "base" so every shared layer refers to it.
 ;;
-;; alpha block shifted up one physical row, right hand
-;; one column right, column 6 (y h n) dead — a clean gap between hands.
-;; Home-row mods therefore sit on the top row (qwert / iop[):
-;; Alt/Super/Ctrl ring-to-index, Shift on pinkies (a, o).
+;; alpha block shifted up one physical row, right hand shifted
+;; one column right (+1 column shift), creating a 3-column gap between hands.
+;; Home-row mods sit on the resting row:
+;; Left hand (tab/q/w/e): Shift/Alt/Super/Ctrl (@a, @r, @s, @t)
+;; Right hand (o/p/[/]): Ctrl/Super/Alt/Shift (@n, @e, @i, @o)
 ;;
 ;; Grid order (matches defsrc/pc.kbd):
-;;   8 top num  |  8 top alpha  |  9 home alpha  |  4 thumbs  |  tab prtsc ' |  - ` [
+;;   9 top num  |  9 top alpha  |  10 home alpha  |  4 thumbs  |  tab  |  prtsc  |  `
 
 (deflayer base
-  w    f    p    b    j    l    u    y
-  @r   @s   @t   g    m    @n   @e   @i
-  z    x    c    d    v    @med h    ,    .
+  w    f    p    b    j    l    u    y    ;
+  @r   @s   @t   g    m    @n   @e   @i   @o
+  z    x    c    d    v    @med h    ,    .    @wsp
   @bspsym @nav @m-thumb @entnum
   @a
   lrld
-  @wsp
-  ;    q    @o
+  q
 )
 
 (defalias
-  ;; Home-row mods — Alt / Super / Ctrl, ring to index:
+  ;; Home-row mods — tap for alpha, hold for modifier:
   ;; tap-hold-opposite-hand-release defers the hold until the
   ;; interrupting opposite-hand key is released, avoiding misfires on
   ;; fast rolling keystrokes.
+  ;;
+  ;; Left hand: Pinky (tab), Ring (q), Middle (w), Index (e)
   a (tap-hold-opposite-hand $hold-time a lsft (timeout hold) (same-hand ignore) (require-prior-idle 50))
   r (tap-hold-opposite-hand-release $hold-time r lalt (timeout hold) (same-hand ignore) (require-prior-idle 150))
   s (tap-hold-opposite-hand-release $hold-time s lmet (timeout hold) (same-hand ignore) (require-prior-idle 150))
   t (tap-hold-opposite-hand-release $hold-time t lctl (timeout hold) (same-hand ignore) (require-prior-idle 180))
+
+  ;; Right hand home-row mods:
+  ;; Index  (physical o): @n (Right Ctrl)
   n (tap-hold-opposite-hand $hold-time n rctl (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  ;; Middle (physical p): @e (Right Super)
   e (tap-hold-opposite-hand-release $hold-time e rmet (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  ;; Ring   (physical [): @i (Right Alt)
   i (tap-hold-opposite-hand-release $hold-time i ralt (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  ;; Pinky  (physical ]): @o (Right Shift)
   o (tap-hold-opposite-hand $hold-time o rsft (timeout hold) (same-hand ignore) (require-prior-idle 50))
-  ;; Thumbs
-  bspsym (tap-hold-press $tap-time $hold-time bspc (layer-while-held symbols))
-  entnum (tap-hold-press $tap-time $hold-time ret (layer-while-held numrow))
-  nav (tap-hold-press $tap-time 250 spc (layer-while-held navigation))
-  med (tap-hold-press $tap-time $hold-time k (layer-while-held media))
-  wsp (tap-hold-press $tap-time $hold-time / (layer-while-held workspace))
+
+  ;; One-shot modifiers
   os-sft (one-shot 2000 lsft)
-  m-thumb (tap-hold-press $tap-time $hold-time @os-sft (layer-while-held modifiers))
   os-alt (one-shot 2000 lalt)
   os-met (one-shot 2000 lmet)
   os-ctl (one-shot 2000 lctl)
+
+  ;; Thumbs (physical x, c, ,, .)
+  bspsym (tap-hold-release $tap-time $hold-time bspc (layer-while-held symbols))
+  entnum (tap-hold-press $tap-time $hold-time ret (layer-while-held numrow))
+  nav (tap-hold-release $tap-time $hold-time spc (layer-while-held navigation))
+  m-thumb (tap-hold-release $tap-time $hold-time @os-sft (layer-while-held modifiers))
+
+  ;; Layer taps on home alpha row:
+  ;; Media layer hold, tap k (now physical k)
+  med (tap-hold-release $tap-time $hold-time k (layer-while-held media))
+  ;; Workspace layer hold, tap / (now physical ret)
+  wsp (tap-hold-press $tap-time $hold-time / (layer-while-held workspace))
 )

@@ -1,18 +1,15 @@
 ;; Media layer: MPRIS playback + volume/brightness.
-;; Activated by holding physical j key (tap = k, hold = media).
+;; Activated by holding physical k key (tap = k, hold = media).
 ;;
 ;; Grid order (matches defsrc/pc.kbd):
-;;   8 top num  |  8 top alpha  |  9 home alpha  |  4 thumbs  |  tab prtsc ' |  - ` [
+;;   9 top num  |  9 top alpha  |  10 home alpha  |  4 thumbs  |  tab prtsc `
 
 (deflayer media
-  XX   XX   XX   XX   XX   XX   XX   XX
-  pp   next brdn brup XX   XX   XX   XX
-  vold volu mute XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX
+  pp   next brdn brup XX   XX   XX   XX   XX
+  vold volu mute XX   XX   XX   XX   XX   XX   XX
   _    _    _    _
-  prev
-  XX
-  XX
-  XX   XX   XX
+  prev XX   XX
 )
 
 ;; vim: set ft=lisp:

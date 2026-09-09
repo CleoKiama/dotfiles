@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 350">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 350">
   <style>
     :root { color-scheme: light dark; }
     rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; }
@@ -25,8 +25,8 @@
       text.dead { fill: #64748b; }
     }
   </style>
-  <text x="390" y="28" class="title">Thumb Layer Taps</text>
-  <text x="390" y="48" class="subtitle">x: Bspc / Sym  |  c: Spc / Nav  |  m: Shf / Mod  |  ,: Ret / Num</text>
+  <text x="470" y="28" class="title">Thumb Layer Taps</text>
+  <text x="470" y="48" class="subtitle">x: Bspc / Sym  |  c: Spc / Nav  |  ,: Shf / Mod  |  .: Ret / Num</text>
   <g transform="translate(20,70)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">`</text>
@@ -52,29 +52,29 @@
     <text x="6" y="12" class="phys">4</text>
     <text x="30" y="36" class="main">b</text>
   </g>
-  <g transform="translate(446,70)">
-    <rect width="60" height="60" rx="8" class="active"/>
-    <text x="6" y="12" class="phys">7</text>
-    <text x="30" y="36" class="main">j</text>
-  </g>
-  <g transform="translate(512,70)">
+  <g transform="translate(548,70)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">8</text>
-    <text x="30" y="36" class="main">l</text>
+    <text x="30" y="36" class="main">j</text>
   </g>
-  <g transform="translate(578,70)">
+  <g transform="translate(614,70)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">9</text>
-    <text x="30" y="36" class="main">u</text>
+    <text x="30" y="36" class="main">l</text>
   </g>
-  <g transform="translate(644,70)">
+  <g transform="translate(680,70)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">0</text>
-    <text x="30" y="36" class="main">y</text>
+    <text x="30" y="36" class="main">u</text>
   </g>
-  <g transform="translate(710,70)">
+  <g transform="translate(746,70)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">-</text>
+    <text x="30" y="36" class="main">y</text>
+  </g>
+  <g transform="translate(812,70)">
+    <rect width="60" height="60" rx="8" class="active"/>
+    <text x="6" y="12" class="phys">=</text>
     <text x="30" y="36" class="main">;</text>
   </g>
   <g transform="translate(20,136)">
@@ -106,32 +106,32 @@
     <text x="6" y="12" class="phys">r</text>
     <text x="30" y="36" class="main">g</text>
   </g>
-  <g transform="translate(446,136)">
-    <rect width="60" height="60" rx="8" class="active"/>
-    <text x="6" y="12" class="phys">u</text>
-    <text x="30" y="36" class="main">m</text>
-  </g>
-  <g transform="translate(512,136)">
+  <g transform="translate(548,136)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">i</text>
+    <text x="30" y="36" class="main">m</text>
+  </g>
+  <g transform="translate(614,136)">
+    <rect width="60" height="60" rx="8" class="active"/>
+    <text x="6" y="12" class="phys">o</text>
     <text x="30" y="28" class="main">n</text>
     <text x="30" y="46" class="hrm-sub">Ctrl</text>
   </g>
-  <g transform="translate(578,136)">
+  <g transform="translate(680,136)">
     <rect width="60" height="60" rx="8" class="active"/>
-    <text x="6" y="12" class="phys">o</text>
+    <text x="6" y="12" class="phys">p</text>
     <text x="30" y="28" class="main">e</text>
     <text x="30" y="46" class="hrm-sub">Super</text>
   </g>
-  <g transform="translate(644,136)">
+  <g transform="translate(746,136)">
     <rect width="60" height="60" rx="8" class="active"/>
-    <text x="6" y="12" class="phys">p</text>
+    <text x="6" y="12" class="phys">[</text>
     <text x="30" y="28" class="main">i</text>
     <text x="30" y="46" class="hrm-sub">Alt</text>
   </g>
-  <g transform="translate(710,136)">
+  <g transform="translate(812,136)">
     <rect width="60" height="60" rx="8" class="active"/>
-    <text x="6" y="12" class="phys">[</text>
+    <text x="6" y="12" class="phys">]</text>
     <text x="30" y="28" class="main">o</text>
     <text x="30" y="46" class="hrm-sub">Shift</text>
   </g>
@@ -160,30 +160,30 @@
     <text x="6" y="12" class="phys">f</text>
     <text x="30" y="36" class="main">v</text>
   </g>
-  <g transform="translate(446,202)">
-    <rect width="60" height="60" rx="8" class="active"/>
-    <text x="6" y="12" class="phys">j</text>
-    <text x="30" y="36" class="main" font-size="11px">Media</text>
-  </g>
-  <g transform="translate(512,202)">
+  <g transform="translate(548,202)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">k</text>
-    <text x="30" y="36" class="main">h</text>
+    <text x="30" y="36" class="main" style="font-size: 11px;">Media</text>
   </g>
-  <g transform="translate(578,202)">
+  <g transform="translate(614,202)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">l</text>
-    <text x="30" y="36" class="main">,</text>
+    <text x="30" y="36" class="main">h</text>
   </g>
-  <g transform="translate(644,202)">
+  <g transform="translate(680,202)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">;</text>
-    <text x="30" y="36" class="main">.</text>
+    <text x="30" y="36" class="main">,</text>
   </g>
-  <g transform="translate(710,202)">
+  <g transform="translate(746,202)">
     <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">&#x27;</text>
-    <text x="30" y="36" class="main">/</text>
+    <text x="30" y="36" class="main">.</text>
+  </g>
+  <g transform="translate(812,202)">
+    <rect width="90" height="60" rx="8" class="active"/>
+    <text x="6" y="12" class="phys">Enter</text>
+    <text x="45" y="36" class="main">Wksp</text>
   </g>
   <g transform="translate(152,268)">
     <rect width="60" height="60" rx="8" class="active"/>
@@ -197,15 +197,15 @@
     <text x="30" y="30" class="main">Spc</text>
     <text x="30" y="48" class="sub">Nav</text>
   </g>
-  <g transform="translate(446,268)">
+  <g transform="translate(548,268)">
     <rect width="60" height="60" rx="8" class="active"/>
-    <text x="6" y="12" class="phys">m</text>
+    <text x="6" y="12" class="phys">,</text>
     <text x="30" y="30" class="main">Shf</text>
     <text x="30" y="48" class="sub">Mod</text>
   </g>
-  <g transform="translate(512,268)">
+  <g transform="translate(614,268)">
     <rect width="60" height="60" rx="8" class="active"/>
-    <text x="6" y="12" class="phys">,</text>
+    <text x="6" y="12" class="phys">.</text>
     <text x="30" y="30" class="main">Ret</text>
     <text x="30" y="48" class="sub">Num</text>
   </g>

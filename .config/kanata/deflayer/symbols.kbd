@@ -1,29 +1,23 @@
 ;; Symbol layer: programming symbols on alpha keys, shifted same as base.
 ;;
 ;; Grid order (matches defsrc/pc.kbd):
-;;   8 top num  |  8 top alpha  |  9 home alpha  |  4 thumbs  |  tab prtsc ' |  - ` [
+;;   9 top num  |  9 top alpha  |  10 home alpha  |  4 thumbs  |  tab prtsc `
 
 (deflayer symbols
-  @<   @>   @@   @%   @$   @&   @*   @'
-  @pl  @pr  @}   @=   @\   @+   @-   @_
-  @~   @/   @?   @scl @#   @|   @!   @[   @]
+  @<   @>   @@   @%   @$   @&   @*   @'   @`
+  @pl  @pr  @}   @=   @\   @+   @-   @_   @''
+  @~   @/   @?   @scl @#   @|   @!   @[   @]   @:
   _    _    _    _
-  @{
-  XX
-  @:
-  @`   @^   @''
+  @{   XX   @^
 )
 
-;; Numrow layer — digits 1..0, hold `,` thumb
+;; Numrow layer — digits 1..0, hold `.` thumb
 (deflayer numrow
-  @7   @8   @9   @0   _    _    _    _
-  @2   @3   @4   @5   _    _    _    _
-  @dk1 @dk2 @dk3 @dk4 @dk5 XX   @-   @,   @.
+  @7   @8   @9   @0   _    _    _    _    _
+  @2   @3   @4   @5   _    _    _    _    _
+  @dk1 @dk2 @dk3 @dk4 @dk5 XX   @-   @,   @.   @/
   _    _    _    _
-  @1
-  XX
-  @/
-  _    @6   _
+  @1   XX   @6
 )
 
 ;; vim: set ft=lisp:

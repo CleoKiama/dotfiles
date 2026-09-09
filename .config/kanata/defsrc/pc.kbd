@@ -1,23 +1,17 @@
 ;; Source key capture (35 keys).
 ;;
-;; Everything outside this list is a hard no-op via block-unmapped-keys:
-;; - Arrows, F-row (brightness/speaker are firmware Fn combos), numpad,
-;;   spacebar row, deduplicated mods, `= ] \` and other outer keys.
-;; - Keys that remain in defsrc MUST be mapped in every deflayer below.
-;;
 ;; Flat order (matches every deflayer token-for-token):
-;;   top num row:    1 2 3 4 | 7 8 9 0
-;;   top alpha:      q w e r | u i o p
-;;   home alpha:     caps a s d f | j k l ;
-;;   bottom alpha:   x c | m ,
-;;   misc:           tab prtsc ' | - ` [
+;;   top num row:    1 2 3 4 | 8 9 0 - =
+;;   top alpha:      q w e r | i o p [ ]
+;;   home alpha:     caps a s d f | k l ; ' ret
+;;   bottom alpha:   x c | , .
+;;   misc:           tab prtsc `
 (defsrc
-  1    2    3    4    7    8    9    0
-  q    w    e    r    u    i    o    p
-  caps a    s    d    f    j    k    l    ;
-  x    c    m    ,
+  1    2    3    4    8    9    0    -    =
+  q    w    e    r    i    o    p    [    ]
+  caps a    s    d    f    k    l    ;    '    ret
+  x    c    ,    .
   tab
   prtsc
-  '
-  -    `    [
+  `
 )
