@@ -7,10 +7,10 @@
 
 (deflayer navigation
   @cls XX   XX   XX   home pgdn pgup end
-  S-tab tab  fwd  XX   lft  down up   rght
+  S-tab tab  @fwd XX   lft  down up   rght
   @ndo @cut @cpy @rdo @pst @mwl @mwd @mwu @mwr
   del  _    _    _
-  bck
+  @bck
   XX
   XX
   XX   XX   @fun

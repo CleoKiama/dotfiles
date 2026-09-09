@@ -9,7 +9,7 @@
 ;;   8 top num  |  8 top alpha  |  9 home alpha  |  4 thumbs  |  tab prtsc ' |  - ` [
 
 (deflayer base
-  w    (chord fp-esc 2) (chord fp-esc 3) b    j    l    u    y
+  w    f    p    b    j    l    u    y
   @r   @s   @t   g    m    @n   @e   @i
   z    x    c    d    v    @med h    ,    .
   @bspsym @nav @m-thumb @entnum
@@ -24,21 +24,20 @@
   ;; tap-hold-opposite-hand-release defers the hold until the
   ;; interrupting opposite-hand key is released, avoiding misfires on
   ;; fast rolling keystrokes.
-  a (tap-hold-opposite-hand $hold-time a lsft (timeout hold) (require-prior-idle 50))
-  r (tap-hold-opposite-hand-release $hold-time r lalt (timeout hold) (require-prior-idle 150))
-  s (tap-hold-opposite-hand-release $hold-time s lmet (timeout hold) (require-prior-idle 150))
-  t (tap-hold-opposite-hand-release $hold-time t lctl (timeout hold) (require-prior-idle 180))
-  n (tap-hold-opposite-hand $hold-time n rctl (timeout hold) (require-prior-idle 150))
-  e (tap-hold-opposite-hand-release $hold-time e rmet (timeout hold) (require-prior-idle 150))
-  i (tap-hold-opposite-hand-release $hold-time i ralt (timeout hold) (require-prior-idle 150))
-  o (tap-hold-opposite-hand $hold-time o rsft (timeout hold) (require-prior-idle 50))
+  a (tap-hold-opposite-hand $hold-time a lsft (timeout hold) (same-hand ignore) (require-prior-idle 50))
+  r (tap-hold-opposite-hand-release $hold-time r lalt (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  s (tap-hold-opposite-hand-release $hold-time s lmet (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  t (tap-hold-opposite-hand-release $hold-time t lctl (timeout hold) (same-hand ignore) (require-prior-idle 180))
+  n (tap-hold-opposite-hand $hold-time n rctl (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  e (tap-hold-opposite-hand-release $hold-time e rmet (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  i (tap-hold-opposite-hand-release $hold-time i ralt (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  o (tap-hold-opposite-hand $hold-time o rsft (timeout hold) (same-hand ignore) (require-prior-idle 50))
   ;; Thumbs
   bspsym (tap-hold-press $tap-time $hold-time bspc (layer-while-held symbols))
-  shf (one-shot 2000 lsft)
   entnum (tap-hold-press $tap-time $hold-time ret (layer-while-held numrow))
-  nav (tap-hold $tap-time 250 spc (layer-while-held navigation))
-  med (tap-hold $tap-time $hold-time k (layer-while-held media))
-  wsp (tap-hold $tap-time $hold-time / (layer-while-held workspace))
+  nav (tap-hold-press $tap-time 250 spc (layer-while-held navigation))
+  med (tap-hold-press $tap-time $hold-time k (layer-while-held media))
+  wsp (tap-hold-press $tap-time $hold-time / (layer-while-held workspace))
   os-sft (one-shot 2000 lsft)
   m-thumb (tap-hold-press $tap-time $hold-time @os-sft (layer-while-held modifiers))
   os-alt (one-shot 2000 lalt)

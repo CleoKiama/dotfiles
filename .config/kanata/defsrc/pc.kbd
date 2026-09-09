@@ -1,4 +1,4 @@
-;; Source key capture — Ergonomic-Shift cluster only (35 keys).
+;; Source key capture (35 keys).
 ;;
 ;; Everything outside this list is a hard no-op via block-unmapped-keys:
 ;; - Arrows, F-row (brightness/speaker are firmware Fn combos), numpad,

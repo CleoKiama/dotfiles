@@ -31,12 +31,12 @@ GRID_KEYS = [
 # Map kanata aliases to user-friendly display labels
 LABEL_MAP = {
     'XX': '', '_': '·',
-    '(chord fp-esc 2)': 'f', '(chord fp-esc 3)': 'p',
     '@a': 'a', '@r': 'r', '@s': 's', '@t': 't',
     '@n': 'n', '@e': 'e', '@i': 'i', '@o': 'o',
     'rsft': 'Shift', 'lsft': 'Shift', 'lshift': 'Shift', 'rshift': 'Shift',
+    'lalt': 'Alt', 'ralt': 'Alt', 'lctl': 'Ctrl', 'rctl': 'Ctrl', 'lmet': 'Super', 'rmet': 'Super',
     '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@shf': 'Shift', '@entnum': 'Ret / Num', '@m-thumb': 'Shf / Mod',
-    '@wsp': '/',
+    '@wsp': '/', '@med': 'Media', 'med': 'Media',
     '@os-sft': 'Shift', '@os-alt': 'Alt', '@os-met': 'Super', '@os-ctl': 'Ctrl',
     '@pl': '(', '@pr': ')', '@cl': '{', '@cr': '}', '@sl': '[', '@sr': ']',
     '@scl': ';', '@ndo': 'Undo', '@cut': 'Cut', '@cpy': 'Copy', '@rdo': 'Redo', '@pst': 'Paste',
@@ -49,10 +49,13 @@ LABEL_MAP = {
     '@1': '1', '@2': '2', '@3': '3', '@4': '4', '@5': '5',
     '@dk1': '', '@dk2': '', '@dk3': '', '@dk4': '', '@dk5': '',
     'lft': '←', 'down': '↓', 'up': '↑', 'rght': '→',
-    'bck': 'Alt+←', 'fwd': 'Alt+→', 'cls': 'Ctrl+W', 'S-tab': 'S-Tab', 'tab': 'Tab', 'del': 'Del',
+    '@bck': 'Alt+←', '@fwd': 'Alt+→', 'bck': 'Alt+←', 'fwd': 'Alt+→',
+    '@cls': 'Ctrl+W', 'cls': 'Ctrl+W', 'S-tab': 'S-Tab', 'tab': 'Tab', 'del': 'Del',
     'home': 'Home', 'pgdn': 'PgDn', 'pgup': 'PgUp', 'end': 'End',
     'M-1': 'Wksp 1', 'M-2': 'Wksp 2', 'M-3': 'Wksp 3', 'M-4': 'Wksp 4', 'M-5': 'Wksp 5',
-    'M-6': 'Wksp 6', 'M-7': 'Wksp 7', 'M-8': 'Wksp 8', 'M-9': 'Wksp 9', 'M-0': 'Wksp 10'
+    'M-6': 'Wksp 6', 'M-7': 'Wksp 7', 'M-8': 'Wksp 8', 'M-9': 'Wksp 9', 'M-0': 'Wksp 10',
+    'f1': 'F1', 'f2': 'F2', 'f3': 'F3', 'f4': 'F4', 'f5': 'F5', 'f6': 'F6',
+    'f7': 'F7', 'f8': 'F8', 'f9': 'F9', 'f10': 'F10', 'f11': 'F11', 'f12': 'F12'
 }
 
 HRM_MODS = {'tab':'Shift','q':'Alt','w':'Super','e':'Ctrl','i':'Ctrl','o':'Super','p':'Alt','[':'Shift'}
@@ -73,10 +76,10 @@ def render_all_svg():
     svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 440">')
     svg.append('  <style>')
     svg.append('    :root { color-scheme: light dark; }')
-    svg.append('    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; rx: 8px; ry: 8px; }')
-    svg.append('    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; rx: 8px; ry: 8px; }')
-    svg.append('    rect.hrm { fill: #fff7ed; stroke: #f97316; stroke-width: 1.5px; rx: 8px; ry: 8px; }')
-    svg.append('    rect.thumb { fill: #eff6ff; stroke: #3b82f6; stroke-width: 2px; rx: 8px; ry: 8px; }')
+    svg.append('    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; }')
+    svg.append('    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; }')
+    svg.append('    rect.hrm { fill: #fff7ed; stroke: #f97316; stroke-width: 1.5px; }')
+    svg.append('    rect.thumb { fill: #eff6ff; stroke: #3b82f6; stroke-width: 2px; }')
     
     svg.append('    text { font-family: system-ui, -apple-system, sans-serif; text-anchor: middle; }')
     svg.append('    text.title { font-size: 20px; font-weight: 800; fill: #0f172a; }')
@@ -87,9 +90,9 @@ def render_all_svg():
     svg.append('    text.base { font-size: 15px; font-weight: 800; fill: #0f172a; }')
     svg.append('    text.mod { font-size: 10px; font-weight: 700; fill: #ea580c; }')
     svg.append('    text.sym { font-size: 12px; font-weight: 700; fill: #7c3aed; }')
-    svg.append('    text.nav { font-size: 11px; font-weight: 700; fill: #059669; }')
+    svg.append('    text.nav { font-size: 10px; font-weight: 700; fill: #059669; }')
     svg.append('    text.num { font-size: 11px; font-weight: 700; fill: #0284c7; }')
-    svg.append('    text.dead { font-size: 12px; font-weight: 600; fill: #cbd5e1; }')
+    svg.append('    text.dead { font-size: 12px; font-weight: 600; fill: #94a3b8; }')
     svg.append('    text.legend { font-size: 12px; font-weight: 600; text-anchor: start; }')
     
     # Dark Mode Styles
@@ -100,34 +103,33 @@ def render_all_svg():
     svg.append('      rect.thumb { fill: #172554; stroke: #3b82f6; }')
     svg.append('      text.title { fill: #f8fafc; }')
     svg.append('      text.subtitle { fill: #94a3b8; }')
-    svg.append('      text.phys { fill: #64748b; }')
+    svg.append('      text.phys { fill: #94a3b8; }')
     svg.append('      text.base { fill: #f8fafc; }')
     svg.append('      text.mod { fill: #c084fc; }')
     svg.append('      text.sym { fill: #a78bfa; }')
     svg.append('      text.nav { fill: #34d399; }')
     svg.append('      text.num { fill: #38bdf8; }')
-    svg.append('      text.dead { fill: #475569; }')
+    svg.append('      text.dead { fill: #64748b; }')
     svg.append('    }')
     svg.append('  </style>')
 
     # Header Title
-    svg.append('  <text x="425" y="32" class="title">Ergonomic-Shift Colemak-DH — Master Multi-Layer Map</text>')
-    svg.append('  <text x="425" y="52" class="subtitle">Row Shift-Up  •  Col 6 Split Gap (XX)  •  Color-Coded Dual Roles</text>')
+    svg.append('  <text x="425" y="38" class="title">Colemak-DH Layout</text>')
 
     # Color Legend
     svg.append('  <g transform="translate(45, 72)">')
     svg.append('    <circle cx="0" cy="0" r="5" fill="#0f172a"/>')
     svg.append('    <text x="10" y="4" class="legend" fill="#0f172a">Base Alpha</text>')
     svg.append('    <circle cx="110" cy="0" r="5" fill="#ea580c"/>')
-    svg.append('    <text x="120" y="4" class="legend" fill="#ea580c">🟠 Home-Row Mod</text>')
-    svg.append('    <circle cx="270" cy="0" r="5" fill="#7c3aed"/>')
-    svg.append('    <text x="280" y="4" class="legend" fill="#7c3aed">🟣 Symbol Layer (,)</text>')
-    svg.append('    <circle cx="430" cy="0" r="5" fill="#059669"/>')
-    svg.append('    <text x="440" y="4" class="legend" fill="#059669">🟢 Nav Layer (c)</text>')
-    svg.append('    <circle cx="580" cy="0" r="5" fill="#0284c7"/>')
-    svg.append('    <text x="590" y="4" class="legend" fill="#0284c7">🩵 NumRow Layer (,)</text>')
-    svg.append('    <circle cx="730" cy="0" r="5" fill="#3b82f6"/>')
-    svg.append('    <text x="740" y="4" class="legend" fill="#3b82f6">🔵 Thumbs</text>')
+    svg.append('    <text x="120" y="4" class="legend" fill="#ea580c">Home-Row Mod</text>')
+    svg.append('    <circle cx="260" cy="0" r="5" fill="#7c3aed"/>')
+    svg.append('    <text x="270" y="4" class="legend" fill="#7c3aed">Symbol Layer (x)</text>')
+    svg.append('    <circle cx="410" cy="0" r="5" fill="#059669"/>')
+    svg.append('    <text x="420" y="4" class="legend" fill="#059669">Nav Layer (c)</text>')
+    svg.append('    <circle cx="540" cy="0" r="5" fill="#0284c7"/>')
+    svg.append('    <text x="550" y="4" class="legend" fill="#0284c7">NumRow Layer (,)</text>')
+    svg.append('    <circle cx="700" cy="0" r="5" fill="#3b82f6"/>')
+    svg.append('    <text x="710" y="4" class="legend" fill="#3b82f6">Thumbs</text>')
     svg.append('  </g>')
 
     for r_idx, row in enumerate(GRID_KEYS):
@@ -157,7 +159,7 @@ def render_all_svg():
             elif b_tok == 'XX': rect_cls = ' class="gap"'
 
             svg.append(f'  <g transform="translate({x},{y})">')
-            svg.append(f'    <rect width="{kw}" height="{kh}"{rect_cls}/>')
+            svg.append(f'    <rect width="{kw}" height="{kh}" rx="8"{rect_cls}/>')
             svg.append(f'    <text x="6" y="12" class="phys">{esc(pkey)}</text>')
 
             if b_tok == 'XX':
@@ -179,12 +181,13 @@ def render_all_svg():
                     svg.append(f'    <text x="50" y="16" class="sym">{esc(fmt(s_tok))}</text>')
                 if n_tok != 'XX':
                     nav_str = fmt(n_tok)
-                    fsize = "8.5px" if len(nav_str) > 4 else "10px"
+                    fsize = "7.5px" if len(nav_str) > 5 else ("8.5px" if len(nav_str) > 3 else "10px")
                     svg.append(f'    <text x="44" y="56" class="nav" font-size="{fsize}">{esc(nav_str)}</text>')
             else:
                 # Normal Alpha Key with Multi-Layer Badges
                 b_lbl = fmt(b_tok)
-                svg.append(f'    <text x="20" y="36" class="base">{esc(b_lbl)}</text>')
+                b_fsize = ' font-size="12px"' if len(b_lbl) > 3 else ''
+                svg.append(f'    <text x="20" y="36" class="base"{b_fsize}>{esc(b_lbl)}</text>')
 
                 # Top Right: Symbol Layer Output
                 if s_tok != 'XX' and s_tok != '_':
@@ -193,8 +196,10 @@ def render_all_svg():
                 # Bottom Right: Navigation Layer Output
                 if n_tok != 'XX' and n_tok != '_':
                     nav_str = fmt(n_tok)
-                    fsize = "8.5px" if len(nav_str) > 4 else "10px"
-                    svg.append(f'    <text x="44" y="56" class="nav" font-size="{fsize}">{esc(nav_str)}</text>')
+                    fsize = "7.5px" if len(nav_str) > 5 else ("8.5px" if len(nav_str) > 3 else "10px")
+                    # Shift left slightly if num badge also present on this key
+                    nav_x = "41" if (num_tok != 'XX' and num_tok != '_') else "44"
+                    svg.append(f'    <text x="{nav_x}" y="56" class="nav" font-size="{fsize}">{esc(nav_str)}</text>')
 
                 # Bottom Left: NumRow Layer Output
                 if num_tok != 'XX' and num_tok != '_':
@@ -230,9 +235,9 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
     svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 350">')
     svg.append('  <style>')
     svg.append('    :root { color-scheme: light dark; }')
-    svg.append('    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; rx: 8px; ry: 8px; }')
-    svg.append('    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; rx: 8px; ry: 8px; }')
-    svg.append(f'    rect.active {{ {l_light_bg} stroke-width: 2px; rx: 8px; ry: 8px; }}')
+    svg.append('    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; }')
+    svg.append('    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; }')
+    svg.append(f'    rect.active {{ {l_light_bg} stroke-width: 2px; }}')
     
     svg.append('    text { font-family: system-ui, -apple-system, sans-serif; text-anchor: middle; }')
     svg.append('    text.title { font-size: 19px; font-weight: 800; fill: #0f172a; }')
@@ -240,7 +245,8 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
     svg.append('    text.phys { font-size: 9px; font-weight: 700; fill: #94a3b8; text-anchor: start; }')
     svg.append(f'    text.main {{ font-size: 16px; font-weight: 800; fill: {l_light_txt}; }}')
     svg.append('    text.sub { font-size: 11px; font-weight: 600; fill: #64748b; }')
-    svg.append('    text.dead { font-size: 11px; fill: #cbd5e1; }')
+    svg.append('    text.hrm-sub { font-size: 11px; font-weight: 700; fill: #ea580c; }')
+    svg.append('    text.dead { font-size: 11px; fill: #94a3b8; }')
     
     svg.append('    @media (prefers-color-scheme: dark) {')
     svg.append('      rect.key { fill: #1e293b; stroke: #334155; }')
@@ -248,10 +254,11 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
     svg.append(f'      rect.active {{ {l_dark_bg} }}')
     svg.append('      text.title { fill: #f8fafc; }')
     svg.append('      text.subtitle { fill: #94a3b8; }')
-    svg.append('      text.phys { fill: #64748b; }')
+    svg.append('      text.phys { fill: #94a3b8; }')
     svg.append(f'      text.main {{ fill: {l_dark_txt}; }}')
     svg.append('      text.sub { fill: #94a3b8; }')
-    svg.append('      text.dead { fill: #475569; }')
+    svg.append('      text.hrm-sub { fill: #fb923c; }')
+    svg.append('      text.dead { fill: #64748b; }')
     svg.append('    }')
     svg.append('  </style>')
 
@@ -283,21 +290,26 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
             else: rect_cls = ' class="gap"'
 
             svg.append(f'  <g transform="translate({x},{y})">')
-            svg.append(f'    <rect width="{kw}" height="{kh}"{rect_cls}/>')
+            svg.append(f'    <rect width="{kw}" height="{kh}" rx="8"{rect_cls}/>')
             svg.append(f'    <text x="6" y="12" class="phys">{esc(pkey)}</text>')
 
             if raw_tok == 'XX':
                 svg.append(f'    <text x="30" y="36" class="dead">XX</text>')
-            elif theme_color == 'thumbs' and ' / ' in val:
+            elif ' / ' in val:
                 parts = val.split(' / ')
                 svg.append(f'    <text x="30" y="30" class="main">{esc(parts[0])}</text>')
                 svg.append(f'    <text x="30" y="48" class="sub">{esc(parts[1])}</text>')
             elif pkey in HRM_MODS:
                 mod_lbl = HRM_MODS[pkey]
-                svg.append(f'    <text x="30" y="28" class="main">{esc(val)}</text>')
-                svg.append(f'    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">{esc(mod_lbl)}</text>')
+                fsize_style = ' font-size="11px"' if len(val) > 4 else ''
+                if val == mod_lbl:
+                    # In modifiers layer, avoid duplicate label (e.g. Shift / Shift)
+                    svg.append(f'    <text x="30" y="36" class="main"{fsize_style}>{esc(val)}</text>')
+                else:
+                    svg.append(f'    <text x="30" y="28" class="main"{fsize_style}>{esc(val)}</text>')
+                    svg.append(f'    <text x="30" y="46" class="hrm-sub">{esc(mod_lbl)}</text>')
             else:
-                fsize_style = ' font-size="11px"' if len(val) > 5 else ''
+                fsize_style = ' font-size="11px"' if len(val) > 4 else ''
                 svg.append(f'    <text x="30" y="36" class="main"{fsize_style}>{esc(val)}</text>')
 
             svg.append('  </g>')
@@ -325,5 +337,4 @@ svgs = {
 for filename, content in svgs.items():
     path = os.path.join('docs/images', filename)
     open(path, 'w').write(content)
-    print(f"Generated vibrant {path}")
-
+    print(f"Generated clean {path}")

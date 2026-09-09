@@ -1,205 +1,199 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 350">
   <style>
     :root { color-scheme: light dark; }
-    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; rx: 8px; ry: 8px; }
-    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; rx: 8px; ry: 8px; }
-    rect.active { fill: #fff7ed; stroke: #ea580c; stroke-width: 2px; rx: 8px; ry: 8px; }
+    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; }
+    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; }
+    rect.active { fill: #fff7ed; stroke: #ea580c; stroke-width: 2px; }
     text { font-family: system-ui, -apple-system, sans-serif; text-anchor: middle; }
     text.title { font-size: 19px; font-weight: 800; fill: #0f172a; }
     text.subtitle { font-size: 13px; font-weight: 500; fill: #64748b; }
     text.phys { font-size: 9px; font-weight: 700; fill: #94a3b8; text-anchor: start; }
     text.main { font-size: 16px; font-weight: 800; fill: #ea580c; }
     text.sub { font-size: 11px; font-weight: 600; fill: #64748b; }
-    text.dead { font-size: 11px; fill: #cbd5e1; }
+    text.hrm-sub { font-size: 11px; font-weight: 700; fill: #ea580c; }
+    text.dead { font-size: 11px; fill: #94a3b8; }
     @media (prefers-color-scheme: dark) {
       rect.key { fill: #1e293b; stroke: #334155; }
       rect.gap { fill: #0f172a; stroke: #334155; }
       rect.active { fill: #2e1065; stroke: #c084fc; }
       text.title { fill: #f8fafc; }
       text.subtitle { fill: #94a3b8; }
-      text.phys { fill: #64748b; }
+      text.phys { fill: #94a3b8; }
       text.main { fill: #c084fc; }
       text.sub { fill: #94a3b8; }
-      text.dead { fill: #475569; }
+      text.hrm-sub { fill: #fb923c; }
+      text.dead { fill: #64748b; }
     }
   </style>
   <text x="390" y="28" class="title">Modifiers Layer (One-Shot / Held)</text>
   <text x="390" y="48" class="subtitle">Activated by Holding Right Index Thumb (m)</text>
   <g transform="translate(20,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">`</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(86,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">1</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(152,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">2</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(218,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">3</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(284,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">4</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(446,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">7</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(512,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">8</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(578,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">9</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(644,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">0</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(710,70)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">-</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(20,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">tab</text>
-    <text x="30" y="28" class="main">Shift</text>
-    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Shift</text>
+    <text x="30" y="36" class="main" font-size="11px">Shift</text>
   </g>
   <g transform="translate(86,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">q</text>
-    <text x="30" y="28" class="main">Alt</text>
-    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Alt</text>
+    <text x="30" y="36" class="main">Alt</text>
   </g>
   <g transform="translate(152,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">w</text>
-    <text x="30" y="28" class="main">Super</text>
-    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Super</text>
+    <text x="30" y="36" class="main" font-size="11px">Super</text>
   </g>
   <g transform="translate(218,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">e</text>
-    <text x="30" y="28" class="main">Ctrl</text>
-    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Ctrl</text>
+    <text x="30" y="36" class="main">Ctrl</text>
   </g>
   <g transform="translate(284,136)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">r</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(446,136)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">u</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(512,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">i</text>
-    <text x="30" y="28" class="main">Ctrl</text>
-    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Ctrl</text>
+    <text x="30" y="36" class="main">Ctrl</text>
   </g>
   <g transform="translate(578,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">o</text>
-    <text x="30" y="28" class="main">Super</text>
-    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Super</text>
+    <text x="30" y="36" class="main" font-size="11px">Super</text>
   </g>
   <g transform="translate(644,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">p</text>
-    <text x="30" y="28" class="main">Alt</text>
-    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Alt</text>
+    <text x="30" y="36" class="main">Alt</text>
   </g>
   <g transform="translate(710,136)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">[</text>
-    <text x="30" y="28" class="main">Shift</text>
-    <text x="30" y="46" class="sub" font-weight="700" fill="#ea580c">Shift</text>
+    <text x="30" y="36" class="main" font-size="11px">Shift</text>
   </g>
   <g transform="translate(20,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">caps</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(86,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">a</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(152,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">s</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(218,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">d</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(284,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">f</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(446,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">j</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(512,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">k</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(578,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">l</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(644,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">;</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(710,202)">
-    <rect width="60" height="60" class="gap"/>
+    <rect width="60" height="60" rx="8" class="gap"/>
     <text x="6" y="12" class="phys">&#x27;</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(152,268)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">x</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(218,268)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">c</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(446,268)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">m</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>
   <g transform="translate(512,268)">
-    <rect width="60" height="60" class="active"/>
+    <rect width="60" height="60" rx="8" class="active"/>
     <text x="6" y="12" class="phys">,</text>
     <text x="30" y="36" class="dead">XX</text>
   </g>

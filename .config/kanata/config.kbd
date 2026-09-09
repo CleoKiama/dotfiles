@@ -2,6 +2,7 @@
   process-unmapped-keys yes
   block-unmapped-keys yes
   concurrent-tap-hold yes
+  chords-v2-min-idle 100
 )
 
 (defhands
@@ -16,10 +17,8 @@
 (include defsrc/pc.kbd)
 (include defalias/qwerty.kbd)
 
-(defchords fp-esc 40
-  (2 3) esc
-  (2) f
-  (3) p
+(defchordsv2
+  (2 3) esc 40 first-release ()
 )
 
 (include deflayer/colemak-dh-base.kbd)
