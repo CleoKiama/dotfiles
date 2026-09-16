@@ -547,6 +547,9 @@ separate leader per package.
   ;; do not sync to the system clipboard by default
   (setq select-enable-clipboard nil)
 
+  (setq xterm-extra-capabilities
+        '(modifyOtherKeys reportBackground setSelection))
+
   (defun cl/copy-to-clipboard ()
     "Copy the current region to the system clipboard explicitly."
     (interactive)
@@ -554,11 +557,23 @@ separate leader per package.
       (let ((select-enable-clipboard t))
         (kill-ring-save (region-beginning) (region-end)))))
 
+  (defun cl/get-clipboard-string ()
+    "Fetch string from Wayland system clipboard."
+    (with-output-to-string
+      (with-current-buffer standard-output
+        (call-process "wl-paste" nil t nil "--no-newline"))))
+
+
+
   (defun cl/paste-from-clipboard ()
     "Paste from the system clipboard explicitly."
     (interactive)
-    (let ((select-enable-clipboard t))
-      (yank)))
+    (let ((text (cl/get-clipboard-string)))
+      (if (and text (not (string-empty-p text)))
+          (progn
+            (kill-new text)
+            (yank))
+        (message "System clipboard is empty.")))) 
 
   (cl/leader-keys
     "c" '(:ignore t :which-key "clipboard")
@@ -1316,10 +1331,15 @@ It draws vertical lines (by default, a character of your choice) at each level o
     :hook (prog-mode . apheleia-mode)
     :config
     ;; Register Mason / CLI formatters & dynamic fallbacks
-    (setf (alist-get 'oxfmt apheleia-formatters) '("oxfmt" filepath))
-    (setf (alist-get 'prettierd apheleia-formatters) '("prettierd" filepath))
+    (setf (alist-get 'oxfmt apheleia-formatters)
+          '("oxfmt" "--stdin-filepath" filepath))
+    (setf (alist-get 'prettierd apheleia-formatters)
+          '("prettierd" filepath))
     (setf (alist-get 'oxfmt-or-prettierd apheleia-formatters)
-          '((if (executable-find "oxfmt") "oxfmt" "prettierd") filepath))
+          '((if (executable-find "oxfmt")
+                '("oxfmt" "--stdin-filepath")
+              '("prettierd"))
+            filepath))
 
     ;; Map major modes to formatters
     (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'oxfmt-or-prettierd)
@@ -1390,25 +1410,22 @@ It draws vertical lines (by default, a character of your choice) at each level o
     (general-define-key
      :states '(normal insert visual emacs)
      :keymaps 'override
-     :prefix "C-SPC"
-     "a" (lambda () (interactive) (harpoon-open-entry 1))
-     "r" (lambda () (interactive) (harpoon-open-entry 2))
-     "s" (lambda () (interactive) (harpoon-open-entry 3))
-     "t" (lambda () (interactive) (harpoon-open-entry 4))
-     "g" (lambda () (interactive) (harpoon-open-entry 5))
-     "q" (lambda () (interactive) (harpoon-open-entry 6))
-     )
+     "M-1" '((lambda () (interactive) (harpoon-open-entry 1)) :which-key "harpoon file 1")
+     "M-2" '((lambda () (interactive) (harpoon-open-entry 2)) :which-key "harpoon file 2")
+     "M-3" '((lambda () (interactive) (harpoon-open-entry 3)) :which-key "harpoon file 3")
+     "M-4" '((lambda () (interactive) (harpoon-open-entry 4)) :which-key "harpoon file 4")
+     "M-5" '((lambda () (interactive) (harpoon-open-entry 5)) :which-key "harpoon file 5")
+     "M-6" '((lambda () (interactive) (harpoon-open-entry 6)) :which-key "harpoon file 6"))
 
     (cl/leader-keys
       "h"  '(:ignore t :which-key "harpoon")
-      "ha" (lambda () (interactive) (harpoon-add-file-or-buffer 1))
-      "hr" (lambda () (interactive) (harpoon-add-file-or-buffer 2))
-      "hs" (lambda () (interactive) (harpoon-add-file-or-buffer 3))
-      "ht" (lambda () (interactive) (harpoon-add-file-or-buffer 4))
-      "hg" (lambda () (interactive) (harpoon-add-file-or-buffer 5))
-      "hq" (lambda () (interactive) (harpoon-add-file-or-buffer 6))
-      "hA" '(harpoon-open-or-create :which-key "edit file"))
-    )
+      "ha" '((lambda () (interactive) (harpoon-add-file-or-buffer 1)) :which-key "add slot 1")
+      "hr" '((lambda () (interactive) (harpoon-add-file-or-buffer 2)) :which-key "add slot 2")
+      "hs" '((lambda () (interactive) (harpoon-add-file-or-buffer 3)) :which-key "add slot 3")
+      "ht" '((lambda () (interactive) (harpoon-add-file-or-buffer 4)) :which-key "add slot 4")
+      "hg" '((lambda () (interactive) (harpoon-add-file-or-buffer 5)) :which-key "add slot 5")
+      "hq" '((lambda () (interactive) (harpoon-add-file-or-buffer 6)) :which-key "add slot 6")
+      "hA" '(harpoon-open-or-create :which-key "edit file")))
 
 
 #+end_src
