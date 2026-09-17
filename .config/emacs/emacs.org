@@ -1366,16 +1366,21 @@ It draws vertical lines (by default, a character of your choice) at each level o
 #+begin_src emacs-lisp
   ;; disable the verification promp for editing the commands
   (setq compilation-read-command nil)
+  (setq compilation-ask-about-save nil)
 
-    (defun cl/set-python-compile-command ()
-      (unless (or (file-exists-p "Makefile") (file-exists-p "makefile"))
-        (setq-local compile-command
-                    (concat "uv run "
-                            (if buffer-file-name
-                                (shell-quote-argument buffer-file-name)
-                              "")))))
+  (defun cl/set-python-compile-command ()
+    (unless (or (file-exists-p "Makefile") (file-exists-p "makefile"))
+      (setq-local compile-command
+                  (concat "uv run "
+                          (if buffer-file-name
+                              (shell-quote-argument buffer-file-name)
+                            "")))))
 
-    (add-hook 'python-ts-mode-hook #'cl/set-python-compile-command)
+  (add-hook 'python-ts-mode-hook #'cl/set-python-compile-command)
+  ;; Global keybindings for compilation commands
+  (global-set-key (kbd "C-c c")   #'compile)
+  (global-set-key (kbd "C-c k")   #'kill-compilation)
+  (global-set-key (kbd "C-c r")   #'recompile) 
 #+end_src
 ** Terminal support with ghostel  
 
