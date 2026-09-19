@@ -1,0 +1,182 @@
+/**
+ * Catppuccin Mocha Rofi App Launcher
+ * HyDE Sideview layout with Penguin banner, Search Bar & Mode Switcher
+ */
+
+configuration {
+    modi:                        "drun,run,filebrowser,window";
+    show-icons:                  true;
+    display-drun:                "  Apps";
+    display-run:                 "  Run";
+    display-filebrowser:         "  Files";
+    display-window:              "  Windows";
+    drun-display-format:         "{name}";
+    window-format:               "{w} · {c} · {t}";
+    font:                        "JetBrainsMono Nerd Font 10";
+    icon-theme:                  "Adwaita";
+}
+
+@theme "/home/cleo/.config/rofi/theme.rasi"
+
+// Main Window //
+window {
+    height:                      34em;
+    width:                       67em;
+    transparency:                "real";
+    fullscreen:                  false;
+    enabled:                     true;
+    cursor:                      "default";
+    spacing:                     0em;
+    padding:                     0em;
+    border:                      1px;
+    border-radius:               16px;
+    border-color:                @main-br;
+    background-color:            #11111b;
+}
+
+mainbox {
+    enabled:                     true;
+    spacing:                     0em;
+    padding:                     0em;
+    orientation:                 horizontal;
+    children:                    [ "dummywall" , "listbox" ];
+    background-color:            transparent;
+}
+
+// Left Art //
+dummywall {
+    spacing:                     0em;
+    padding:                     0em;
+    width:                       36em;
+    expand:                      false;
+    orientation:                 horizontal;
+    background-color:            transparent;
+    background-image:            url("~/dotfiles/assets/penguin.jpeg", height);
+    border-radius:               15px 0px 0px 15px;
+}
+
+// Right Content //
+listbox {
+    spacing:                     0.8em;
+    padding:                     1.4em;
+    orientation:                 vertical;
+    children:                    [ "inputbar" , "listview", "mode-switcher" ];
+    background-color:            transparent;
+}
+
+// Search Bar //
+inputbar {
+    enabled:                     true;
+    spacing:                     0.8em;
+    padding:                     0.7em 1.2em;
+    border:                      1px;
+    border-radius:               12px;
+    border-color:                @main-br;
+    background-color:            #1e1e2e;
+    text-color:                  @main-fg;
+    children:                    [ "textbox-prompt-colon", "entry" ];
+}
+
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "";
+    text-color:                  @main-br;
+    vertical-align:              0.5;
+}
+
+entry {
+    enabled:                     true;
+    cursor:                      text;
+    placeholder:                 "Search applications...";
+    placeholder-color:           #6c7086;
+    text-color:                  @main-fg;
+    vertical-align:              0.5;
+}
+
+// Apps List //
+listview {
+    enabled:                     true;
+    spacing:                     0.3em;
+    padding:                     0.2em;
+    columns:                     1;
+    lines:                       7;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    expand:                      true;
+    cursor:                      "default";
+    background-color:            transparent;
+    text-color:                  @main-fg;
+}
+
+// Element Row //
+element {
+    enabled:                     true;
+    spacing:                     1em;
+    padding:                     0.45em 0.8em;
+    border-radius:               10px;
+    cursor:                      pointer;
+    background-color:            transparent;
+    text-color:                  @main-fg;
+}
+
+element selected.normal {
+    background-color:            @select-bg;
+    text-color:                  @select-fg;
+}
+
+element-icon {
+    size:                        2.2em;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+
+element-text {
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+
+// Bottom Mode Switcher //
+mode-switcher {
+    orientation:                 horizontal;
+    enabled:                     true;
+    spacing:                     0.6em;
+    padding:                     0.2em 0em 0em 0em;
+    background-color:            transparent;
+}
+
+button {
+    cursor:                      pointer;
+    border-radius:               10px;
+    background-color:            #1e1e2e;
+    text-color:                  @main-fg;
+    padding:                     0.5em 0.8em;
+    horizontal-align:            0.5;
+}
+
+button selected {
+    background-color:            @main-br;
+    text-color:                  #11111b;
+}
+
+error-message {
+    text-color:                  @main-fg;
+    background-color:            #11111b;
+    border-radius:               12px;
+    padding:                     1em;
+    children:                    [ "textbox" ];
+}
+
+textbox {
+    text-color:                  inherit;
+    background-color:            inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}
