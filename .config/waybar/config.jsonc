@@ -169,11 +169,12 @@
         "format-ethernet": "{ipaddr}/{cidr} ",
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "󰖪 ⚠",
-        // "on-click-right": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
-        "on-click-right": "nmgui",
+        "tooltip": true,
+        "tooltip-format": "Network: <big><b>{essid}</b></big>\nSignal strength: <b>{signaldBm}dBm ({signalStrength}%)</b>\nInterface: <b>{ifname}</b>\nIP: <b>{ipaddr}/{cidr}</b>\nGateway: <b>{gwaddr}</b>\nNetmask: <b>{netmask}</b>",
+        "tooltip-format-disconnected": "Disconnected",
+        "on-click-right": "nm-connection-editor",
         "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
-        "interval": 2,
-        "tooltip-format-disconnected": "Disconnected"
+        "interval": 2
     },
     "pulseaudio": {
         "format": "{icon} {volume}",

@@ -13,6 +13,8 @@ waybar  >/dev/null 2>&1 &
 
 swaync  >/dev/null 2>&1 &
 
+nm-applet --indicator >/dev/null 2>&1 &
+
 
 
 

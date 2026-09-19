@@ -86,12 +86,35 @@ tooltip {
     transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
 }
 
+menu {
+    background-color: @main-bg;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+menu menuitem {
+    transition: 0.2s ease;
+    padding: 4px 8px;
+    color: @main-fg;
+}
+
+menu menuitem:hover {
+    background-color: @wb-act-bg;
+    color: @wb-act-fg;
+}
+
 #tray menu * {
     min-height: 16px;
 }
 
 #tray menu separator {
-    min-height: 10px;
+    min-height: 1px;
+}
+
+#tray menu menuitem check,
+#tray menu menuitem radio {
+    min-height: 14px;
+    min-width: 14px;
 }
 
 #backlight,
