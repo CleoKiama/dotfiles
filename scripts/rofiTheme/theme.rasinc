@@ -11,7 +11,7 @@
 // Config //
 configuration {
     modi:                        "drun";
-    show-icons:                  false;
+    show-icons:                  true;
 }
 
 @theme "~/.config/rofi/theme.rasi"
@@ -100,7 +100,8 @@ dummy {
 // Elements //
 element {
     enabled:                     true;
-    padding:                     0.5em;
+    padding:                     0.4em 0.6em;
+    spacing:                     0.8em;
     cursor:                      pointer;
     background-color:            transparent;
     text-color:                  @main-fg;
@@ -109,8 +110,14 @@ element selected.normal {
     background-color:            @select-bg;
     text-color:                  @select-fg;
 }
+element-icon {
+    size:                        2.2em;
+    cursor:                      inherit;
+    background-color:            transparent;
+    vertical-align:              0.5;
+}
 element-text {
-    vertical-align:              0.0;
+    vertical-align:              0.5;
     horizontal-align:            0.0;
     cursor:                      inherit;
     background-color:            transparent;

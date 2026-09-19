@@ -13,6 +13,8 @@ configuration {
     window-format:               "{w} · {c} · {t}";
     font:                        "JetBrainsMono Nerd Font 10";
     icon-theme:                  "Adwaita";
+    kb-mode-next:                "Shift+Right,Control+Tab";
+    kb-mode-previous:            "Shift+Left,Control+ISO_Left_Tab";
 }
 
 @theme "/home/cleo/.config/rofi/theme.rasi"
