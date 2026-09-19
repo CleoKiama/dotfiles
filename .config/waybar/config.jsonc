@@ -24,13 +24,11 @@
     ],
     "modules-center": [
         "custom/padd",
-        "ext/workspaces", // mangowc
-        // "niri/workspaces",
-        // "hyprland/workspaces",
         "custom/l_end",
-        // "dwl/window", //INFO: Crashes on Hyprland and mango - incompatible
-        // "hyprland/window",
-        // "niri/window",
+        "ext/workspaces",
+        "custom/r_end",
+        "custom/l_end",
+        "custom/window",
         "custom/r_end",
         "custom/padd"
     ],
@@ -259,9 +257,12 @@
         },
         "max-length": 50
     },
-    "dwl/window": {
-        "format": " {title}",
-        "(.*)tmux(.*)": "  Dev Env 🔥"
+    "custom/window": {
+        "format": " {}",
+        "max-length": 45,
+        "escape": true,
+        "return-type": "json",
+        "exec": "$HOME/scripts/waybar-window.sh"
     },
     "ext/workspaces": {
         "format": "{icon}",
