@@ -2,7 +2,6 @@
 
 set -eu
 
-ROFI_THEME="${ROFI_KEYBINDS_THEME:-$HOME/.config/rofi/dmenu.rasi}"
 BINDS_FILE="${MANGO_BINDS:-$HOME/.config/mango/binds.conf}"
 
 [ -f "$BINDS_FILE" ] || exit 1
@@ -113,6 +112,5 @@ BEGIN { section = "general" }
 [ -n "$entries" ] || exit 0
 
 printf '%s\n' "$entries" | rofi -dmenu -i -p ' Keybinds:' \
-    -theme "$ROFI_THEME" \
     -theme-str 'window { width: 60em; } listview { lines: 15; }' \
     -no-custom || true

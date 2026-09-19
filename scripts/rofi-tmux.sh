@@ -4,20 +4,19 @@
 
 set -eu
 
-ROFI_THEME="${ROFI_THEME:-$HOME/.config/rofi/dmenu.rasi}"
 TERMINAL="${ROFI_TMUX_TERMINAL:-ghostty}"
 
 # List active sessions
 sessions="$(tmux list-sessions -F '#S' 2>/dev/null || true)"
 [ -n "$sessions" ] || {
   # No sessions — offer to create one
-  name="$(echo "" | rofi -dmenu -p 'No sessions. Create new:' -theme "$ROFI_THEME" || true)"
+  name="$(echo "" | rofi -dmenu -p 'No sessions. Create new:' || true)"
   [ -n "$name" ] || exit 0
   exec "$TERMINAL" -e tmux new-session -s "$name"
 }
 
 # Pick session
-chosen="$(printf '%s\n' "$sessions" | rofi -dmenu -i -p 'tmux sessions:' -theme "$ROFI_THEME" || true)"
+chosen="$(printf '%s\n' "$sessions" | rofi -dmenu -i -p 'tmux sessions:' || true)"
 [ -n "$chosen" ] || exit 0
 
 # Already inside tmux? Just switch

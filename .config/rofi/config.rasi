@@ -1,0 +1,6 @@
+/**
+ * Default Rofi configuration
+ * Fallback to dmenu theme for unstyled menus (calc, etc.)
+ */
+
+@theme "dmenu.rasi"

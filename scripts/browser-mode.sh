@@ -6,7 +6,6 @@
 set -eu
 
 MODE_FILE="$HOME/.config/browser-mode"
-ROFI_THEME="${ROFI_THEME:-$HOME/.config/rofi/dmenu.rasi}"
 
 show_usage() {
     cat <<EOF
@@ -105,7 +104,7 @@ show_rofi_menu() {
     
     # Show rofi menu
     choice=$(printf "%s\n%s\n" "$WORK_LABEL" "$PERSONAL_LABEL" | \
-             rofi -dmenu -p "Browser Mode:" -theme "$ROFI_THEME" || true)
+             rofi -dmenu -p "Browser Mode:" || true)
     
     [ -n "$choice" ] || exit 0
     

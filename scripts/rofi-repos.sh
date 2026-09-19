@@ -4,7 +4,6 @@
 
 set -eu
 
-ROFI_THEME="${ROFI_THEME:-$HOME/.config/rofi/dmenu.rasi}"
 TERMINAL="${ROFI_REPOS_TERMINAL:-ghostty}"
 REPO_DIR="${ROFI_REPOS_DIR:-$HOME/repos}"
 
@@ -13,7 +12,7 @@ repos="$(ls -1d "$REPO_DIR"/*/ 2>/dev/null | xargs -n1 basename || true)"
 [ -n "$repos" ] || exit 0
 
 # Pick repo
-chosen="$(printf '%s\n' "$repos" | rofi -dmenu -i -p 'Projects:' -theme "$ROFI_THEME" || true)"
+chosen="$(printf '%s\n' "$repos" | rofi -dmenu -i -p 'Projects:' || true)"
 [ -n "$chosen" ] || exit 0
 
 dir="$REPO_DIR/$chosen"

@@ -3,7 +3,6 @@
 
 set -eu
 
-ROFI_THEME="${ROFI_SSH_THEME:-$HOME/.config/rofi/dmenu.rasi}"
 TERMINAL="${ROFI_SSH_TERMINAL:-ghostty}"
 SSH_CONFIG="$HOME/.ssh/config"
 
@@ -24,7 +23,7 @@ all_hosts="$(printf '%s\n%s\n' "$hosts" "$known" | grep -v '^$' | sort -u)"
 [ -n "$all_hosts" ] || exit 0
 
 # Pick host
-chosen="$(printf '%s\n' "$all_hosts" | rofi -dmenu -i -p 'SSH:' -theme "$ROFI_THEME" || true)"
+chosen="$(printf '%s\n' "$all_hosts" | rofi -dmenu -i -p 'SSH:' || true)"
 [ -n "$chosen" ] || exit 0
 
 exec "$TERMINAL" -e ssh "$chosen"
