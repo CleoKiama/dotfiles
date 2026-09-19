@@ -4,12 +4,11 @@
  */
 
 configuration {
-    modi:                        "drun,run,filebrowser,window";
+    modi:                        "drun,window,filebrowser";
     show-icons:                  true;
     display-drun:                "  Apps";
-    display-run:                 "  Run";
-    display-filebrowser:         "  Files";
     display-window:              "  Windows";
+    display-filebrowser:         "  Files";
     drun-display-format:         "{name}";
     window-format:               "{w} · {c} · {t}";
     font:                        "JetBrainsMono Nerd Font 10";
@@ -83,6 +82,7 @@ textbox-prompt-colon {
     str:                         "";
     text-color:                  @main-br;
     vertical-align:              0.5;
+    background-color:            transparent;
 }
 
 entry {
@@ -92,6 +92,7 @@ entry {
     placeholder-color:           #6c7086;
     text-color:                  @main-fg;
     vertical-align:              0.5;
+    background-color:            transparent;
 }
 
 // Apps List //
@@ -147,7 +148,7 @@ element-text {
 mode-switcher {
     orientation:                 horizontal;
     enabled:                     true;
-    spacing:                     0.6em;
+    spacing:                     0.8em;
     padding:                     0.2em 0em 0em 0em;
     background-color:            transparent;
 }
@@ -157,7 +158,7 @@ button {
     border-radius:               10px;
     background-color:            #1e1e2e;
     text-color:                  @main-fg;
-    padding:                     0.5em 0.8em;
+    padding:                     0.5em 1em;
     horizontal-align:            0.5;
 }
 
