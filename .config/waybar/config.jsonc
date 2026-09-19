@@ -215,7 +215,7 @@
     "custom/power": {
         "format": "⏻ ",
         "tooltip": false,
-        "on-click": "wlogout"
+        "on-click": "$HOME/.config/wlogout/wlogout.sh"
     },
     "custom/screen-record": {
         "format": " ",
