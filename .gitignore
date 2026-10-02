@@ -2,3 +2,7 @@ __try.lua
 target/
 .gitconfig-thegoodco
 mpris.so
+__pycache__/
+*.pyc
+.pi/
+

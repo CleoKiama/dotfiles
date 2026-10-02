@@ -1,12 +1,18 @@
 # Secrets — never commit
 agent/auth.json
 agent/auth.json.*
+agent/antigravity-accounts.json
+agent/mcp-auth.json
+agent/context7-key
+agent/*-key
+
 
 # Sessions — auto-generated, not config
 agent/sessions/
 agent/mcp-cache/
 agent/mcp-oauth/
 agent/mcp-cache.json
+agent/mcp-npx-cache.json
 .pi/
 
 # Auto-installed packages via pi install
