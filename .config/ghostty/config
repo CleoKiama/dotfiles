@@ -59,3 +59,9 @@ quit-after-last-window-closed-delay = 5m
 #gtk-single-instance = true
 
 term = xterm-256color
+
+
+keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl+plus=increase_font_size:1
+keybind = ctrl+shift+equal=increase_font_size:1
+keybind = ctrl+enter=unbind
