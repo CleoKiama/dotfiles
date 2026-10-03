@@ -3,17 +3,38 @@
     "context7": {
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+        "CONTEXT7_API_KEY": "!cat ~/.config/pi/agent/context7-key"
       },
-      "directTools": true
+      "exposure": "direct"
     },
     "codebase-memory": {
       "command": "codebase-memory-mcp",
-      "directTools": true
+      "exposure": "direct"
     },
-    "searxng": {
-      "url": "http://localhost:8081/mcp",
-      "directTools": true
+    "axiom-logs": {
+      "url": "https://mcp.axiom.co/mcp",
+      "exposure": "direct"
+    },
+    "youtube-transcript": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@lunks/youtube-transcript-mcp"
+      ],
+      "exposure": "direct"
+    },
+    "aws-docs": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy-for-aws-cli@latest",
+        "https://aws-mcp.us-east-1.api.aws/mcp",
+        "--skip-auth"
+      ],
+      "exposure": "direct"
+    },
+    "linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "exposure": "direct"
     }
   }
 }

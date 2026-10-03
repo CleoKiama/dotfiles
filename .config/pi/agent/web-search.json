@@ -1,0 +1,7 @@
+{
+  "searxngBaseUrl": "http://localhost:39201",
+  "allowBrowserCookies": true,
+  "ssrf": {
+    "allowRanges": ["127.0.0.1/32", "::1/128"]
+  }
+}

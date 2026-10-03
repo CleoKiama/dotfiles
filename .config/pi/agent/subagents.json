@@ -1,5 +1,0 @@
-{
-  "maxConcurrent": 3,
-  "graceTurns": 3,
-  "disableDefaultAgents": true
-}

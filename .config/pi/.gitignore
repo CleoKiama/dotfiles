@@ -25,5 +25,7 @@ agent/models-store.json
 
 # Temp / runtime
 *.tmp
+agent/mcp.log
+agent/pi-subagents/
 
 

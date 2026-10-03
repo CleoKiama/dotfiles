@@ -1,12 +1,12 @@
 {
-  "lastChangelogVersion": "0.82.1",
+  "lastChangelogVersion": "1.0.0",
   "theme": "dark",
-  "defaultProvider": "google-antigravity",
-  "defaultModel": "antigravity-gemini-3.5-flash",
+  "defaultProvider": "amazon-bedrock",
+  "defaultModel": "us.moonshotai.kimi-k3",
   "defaultThinkingLevel": "high",
   "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\"",
   "npmCommand": [
-    "pnpm"
+    "bun"
   ],
   "quietStartup": true,
   "doubleEscapeAction": "tree",
@@ -17,11 +17,8 @@
   },
   "enabledModels": [
     "opencode/*-free",
-    "opencode-go/*",
-    "google-antigravity/*"
-  ],
-  "skills": [
-    "~/dotfiles/.config/pi/agent/skills/git-commit"
+    "antigravity/*",
+    "amazon-bedrock/*"
   ],
   "extensions": [
     "~/.config/pi/agent/extensions/custom-compaction.ts"
@@ -31,15 +28,52 @@
   ],
   "packages": [
     "npm:pi-wakatime",
-    "git:github.com/obra/superpowers",
-    "npm:pi-mcp-adapter",
-    "npm:@tintinweb/pi-subagents",
     "npm:@tintinweb/pi-tasks",
     "npm:pi-dynamic-workflows",
     "npm:@yusukeshib/pi-stash",
-    "npm:@cortexkit/pi-antigravity-auth",
     "npm:@gotgenes/pi-github-tools",
-    "npm:@gotgenes/pi-permission-system"
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "git:github.com/Rahularya01/pi-antigravity",
+    "npm:pi-subagents",
+    "npm:pi-web-access"
   ],
-  "hideThinkingBlock": true
+  "hideThinkingBlock": true,
+  "subagents": {
+    "agentOverrides": {
+      "scout": {
+        "model": "opencode/space-bunny-free",
+        "thinking": "low"
+      },
+      "delegate": {
+        "model": "opencode/space-bunny-free",
+        "thinking": "low"
+      },
+      "librarian": {
+        "model": "antigravity/gemini-3.7-flash",
+        "thinking": "high"
+      },
+      "worker": {
+        "model": "antigravity/gemini-3.8-flash",
+        "thinking": "high"
+      },
+      "researcher": {
+        "model": "antigravity/gemini-3.8-flash"
+      },
+      "reviewer": {
+        "model": "antigravity/claude-opus-4-6",
+        "thinking": "high"
+      },
+      "planner": {
+        "model": "amazon-bedrock/us.moonshotai.kimi-k3"
+      },
+      "oracle": {
+        "model": "amazon-bedrock/us.anthropic.claude-opus-4-6-v1",
+        "thinking": "high"
+      },
+      "evidence-auditor": {
+        "model": "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0",
+        "thinking": "medium"
+      }
+    }
+  }
 }

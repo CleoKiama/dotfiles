@@ -1,7 +1,7 @@
 /**
  * Custom Compaction Extension
  *
- * Uses opencode/deepseek-v4-flash-free for compaction summarization
+ * Uses antigravity/gemini-3.8-flash for compaction summarization
  * instead of the default conversation model. Falls back to default
  * compaction if the model is unavailable or an error occurs.
  *
@@ -16,11 +16,11 @@ export default function (pi: ExtensionAPI) {
     const { preparation, signal } = event;
 
     // Find the dedicated compaction model
-    ctx.ui.notify("🚀 Compacting with antigravity-gemini-3.6 model....", "warning");
-    const model = ctx.modelRegistry.find("google-antigravity", "antigravity-gemini-3.6-flash");
+    ctx.ui.notify("🔄 Compacting with gemini-3.8-flash model....", "warning");
+    const model = ctx.modelRegistry.find("antigravity", "gemini-3.6-flash");
     if (!model) {
       ctx.ui.notify(
-        "Compaction model 'opencode/deepseek-v4-flash-free' not found, using default",
+        "Compaction model 'antigravity/gemini-3.8-flash' not found, using default",
         "warning",
       );
       return; // fall back to default compaction
@@ -47,7 +47,7 @@ export default function (pi: ExtensionAPI) {
       );
 
       ctx.ui.notify(
-        `Compacted with opencode/deepseek-v4-flash-free (${result.tokensBefore.toLocaleString()} tokens summarized)`,
+        `Compacted with antigravity/gemini-3.8-flash (${result.tokensBefore.toLocaleString()} tokens summarized)`,
         "info",
       );
 
