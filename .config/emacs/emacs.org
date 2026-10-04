@@ -162,8 +162,6 @@
     (set-fringe-mode 10)
 
     ;; Enable core modes
-    ;; Automatically reload buffers when files change on disk.
-    (global-auto-revert-mode 1)
     ;; Track recently opened files for fast file switching.
     (recentf-mode 1)
     ;; Save minibuffer command history across Emacs restarts.
@@ -205,6 +203,21 @@
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
   )
 
+#+end_src
+
+** Autorevert
+#+begin_src emacs-lisp
+(use-package autorevert
+  :straight nil
+  :custom
+  (auto-revert-use-notify t)
+  (auto-revert-avoid-polling t)
+  (auto-revert-interval 1)
+  (auto-revert-check-vc-info t)
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-verbose nil)
+  :config
+  (global-auto-revert-mode 1))
 #+end_src
 
 **  Windows Management
@@ -1409,28 +1422,32 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ***  harpoon 
 #+begin_src emacs-lisp
   (use-package harpoon
-    :straight (harpoon :type git :host github :repo "C-Hipple/harpoon.el")
+    :straight (harpoon :type git :host codeberg :repo "cleokiama/harpoon.el")
     :after evil
     :config
     (general-define-key
      :states '(normal insert visual emacs)
      :keymaps 'override
-     "M-1" '((lambda () (interactive) (harpoon-open-entry 1)) :which-key "harpoon file 1")
-     "M-2" '((lambda () (interactive) (harpoon-open-entry 2)) :which-key "harpoon file 2")
-     "M-3" '((lambda () (interactive) (harpoon-open-entry 3)) :which-key "harpoon file 3")
-     "M-4" '((lambda () (interactive) (harpoon-open-entry 4)) :which-key "harpoon file 4")
-     "M-5" '((lambda () (interactive) (harpoon-open-entry 5)) :which-key "harpoon file 5")
-     "M-6" '((lambda () (interactive) (harpoon-open-entry 6)) :which-key "harpoon file 6"))
+     "M-1" '(harpoon-go-to-1 :which-key "harpoon slot 1")
+     "M-2" '(harpoon-go-to-2 :which-key "harpoon slot 2")
+     "M-3" '(harpoon-go-to-3 :which-key "harpoon slot 3")
+     "M-4" '(harpoon-go-to-4 :which-key "harpoon slot 4")
+     "M-5" '(harpoon-go-to-5 :which-key "harpoon slot 5")
+     "M-6" '(harpoon-go-to-6 :which-key "harpoon slot 6"))
 
     (cl/leader-keys
       "h"  '(:ignore t :which-key "harpoon")
-      "ha" '((lambda () (interactive) (harpoon-add-file-or-buffer 1)) :which-key "add slot 1")
-      "hr" '((lambda () (interactive) (harpoon-add-file-or-buffer 2)) :which-key "add slot 2")
-      "hs" '((lambda () (interactive) (harpoon-add-file-or-buffer 3)) :which-key "add slot 3")
-      "ht" '((lambda () (interactive) (harpoon-add-file-or-buffer 4)) :which-key "add slot 4")
-      "hg" '((lambda () (interactive) (harpoon-add-file-or-buffer 5)) :which-key "add slot 5")
-      "hq" '((lambda () (interactive) (harpoon-add-file-or-buffer 6)) :which-key "add slot 6")
-      "hA" '(harpoon-open-or-create :which-key "edit file")))
+      "ha" '((lambda () (interactive) (harpoon-add-file 1)) :which-key "add slot 1")
+      "hr" '((lambda () (interactive) (harpoon-add-file 2)) :which-key "add slot 2")
+      "hs" '((lambda () (interactive) (harpoon-add-file 3)) :which-key "add slot 3")
+      "ht" '((lambda () (interactive) (harpoon-add-file 4)) :which-key "add slot 4")
+      "hg" '((lambda () (interactive) (harpoon-add-file 5)) :which-key "add slot 5")
+      "hq" '((lambda () (interactive) (harpoon-add-file 6)) :which-key "add slot 6")
+      "hm" '(harpoon-quick-menu :which-key "quick menu")
+      "hn" '(harpoon-next :which-key "next mark")
+      "hp" '(harpoon-prev :which-key "prev mark")
+      "hc" '(harpoon-clear :which-key "clear marks")
+      "hA" '(harpoon-quick-menu :which-key "edit marks")))
 
 
 #+end_src
@@ -1557,11 +1574,6 @@ This feature is especially useful in programming modes, where it can help users 
     ("C-c g c" . gptel-abort)            
     ("C-c g g" . gptel)
     :init
-    ;; Eagerly define the `gptel-tool' struct so `setf' on its accessors
-    ;; (used in the gptel-agent block below) macroexpands to the inline
-    ;; setter at load time instead of a call to a nonexistent function.
-    (require 'gptel-request)
-
     (defun cl/bedrock-mantle-key ()
       "Read the Bedrock bearer token from ~/.authinfo.gpg."
       (when-let* ((entry (car (auth-source-search
@@ -1681,73 +1693,31 @@ This feature is especially useful in programming modes, where it can help users 
 
   #+end_src
 
-
 #+begin_src emacs-lisp
-  (use-package gptel-agent 
-    :after gptel
+  (use-package pilish
+    :straight (pilish :type git :host github :repo "dnouri/pilish")
+    :init
+    (defalias 'pi 'pilish)
+    :bind
+    (("C-c p p" . pilish)
+     ("C-c p t" . pilish-toggle)
+     ("C-c p r" . pilish-session-browser)
+     ("C-c p b" . pilish-tree-browser))
+    :custom
+    (pilish-thinking-display 'hidden)
+    (pilish-copy-raw-markdown t)
     :config
-    ;; Tool presets accessible via @files, @web, @shell
-    (gptel-make-preset 'files
-      :description "TOOLS: File editing (Read, Glob, Write, Edit, Insert)"
-      :pre (lambda () (require 'gptel-agent-tools))
-      :tools '(:append ("Read" "Glob" "Write" "Edit" "Insert")))
-
-    (gptel-make-preset 'files-ro
-      :description "TOOLS: Read-only files (Read, Glob)"
-      :pre (lambda () (require 'gptel-agent-tools))
-      :tools '(:append ("Read" "Glob")))
-
-    (gptel-make-preset 'web
-      :description "TOOLS: Web access (WebSearch, WebFetch)"
-      :pre (lambda () (require 'gptel-agent-tools))
-      :tools '(:append ("WebSearch" "WebFetch")))
-    
-    (gptel-make-preset 'shell
-      :description "TOOLS: Terminal command execution (Bash)"
-      :pre (lambda () (require 'gptel-agent-tools))
-      :tools '(:append ("Bash")))
-
-    (gptel-make-preset 'introspect
-      :description "TOOLS: Introspect live Emacs Elisp runtime & APIs"
-      :pre (lambda () (require 'gptel-agent-tools-introspection))
-      :tools '("introspection")
-      :system
-      "You are pair programming with the user in Emacs and on Emacs.
-
-  Your job is to dive into Elisp code and understand the APIs and
-  structure of elisp libraries and Emacs. Use the provided tools to do
-  so, but do not make duplicate tool calls for information already
-  available in the chat.
-
-  <tone>
-  1. Be terse and to the point. Speak directly.
-  2. Explain your reasoning.
-  3. Do NOT hedge or qualify.
-  4. If you don't know, say you don't know.
-  5. Do not offer unprompted advice or clarifications.
-  6. Never apologize.
-  7. Do NOT summarize your answers.
-  </tone>
-
-  <code_generation>
-  When generating code:
-  1. Create a plan first: list briefly the design steps or ideas involved.
-  2. Use the provided tools to check that functions or variables you use
-  in your code exist.
-  3. Also check their calling convention and function-arity before you use them.
-  </code_generation>")
-
-    ;; -----------------------------------------------------------------
-    ;; 5. Auto-Approve Agent Edits in Git Repositories
-    ;; -----------------------------------------------------------------
-    (defun cl/gptel-agent-git-auto-confirm (path &rest _)
-      (not (and (file-readable-p path)
-                (locate-dominating-file path ".git")
-                (eql (call-process "git" nil nil nil "ls-files" "--error-unmatch" path) 0))))
-    
-    (setf (gptel-tool-confirm (gptel-get-tool "Edit")) #'cl/gptel-agent-git-auto-confirm
-          (gptel-tool-confirm (gptel-get-tool "Insert")) #'cl/gptel-agent-git-auto-confirm)
-    )
+    ;; Restrict optional tree-sitter grammars to match treesit-auto-langs (+ cmake)
+    (with-eval-after-load 'pilish-grammars
+      (let ((allowed (cons 'cmake (or (bound-and-true-p treesit-auto-langs)
+                                      '(python typescript javascript tsx go gomod gowork rust lua css html json bash yaml dockerfile markdown toml)))))
+        (setq pilish-optional-grammar-recipes
+              (seq-filter (lambda (r) (memq (car r) allowed))
+                          pilish-optional-grammar-recipes)
+              pilish--optional-grammars
+              (mapcar #'car pilish-optional-grammar-recipes)
+              pilish-grammar-declined-set
+              '(c cpp ruby java c-sharp clojure elixir haskell heex kotlin php scala)))))
 #+end_src
 
 * Miscellaneous 
@@ -1762,6 +1732,8 @@ This feature is especially useful in programming modes, where it can help users 
 #+END_SRC
 
 * Documentation & Reading
+
+** Info & Web Browsing
 
 Enhance built-in Info mode and EWW browser with vibrant colors, centered layout, proportional fonts, and transient menus.
 
@@ -1799,6 +1771,52 @@ Enhance built-in Info mode and EWW browser with vibrant colors, centered layout,
                         (visual-fill-column-mode 1)
                         (variable-pitch-mode 1)
                         (visual-line-mode 1))))
+#+end_src
+
+** The Emacs Reader
+
+Fast document reader powered by MuPDF and C dynamic modules.
+Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, CBZ, and XPS.
+
+#+begin_src emacs-lisp
+  (use-package reader
+    :straight (reader :type git :host codeberg :repo "MonadicSheep/emacs-reader"
+                      :files ("*.el" "render-core.so")
+                      :pre-build ("make" "all"))
+    :bind ("C-c d" . reader-open-doc)
+    :mode (("\\.\\(?:cbz\\|epub\\|fb2\\|mobi\\|pdf\\|xps\\)\\'" . reader-mode))
+    :commands (reader-open-doc reader-mode)
+    :custom
+    (reader-default-fit 'reader-fit-to-width)
+    :config
+    (with-eval-after-load 'evil
+      (evil-set-initial-state 'reader-mode 'normal)
+      (evil-define-key '(normal motion) reader-mode-map
+        (kbd "j")   #'reader-scroll-down-or-next-page
+        (kbd "k")   #'reader-scroll-up-or-prev-page
+        (kbd "h")   #'reader-scroll-left
+        (kbd "l")   #'reader-scroll-right
+        (kbd "C-d") #'reader-scroll-down-screen-or-next-page
+        (kbd "C-u") #'reader-scroll-up-screen-or-prev-page
+        (kbd "d")   #'reader-scroll-down-screen-or-next-page
+        (kbd "u")   #'reader-scroll-up-screen-or-prev-page
+        (kbd "gg")  #'reader-first-page
+        (kbd "G")   #'reader-last-page
+        (kbd "J")   #'reader-next-page
+        (kbd "K")   #'reader-previous-page
+        (kbd "n")   #'reader-next-page
+        (kbd "p")   #'reader-previous-page
+        (kbd "r")   #'reader-rotate-clockwise
+        (kbd "R")   #'reader-rotate-counter-clockwise
+        (kbd "+")   #'reader-enlarge-size
+        (kbd "=")   #'reader-enlarge-size
+        (kbd "-")   #'reader-shrink-size
+        (kbd "0")   #'reader-reset-size
+        (kbd "H")   #'reader-fit-to-height
+        (kbd "W")   #'reader-fit-to-width
+        (kbd "D")   #'reader-dark-mode
+        (kbd "o")   #'reader-outline-show
+        (kbd "q")   #'reader-close-doc)))
 #+end_src
 
 * Org Mode
