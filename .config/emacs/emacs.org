@@ -1422,7 +1422,7 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ***  harpoon 
 #+begin_src emacs-lisp
   (use-package harpoon
-    :straight (harpoon :type git :host codeberg :repo "cleokiama/harpoon.el")
+    :straight (harpoon :local-repo "~/.local/share/emacs-plugins/harpoon.el")
     :after evil
     :config
     (general-define-key
@@ -1437,7 +1437,8 @@ It draws vertical lines (by default, a character of your choice) at each level o
 
     (cl/leader-keys
       "h"  '(:ignore t :which-key "harpoon")
-      "ha" '((lambda () (interactive) (harpoon-add-file 1)) :which-key "add slot 1")
+      "ha" '(harpoon-add-file :which-key "add file")
+      "h1" '((lambda () (interactive) (harpoon-add-file 1)) :which-key "add slot 1")
       "hr" '((lambda () (interactive) (harpoon-add-file 2)) :which-key "add slot 2")
       "hs" '((lambda () (interactive) (harpoon-add-file 3)) :which-key "add slot 3")
       "ht" '((lambda () (interactive) (harpoon-add-file 4)) :which-key "add slot 4")
@@ -1779,6 +1780,16 @@ Fast document reader powered by MuPDF and C dynamic modules.
 Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, CBZ, and XPS.
 
 #+begin_src emacs-lisp
+  (defun cl/reader-fit-width-70 ()
+    "Scale current document page to 70% of the window width."
+    (interactive)
+    (let* ((image-width (car (reader--get-current-doc-image-size)))
+           (pixel-window-width (window-body-width nil t))
+           (unscaled-width (/ image-width (reader-current-doc-scale-value)))
+           (scaling-factor (* 0.7 (/ pixel-window-width unscaled-width))))
+      (reader-doc-scale-page scaling-factor)
+      (reader--center-page)))
+
   (use-package reader
     :straight (reader :type git :host codeberg :repo "MonadicSheep/emacs-reader"
                       :files ("*.el" "render-core.so")
@@ -1787,8 +1798,9 @@ Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, C
     :mode (("\\.\\(?:cbz\\|epub\\|fb2\\|mobi\\|pdf\\|xps\\)\\'" . reader-mode))
     :commands (reader-open-doc reader-mode)
     :custom
-    (reader-default-fit 'reader-fit-to-width)
+    (reader-default-fit #'cl/reader-fit-width-70)
     :config
+    (reader-global-dark-mode 1)
     (with-eval-after-load 'evil
       (evil-set-initial-state 'reader-mode 'normal)
       (evil-define-key '(normal motion) reader-mode-map
@@ -1813,6 +1825,7 @@ Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, C
         (kbd "-")   #'reader-shrink-size
         (kbd "0")   #'reader-reset-size
         (kbd "H")   #'reader-fit-to-height
+        (kbd "w")   #'cl/reader-fit-width-70
         (kbd "W")   #'reader-fit-to-width
         (kbd "D")   #'reader-dark-mode
         (kbd "o")   #'reader-outline-show
