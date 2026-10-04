@@ -170,7 +170,7 @@
         "tooltip": true,
         "tooltip-format": "Network: <big><b>{essid}</b></big>\nSignal strength: <b>{signaldBm}dBm ({signalStrength}%)</b>\nInterface: <b>{ifname}</b>\nIP: <b>{ipaddr}/{cidr}</b>\nGateway: <b>{gwaddr}</b>\nNetmask: <b>{netmask}</b>",
         "tooltip-format-disconnected": "Disconnected",
-        "on-click-right": "nm-connection-editor",
+        "on-click-right": "connman-gtk",
         "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
         "interval": 2
     },
@@ -306,6 +306,9 @@
     },
     "bluetooth": {
         "format": "{icon}",
+        "format-disabled": "",
+        "format-off": "",
+        "format-on": "",
         "format-icons": [
             "",
             "󰤾",
@@ -319,7 +322,7 @@
         "format-connected-battery": "{icon} {device_battery_percentage}%",
         "tooltip-format-connected": "{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_battery_percentage}%",
-        "on-click": "blueberry"
+        "on-click": "blueman-manager"
     },
     // modules for padding //
     "custom/l_end": {

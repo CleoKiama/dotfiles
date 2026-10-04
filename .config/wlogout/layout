@@ -14,21 +14,21 @@
 
 {
     "label": "suspend",
-    "action": "hyprlock & sleep 0.5 && systemctl suspend",
+    "action": "hyprlock & sleep 0.5 && loginctl suspend",
     "text": "Suspend",
     "keybind": "u"
 }
 
 {
     "label": "reboot",
-    "action": "systemctl reboot",
+    "action": "loginctl reboot",
     "text": "Reboot",
     "keybind": "r"
 }
 
 {
     "label": "shutdown",
-    "action": "systemctl poweroff",
+    "action": "loginctl poweroff",
     "text": "Shutdown",
     "keybind": "s"
 }
