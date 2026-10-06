@@ -27,17 +27,17 @@
   ;;
   ;; Left hand: Pinky (tab), Ring (q), Middle (w), Index (e)
   a (tap-hold-opposite-hand $hold-time a lsft (timeout hold) (same-hand ignore) (require-prior-idle 50))
-  r (tap-hold-opposite-hand-release $hold-time r lalt (timeout hold) (same-hand ignore) (require-prior-idle 150))
-  s (tap-hold-opposite-hand-release $hold-time s lmet (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  r (tap-hold-opposite-hand-release $hold-time r lalt (timeout hold) (same-hand ignore) (require-prior-idle 170))
+  s (tap-hold-opposite-hand-release $hold-time s lmet (timeout hold) (same-hand ignore) (require-prior-idle 170))
   t (tap-hold-opposite-hand-release $hold-time t lctl (timeout hold) (same-hand ignore) (require-prior-idle 180))
 
   ;; Right hand home-row mods:
   ;; Index  (physical o): @n (Right Ctrl)
-  n (tap-hold-opposite-hand $hold-time n rctl (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  n (tap-hold-opposite-hand $hold-time n rctl (timeout hold) (same-hand ignore) (require-prior-idle 200))
   ;; Middle (physical p): @e (Right Super)
-  e (tap-hold-opposite-hand-release $hold-time e rmet (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  e (tap-hold-opposite-hand-release $hold-time e rmet (timeout hold) (same-hand ignore) (require-prior-idle 170))
   ;; Ring   (physical [): @i (Right Alt)
-  i (tap-hold-opposite-hand-release $hold-time i ralt (timeout hold) (same-hand ignore) (require-prior-idle 150))
+  i (tap-hold-opposite-hand-release $hold-time i ralt (timeout hold) (same-hand ignore) (require-prior-idle 170))
   ;; Pinky  (physical ]): @o (Right Shift)
   o (tap-hold-opposite-hand $hold-time o rsft (timeout hold) (same-hand ignore) (require-prior-idle 50))
 

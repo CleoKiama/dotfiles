@@ -6,15 +6,15 @@
 )
 
 (defhands
-  (left  ` 1 2 3 4 tab q w e r caps a s d f x c)
-  (right 8 9 0 - = i o p [ ] k l ; ' ret , .))
+  (left  ` esc 1 2 3 4 tab q w e r caps a s d f x c)
+  (right 8 9 0 - = i o p [ ] k l ; ' ret \ / , .))
 
 (defvar
   tap-time 180
   hold-time 180          
 )
 
-(include defsrc/pc.kbd)
+(include defsrc/current.kbd)
 (include defalias/qwerty.kbd)
 
 (defchordsv2

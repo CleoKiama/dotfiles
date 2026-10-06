@@ -1,0 +1,24 @@
+;; Source key capture for Apple Magic Keyboard ANSI (35 keys).
+;;
+;; Quirks:
+;; - No PrintScreen key: uses physical `esc` (top-left) for `lrld` (slot 34).
+;;   (Escape is typed via the (2 3) chord, so physical Esc is dedicated to reload).
+;; - Grave/tilde (`) sits left of 1 and maps to `q` (slot 35).
+;; - Right pinky (slot 28): physical `\` (the | key next to ]) maps to `@wsp` (tap /, hold workspace).
+;;   Physical Enter is outside the 35-key zone and blocked via block-unmapped-keys.
+;;
+;; Flat order (matches every deflayer token-for-token):
+;;   top num row:    1 2 3 4 | 8 9 0 - =
+;;   top alpha:      q w e r | i o p [ ]
+;;   home alpha:     caps a s d f | k l ; ' \
+;;   bottom alpha:   x c | , .
+;;   misc:           tab esc `
+(defsrc
+  1    2    3    4    8    9    0    -    =
+  q    w    e    r    i    o    p    [    ]
+  caps a    s    d    f    k    l    ;    '    \
+  x    c    ,    .
+  tab
+  esc
+  `
+)

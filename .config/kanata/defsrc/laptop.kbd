@@ -1,4 +1,5 @@
 ;; Source key capture for laptop keyboard (35 keys).
+;; HP EliteBook 840 G7 / standard PC layout.
 ;;
 ;; Flat order (matches every deflayer token-for-token):
 ;;   top num row:    1 2 3 4 | 8 9 0 - =
