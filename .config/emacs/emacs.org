@@ -1395,6 +1395,32 @@ It draws vertical lines (by default, a character of your choice) at each level o
   (global-set-key (kbd "C-c k")   #'kill-compilation)
   (global-set-key (kbd "C-c r")   #'recompile) 
 #+end_src
+
+** Testing
+***  Python
+#+begin_src emacs-lisp
+  (use-package python-pytest
+    :after python
+    :custom
+    ;; =pytest= is not on PATH and python work here is uv-based, so ask uv to
+    ;; supply the interpreter instead of invoking a bare =pytest= that is missing.
+    (python-pytest-executable (if (executable-find "uv")
+                                 "uv run pytest"
+                               "python -m pytest"))
+    :bind (:map python-base-mode-map
+                ("C-c t" . python-pytest-dispatch))
+    :hook
+    ;; Detect python project roots in monorepos by locating configuration markers.
+    (python-base-mode . (lambda ()
+                          (when-let ((root (locate-dominating-file
+                                            default-directory
+                                            (lambda (dir)
+                                              (or (file-exists-p (expand-file-name "pyproject.toml" dir))
+                                                  (file-exists-p (expand-file-name "pytest.ini" dir))
+                                                  (file-exists-p (expand-file-name "setup.cfg" dir)))))))
+                            (setq-local python-pytest-project-root-override (expand-file-name root))))))
+#+end_src
+
 ** Terminal support with ghostel  
 
 #+begin_src emacs-lisp
