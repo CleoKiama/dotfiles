@@ -1703,11 +1703,110 @@ This feature is especially useful in programming modes, where it can help users 
     (("C-c p p" . pilish)
      ("C-c p t" . pilish-toggle)
      ("C-c p r" . pilish-session-browser)
-     ("C-c p b" . pilish-tree-browser))
+     ("C-c p b" . pilish-tree-browser)
+     ("C-c p a" . cl/pilish-add-region-context)
+     ("C-c p s" . cl/pilish-send-region-context))
     :custom
     (pilish-thinking-display 'hidden)
     (pilish-copy-raw-markdown t)
     :config
+    (defun cl/pilish--session ()
+      "Return cons of (CHAT-BUF . INPUT-BUF) for the active or current project session."
+      (let* ((chat-buf (if (derived-mode-p 'pilish-chat-mode 'pilish-input-mode)
+                           (pilish--get-chat-buffer)
+                         (or (car (pilish-project-buffers))
+                             (cl-find-if (lambda (b)
+                                           (and (buffer-live-p b)
+                                                (with-current-buffer b
+                                                  (derived-mode-p 'pilish-chat-mode))))
+                                         (buffer-list))
+                             (pilish--setup-session (pilish--session-directory))))))
+        (cons chat-buf (buffer-local-value 'pilish--input-buffer chat-buf))))
+
+    (defun cl/pilish--buffer-lang ()
+      "Infer markdown fence language tag from `major-mode`."
+      (let ((name (symbol-name major-mode)))
+        (cond
+         ((derived-mode-p 'emacs-lisp-mode) "elisp")
+         ((derived-mode-p 'sh-mode 'bash-ts-mode) "bash")
+         ((derived-mode-p 'python-base-mode 'python-mode) "python")
+         ((derived-mode-p 'rust-mode 'rust-ts-mode) "rust")
+         ((derived-mode-p 'go-mode 'go-ts-mode) "go")
+         ((derived-mode-p 'typescript-ts-mode) "typescript")
+         ((derived-mode-p 'js-base-mode 'javascript-mode 'js-mode) "javascript")
+         ((string-match "\\`\\(.*?\\)\\(?:-ts\\)?-mode\\'" name)
+          (match-string 1 name))
+         (t ""))))
+
+    (defun cl/pilish--format-region-context (beg end)
+      "Format buffer region BEG..END as markdown context."
+      (let* ((file (buffer-file-name))
+             (proj-dir (condition-case nil
+                           (pilish--session-directory)
+                         (error default-directory)))
+             (rel-file (if file (file-relative-name file proj-dir) (buffer-name)))
+             (start-line (line-number-at-pos beg))
+             (end-line (line-number-at-pos end))
+             (lang (cl/pilish--buffer-lang))
+             (content (buffer-substring-no-properties beg end))
+             (line-desc (if (= start-line end-line)
+                            (format "line %d" start-line)
+                          (format "lines %d-%d" start-line end-line))))
+        (format "File: `%s` (%s)\n```%s\n%s\n```\n"
+                rel-file line-desc lang content)))
+
+    (defun cl/pilish--insert-input-text (text input-buf)
+      "Append TEXT to INPUT-BUF with clean spacing."
+      (with-current-buffer input-buf
+        (goto-char (point-max))
+        (cond
+         ((bobp) nil)
+         ((looking-back "\n\n" (max (- (point) 2) (point-min))) nil)
+         ((looking-back "\n" (max (- (point) 1) (point-min))) (insert "\n"))
+         (t (insert "\n\n")))
+        (insert text)))
+
+    (defun cl/pilish-add-region-context (beg end)
+      "Add region BEG..END context to Pilish input buffer and focus it."
+      (interactive
+       (if (use-region-p)
+           (list (region-beginning) (region-end))
+         (user-error "No active region")))
+      (let* ((session (cl/pilish--session))
+             (chat-buf (car session))
+             (input-buf (cdr session))
+             (context (cl/pilish--format-region-context beg end)))
+        (cl/pilish--insert-input-text context input-buf)
+        (pilish--show-session-buffers chat-buf input-buf)
+        (when-let* ((win (get-buffer-window input-buf)))
+          (select-window win))
+        (goto-char (point-max))
+        (when (fboundp 'evil-insert-state)
+          (evil-insert-state))
+        (deactivate-mark)
+        (message "Added context to Pilish input")))
+
+    (defun cl/pilish-send-region-context (beg end prompt)
+      "Send region BEG..END context to Pilish immediately with optional PROMPT."
+      (interactive
+       (if (use-region-p)
+           (list (region-beginning)
+                 (region-end)
+                 (read-string "Pi prompt (RET to send code only): "))
+         (user-error "No active region")))
+      (let* ((session (cl/pilish--session))
+             (chat-buf (car session))
+             (input-buf (cdr session))
+             (context (cl/pilish--format-region-context beg end))
+             (full-text (if (and prompt (not (string-empty-p (string-trim prompt))))
+                            (format "%s\n\n%s" (string-trim prompt) context)
+                          context)))
+        (cl/pilish--insert-input-text full-text input-buf)
+        (pilish--show-session-buffers chat-buf input-buf)
+        (with-current-buffer input-buf
+          (pilish-send))
+        (deactivate-mark)))
+
     ;; Restrict optional tree-sitter grammars to match treesit-auto-langs (+ cmake)
     (with-eval-after-load 'pilish-grammars
       (let ((allowed (cons 'cmake (or (bound-and-true-p treesit-auto-langs)
