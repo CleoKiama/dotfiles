@@ -1724,7 +1724,7 @@ This feature is especially useful in programming modes, where it can help users 
   (use-package pilish
     :straight (pilish :type git :host github :repo "dnouri/pilish")
     :init
-    (defalias 'pi 'pilish)
+    (defalias 'pi #'pilish)
     :bind
     (("C-c p p" . pilish)
      ("C-c p t" . pilish-toggle)
@@ -1737,20 +1737,20 @@ This feature is especially useful in programming modes, where it can help users 
     (pilish-copy-raw-markdown t)
     :config
     (defun cl/pilish--session ()
-      "Return cons of (CHAT-BUF . INPUT-BUF) for the active or current project session."
-      (let* ((chat-buf (if (derived-mode-p 'pilish-chat-mode 'pilish-input-mode)
-                           (pilish--get-chat-buffer)
-                         (or (car (pilish-project-buffers))
-                             (cl-find-if (lambda (b)
-                                           (and (buffer-live-p b)
-                                                (with-current-buffer b
-                                                  (derived-mode-p 'pilish-chat-mode))))
-                                         (buffer-list))
-                             (pilish--setup-session (pilish--session-directory))))))
+      "Return cons cell of (CHAT-BUF . INPUT-BUF) for the active session."
+      (let ((chat-buf (if (derived-mode-p 'pilish-chat-mode 'pilish-input-mode)
+                          (pilish--get-chat-buffer)
+                        (or (car (pilish-project-buffers))
+                            (cl-find-if (lambda (b)
+                                          (and (buffer-live-p b)
+                                               (with-current-buffer b
+                                                 (derived-mode-p 'pilish-chat-mode))))
+                                        (buffer-list))
+                            (pilish--setup-session (pilish--session-directory))))))
         (cons chat-buf (buffer-local-value 'pilish--input-buffer chat-buf))))
 
     (defun cl/pilish--buffer-lang ()
-      "Infer markdown fence language tag from `major-mode`."
+      "Infer Markdown fence language tag from `major-mode`."
       (let ((name (symbol-name major-mode)))
         (cond
          ((derived-mode-p 'emacs-lisp-mode) "elisp")
@@ -1764,8 +1764,18 @@ This feature is especially useful in programming modes, where it can help users 
           (match-string 1 name))
          (t ""))))
 
+    (defun cl/pilish--format-heading (heading)
+      "Format HEADING as a Markdown level-2 header.
+Return an empty string when HEADING is nil, empty, or whitespace."
+      (if (or (null heading) (string-empty-p (string-trim heading)))
+          ""
+        (let ((trimmed (string-trim heading)))
+          (if (string-prefix-p "#" trimmed)
+              (format "%s\n\n" trimmed)
+            (format "## %s\n\n" trimmed)))))
+
     (defun cl/pilish--format-region-context (beg end)
-      "Format buffer region BEG..END as markdown context."
+      "Format buffer region between BEG and END as Markdown context."
       (let* ((file (buffer-file-name))
              (proj-dir (condition-case nil
                            (pilish--session-directory)
@@ -1787,33 +1797,48 @@ This feature is especially useful in programming modes, where it can help users 
         (goto-char (point-max))
         (cond
          ((bobp) nil)
-         ((looking-back "\n\n" (max (- (point) 2) (point-min))) nil)
-         ((looking-back "\n" (max (- (point) 1) (point-min))) (insert "\n"))
+         ((and (eq (char-before) ?\n) (eq (char-before (1- (point))) ?\n)) nil)
+         ((eq (char-before) ?\n) (insert "\n"))
          (t (insert "\n\n")))
         (insert text)))
 
-    (defun cl/pilish-add-region-context (beg end)
-      "Add region BEG..END context to Pilish input buffer and focus it."
+    (defun cl/pilish-add-region-context (beg end &optional heading focus)
+      "Add region BEG..END context to Pilish input buffer without switching focus.
+When optional HEADING is non-empty, prepend it as a Markdown level-2 header.
+With prefix FOCUS (e.g. `\\[universal-argument]`), display session buffers
+and select the input window."
       (interactive
        (if (use-region-p)
-           (list (region-beginning) (region-end))
+           (list (region-beginning)
+                 (region-end)
+                 (read-string "Section heading (optional): ")
+                 current-prefix-arg)
          (user-error "No active region")))
       (let* ((session (cl/pilish--session))
              (chat-buf (car session))
              (input-buf (cdr session))
-             (context (cl/pilish--format-region-context beg end)))
-        (cl/pilish--insert-input-text context input-buf)
-        (pilish--show-session-buffers chat-buf input-buf)
-        (when-let* ((win (get-buffer-window input-buf)))
-          (select-window win))
-        (goto-char (point-max))
-        (when (fboundp 'evil-insert-state)
-          (evil-insert-state))
+             (context (cl/pilish--format-region-context beg end))
+             (header (cl/pilish--format-heading heading))
+             (full-text (concat header context)))
+        (cl/pilish--insert-input-text full-text input-buf)
+        (if focus
+            (progn
+              (pilish--show-session-buffers chat-buf input-buf)
+              (when-let* ((win (get-buffer-window input-buf)))
+                (select-window win))
+              (goto-char (point-max))
+              (when (fboundp 'evil-insert-state)
+                (evil-insert-state)))
+          (dolist (win (get-buffer-window-list input-buf nil t))
+            (set-window-point win (with-current-buffer input-buf (point-max)))))
         (deactivate-mark)
-        (message "Added context to Pilish input")))
+        (message "Added context to Pilish input%s"
+                 (if (string-empty-p header)
+                     ""
+                   (format " (%s)" (string-trim heading))))))
 
     (defun cl/pilish-send-region-context (beg end prompt)
-      "Send region BEG..END context to Pilish immediately with optional PROMPT."
+      "Send region between BEG and END to Pilish immediately with optional PROMPT."
       (interactive
        (if (use-region-p)
            (list (region-beginning)
@@ -1824,8 +1849,9 @@ This feature is especially useful in programming modes, where it can help users 
              (chat-buf (car session))
              (input-buf (cdr session))
              (context (cl/pilish--format-region-context beg end))
-             (full-text (if (and prompt (not (string-empty-p (string-trim prompt))))
-                            (format "%s\n\n%s" (string-trim prompt) context)
+             (trimmed (and prompt (string-trim prompt)))
+             (full-text (if (and trimmed (not (string-empty-p trimmed)))
+                            (format "%s\n\n%s" trimmed context)
                           context)))
         (cl/pilish--insert-input-text full-text input-buf)
         (pilish--show-session-buffers chat-buf input-buf)
@@ -1843,7 +1869,7 @@ This feature is especially useful in programming modes, where it can help users 
               pilish--optional-grammars
               (mapcar #'car pilish-optional-grammar-recipes)
               pilish-grammar-declined-set
-              '(c cpp ruby java c-sharp clojure elixir haskell heex kotlin php scala)))))
+              '(c cpp ruby c-sharp rust elixir haskell  )))))
 #+end_src
 
 * Miscellaneous 
