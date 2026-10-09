@@ -3,6 +3,7 @@
   block-unmapped-keys yes
   concurrent-tap-hold yes
   chords-v2-min-idle 100
+  delegate-to-first-layer yes
 )
 
 (defhands
