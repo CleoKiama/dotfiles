@@ -6,16 +6,16 @@
 (deflayer symbols
   @<   @>   @@   @%   @$   @&   @*   @'   @`
   @pl  @pr  @}   @=   @\   @+   @-   @_   @''
-  @~   @/   @?   @scl @#   @|   @!   @[   @]   @:
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   _    _    _    _
   @{   XX   @^
 )
 
 ;; Numrow layer — digits 1..0, hold `.` thumb
 (deflayer numrow
-  @7   @8   @9   @0   _    _    _    _    _
-  @2   @3   @4   @5   _    _    _    _    _
-  @dk1 @dk2 @dk3 @dk4 @dk5 XX   @-   @,   @.   @/
+  @7   @8   @9   @0   @/   @?   @#   @~   @scl
+  @2   @3   @4   @5   @|   @!   @[   @]   @:
+  @+   @-   @*   @/   @=   XX   @-   @,   @.   @/
   _    _    _    @to-base
   @1   XX   @6
 )

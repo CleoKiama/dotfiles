@@ -2,7 +2,7 @@
 
 A Kanata configuration that turns a laptop keyboard into a pseudo-split columnar layout.
 
-![Layout overview](docs/images/all.svg)
+![Layout overview](docs/images/all.png)
 
 ## How it works
 

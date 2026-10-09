@@ -19,7 +19,7 @@
 (include defalias/qwerty.kbd)
 
 (defchordsv2
-  (2 3) esc 40 first-release ()
+  (2 3) @esc-base 40 first-release ()
 )
 
 (include deflayer/colemak-dh-base.kbd)

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-import os, re, html
+import os, re, html, subprocess, shutil
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Canonical token definitions for the new right-hand shifted layout (35 keys)
 NEW_DEFSRC_TOKS = [
@@ -7,7 +9,7 @@ NEW_DEFSRC_TOKS = [
     'q', 'w', 'e', 'r', 'i', 'o', 'p', '[', ']',
     'caps', 'a', 's', 'd', 'f', 'k', 'l', ';', "'", 'ret',
     'x', 'c', ',', '.',
-    'tab', 'prtsc', '`'
+    'tab', 'prtsc', 'esc'
 ]
 
 # Canonical layers for the shifted layout
@@ -22,16 +24,16 @@ CANONICAL_BASE = [
 CANONICAL_SYM = [
     '@<', '@>', '@@', '@%', '@$', '@&', '@*', "@'", '@`',
     '@pl', '@pr', '@}', '@=', '@\\', '@+', '@-', '@_', '@\'\'',
-    '@~', '@/', '@?', '@scl', '@#', '@|', '@!', '@[', '@]', '@:',
+    'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX',
     '_', '_', '_', '_',
     '@{', 'XX', '@^'
 ]
 
 CANONICAL_NUM = [
-    '@7', '@8', '@9', '@0', '_', '_', '_', '_', '_',
-    '@2', '@3', '@4', '@5', '_', '_', '_', '_', '_',
-    '@dk1', '@dk2', '@dk3', '@dk4', '@dk5', 'XX', '@-', '@,', '@.', '@/',
-    '_', '_', '_', '_',
+    '@7', '@8', '@9', '@0', '@/', '@?', '@#', '@~', '@scl',
+    '@2', '@3', '@4', '@5', '@|', '@!', '@[', '@]', '@:',
+    '@+', '@-', '@*', '@/', '@=', 'XX', '@-', '@,', '@.', '@/',
+    '_', '_', '_', '@to-base',
     '@1', 'XX', '@6'
 ]
 
@@ -76,19 +78,27 @@ CANONICAL_MOD = [
 ]
 
 def get_layer(filename, lname):
-    if not os.path.exists(filename): return []
-    txt = open(filename).read()
+    filepath = os.path.join(BASE_DIR, filename)
+    if not os.path.exists(filepath): return []
+    txt = open(filepath).read()
     m = re.search(r'\(deflayer '+lname+r'\n(.*?)\n\)', txt, re.S)
     if not m: return []
     lines = [l for l in m.group(1).splitlines() if not l.strip().startswith(';;')]
     return re.findall(r'\([^)]+\)|\S+', '\n'.join(lines))
 
 def load_layout():
-    if os.path.exists('defsrc/pc.kbd'):
-        txt = open('defsrc/pc.kbd').read()
+    defsrc_file = None
+    for candidate in ['defsrc/current.kbd', 'defsrc/home.kbd', 'defsrc/pc.kbd']:
+        p = os.path.join(BASE_DIR, candidate)
+        if os.path.exists(p):
+            defsrc_file = p
+            break
+    if defsrc_file:
+        txt = open(defsrc_file).read()
         m = re.search(r'\(defsrc\n(.*?)\n\)', txt, re.S)
         if m:
-            toks = m.group(1).split()
+            lines = [l for l in m.group(1).splitlines() if not l.strip().startswith(';;')]
+            toks = ' '.join(lines).split()
             if 'ret' in toks:
                 k2i = {tok: idx for idx, tok in enumerate(toks)}
                 return (
@@ -142,7 +152,7 @@ LABEL_MAP = {
     'rsft': 'Shift', 'lsft': 'Shift', 'lshift': 'Shift', 'rshift': 'Shift',
     'lalt': 'Alt', 'ralt': 'Alt', 'lctl': 'Ctrl', 'rctl': 'Ctrl', 'lmet': 'Super', 'rmet': 'Super',
     '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@shf': 'Shift',
-    '@entnum': 'Ret / Num', '@m-thumb': 'Shf / Mod',
+    '@entnum': 'Ret / Num', '@m-thumb': 'Shf / Mod', '@to-base': 'Base',
     '@wsp': 'Wksp', '@med': 'Media', 'med': 'Media',
     '@os-sft': 'Shift', '@os-alt': 'Alt', '@os-met': 'Super', '@os-ctl': 'Ctrl',
     '@pl': '(', '@pr': ')', '@cl': '{', '@cr': '}', '@sl': '[', '@sr': ']',
@@ -188,9 +198,10 @@ def render_all_svg():
     margin_x, margin_y = 24, 100
 
     svg = []
-    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 440">')
+    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 440" width="1020" height="440">')
     svg.append('  <style>')
     svg.append('    :root { color-scheme: light dark; }')
+    svg.append('    rect.bg { fill: #ffffff; }')
     svg.append('    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; }')
     svg.append('    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; }')
     svg.append('    rect.hrm { fill: #fff7ed; stroke: #f97316; stroke-width: 1.5px; }')
@@ -212,6 +223,7 @@ def render_all_svg():
     
     # Dark Mode Styles
     svg.append('    @media (prefers-color-scheme: dark) {')
+    svg.append('      rect.bg { fill: #0f172a; }')
     svg.append('      rect.key { fill: #1e293b; stroke: #334155; }')
     svg.append('      rect.gap { fill: #0f172a; stroke: #334155; }')
     svg.append('      rect.hrm { fill: #2e1065; stroke: #a855f7; }')
@@ -227,6 +239,7 @@ def render_all_svg():
     svg.append('      text.dead { fill: #64748b; }')
     svg.append('    }')
     svg.append('  </style>')
+    svg.append('  <rect width="100%" height="100%" class="bg" rx="12" fill="#ffffff"/>')
 
     # Header Title
     svg.append('  <text x="510" y="38" class="title">Colemak-DH Layout</text>')
@@ -354,9 +367,10 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
     l_light_bg, l_dark_bg, l_light_txt, l_dark_txt = theme_styles.get(theme_color, theme_styles['symbols'])
 
     svg = []
-    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 350">')
+    svg.append(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 350" width="940" height="350">')
     svg.append('  <style>')
     svg.append('    :root { color-scheme: light dark; }')
+    svg.append('    rect.bg { fill: #ffffff; }')
     svg.append('    rect.key { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5px; }')
     svg.append('    rect.gap { fill: #f1f5f9; stroke: #cbd5e1; stroke-dasharray: 4 4; }')
     svg.append(f'    rect.active {{ {l_light_bg} stroke-width: 2px; }}')
@@ -371,6 +385,7 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
     svg.append('    text.dead { font-size: 11px; fill: #94a3b8; }')
     
     svg.append('    @media (prefers-color-scheme: dark) {')
+    svg.append('      rect.bg { fill: #0f172a; }')
     svg.append('      rect.key { fill: #1e293b; stroke: #334155; }')
     svg.append('      rect.gap { fill: #0f172a; stroke: #334155; }')
     svg.append(f'      rect.active {{ {l_dark_bg} }}')
@@ -383,6 +398,7 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
     svg.append('      text.dead { fill: #64748b; }')
     svg.append('    }')
     svg.append('  </style>')
+    svg.append('  <rect width="100%" height="100%" class="bg" rx="12" fill="#ffffff"/>')
 
     # Title
     svg.append(f'  <text x="470" y="28" class="title">{esc(title)}</text>')
@@ -443,23 +459,24 @@ def render_layer_svg(title, subtitle, layer_toks, theme_color, layer_name=""):
     return '\n'.join(svg)
 
 
-# Write all SVG files
-os.makedirs('docs/images', exist_ok=True)
+# Render and write all PNG images
+OUT_DIR = os.path.join(BASE_DIR, 'docs/images')
+os.makedirs(OUT_DIR, exist_ok=True)
 
-svgs = {
-    'all.svg': render_all_svg(),
-    'hrm.svg': render_layer_svg('Home-Row Mods (Top Row)', 'tab q w e → Shift Alt Super Ctrl  |  o p [ ] → Ctrl Super Alt Shift', base_toks, 'hrm'),
-    'layer_taps.svg': render_layer_svg('Thumb Layer Taps', 'x: Bspc / Sym  |  c: Spc / Nav  |  ,: Shf / Mod  |  .: Ret / Num', base_toks, 'thumbs'),
-    'symbols.svg': render_layer_svg('Symbols Layer', 'Activated by Holding Left Mid Thumb (x)', sym_toks, 'symbols'),
-    'navigation.svg': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Left Index Thumb (c)', nav_toks, 'navigation'),
-    'modifiers.svg': render_layer_svg('Modifiers Layer (One-Shot / Held)', 'Activated by Holding Right Index Thumb (,)', mod_toks, 'hrm'),
-    'numrow.svg': render_layer_svg('NumRow Layer', 'Activated by Holding Right Mid Thumb (.) — Digits 1..0', num_toks, 'numrow'),
-    'workspace.svg': render_layer_svg('Workspace Layer', 'Activated by Holding Right Pinky (ret) — Super+1..0', wsp_toks, 'workspace'),
-    'media.svg': render_layer_svg('Media Layer', 'Activated by Holding Physical k Key — Playback & Volume', med_toks, 'symbols'),
-    'fn.svg': render_layer_svg('FunPad Sub-Layer', 'F1..F12 Function Keys', fp_toks, 'funpad'),
+images = {
+    'all.png': render_all_svg(),
+    'hrm.png': render_layer_svg('Home-Row Mods (Top Row)', 'tab q w e → Shift Alt Super Ctrl  |  o p [ ] → Ctrl Super Alt Shift', base_toks, 'hrm'),
+    'layer_taps.png': render_layer_svg('Thumb Layer Taps', 'x: Bspc / Sym  |  c: Spc / Nav  |  ,: Shf / Mod (2x Caps)  |  .: Ret / Num (2x Lock)', base_toks, 'thumbs'),
+    'symbols.png': render_layer_svg('Symbols Layer', 'Activated by Holding Left Mid Thumb (x)', sym_toks, 'symbols'),
+    'navigation.png': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Left Index Thumb (c)', nav_toks, 'navigation'),
+    'modifiers.png': render_layer_svg('Modifiers Layer (One-Shot / Held)', 'Activated by Holding Right Index Thumb (,)', mod_toks, 'hrm'),
+    'numrow.png': render_layer_svg('NumRow Layer', 'Activated by Holding Right Mid Thumb (.) — Digits 1..0 & Symbols', num_toks, 'numrow'),
+    'workspace.png': render_layer_svg('Workspace Layer', 'Activated by Holding Right Pinky (ret) — Super+1..0', wsp_toks, 'workspace'),
+    'media.png': render_layer_svg('Media Layer', 'Activated by Holding Physical k Key — Playback & Volume', med_toks, 'symbols'),
+    'fn.png': render_layer_svg('FunPad Sub-Layer', 'F1..F12 Function Keys', fp_toks, 'funpad'),
 }
 
-for filename, content in svgs.items():
-    path = os.path.join('docs/images', filename)
-    open(path, 'w').write(content)
-    print(f"Generated clean {path}")
+for filename, markup in images.items():
+    png_path = os.path.join(OUT_DIR, filename)
+    subprocess.run(['rsvg-convert', '-z', '2', '-o', png_path], input=markup.encode('utf-8'), check=True)
+    print(f"Generated clean {png_path}")
