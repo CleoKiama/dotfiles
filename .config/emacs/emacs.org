@@ -78,8 +78,8 @@
     ;; Use relative line numbering in buffers with line numbers enabled.
     ;; (display-line-numbers-type t) using flash.el now 
 
-    ;; Disable word wrapping and truncate long lines horizontally
-    (truncate-lines t)
+    ;; Allow word wrapping instead of truncating lines horizontally.
+    (truncate-lines nil)
     ;; Silence the audible bell entirely.
     (ring-bell-function 'ignore)                
     ;; Disable the visible flash bell as well.
@@ -174,7 +174,10 @@
     ;; Enable mouse interaction when running Emacs inside a terminal.
     (xterm-mouse-mode 1)                              
     ;; Dim unusable parts of file paths in minibuffer promptsia.
-    (file-name-shadow-mode 1)  
+    (file-name-shadow-mode 1)
+
+    ;; Wrap lines at word boundaries globally.
+    (global-visual-line-mode 1)  
 
     ;; Code to execute AFTER the package/module is loaded.
     :config                                           
@@ -279,7 +282,7 @@
                     :weight 'medium)
 
 (set-face-attribute 'variable-pitch nil
-                    :font "Cantarell"
+                    :font "Iosevka Aile"
                     :height 140
                     :weight 'regular)
 
@@ -521,15 +524,6 @@ separate leader per package.
       "gP" '(magit-push :which-key "push")
       "gb" '(vc-annotate :which-key "vc info for current buffer")
 
-      ;; project management
-      "p"  '(:ignore t :which-key "projects")
-      "pf" '(projectile-find-file :which-key "find file")
-      "ps" '(projectile-switch-project :which-key "switch project")
-      "pp" '(projectile-run-project :which-key "run project")
-      "pt" '(projectile-test-project :which-key "test project")
-      "pk" '(projectile-kill-buffers :which-key "project-kill-buffers")
-      "pd" '(projectile-dired :which-key "project-dired")
-
       ;; kill ring
       "P" '(consult-yank-from-kill-ring :which-key "yank from kill ring")
 
@@ -697,40 +691,36 @@ navigating buffers, files, and xrefs with ease.
  
 #+begin_src emacs-lisp
 
-  (defun cl/get-project-root (&optional _may-prompt)
-    (when (fboundp 'projectile-project-root)
-      (projectile-project-root)))
-    
-    (use-package consult
-      :defer t
-      :init
-      ;; Enhance register preview with thin lines and no mode line.
-      (advice-add #'register-preview :override #'consult-register-window)
-      (setq register-preview-delay 0.5)
+  (use-package consult
+    :defer t
+    :init
+    ;; Enhance register preview with thin lines and no mode line.
+    (advice-add #'register-preview :override #'consult-register-window)
+    (setq register-preview-delay 0.5)
 
-      (setq xref-show-xrefs-function #'consult-xref
-            xref-show-definitions-function #'consult-xref)
-      :config
-      (setq consult-fd-args
-            (concat "fd --type f --hidden --exclude .git "
-                    (mapconcat (lambda (dir) (concat "--exclude " dir))
-                               cl/ignored-directories " ")))
-      (setq consult-ripgrep-args
-            (concat consult-ripgrep-args " --no-require-git "
-                    (mapconcat (lambda (dir) (format "-g!%s" dir))
-                               cl/ignored-directories " ")))
-     
-      (consult-customize
-       consult-theme :preview-key '(:debounce 0.4 any)
-       consult-ripgrep consult-git-grep consult-grep consult-man
-       consult-bookmark consult-recent-file consult-xref
-       consult-source-bookmark consult-source-file-register
-       consult-source-recent-file consult-source-project-recent-file
-       :preview-key '(:debounce 0.4 any))
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
+    :config
+    (setq consult-fd-args
+          (concat "fd --type f --hidden --exclude .git "
+                  (mapconcat (lambda (dir) (concat "--exclude " dir))
+                             cl/ignored-directories " ")))
+    (setq consult-ripgrep-args
+          (concat consult-ripgrep-args " --no-require-git "
+                  (mapconcat (lambda (dir) (format "-g!%s" dir))
+                             cl/ignored-directories " ")))
+   
+    (consult-customize
+     consult-theme :preview-key '(:debounce 0.4 any)
+     consult-ripgrep consult-git-grep consult-grep consult-man
+     consult-bookmark consult-recent-file consult-xref
+     consult-source-bookmark consult-source-file-register
+     consult-source-recent-file consult-source-project-recent-file
+     :preview-key '(:debounce 0.4 any))
 
-      (setq consult-narrow-key "<")
-      :custom
-      (consult-project-function #'cl/get-project-root))
+    (setq consult-narrow-key "<")
+    :custom
+    (consult-project-function nil))
 #+end_src
 
 ** Orderless
@@ -891,58 +881,6 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
 (use-package dotenv-mode
   :defer t
   :mode ("\\.env\\(\\.[^.]+\\)?\\'" . dotenv-mode))
-#+end_src
-
-** Projects
-
-#+begin_src emacs-lisp
-  (use-package projectile
-    :custom
-    (projectile-indexing-method 'hybrid)       ;; hybrid: external tool + Elisp-level ignores
-    (projectile-require-project-root 'prompt)   
-    (projectile-project-search-path
-     '("/data/code/" ("/data/org/" . 1) "/media/DevDrive/thegoodco" "/media/DevDrive"  "/home/cleo/dotfiles"))
-
-    (projectile-switch-project-action #'projectile-find-file)
-    (projectile-auto-cleanup-known-projects t)
-    (projectile-git-submodule-command nil)       ;; disable submodule scanning (perf)
-
-    :config
-    ;; 1. Add ignored directories to Projectile's native ignore list
-    (dolist (dir cl/ignored-directories)
-      (add-to-list 'projectile-globally-ignored-directories dir))
-
-    ;; 2. Lambda-based generic command (Doom-inspired).
-    ;;    Re-evaluates at RUNTIME, so it always finds fd/rg regardless of
-    ;;    when exec-path-from-shell runs.  This is the key fix for the freeze.
-    (setq projectile-generic-command
-          (lambda (&rest _)
-            (cond
-             ((executable-find "fd")
-              (concat "fd . -0 --type f --hidden --follow --exclude .git "
-                      (mapconcat (lambda (dir) (concat "--exclude " dir))
-                                 cl/ignored-directories " ")))
-             ((executable-find "rg")
-              (concat "rg --files -0 --hidden --follow --color=never --no-require-git "
-                      (mapconcat (lambda (dir) (format "-g '!%s'" dir))
-                                 cl/ignored-directories " ")))
-             (t "find . -type f -print0"))))
-
-    ;; 3. Force projectile to ALWAYS use the generic command above,
-    ;;    never VCS-specific commands (git ls-files, hg, etc.).
-    (advice-add
-     #'projectile-get-ext-command :around
-     (lambda (fn &rest args)
-       (if (functionp projectile-generic-command)
-           (funcall projectile-generic-command (car args))
-         (apply fn args))))
-
-    ;; project.el integration
-    (add-hook 'project-find-functions #'project-projectile)
-
-
-  (projectile-mode +1)
-  )
 #+end_src
 
 ** Treesitter 
@@ -1910,8 +1848,7 @@ Enhance built-in Info mode and EWW browser with vibrant colors, centered layout,
     :straight nil
     :hook (Info-mode . (lambda ()
                          (visual-fill-column-mode 1)
-                         (variable-pitch-mode 1)
-                         (visual-line-mode 1)))
+                         (variable-pitch-mode 1)))
     :config
     ;; Preserve monospaced font for code snippets & quoted symbols
     (set-face-attribute 'Info-quoted nil :inherit 'fixed-pitch))
@@ -1921,8 +1858,7 @@ Enhance built-in Info mode and EWW browser with vibrant colors, centered layout,
     :straight nil
     :hook (eww-mode . (lambda ()
                         (visual-fill-column-mode 1)
-                        (variable-pitch-mode 1)
-                        (visual-line-mode 1))))
+                        (variable-pitch-mode 1))))
 #+end_src
 
 ** The Emacs Reader
@@ -1992,7 +1928,6 @@ Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, C
       (org-indent-mode)
       (variable-pitch-mode 1)
       (auto-fill-mode 0)
-      (visual-line-mode 1)
       (setq evil-auto-indent t))
 
     (use-package org
@@ -2008,6 +1943,8 @@ Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, C
       (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
       (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
       (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+      (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+      (set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
       )
 
     (use-package visual-fill-column
