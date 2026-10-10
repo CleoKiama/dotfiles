@@ -1,3 +1,4 @@
+ayugram-desktop-bin
 bibata-cursor-theme-bin
 brave-origin-bin
 catppuccin-gtk-theme-mocha
@@ -15,7 +16,9 @@ pi-bin
 pnpm-bin
 slack-desktop
 spotifast-bin
+ttf-libron
 ttf-symbola-free
 vesktop-bin
+wl-kbptr
 zapfast-bin
 zen-browser-bin

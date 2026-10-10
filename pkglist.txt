@@ -18,6 +18,7 @@ btrfs-progs
 bun
 cantarell-fonts
 cava
+chromium
 cliphist
 cmake
 connman-gtk
@@ -39,6 +40,7 @@ flatpak
 flatseal
 fnm
 fprintd
+fwupd
 fzf
 ghostty
 git
@@ -52,7 +54,6 @@ grub
 hurl
 hypridle
 hyprlock
-hyprpolkitagent
 imagemagick
 inetutils
 intel-media-driver
@@ -69,6 +70,7 @@ linux-lts-headers
 lsof
 man-db
 man-pages
+mate-polkit
 mediawriter
 mpv
 mpv-mpris
@@ -77,6 +79,7 @@ neovim
 noto-fonts
 noto-fonts-emoji
 nwg-look
+obs-studio
 openssh
 otf-hasklig-nerd
 pacman-contrib
@@ -85,6 +88,7 @@ pipewire-alsa
 pipewire-jack
 pipewire-pulse
 podman
+podman-compose
 podman-docker
 postgresql
 power-profiles-daemon
@@ -108,10 +112,13 @@ swaybg
 swaync
 sysstat
 tailscale
+tea
 tesseract
 tmux
 tree
 tree-sitter-cli
+ttc-iosevka-aile
+ttc-iosevka-etoile
 ttf-cascadia-code-nerd
 ttf-croscore
 ttf-dejavu
