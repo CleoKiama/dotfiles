@@ -71,7 +71,7 @@
     "clock": {
         "format-alt": "{:%I:%M %p}",
         "rotate": "${r_deg}",
-        "format": "{:%R 󰃭 %d·%m·%y}",
+        "format": "{:%R 󰃭 %a %d}",
         "tooltip-format": "<span>{calendar}</span>",
         "calendar": {
             "mode": "month",
@@ -366,6 +366,7 @@
         "return-type": "json",
         "exec": "$HOME/scripts/updates.sh",
         "interval": 28800, // every 8 hours
+        "signal": 8,
         "on-click": "$HOME/scripts/install.sh",
         "on-click-right": "$HOME/scripts/updates.sh"
     },
