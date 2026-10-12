@@ -53,10 +53,6 @@ connman-gtk --tray > /dev/null 2>&1 & # network tray
 
 $HOME/.config/mango/scripts/ai-router.sh >/dev/null 2>&1 &
 
-# Start polkit agent
-# trying hyprpolkitagent enabled via systemd user service
-#/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
-
 
 # wallpaper slideshow fow swww
 $HOME/.local/bin/wallpaper_slider $HOME/Pictures/wallpapers 1800 >/dev/null 2>&1 &
