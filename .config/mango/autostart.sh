@@ -40,6 +40,9 @@ swaync  >/dev/null 2>&1 &
 # clipboard content manager
 wl-paste --type text --watch cliphist store >/dev/null 2>&1 &
 wl-paste --type image --watch cliphist store >/dev/null 2>&1 &
+wl-clip-persist --clipboard regular >/dev/null 2>&1 & # keep clipboard after app closes
+
+swayosd-server >/dev/null 2>&1 & # OSD for volume/brightness
 
 
 hypridle >/dev/null 2>&1 & # screen idle management

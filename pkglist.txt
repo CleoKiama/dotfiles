@@ -92,6 +92,7 @@ podman-compose
 podman-docker
 postgresql
 power-profiles-daemon
+power-profiles-daemon-s6
 qbittorrent
 qt5ct
 qt6ct
@@ -110,6 +111,7 @@ starship
 stow
 swaybg
 swaync
+swayosd
 sysstat
 tailscale
 tea
@@ -137,7 +139,9 @@ vulkan-intel
 waybar
 wf-recorder
 wireplumber
+wl-clip-persist
 wlogout
+wlopm
 wlr-randr
 woff2-font-awesome
 wpa_supplicant

@@ -16,6 +16,7 @@ pi-bin
 pnpm-bin
 slack-desktop
 spotifast-bin
+sunsetr-bin
 ttf-libron
 ttf-symbola-free
 vesktop-bin

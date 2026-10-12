@@ -13,7 +13,7 @@ night_temp = 4500        # Color temperature during night (1001-20000) Kelvin
 day_temp = 6500          # Color temperature during day (1000-20000) Kelvin 6500k is nuetral
 night_gamma = 80         # Gamma percentage for night (10-100%)
 day_gamma = 100          # Gamma percentage for day (10-100%)
-update_interval = 60     # Update frequency during transitions in seconds (10-300)
+update_interval = "auto" # Update frequency during transitions: "auto" or integer (10-300)
 
 #[Static config]
 static_temp = 6500       # Color temperature for static mode (1000-20000) Kelvin
@@ -25,5 +25,5 @@ sunrise = "06:20:00"     # Time for manual sunrise calculations (HH:MM:SS)
 transition_duration = 10 # Transition duration in minutes (5-120)
 
 #[Geolocation]
-latitude = -1.283333     # Geographic latitude (auto-detected on first run)
-longitude = 36.816666    # Geographic longitude (use 'sunsetr geo' to change)
+# Coordinates are managed privately in geo.toml (gitignored)
+

@@ -20,6 +20,10 @@
         "idle_inhibitor",
         "custom/screen-record",
         "custom/r_end",
+        "custom/padd",
+        "custom/l_end",
+        "custom/sunsetr",
+        "custom/r_end",
         "custom/padd"
     ],
     "modules-center": [
@@ -389,5 +393,21 @@
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true
+    },
+    "custom/sunsetr": {
+        "format": "{icon} {text}",
+        "format-icons": {
+            "day": "󰖨",
+            "night": "",
+            "sunset": "󰖛",
+            "sunrise": "󰖜",
+            "static": "󰋙"
+        },
+        "return-type": "json",
+        "exec": "$HOME/scripts/waybar-sunsetr.sh",
+        "restart-interval": 5,
+        "on-click": "$HOME/scripts/sunsetr-toggle.sh",
+        "on-scroll-up": "sunsetr set current_temp+=200",
+        "on-scroll-down": "sunsetr set current_temp-=200"
     }
 }
