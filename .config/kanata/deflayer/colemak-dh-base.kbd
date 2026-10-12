@@ -13,7 +13,7 @@
   w    f    p    b    j    l    u    y    ;
   @r   @s   @t   g    m    @n   @e   @i   @o
   z    x    c    d    v    @med h    ,    .    @wsp
-  @bspsym @nav @m-thumb @entnum
+  @bspsym @nav @entnum @m-thumb
   @a
   lrld
   q
@@ -50,10 +50,7 @@
   ;; Thumbs (physical x, c, ,, .)
   bspsym (tap-hold-release $tap-time $hold-time bspc (layer-while-held symbols))
   to-base (layer-switch base)
-  entnum (tap-dance 200 (
-    (tap-hold-press $tap-time $hold-time ret (layer-while-held numrow))
-    (layer-switch numrow)
-  ))
+  entnum (tap-hold-press $tap-time $hold-time ret (layer-while-held numrow))
   nav (tap-hold-release $tap-time $hold-time spc (layer-while-held navigation))
   cwt (caps-word-custom-toggle 2000
     (a b c d e f g h i j k l m n o p q r s t u v w x y z -)

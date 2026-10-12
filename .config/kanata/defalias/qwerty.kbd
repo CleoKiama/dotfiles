@@ -1,5 +1,6 @@
 (defalias
   esc-base (multi esc (layer-switch base))
+  to-num (layer-switch numrow)
 
   ;; Navigation layer helper aliases
   cls C-w   ndo C-z   rdo C-y

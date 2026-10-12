@@ -20,6 +20,7 @@
 
 (defchordsv2
   (2 3) @esc-base 40 first-release ()
+  (, .) @to-num   70 first-release ()
 )
 
 (include deflayer/colemak-dh-base.kbd)

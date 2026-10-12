@@ -17,7 +17,7 @@ CANONICAL_BASE = [
     'w', 'f', 'p', 'b', 'j', 'l', 'u', 'y', ';',
     '@r', '@s', '@t', 'g', 'm', '@n', '@e', '@i', '@o',
     'z', 'x', 'c', 'd', 'v', '@med', 'h', ',', '.', '@wsp',
-    '@bspsym', '@nav', '@m-thumb', '@entnum',
+    '@bspsym', '@nav', '@entnum', '@m-thumb',
     '@a', 'lrld', 'q'
 ]
 
@@ -33,7 +33,7 @@ CANONICAL_NUM = [
     '@7', '@8', '@9', '@0', '@/', '@?', '@#', '@~', '@scl',
     '@2', '@3', '@4', '@5', '@|', '@!', '@[', '@]', '@:',
     '@+', '@-', '@*', '@/', '@=', 'XX', '@-', '@,', '@.', '@/',
-    '_', '_', '_', '@to-base',
+    '_', '_', '@to-base', '@to-base',
     '@1', 'XX', '@6'
 ]
 
@@ -73,7 +73,7 @@ CANONICAL_MOD = [
     'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX',
     '@os-alt', '@os-met', '@os-ctl', 'XX', 'XX', '@os-ctl', '@os-met', '@os-alt', '@os-sft',
     'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX', 'XX',
-    'XX', 'XX', 'XX', 'XX',
+    'XX', 'XX', '@to-num', 'XX',
     '@os-sft', 'XX', 'XX'
 ]
 
@@ -152,7 +152,7 @@ LABEL_MAP = {
     'rsft': 'Shift', 'lsft': 'Shift', 'lshift': 'Shift', 'rshift': 'Shift',
     'lalt': 'Alt', 'ralt': 'Alt', 'lctl': 'Ctrl', 'rctl': 'Ctrl', 'lmet': 'Super', 'rmet': 'Super',
     '@bspsym': 'Bspc / Sym', '@nav': 'Spc / Nav', '@shfwsp': 'Shf / Wksp', '@shf': 'Shift',
-    '@entnum': 'Ret / Num', '@m-thumb': 'Shf / Mod', '@to-base': 'Base',
+    '@entnum': 'Ret / Num', '@m-thumb': 'Shf / Mod', '@to-base': 'Base', '@to-num': 'Num',
     '@wsp': 'Wksp', '@med': 'Media', 'med': 'Media',
     '@os-sft': 'Shift', '@os-alt': 'Alt', '@os-met': 'Super', '@os-ctl': 'Ctrl',
     '@pl': '(', '@pr': ')', '@cl': '{', '@cr': '}', '@sl': '[', '@sr': ']',
@@ -466,11 +466,11 @@ os.makedirs(OUT_DIR, exist_ok=True)
 images = {
     'all.png': render_all_svg(),
     'hrm.png': render_layer_svg('Home-Row Mods (Top Row)', 'tab q w e → Shift Alt Super Ctrl  |  o p [ ] → Ctrl Super Alt Shift', base_toks, 'hrm'),
-    'layer_taps.png': render_layer_svg('Thumb Layer Taps', 'x: Bspc / Sym  |  c: Spc / Nav  |  ,: Shf / Mod (2x Caps)  |  .: Ret / Num (2x Lock)', base_toks, 'thumbs'),
+    'layer_taps.png': render_layer_svg('Thumb Layer Taps', 'x: Bspc / Sym  |  c: Spc / Nav  |  ,: Ret / Num  |  .: Shf / Mod (2x Caps)', base_toks, 'thumbs'),
     'symbols.png': render_layer_svg('Symbols Layer', 'Activated by Holding Left Mid Thumb (x)', sym_toks, 'symbols'),
     'navigation.png': render_layer_svg('Navigation & Editor Layer', 'Activated by Holding Left Index Thumb (c)', nav_toks, 'navigation'),
-    'modifiers.png': render_layer_svg('Modifiers Layer (One-Shot / Held)', 'Activated by Holding Right Index Thumb (,)', mod_toks, 'hrm'),
-    'numrow.png': render_layer_svg('NumRow Layer', 'Activated by Holding Right Mid Thumb (.) — Digits 1..0 & Symbols', num_toks, 'numrow'),
+    'modifiers.png': render_layer_svg('Modifiers Layer (One-Shot / Held)', 'Activated by Holding Right Mid Thumb (.)', mod_toks, 'hrm'),
+    'numrow.png': render_layer_svg('NumRow Layer', 'Activated by Holding Right Index Thumb (,) — Digits 1..0 & Symbols', num_toks, 'numrow'),
     'workspace.png': render_layer_svg('Workspace Layer', 'Activated by Holding Right Pinky (ret) — Super+1..0', wsp_toks, 'workspace'),
     'media.png': render_layer_svg('Media Layer', 'Activated by Holding Physical k Key — Playback & Volume', med_toks, 'symbols'),
     'fn.png': render_layer_svg('FunPad Sub-Layer', 'F1..F12 Function Keys', fp_toks, 'funpad'),

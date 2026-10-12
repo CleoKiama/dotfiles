@@ -31,12 +31,13 @@ Four physical keys handle space, enter, editing, and layer switches:
 | --- | --- | --- | --- |
 | `x` | Left middle | Backspace | Symbols |
 | `c` | Left index | Space | Navigation |
-| `,` | Right index | One-shot Shift | Modifiers |
-| `.` | Right middle | Enter | Numbers |
+| `,` | Right index | Enter | Numbers |
+| `.` | Right middle | One-shot Shift | Modifiers |
 
 ## Combos and extras
 
 - **Escape**: press physical keys `2` and `3` (`f` and `p`) together.
+- **Numbers lock**: press physical thumb keys `,` and `.` together to toggle the number layer. Tap either right thumb to return to base.
 - **Live reload**: tap `prtsc` to reload the config without restarting the service.
 - **Workspace layer**: hold physical `ret` (right pinky) for `Super+1` through `Super+0`.
 

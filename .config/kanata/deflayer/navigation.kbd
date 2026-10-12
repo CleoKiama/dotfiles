@@ -42,12 +42,12 @@
 )
 
 ;; Modifiers layer — one-shot / held modifiers
-;; Activated by holding `,` thumb
+;; Activated by holding `.` thumb
 (deflayer modifiers
   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @os-alt @os-met @os-ctl XX   XX   @os-ctl @os-met @os-alt @os-sft
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX
+  XX   XX   @to-num XX
   @os-sft XX   XX
 )
 
