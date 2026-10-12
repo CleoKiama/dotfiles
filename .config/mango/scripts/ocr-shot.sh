@@ -1,10 +1,12 @@
-#!/bin/bash
-# ~/.local/bin/ocr-shot
+#!/usr/bin/env bash
 
-# Ensure tmp file is unique to avoid collisions
+# Select region or window
+GEOM=$(slurp $SLURP_ARGS) || exit 0
+
 TEMP_IMG=$(mktemp /tmp/ocr_XXXXXX.png)
 
-# Run the command chain
-grim -g "$(slurp $SLURP_ARGS)" "$TEMP_IMG" && \
-tesseract "$TEMP_IMG" - | wl-copy && \
-rm "$TEMP_IMG"
+grim -g "$GEOM" "$TEMP_IMG" && \
+    tesseract "$TEMP_IMG" - | wl-copy && \
+    notify-send -a "OCR" "Text extracted to clipboard" -i edit-copy
+
+rm -f "$TEMP_IMG"

@@ -24,6 +24,7 @@ process_selections() {
             :w:i:p:e:*)     "${0}" --wipe; return ;;
             :b:a:r:*|*:c:o:p:y:*) "${0}" --copy; return ;;
             :f:a:v:*)       "${0}" --favorites; return ;;
+            :i:m:g:*)       "${0}" --image-history; return ;;
             :o:p:t:*)       "${0}"; return ;;
         esac
 
@@ -48,18 +49,26 @@ process_selections() {
     fi
 }
 
-# Check for binary content
+# Check for binary content in text mode
 check_content() {
     local line
     read -r line
     if [[ $line == *"[[ binary data"* ]]; then
         cliphist decode <<<"$line" | wl-copy
-        local img_idx
-        img_idx=$(awk -F '\t' '{print $1}' <<<"$line")
-        local temp_preview="${XDG_RUNTIME_DIR}/hyde/pastebin-preview_${img_idx}"
-        wl-paste >"${temp_preview}"
-        notify-send -a "Pastebin:" "Preview: ${img_idx}" -i "${temp_preview}" -t 2000
+        notify_image_restored "$line"
         return 1
+    fi
+}
+
+# Notify with the cached thumbnail (written by cliphist.image.py) when one exists
+notify_image_restored() {
+    local img_idx thumb
+    img_idx=$(awk -F '\t' '{print $1}' <<<"$1")
+    thumb="${XDG_RUNTIME_DIR}/cliphist/${img_idx}.thumb.png"
+    if [ -f "$thumb" ]; then
+        notify-send -a "Clipboard" "Image restored to clipboard" -i "$thumb" -t 1500
+    else
+        notify-send -a "Clipboard" "Image restored to clipboard" -t 1500
     fi
 }
 
@@ -72,10 +81,15 @@ run_rofi() {
         -theme-str "${r_override}" \
         -theme-str "${rofi_position}" \
         -theme "${cliphist_style}" \
+        -kb-custom-1 "Alt+v" \
         "$@"
+    local code=$?
+    if [ $code -eq 10 ]; then
+        echo ":t:o:g:g:l:e:"
+    fi
 }
 
-# Setup rofi theme config from Hyprland
+# Setup rofi theme config
 setup_rofi_config() {
     local font_scale="${ROFI_CLIPHIST_SCALE}"
     [[ "${font_scale}" =~ ^[0-9]+$ ]] || font_scale=${ROFI_SCALE:-10}
@@ -84,8 +98,6 @@ setup_rofi_config() {
     font_name=${font_name:-"JetBrainsMono Nerd Font"}
 
     font_override="* {font: \"${font_name} ${font_scale}\";}"
-
-    # fallback styles since Niri has no hyprctl
     rofi_position="window { location: center; }"
     r_override="window{border:2px;border-radius:8px;} element{border-radius:4px;}"
 }
@@ -104,16 +116,23 @@ prepare_favorites_for_display() {
     done
 }
 
-# Clipboard history
+# Clipboard text history
 show_history() {
     local selected_item
     selected_item=$( (
-            echo -e ":f:a:v:\t📌 Favorites"
+            echo -e ":i:m:g:\t🖼️ Image History (Alt+V)"
+            echo -e ":f:a:v:\t⭐ Favorites"
             echo -e ":o:p:t:\t⚙️ Options"
-            cliphist list
-    ) | run_rofi " 📜 History..." -multi-select -i -display-columns 2 -selected-row 2)
+            cliphist list | grep -v '\[\[ binary data'
+    ) | run_rofi "History..." -multi-select -i -display-columns 2 -selected-row 3)
 
     [ -n "$selected_item" ] || exit 0
+
+    case "$selected_item" in
+        ":t:o:g:g:l:e:"|:i:m:g:*) show_image_history; return ;;
+        :f:a:v:*) view_favorites; return ;;
+        :o:p:t:*) main ""; return ;;
+    esac
 
     if echo -e "${selected_item}" | check_content; then
         process_selections <<<"${selected_item}"
@@ -121,17 +140,51 @@ show_history() {
     fi
 }
 
+# Visual image gallery: one large preview per page; arrows or wheel flip between images
+show_image_history() {
+    local script_path="$HOME/dotfiles/scripts/cliphist.image.py"
+
+    local selected_item
+    selected_item=$(python3 "$script_path" | run_rofi "Images (Alt+V for text)" \
+        -show-icons \
+        -display-columns 2 \
+        -theme-str 'window { width: 50em; height: 36em; }' \
+        -theme-str 'mainbox { padding: 0.4em; spacing: 0.3em; }' \
+        -theme-str 'wallbox { children: [ "inputbar" ]; }' \
+        -theme-str 'entry { padding: 0.5em 0.8em; }' \
+        -theme-str 'listbox { children: [ "listview" ]; }' \
+        -theme-str 'listview { columns: 1; lines: 1; spacing: 0.2em; expand: true; flow: horizontal; scrollbar: true; }' \
+        -theme-str 'scrollbar { handle-width: 4px; handle-color: @main-br; background-color: transparent; border-radius: 4px; margin: 0 0 0 0.4em; }' \
+        -theme-str 'element { orientation: vertical; padding: 0.4em; spacing: 0.4em; border-radius: 10px; background-color: transparent; }' \
+        -theme-str 'element selected.normal { background-color: transparent; border: 0px; }' \
+        -theme-str 'element-icon { size: 28em; horizontal-align: 0.5; cursor: inherit; background-color: transparent; }' \
+        -theme-str 'element-text { horizontal-align: 0.5; cursor: inherit; }' \
+        -theme-str 'element-text selected.normal { background-color: @select-bg; text-color: @select-fg; border-radius: 6px; padding: 0.2em 0.8em; }')
+
+    [ -n "$selected_item" ] || exit 0
+
+    case "$selected_item" in
+        ":t:o:g:g:l:e:") show_history; return ;;
+    esac
+
+    # Notify before delete+copy: the copy re-adds the image under a new id and
+    # the old thumbnail is pruned on the next gallery open.
+    notify_image_restored "$selected_item"
+    cliphist decode <<<"$selected_item" | wl-copy
+    cliphist delete <<<"$selected_item"
+}
+
 # Delete history items
 delete_items() {
     export del_mode=true
-    cliphist list | run_rofi " 🗑️ Delete" -multi-select -i -display-columns 2 | process_selections
+    cliphist list | run_rofi "Delete" -multi-select -i -display-columns 2 | process_selections
 }
 
 # View favorites
 view_favorites() {
     prepare_favorites_for_display || { notify-send "No favorites."; return; }
     local sel
-    sel=$(printf "%s\n" "${decoded_lines[@]}" | run_rofi "📌 View Favorites")
+    sel=$(printf "%s\n" "${decoded_lines[@]}" | run_rofi "View Favorites")
     [ -n "$sel" ] || return
     local idx
     idx=$(printf "%s\n" "${decoded_lines[@]}" | grep -nxF "$sel" | cut -d: -f1)
@@ -144,7 +197,7 @@ view_favorites() {
 add_to_favorites() {
     ensure_favorites_dir
     local item
-    item=$(cliphist list | run_rofi "➕ Add to Favorites...")
+    item=$(cliphist list | run_rofi "Add to Favorites...")
     [ -n "$item" ] || return
     local full_item encoded_item
     full_item=$(echo "$item" | cliphist decode)
@@ -157,7 +210,7 @@ add_to_favorites() {
 # Manage favorites
 manage_favorites() {
     local action
-    action=$(echo -e "Add to Favorites\nDelete from Favorites\nClear All Favorites" | run_rofi "📓 Manage Favorites")
+    action=$(echo -e "Add to Favorites\nDelete from Favorites\nClear All Favorites" | run_rofi "Manage Favorites")
     case "$action" in
         "Add to Favorites") add_to_favorites ;;
         "Delete from Favorites") delete_from_favorites ;;
@@ -168,7 +221,7 @@ manage_favorites() {
 # Clear history
 clear_history() {
     local confirm
-    confirm=$(echo -e "Yes\nNo" | run_rofi "☢️ Clear Clipboard History?")
+    confirm=$(echo -e "Yes\nNo" | run_rofi "Clear Clipboard History?")
     [ "$confirm" = "Yes" ] && cliphist wipe && notify-send "Clipboard history cleared."
 }
 
@@ -176,12 +229,13 @@ clear_history() {
 show_help() {
     cat <<EOF
 Options:
-  -c  | --copy       Show clipboard history
-  -d  | --delete     Delete selected history items
-  -f  | --favorites  View favorites
-  -mf | --manage-fav Manage favorites
-  -w  | --wipe       Clear history
-  -h  | --help       Show help
+  -c  | --copy          Show text clipboard history
+  -i  | --image-history Show visual image gallery
+  -d  | --delete        Delete selected history items
+  -f  | --favorites     View favorites
+  -mf | --manage-fav    Manage favorites
+  -w  | --wipe          Clear history
+  -h  | --help          Show help
 EOF
 }
 
@@ -190,15 +244,17 @@ main() {
     setup_rofi_config
     local action="${1:-}"
     if [ -z "$action" ]; then
-        action=$(echo -e "History\nDelete\nView Favorites\nManage Favorites\nClear History" | run_rofi "🔎 Choose action")
+        action=$(echo -e "History\nImage History\nDelete\nView Favorites\nManage Favorites\nClear History" | run_rofi "Choose action")
     fi
     case "$action" in
         -c|--copy|"History") show_history ;;
+        -i|--image-history|"Image History") show_image_history ;;
         -d|--delete|"Delete") delete_items ;;
         -f|--favorites|"View Favorites") view_favorites ;;
         -mf|--manage-fav|"Manage Favorites") manage_favorites ;;
         -w|--wipe|"Clear History") clear_history ;;
-        -h|--help|*) show_help ;;
+        -h|--help) show_help ;;
+        *) show_help ;;
     esac
 }
 
