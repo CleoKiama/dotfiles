@@ -1206,8 +1206,7 @@ Replaces popups like Corfu to keep the code below the cursor visible.
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-    :config
-    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+    )
 #+end_src
 
 *** Mason
@@ -1884,9 +1883,16 @@ Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, C
     :bind ("C-c d" . reader-open-doc)
     :mode (("\\.\\(?:cbz\\|epub\\|fb2\\|mobi\\|pdf\\|xps\\)\\'" . reader-mode))
     :commands (reader-open-doc reader-mode)
+    :init
+    ;; Upstream bug: reader-saveplace autoloads onto `save-place-after-find-file-hook',
+    ;; which breaks deferred loading by forcing reader and render-core.so to load on ANY file visit.
+    ;; See MonadicSheep/emacs-reader issues #148 and #180.
+    (remove-hook 'save-place-after-find-file-hook #'reader--saveplace-find-file)
     :custom
     (reader-default-fit #'cl/reader-fit-width-70)
     :config
+    ;; Re-add save-place hook only when reader is actually loaded
+    (add-hook 'save-place-after-find-file-hook #'reader--saveplace-find-file)
     (reader-global-dark-mode 1)
     (with-eval-after-load 'evil
       (evil-set-initial-state 'reader-mode 'normal)
@@ -2003,6 +2009,15 @@ Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, C
      (add-to-list 'org-structure-template-alist template)))
 #+end_src
 
+** Note taking 
+***  Org capture 
+
+#+begin_src emacs-lisp
+  (setq org-directory  "~/Projects/org-notes")
+  (setq org-default-notes-file (concat org-directory "/inbox.org"))
+
+  (global-set-key (kbd "C-c o c") #'org-capture)
+#+end_src
 ** Tangle this file on save
 
 Guarded so saving *this specific file* re-tangles =emacs.el=, but
@@ -2037,4 +2052,7 @@ even though =init.el= itself doesn't strictly need it thanks to
 
 (add-hook 'org-babel-post-tangle-hook #'cl/ensure-lexical-binding)
 #+end_src
+
+
+
 
