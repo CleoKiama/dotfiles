@@ -49,3 +49,8 @@ elpa/
 url/
 tutorial/
 
+# 11. Machine-local session state (regenerates)
+.org-id-locations
+bookmarks.eld
+games/
+
