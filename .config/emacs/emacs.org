@@ -1483,11 +1483,17 @@ It draws vertical lines (by default, a character of your choice) at each level o
 
 #+begin_src emacs-lisp
   (defun cl/ghostel-dwim ()
-    "Launch ghostel in project root if in a project, otherwise in current directory."
+    "Launch ghostel in project root if in a project;
+otherwise launch a dedicated terminal for the active perspective."
     (interactive)
     (if (project-current nil)
         (call-interactively #'ghostel-project)
-      (call-interactively #'ghostel)))
+      (let ((ghostel-buffer-name
+             (format "*ghostel*<%s>"
+                     (if (bound-and-true-p persp-mode)
+                         (persp-current-name)
+                       "default"))))
+        (ghostel))))
 
   (use-package ghostel
     :commands (ghostel ghostel-project cl/ghostel-dwim)
