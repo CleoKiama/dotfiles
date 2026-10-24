@@ -19,28 +19,49 @@
   q
 )
 
+;; Home-row mods templates
+;; Alt & Super: release-trigger, 250ms hold, 170ms idle
+(deftemplate hrm (tap hold)
+  (defalias
+    (concat $tap)
+      (tap-hold-opposite-hand-release $hrm-hold $tap $hold
+        (timeout hold)
+        (same-hand tap)
+        (neutral-keys x c , .)
+        (neutral ignore)
+        (tap-repress-timeout 200)
+        (require-prior-idle $hrm-idle))))
+
+;; Control (indices): release-trigger, 180ms hold, 100ms idle
+(deftemplate hrm-ctl (tap hold)
+  (defalias
+    (concat $tap)
+      (tap-hold-opposite-hand-release $hold-time $tap $hold
+        (timeout hold)
+        (same-hand tap)
+        (neutral-keys x c , .)
+        (neutral ignore)
+        (tap-repress-timeout 200)
+        (require-prior-idle 100))))
+
+;; Shift mods (pinkies): press-trigger, 180ms hold, 50ms idle for instant capitalization
+(deftemplate hrm-shift (tap hold)
+  (defalias
+    (concat $tap)
+      (tap-hold-opposite-hand $hold-time $tap $hold
+        (timeout hold)
+        (same-hand tap)
+        (neutral-keys x c , .)
+        (neutral ignore)
+        (tap-repress-timeout 200)
+        (require-prior-idle 50))))
+
+(t! hrm-shift a lsft)
+(t! hrm r lalt) (t! hrm s lmet) (t! hrm-ctl t lctl)
+(t! hrm-ctl n rctl) (t! hrm e rmet) (t! hrm i ralt)
+(t! hrm-shift o rsft)
+
 (defalias
-  ;; Home-row mods — tap for alpha, hold for modifier:
-  ;; tap-hold-opposite-hand-release defers the hold until the
-  ;; interrupting opposite-hand key is released, avoiding misfires on
-  ;; fast rolling keystrokes.
-  ;;
-  ;; Left hand: Pinky (tab), Ring (q), Middle (w), Index (e)
-  a (tap-hold-opposite-hand $hold-time a lsft (timeout hold) (same-hand ignore) (require-prior-idle 50))
-  r (tap-hold-opposite-hand-release $hold-time r lalt (timeout hold) (same-hand ignore) (require-prior-idle 170))
-  s (tap-hold-opposite-hand-release $hold-time s lmet (timeout hold) (same-hand ignore) (require-prior-idle 170))
-  t (tap-hold-opposite-hand-release $hold-time t lctl (timeout hold) (same-hand ignore) (require-prior-idle 180))
-
-  ;; Right hand home-row mods:
-  ;; Index  (physical o): @n (Right Ctrl)
-  n (tap-hold-opposite-hand $hold-time n rctl (timeout hold) (same-hand ignore) (require-prior-idle 200))
-  ;; Middle (physical p): @e (Right Super)
-  e (tap-hold-opposite-hand-release $hold-time e rmet (timeout hold) (same-hand ignore) (require-prior-idle 170))
-  ;; Ring   (physical [): @i (Right Alt)
-  i (tap-hold-opposite-hand-release $hold-time i ralt (timeout hold) (same-hand ignore) (require-prior-idle 170))
-  ;; Pinky  (physical ]): @o (Right Shift)
-  o (tap-hold-opposite-hand $hold-time o rsft (timeout hold) (same-hand ignore) (require-prior-idle 50))
-
   ;; One-shot modifiers
   os-sft (one-shot 2000 lsft)
   os-alt (one-shot 2000 lalt)
@@ -50,7 +71,7 @@
   ;; Thumbs (physical x, c, ,, .)
   bspsym (tap-hold-release $tap-time $hold-time bspc (layer-while-held symbols))
   to-base (layer-switch base)
-  entnum (tap-hold-press $tap-time $hold-time ret (layer-while-held numrow))
+  entnum (tap-hold-release $tap-time $hold-time ret (layer-while-held numrow))
   nav (tap-hold-release $tap-time $hold-time spc (layer-while-held navigation))
   cwt (caps-word-custom-toggle 2000
     (a b c d e f g h i j k l m n o p q r s t u v w x y z -)
@@ -65,5 +86,5 @@
   ;; Media layer hold, tap k (now physical k)
   med (tap-hold-release $tap-time $hold-time k (layer-while-held media))
   ;; Workspace layer hold, tap / (now physical ret)
-  wsp (tap-hold-press $tap-time $hold-time / (layer-while-held workspace))
+  wsp (tap-hold-release $tap-time $hold-time / (layer-while-held workspace))
 )

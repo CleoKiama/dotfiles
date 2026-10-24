@@ -12,14 +12,16 @@
 
 (defvar
   tap-time 180
-  hold-time 180          
+  hold-time 180
+  hrm-hold 250
+  hrm-idle 170
 )
 
 (include defsrc/current.kbd)
 (include defalias/qwerty.kbd)
 
 (defchordsv2
-  (2 3) @esc-base 40 first-release ()
+  (2 3) @esc-base 40 first-release (numrow)
   (, .) @to-num   70 first-release ()
 )
 

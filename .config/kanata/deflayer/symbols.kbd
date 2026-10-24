@@ -13,8 +13,8 @@
 
 ;; Numrow layer — digits 1..0, hold `,` thumb
 (deflayer numrow
-  @7   @8   @9   @0   @/   @?   @#   @~   @scl
-  @2   @3   @4   @5   @|   @!   @[   @]   @:
+  @7   @8   @9   @0   @/   @|   @#   @~   @?
+  @2   @3   @4   @5   @scl @!   @[   @]   @:
   @+   @-   @*   @/   @=   XX   @-   @,   @.   @/
   _    _    @to-base @to-base
   @1   XX   @6
