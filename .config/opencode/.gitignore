@@ -13,4 +13,8 @@ antigravity-logs/
 linear-key
 context7-key
 .authinfo
+
+# local runtime service state — contains a generated password
+service.json
+
 skills/

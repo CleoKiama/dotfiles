@@ -1,32 +1,62 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "formatter": true,
+  "model": "opencode/deepseek-v4.1-flash-free",
+  "formatter": false,
   "mcp": {
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp",
-      "enabled": true,
-      "headers": {
-        "CONTEXT7_API_KEY": "{file:~/.config/opencode/context7-key}"
+    "servers": {
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp",
+        "oauth": false,
+        "headers": {
+          "CONTEXT7_API_KEY": "{file:~/.config/opencode/context7-key}"
+        }
+      },
+      "linear": {
+        "type": "remote",
+        "url": "https://mcp.linear.app/mcp"
+      },
+      "axiom-logs": {
+        "type": "remote",
+        "url": "https://mcp.axiom.co/mcp"
+      },
+      "sentry": {
+        "type": "remote",
+        "url": "https://mcp.sentry.dev/mcp"
+      },
+      "codebase-memory": {
+        "type": "local",
+        "command": ["codebase-memory-mcp"]
+      },
+      "youtube-transcript": {
+        "type": "local",
+        "command": ["npx", "-y", "@lunks/youtube-transcript-mcp"]
+      },
+      "aws-mcp": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "mcp-proxy-for-aws-cli@latest",
+          "https://aws-mcp.us-east-1.api.aws/mcp"
+        ],
+        "environment": {
+          "AWS_MCP_PROXY_PROFILES": "default"
+        }
+      },
+      "searxng": {
+        "type": "local",
+        "command": ["npx", "-y", "mcp-searxng"],
+        "environment": {
+          "SEARXNG_URL": "http://localhost:39201"
+        }
+      },
+      "pi-web-access": {
+        "type": "local",
+        "command": ["npx", "-y", "pi-web-access"],
+        "environment": {
+          "PI_CODING_AGENT_DIR": "/home/cleo/.config/pi/agent"
+        }
       }
-    },
-    "Linear-mcp": {
-      "type": "remote",
-      "url": "https://mcp.linear.app/mcp",
-      "enabled": true,
-      "headers": {
-        "Authorization": "Bearer {file:~/.config/opencode/linear-key}"
-      }
-    },
-    "axiom": {
-      "type": "remote",
-      "url": "https://mcp.axiom.co/mcp",
-      "enabled": true
-    },
-    "codebase-memory-mcp": {
-      "enabled": true,
-      "type": "local",
-      "command": ["codebase-memory-mcp"]
     }
   },
   "autoupdate": false,
@@ -41,7 +71,7 @@
   "agent": {
     "build": {
       "mode": "primary",
-      "model": "github-copilot/gpt-5-mini",
+      "model": "opencode/deepseek-v4.1-flash-free",
       "tools": {
         "write": true,
         "edit": true,
@@ -50,7 +80,7 @@
     },
     "plan": {
       "mode": "primary",
-      "model": "github-copilot/gpt-4.1",
+      "model": "opencode/nemotron-3-ultra-free",
       "tools": {
         "write": false,
         "edit": false,
@@ -59,9 +89,9 @@
     },
     "chat": {
       "description": "Casual conversation, explanations, and learning - no code changes",
-      "model": "opencode/deepseek-v4-flash-free",
+      "model": "opencode/deepseek-v4.1-flash-free",
       "temperature": 0.7,
-      "fallback_models": ["opencode/big-pickle", "opencode/minimax-m2.5-free"],
+      "fallback_models": ["opencode/big-pickle", "opencode/minimax-m3.1-flash-free"],
       "permission": {
         "edit": "deny",
         "write": "deny",
@@ -70,9 +100,12 @@
     },
     "teacher": {
       "description": "Patient tutor for learning concepts, debugging explanations, best practices",
-      "model": "opencode/mimo-v2.5-free",
+      "model": "opencode/mimo-v2.6-flash-free",
       "temperature": 0.5,
-      "fallback_models": ["github-copilot/claude-sonnet-4.6", "opencode/big-pickle"],
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/big-pickle"
+      ],
       "permission": {
         "edit": "deny",
         "write": "deny",
@@ -86,17 +119,13 @@
       "disable": true
     },
     "compaction": {
-      "model": "opencode/deepseek-v4-flash-free"
+      "model": "opencode/deepseek-v4.1-flash-free"
     },
     "general": {
       "disable": true
     }
   },
-  "plugin": [
-    "opencode-wakatime",
-    "superpowers@git+https://github.com/obra/superpowers.git",
-    "oh-my-opencode-slim"
-  ],
+  "plugin": ["opencode-wakatime"],
   "provider": {},
   "lsp": true
 }
