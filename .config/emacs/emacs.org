@@ -298,8 +298,6 @@
 
 * Line numbers, which-key,  escape
 
- which-key is an Emacs package that displays available keybindings in a popup window whenever you partially type a key sequence. This is particularly useful for discovering commands and shortcuts, making it easier to learn Emacs and improve your workflow. It helps users remember key combinations and reduces the cognitive load of memorizing every command.
-
 #+begin_src emacs-lisp
  ;; (which-key-mode 1)
 (use-package which-key
@@ -380,21 +378,6 @@ Mostly reusable functions throughout the config
        (evil-define-key 'normal 'global (kbd "]t") 'tab-next)        ;; Go to next tab
        (evil-define-key 'normal 'global (kbd "[t") 'tab-previous)    ;; Go to previous tab
 
-       ;; LSP commands keybindings
-       (evil-define-key 'normal lsp-mode-map
-       ;; (kbd "gd") 'lsp-find-definition                ;; evil-collection already provides gd
-       (kbd "gr") 'lsp-find-references                   ;; Finds LSP references
-       (kbd "gI") 'lsp-find-implementation               ;; Find implementation
-        )
-
-      (defun cl/lsp-describe-and-jump ()
-      "Show hover documentation and jump to *lsp-help* buffer."
-      (interactive)
-      (lsp-describe-thing-at-point)
-      (let ((help-buffer "*lsp-help*"))
-        (when (get-buffer help-buffer)
-          (switch-to-buffer-other-window help-buffer))))
-
       ;; Use native eldoc buffer for viewing long documentation/signatures.
       (evil-define-key 'normal 'global (kbd "K") #'eldoc-doc-buffer) 
 
@@ -420,12 +403,12 @@ Mostly reusable functions throughout the config
       
 
     (use-package evil-collection
-      :defer t
-      :hook
-      (evil-mode . evil-collection-init)
+      :after evil
+      :custom
+      (evil-collection-calendar-want-org-bindings t)
+      (evil-collection-unimpaired-want-repeat-mode-integration t)
       :config
-      (evil-collection-init)
-    )
+      (evil-collection-init))
 
     (use-package evil-surround
     :after evil-collection
@@ -464,11 +447,6 @@ Mostly reusable functions throughout the config
 #+end_src
 
 * Keybindings (general.el leader)
-
-Everything sits under one =SPC=-prefixed, which-key-discoverable
-tree instead of scattered =C-c= prefixes. Each package section below
-adds its own entries into ~cl/leader-keys~ rather than defining a
-separate leader per package.
 
 #+begin_src emacs-lisp
   (use-package general
@@ -534,16 +512,15 @@ separate leader per package.
       ;; Undo tree visualization
       "u" '(undo-tree-visualize :which-key "undo tree")
 
-      ;; lsp 
-      "rn" '(lsp-rename :which-key "lsp rename")
-      "ca" '(lsp-execute-code-action :which-key "lsp code action")
-      "lf" '(apheleia-format-buffer :which-key "format buffer")
-
       ;; persp  
       "a"  '(:ignore t :which-key "perspective")
       "ac" '(persp-kill :which-key "persp-kill")
       "ar" '(persp-rename :which-key "persp-kill")
       "aw" '(persp-switch :which-key "persp-switch")
+
+      ;; open apps
+      "o"  '(:ignore t :which-key "open")
+      "oc" '(calendar :which-key "calendar")
 
      )
 
@@ -584,9 +561,9 @@ separate leader per package.
         (message "System clipboard is empty.")))) 
 
   (cl/leader-keys
-    "c" '(:ignore t :which-key "clipboard")
-    "cy" '(cl/copy-to-clipboard :which-key "yank to clipboard")
-    "cp" '(cl/paste-from-clipboard :which-key "paste from clipboard"))
+    "y" '(:ignore t :which-key "clipboard")
+    "yy" '(cl/copy-to-clipboard :which-key "yank to clipboard")
+    "yp" '(cl/paste-from-clipboard :which-key "paste from clipboard"))
 #+end_src
 * Modeline and Theming
 
@@ -648,9 +625,6 @@ separate leader per package.
 
 * Completion System
 
-Vertico + Consult + Orderless + Marginalia, minibuffer-first
-completion,embark and embark consult
-
 **  Vertico  
 
 #+begin_src emacs-lisp
@@ -685,12 +659,19 @@ completion,embark and embark consult
 
 ** Consult
 
-Consult provides powerful completion and narrowing commands for Emacs.
-It integrates well with other completion frameworks like Vertico, enabling
-features like previews and enhanced register management. It's useful for
-navigating buffers, files, and xrefs with ease.
- 
 #+begin_src emacs-lisp
+
+  (use-package project
+    :straight nil
+    :custom
+    (project-vc-extra-root-markers
+     '(".git" "package.json" "pyproject.toml" "Cargo.toml" "go.mod" ".project" "Makefile")))
+
+  (defun cl/consult-project-root (&optional _may-prompt)
+    "Return project root if found; prompt for directory if no project is detected."
+    (if-let* ((proj (project-current nil)))
+        (project-root proj)
+      (read-directory-name "No project found. Select search root: " default-directory nil t)))
 
   (use-package consult
     :defer t
@@ -721,13 +702,10 @@ navigating buffers, files, and xrefs with ease.
 
     (setq consult-narrow-key "<")
     :custom
-    (consult-project-function nil))
+    (consult-project-function #'cl/consult-project-root))
 #+end_src
 
 ** Orderless
- Orderless enhances completion in Emacs by allowing flexible pattern matching.
- It works seamlessly with Vertico, enabling you to use partial strings and regular expressions to find files, buffers, and commands more efficiently.
- This combination provides a powerful and customizable completion experience.
 
 #+begin_src emacs-lisp
 (use-package orderless
@@ -747,9 +725,6 @@ navigating buffers, files, and xrefs with ease.
 
 ** Marginalia 
 
- Marginalia enhances the completion experience in Emacs by adding additional context to the completion candidates.
- This includes helpful annotations such as documentation and other relevant information, making it easier to choose the right option.
-
 #+begin_src emacs-lisp
   (use-package marginalia
     :bind (:map minibuffer-local-map
@@ -763,8 +738,6 @@ navigating buffers, files, and xrefs with ease.
 
 ** Embark, wgrep, helpful
 
-Embark provides a powerful contextual action menu for Emacs, allowing you to perform various operations on completion candidates and other items.
-It extends the capabilities of completion frameworks by offering direct actions on the candidates.
 
 #+begin_src emacs-lisp
   (use-package embark
@@ -802,8 +775,6 @@ It extends the capabilities of completion frameworks by offering direct actions 
 
 * Editing helpers
 
-Rainbow delimiters, paredit, and the "tell me what's under point"
-tools (Embark, Helpful).
 
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
@@ -897,8 +868,6 @@ Ensures GUI-launched Emacs inherits PATH and other env vars from the login shell
 #+end_src
 
 ** Markdown
-Markdown Mode provides support for editing Markdown files in Emacs, enabling features like syntax highlighting, previews, and more.
-It’s particularly useful for README files, as it can be set to use GitHub Flavored Markdown for enhanced compatibility.
 
 #+begin_src emacs-lisp
 (use-package markdown-mode
@@ -930,12 +899,6 @@ It’s particularly useful for README files, as it can be set to use GitHub Flav
 
 ** Lsp and completion 
 ***  Lsp mode 
-Emacs comes with an integrated LSP client called `eglot', which offers basic LSP functionality.
-However, `eglot' has limitations, such as not supporting multiple language servers simultaneously within the same buffer (e.g., handling both TypeScript, Tailwind and ESLint
-LSPs together in a React project). For this reason, the more mature and capable `lsp-mode' is included as a third-party package, providing advanced IDE-like features and better support for multiple language servers and configurations.
-
-NOTE: To install or reinstall an LSP server, use `M-x install-server RET`. As with other editors, LSP configurations can become complex. You may need to install or reinstall the server for your project due to version management quirks (e.g., asdf or nvm) or other issues. Fortunately, `lsp-mode` has a great resource site:
-  https://emacs-lsp.github.io/lsp-mode/
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -1168,6 +1131,129 @@ Uses the project's local =node_modules/.bin= (eslint, tsserver, etc.) instead of
           js-ts-mode) . add-node-modules-path))
 #+end_src
 
+*** Client-Agnostic LSP & Code Keybindings
+
+
+#+begin_src emacs-lisp
+  ;; Client-agnostic DWIM dispatchers
+  (defun cl/lsp-rename ()
+    "Rename symbol using whichever LSP client is currently active."
+    (interactive)
+    (cond
+     ((bound-and-true-p lsp-mode)
+      (call-interactively #'lsp-rename))
+     ((bound-and-true-p eglot--managed-mode)
+      (call-interactively #'eglot-rename))
+     (t
+      (user-error "No LSP client active"))))
+
+  (defun cl/lsp-code-action ()
+    "Execute code action using whichever LSP client is currently active."
+    (interactive)
+    (cond
+     ((bound-and-true-p lsp-mode)
+      (call-interactively #'lsp-execute-code-action))
+     ((bound-and-true-p eglot--managed-mode)
+      (call-interactively #'eglot-code-actions))
+     (t
+      (user-error "No LSP client active"))))
+
+  (defun cl/format-buffer ()
+    "Format buffer or active region via Apheleia, LSP, or indent-region."
+    (interactive)
+    (cond
+     ((and (use-region-p) (bound-and-true-p lsp-mode))
+      (call-interactively #'lsp-format-region))
+     ((bound-and-true-p apheleia-mode)
+      (call-interactively #'apheleia-format-buffer))
+     ((bound-and-true-p lsp-mode)
+      (call-interactively #'lsp-format-buffer))
+     ((bound-and-true-p eglot--managed-mode)
+      (call-interactively #'eglot-format-buffer))
+     (t
+      (if (use-region-p)
+          (indent-region (region-beginning) (region-end))
+        (indent-region (point-min) (point-max))))))
+
+  (defun cl/lsp-find-implementation ()
+    "Find implementation using active LSP client, or fallback to xref."
+    (interactive)
+    (cond
+     ((bound-and-true-p lsp-mode)
+      (call-interactively #'lsp-find-implementation))
+     ((and (bound-and-true-p eglot--managed-mode)
+           (fboundp 'eglot-find-implementation))
+      (call-interactively #'eglot-find-implementation))
+     (t
+      (call-interactively #'xref-find-definitions))))
+
+  (defun cl/lsp-find-type-definition ()
+    "Find type definition using active LSP client, or fallback to xref."
+    (interactive)
+    (cond
+     ((bound-and-true-p lsp-mode)
+      (call-interactively #'lsp-find-type-definition))
+     ((and (bound-and-true-p eglot--managed-mode)
+           (fboundp 'eglot-find-typeDefinition))
+      (call-interactively #'eglot-find-typeDefinition))
+     (t
+      (call-interactively #'xref-find-definitions))))
+
+  (defun cl/lsp-signature-help ()
+    "Show signature help via active LSP client or eldoc."
+    (interactive)
+    (cond
+     ((bound-and-true-p lsp-mode)
+      (call-interactively #'lsp-signature-activate))
+     (t
+      (call-interactively #'eldoc-print-current-symbol-info))))
+
+  (defun cl/lsp-organize-imports ()
+    "Organize imports using active LSP client."
+    (interactive)
+    (cond
+     ((bound-and-true-p lsp-mode)
+      (call-interactively #'lsp-organize-imports))
+     ((bound-and-true-p eglot--managed-mode)
+      (call-interactively #'eglot-code-action-organize-imports))
+     (t
+      (user-error "No LSP client active"))))
+
+  (defun cl/lsp-restart ()
+    "Restart active LSP server."
+    (interactive)
+    (cond
+     ((bound-and-true-p lsp-mode)
+      (call-interactively #'lsp-workspace-restart))
+     ((bound-and-true-p eglot--managed-mode)
+      (call-interactively #'eglot-reconnect))
+     (t
+      (user-error "No LSP client active"))))
+
+  ;; Hybrid code navigation motions in prog-mode
+  (with-eval-after-load 'evil
+    (evil-define-key '(normal visual) prog-mode-map
+      (kbd "gd")  #'xref-find-definitions
+      (kbd "gD")  #'xref-find-definitions-other-window
+      (kbd "gr")  #'xref-find-references
+      (kbd "gi")  #'cl/lsp-find-implementation
+      (kbd "gy")  #'cl/lsp-find-type-definition
+      (kbd "C-t") #'xref-pop-marker-stack
+      (kbd "K")   #'eldoc-doc-buffer))
+
+  ;; Consolidated SPC c leader binds for code operations
+  (cl/leader-keys
+    "c"  '(:ignore t :which-key "code")
+    "ca" '(cl/lsp-code-action :which-key "code action")
+    "cr" '(cl/lsp-rename :which-key "rename")
+    "cf" '(cl/format-buffer :which-key "format buffer")
+    "cd" '(consult-flymake :which-key "diagnostics")
+    "cs" '(cl/lsp-signature-help :which-key "signature help")
+    "co" '(cl/lsp-organize-imports :which-key "organize imports")
+    "cy" '(consult-yasnippet :which-key "snippets")
+    "cR" '(cl/lsp-restart :which-key "restart server"))
+#+end_src
+
 *** Eldoc  
 
 Provides inline helpful 
@@ -1184,9 +1270,6 @@ Provides inline helpful
 
   
 *** Completion Preview (Built-in)
-
-Distraction-free inline ghost-text completion, introduced in Emacs 30.
-Replaces popups like Corfu to keep the code below the cursor visible.
 
 #+begin_src emacs-lisp
   (use-package completion-preview
@@ -1208,6 +1291,26 @@ Replaces popups like Corfu to keep the code below the cursor visible.
     (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
     )
+#+end_src
+
+*** Snippets (YASnippet)
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :defer t
+    :custom
+    (yas-wrap-around-region t)
+    :hook ((prog-mode . yas-minor-mode)
+           (text-mode . yas-minor-mode))
+    :config
+    (yas-reload-all))
+
+  (use-package yasnippet-snippets
+    :after yasnippet)
+
+  (use-package consult-yasnippet
+    :after (consult yasnippet)
+    :commands (consult-yasnippet))
 #+end_src
 
 *** Mason
@@ -1300,7 +1403,6 @@ It draws vertical lines (by default, a character of your choice) at each level o
 #+end_src
 
 ***  flycheck
- Flymake is an on-the-fly syntax checking extension that provides real-time feedback about errors and warnings in your code as you write. This can greatly enhance your  coding experience by catching issues early.
 
 #+begin_src emacs-lisp
 (use-package flymake
@@ -1313,9 +1415,11 @@ It draws vertical lines (by default, a character of your choice) at each level o
      (note "»" compilation-info))))
 #+end_src
 
-** Complile  function setup
+** Code Execution & Compilation
+
+*** Compilation
+
 #+begin_src emacs-lisp
-  ;; disable the verification promp for editing the commands
   (setq compilation-read-command nil)
   (setq compilation-ask-about-save nil)
 
@@ -1328,10 +1432,26 @@ It draws vertical lines (by default, a character of your choice) at each level o
                             "")))))
 
   (add-hook 'python-ts-mode-hook #'cl/set-python-compile-command)
-  ;; Global keybindings for compilation commands
-  (global-set-key (kbd "C-c c")   #'compile)
-  (global-set-key (kbd "C-c k")   #'kill-compilation)
-  (global-set-key (kbd "C-c r")   #'recompile) 
+
+  (global-set-key (kbd "C-c c") #'compile)
+  (global-set-key (kbd "C-c k") #'kill-compilation)
+  (global-set-key (kbd "C-c r") #'recompile)
+#+end_src
+
+*** Quickrun
+
+#+begin_src emacs-lisp
+  (defun cl/quickrun-dwim ()
+    "Execute active region via quickrun-region, or full buffer via quickrun."
+    (interactive)
+    (if (use-region-p)
+        (call-interactively #'quickrun-region)
+      (call-interactively #'quickrun)))
+
+  (use-package quickrun
+    :commands (quickrun quickrun-region quickrun-with-arg cl/quickrun-dwim)
+    :init
+    (global-set-key (kbd "C-c q") #'cl/quickrun-dwim))
 #+end_src
 
 ** Testing
@@ -1362,9 +1482,17 @@ It draws vertical lines (by default, a character of your choice) at each level o
 ** Terminal support with ghostel  
 
 #+begin_src emacs-lisp
+  (defun cl/ghostel-dwim ()
+    "Launch ghostel in project root if in a project, otherwise in current directory."
+    (interactive)
+    (if (project-current nil)
+        (call-interactively #'ghostel-project)
+      (call-interactively #'ghostel)))
+
   (use-package ghostel
-    :commands (ghostel)
-    )
+    :commands (ghostel ghostel-project cl/ghostel-dwim)
+    :init
+    (global-set-key (kbd "C-c s") #'cl/ghostel-dwim))
 
   (use-package evil-ghostel
     :after (ghostel evil)
@@ -1418,8 +1546,6 @@ It draws vertical lines (by default, a character of your choice) at each level o
 #+end_src
 
 ***  Pulsar
-The `pulsar' package enhances the user experience in Emacs by providing ;; visual feedback through pulsating highlights.
-This feature is especially useful in programming modes, where it can help users easily track actions such as scrolling, error navigation, yanking, deleting, and  jumping to definitions.
 
 #+begin_src emacs-lisp
 (use-package pulsar
@@ -1825,7 +1951,6 @@ and select the input window."
 
 ** Info & Web Browsing
 
-Enhance built-in Info mode and EWW browser with vibrant colors, centered layout, proportional fonts, and transient menus.
 
 #+begin_src emacs-lisp
   ;; Colorize Info headers, code blocks, quotes, and links
@@ -1863,8 +1988,6 @@ Enhance built-in Info mode and EWW browser with vibrant colors, centered layout,
 
 ** The Emacs Reader
 
-Fast document reader powered by MuPDF and C dynamic modules.
-Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, CBZ, and XPS.
 
 #+begin_src emacs-lisp
   (defun cl/reader-fit-width-70 ()
