@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "1.0.0",
+  "lastChangelogVersion": "1.4.0",
   "theme": "dark",
-  "defaultProvider": "amazon-bedrock",
-  "defaultModel": "us.moonshotai.kimi-k3",
+  "defaultProvider": "antigravity",
+  "defaultModel": "gemini-3.8-flash",
   "defaultThinkingLevel": "high",
   "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\"",
   "npmCommand": [
@@ -16,10 +16,22 @@
     "keepRecentTokens": 20000
   },
   "enabledModels": [
-    "opencode/*-free",
     "antigravity/*",
-    "amazon-bedrock/*"
+    "amazon-bedrock/*",
+    "acp/opencode"
   ],
+  "acp": {
+    "autoApproveTools": false,
+    "agents": {
+      "opencode": {
+        "name": "OpenCode",
+        "command": "opencode",
+        "args": [
+          "acp"
+        ]
+      }
+    }
+  },
   "extensions": [
     "~/.config/pi/agent/extensions/custom-compaction.ts"
   ],
@@ -35,17 +47,19 @@
     "npm:@juicesharp/rpiv-ask-user-question",
     "git:github.com/Rahularya01/pi-antigravity",
     "npm:pi-subagents",
-    "npm:pi-web-access"
+    "npm:pi-web-access",
+    "npm:pi-acp-provider",
+    "npm:pi-acp-delegate"
   ],
   "hideThinkingBlock": true,
   "subagents": {
     "agentOverrides": {
       "scout": {
-        "model": "opencode/space-bunny-free",
+        "model": "antigravity/gemini-3.8-flash",
         "thinking": "low"
       },
       "delegate": {
-        "model": "opencode/space-bunny-free",
+        "model": "antigravity/gemini-3.8-flash",
         "thinking": "low"
       },
       "librarian": {
@@ -53,25 +67,25 @@
         "thinking": "high"
       },
       "worker": {
-        "model": "antigravity/gemini-3.8-flash",
+        "model": "antigravity/gemini-3.7-flash",
         "thinking": "high"
       },
       "researcher": {
         "model": "antigravity/gemini-3.8-flash"
       },
       "reviewer": {
-        "model": "antigravity/claude-opus-4-6",
+        "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
         "thinking": "high"
       },
       "planner": {
-        "model": "amazon-bedrock/us.moonshotai.kimi-k3"
+        "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1"
       },
       "oracle": {
-        "model": "amazon-bedrock/us.anthropic.claude-opus-4-6-v1",
+        "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
         "thinking": "high"
       },
       "evidence-auditor": {
-        "model": "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0",
+        "model": "amazon-bedrock/global.anthropic.claude-haiku-4-5-20251001-v1:0",
         "thinking": "medium"
       }
     }

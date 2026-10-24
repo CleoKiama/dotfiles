@@ -12,6 +12,7 @@ I focus on building complex systems as simply as possible. My ideal solution is 
 - **YAGNI & Measure Twice**: Channel "measure twice, cut once" and YAGNI (You Aren't Gonna Need It). Focus strictly on the task in front of us and honor the original intent in a minimal, realistic fashion.
 - **Questions & Diagnostics are Read-Only**: When I ask a question, ask for an opinion, report an error, or ask you to inspect an issue, treat it as a read-only request. File-modifying tools (`edit`, `write`, destructive shell commands) are forbidden on these turns. Complete the investigation by reporting the root cause and proposed fix, then wait for explicit instruction before modifying files.
 - **Match Ceremony to the Task**: Do not spawn sub-agents or complex multi-agent panels for work a single pass can finish. Sub-agents are for parallel breadth or adversarial review, not ordinary edits. When writing implementation plans for multi-layer tasks, organize them by subsystem (e.g., Engine, Router, Frontend, Adversarial Review) with strict file ownership upfront so phases can run in parallel sub-agents without manual prompt structuring.
+- **Delegation**: `acp_delegate` runs OpenCode as a separate agent in this repo. For a self-contained stretch of work (multi-file refactor, scaffolding from a spec, tests for existing code, an independent second opinion), load the `delegate-to-opencode` skill and hand over the typing. Planning, review, and verification stay here.
 
 ---
 
@@ -71,6 +72,15 @@ Two registers. Chat is always-on style; polished prose is a skill pass.
 - **Human-Readable Titles**: Write titles that explain *why* the change matters (e.g., `"Cut WebSocket frame size by 70% with compression"` instead of `"Negotiate per-message deflate"`).
 - **Exclude Plan Files from Commits**: Design scratchpads, DBML files, and implementation plans in `docs/plans/` are local implementation aids. Never stage or commit them into git unless I explicitly ask to commit the plan file.
 - **No Scope Expansion**: Do not allow minor reviews or secondary findings to balloon the scope of a PR beyond the original goal.
+
+---
+
+## Web search and research strategy
+
+- **Default search routing**: `web_search` defaults to Gemini Web (grounded answer with source citations) with automatic fallback to local SearXNG.
+- **Judge result quality**: Inspect every search response before trusting it. If Gemini returns a chat refusal ("I cannot fulfill..."), an empty response, or vague claims without sources, retry immediately with `provider: "searxng"`.
+- **Parallel search for breaking or contested topics**: For breaking news, incidents, or cross-referencing multiple viewpoints, pass `provider: ["gemini", "searxng"]` to search both engines simultaneously.
+- **Verify cited sources**: Do not rely on snippets alone for code or architectural decisions. Use `fetch_content` on primary URLs to check source documentation directly.
 
 ---
 

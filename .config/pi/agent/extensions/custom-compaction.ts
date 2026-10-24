@@ -16,8 +16,8 @@ export default function (pi: ExtensionAPI) {
     const { preparation, signal } = event;
 
     // Find the dedicated compaction model
-    ctx.ui.notify("🔄 Compacting with gemini-3.8-flash model....", "warning");
-    const model = ctx.modelRegistry.find("antigravity", "gemini-3.6-flash");
+    ctx.ui.notify("🔄 Compacting with gemini-3.7-flash model....", "warning");
+    const model = ctx.modelRegistry.find("antigravity", "gemini-3.7-flash-medium");
     if (!model) {
       ctx.ui.notify(
         "Compaction model 'antigravity/gemini-3.8-flash' not found, using default",

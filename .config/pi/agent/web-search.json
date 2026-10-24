@@ -1,7 +1,26 @@
 {
   "searxngBaseUrl": "http://localhost:39201",
   "allowBrowserCookies": true,
+  "youtube": {
+    "timeoutSeconds": 300
+  },
   "ssrf": {
-    "allowRanges": ["127.0.0.1/32", "::1/128"]
+    "allowRanges": [
+      "127.0.0.1/32",
+      "::1/128"
+    ]
+  },
+  "searchRouting": {
+    "providers": [
+      "gemini",
+      "searxng"
+    ],
+    "fallbackOn": [
+      "transient",
+      "quota",
+      "network",
+      "invalid-response",
+      "unsupported"
+    ]
   }
 }

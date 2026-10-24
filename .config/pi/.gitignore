@@ -28,4 +28,10 @@ agent/models-store.json
 agent/mcp.log
 agent/pi-subagents/
 
+# Generated caches and mission state
+agent/cache/
+agent/missions/
+agent/run-history.jsonl
+agent/web-search-cache/
+
 

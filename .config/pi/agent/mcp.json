@@ -37,6 +37,10 @@
     "linear": {
       "url": "https://mcp.linear.app/mcp",
       "exposure": "direct"
+    },
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp",
+      "exposure": "direct"
     }
   }
 }
