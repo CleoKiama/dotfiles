@@ -1,7 +1,9 @@
-  ;; -*- lexical-binding: t; -*-
-
 #+TITLE: CL  Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle yes :comments org
+
+#+begin_src emacs-lisp :comments no
+;; -*- lexical-binding: t; -*-
+#+end_src
 
 
 * Perfomance & System Defaults
@@ -47,7 +49,9 @@
     ;; Built-in package configuration; do not download via straight.el.
     :straight nil                    
     :bind
-    ("C-c u" . universal-argument)
+    (("C-c u" . universal-argument)
+     :map universal-argument-map
+     ("C-c u" . universal-argument-more))
     ;; Set custom variables to configure Emacs behavior.
     :custom          
     ;; --- Startup & Files ---
@@ -371,9 +375,6 @@ Mostly reusable functions throughout the config
        ;; Diff-HL navigation for version control
        (evil-define-key 'normal 'global (kbd "]c") 'diff-hl-next-hunk)       ;; Next diff hunk
        (evil-define-key 'normal 'global (kbd "[c") 'diff-hl-previous-hunk)   ;; Previous diff hunk
-
-       ;; kill ring 
-       (evil-define-key 'normal 'global (kbd "P") 'consult-yank-from-kill-ring)
 
        ;; Tab navigation
        (evil-define-key 'normal 'global (kbd "]t") 'tab-next)        ;; Go to next tab
@@ -2010,13 +2011,17 @@ Drop-in replacement for ~pdf-tools~ and ~doc-view~ supporting PDF, EPUB, MOBI, C
 #+end_src
 
 ** Note taking 
-***  Org capture 
+***  Org capture
 
 #+begin_src emacs-lisp
   (setq org-directory  "~/Projects/org-notes")
   (setq org-default-notes-file (concat org-directory "/inbox.org"))
 
+  (setq org-archive-location (concat org-directory "/archives"  "/%s_archive::datetree/"))
+
   (global-set-key (kbd "C-c o c") #'org-capture)
+  (setq  org-agenda-files  '(concat ))
+  (setq org-agenda-files '("inbox.org" "tasks.org")) 
 #+end_src
 ** Tangle this file on save
 
