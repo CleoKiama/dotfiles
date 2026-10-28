@@ -561,9 +561,8 @@ Mostly reusable functions throughout the config
         (message "System clipboard is empty.")))) 
 
   (cl/leader-keys
-    "y" '(:ignore t :which-key "clipboard")
-    "yy" '(cl/copy-to-clipboard :which-key "yank to clipboard")
-    "yp" '(cl/paste-from-clipboard :which-key "paste from clipboard"))
+    "y" '(cl/copy-to-clipboard :which-key "yank to clipboard")
+    "p" '(cl/paste-from-clipboard :which-key "paste from clipboard"))
 #+end_src
 * Modeline and Theming
 
