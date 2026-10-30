@@ -4,6 +4,7 @@ LICENCE
 pkglist.txt
 pkglist-aur.txt
 arch-restore.sh
+key.txt.age
 
 {{- if eq .chezmoi.hostname "astro" }}
 # Desktop-only configs; astro is reached over SSH
