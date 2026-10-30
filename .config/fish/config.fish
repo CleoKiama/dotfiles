@@ -109,8 +109,6 @@ end
 # pi coding agent config directory (instead of ~/.pi/agent)
 set -gx PI_CODING_AGENT_DIR $HOME/.config/pi/agent
 
-
-
 if test "$INSIDE_EMACS" = ghostel
     # Open a file in Emacs from the terminal
     function e

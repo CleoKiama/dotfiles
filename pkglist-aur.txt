@@ -9,6 +9,7 @@ herdr-bin
 kanata-bin
 localsend-bin
 mangowm-git
+opencode-beta
 pano-scrobbler-bin
 paru
 pear-desktop-bin

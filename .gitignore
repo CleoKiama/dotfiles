@@ -5,4 +5,5 @@ mpris.so
 __pycache__/
 *.pyc
 .pi/
+.config/sunsetr/geo.toml
 
