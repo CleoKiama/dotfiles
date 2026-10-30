@@ -5,8 +5,8 @@ pkglist.txt
 pkglist-aur.txt
 arch-restore.sh
 
-{{- if eq .chezmoi.hostname "astra" }}
-# Desktop-only configs; astra is reached over SSH
+{{- if eq .chezmoi.hostname "astro" }}
+# Desktop-only configs; astro is reached over SSH
 .config/alacritty.toml
 .config/fontconfig
 .config/ghostty

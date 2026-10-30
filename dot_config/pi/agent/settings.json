@@ -25,7 +25,7 @@
     "~/.config/pi/agent/extensions/custom-compaction.ts"
   ],
   "prompts": [
-    "~/dotfiles/.config/pi/agent/prompts"
+    "~/.config/pi/agent/prompts"
   ],
   "packages": [
     "npm:pi-wakatime",

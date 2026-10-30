@@ -378,7 +378,7 @@ environment {
 
 spawn-sh-at-startup "wl-paste --watch cliphist store" //watch clipboard for history
 spawn-sh-at-startup "sleep 10 && cliphist wipe" // wipe previous clipboard history
-spawn-sh-at-startup "$HOME/dotfiles/scripts/wallpaper_slideshow.sh $HOME/Pictures/wallpapers" // cycle through wallpapers with swww
+spawn-sh-at-startup "$HOME/scripts/wallpaper_slideshow.sh $HOME/Pictures/wallpapers" // cycle through wallpapers with swww
 
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -538,7 +538,7 @@ binds {
     Mod+T hotkey-overlay-title="Open a terminal ghostty" { spawn "ghostty"; }
     Mod+A hotkey-overlay-title="Run an Application: rofi" { spawn-sh "$HOME/.config/rofi/rofilaunch.sh"; }
     // utilis
-    Mod+Alt+Period hotkey-overlay-title="Emoji picker" { spawn-sh "$HOME/dotfiles/scripts/emoji_picker.sh"; }
+    Mod+Alt+Period hotkey-overlay-title="Emoji picker" { spawn-sh "$HOME/scripts/emoji_picker.sh"; }
     Mod+E { spawn "nautilus"; }
     Mod+B { spawn "zen-browser"; }
     Mod+C hotkey-overlay-title="Rofi Calculator " { spawn-sh "rofi -show calc -modi calc -no-show-match -no-sort"; }
@@ -547,7 +547,7 @@ binds {
     Ctrl+Alt+R  { spawn-sh "$HOME/.config/waybar/launch.sh"; } //restart waybar
     Alt+F4 hotkey-overlay-title="Wlogout" { spawn "wlogout"; }
     Mod+Alt+L hotkey-overlay-title="Lock the Screen" { spawn "hyprlock"; }
-    Mod+V hotkey-overlay-title="Clipboard history" { spawn-sh "$HOME/dotfiles/scripts/cliphist.sh -c"; }
+    Mod+V hotkey-overlay-title="Clipboard history" { spawn-sh "$HOME/scripts/cliphist.sh -c"; }
     // screenshot tools
     Mod+Shift+C hotkey-overlay-title="Capture text from screenshot" { spawn-sh "grim -g \"$(slurp $SLURP_ARGS)\" \"tmp.png\" && tesseract \"tmp.png\" - | wl-copy && rm \"tmp.png\" "; }
 

@@ -9,7 +9,7 @@ hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("DRI_PRIME=1 flatpak run io.freetubea
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/scripts/cliphist.sh -c"))
+hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(os.getenv("HOME") .. "/scripts/cliphist.sh -c"))
 hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo({ action = "toggle" }))
@@ -81,7 +81,7 @@ hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("hyprctl hyprsunset identity"
 
 hl.bind("ALT + F4", hl.dsp.exec_cmd("wlogout"))
 
-hl.bind(mainMod .. " + PERIOD", hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/scripts/emoji_picker.sh"))
+hl.bind(mainMod .. " + PERIOD", hl.dsp.exec_cmd(os.getenv("HOME") .. "/scripts/emoji_picker.sh"))
 
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("rofi -show calc -modi calc -no-show-match -no-sort"))
 

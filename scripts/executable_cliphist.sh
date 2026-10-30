@@ -10,7 +10,7 @@ pgrep -u "$USER" rofi >/dev/null && exit 0
 cache_dir="${HYDE_CACHE_HOME:-$HOME/.cache/hyde}"
 favorites_file="${cache_dir}/landing/cliphist_favorites"
 [ -f "$HOME/.cliphist_favorites" ] && favorites_file="$HOME/.cliphist_favorites"
-cliphist_style="$HOME/dotfiles/scripts/rofiTheme/theme.rasinc"
+cliphist_style="$HOME/scripts/rofiTheme/theme.rasinc"
 del_mode=false
 
 # Process clipboard selections
@@ -142,7 +142,7 @@ show_history() {
 
 # Visual image gallery: one large preview per page; arrows or wheel flip between images
 show_image_history() {
-    local script_path="$HOME/dotfiles/scripts/cliphist.image.py"
+    local script_path="$HOME/scripts/cliphist.image.py"
 
     local selected_item
     selected_item=$(python3 "$script_path" | run_rofi "Images (Alt+V for text)" \

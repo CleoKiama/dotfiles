@@ -52,7 +52,7 @@ dummywall {
     expand:                      false;
     orientation:                 horizontal;
     background-color:            transparent;
-    background-image:            url("~/dotfiles/assets/penguin.jpeg", height);
+    background-image:            url("~/assets/penguin.jpeg", height);
     border-radius:               15px 0px 0px 15px;
 }
 
