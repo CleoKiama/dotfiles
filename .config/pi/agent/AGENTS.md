@@ -11,8 +11,17 @@ I focus on building complex systems as simply as possible. My ideal solution is 
 - **Fight Complexity & Scope Creep**: Do not preserve complexity just because it already exists, and do not introduce extra abstractions or machinery because it looks architecturally impressive. Fight for the smallest solution that makes correct behavior obvious and surprising-free.
 - **YAGNI & Measure Twice**: Channel "measure twice, cut once" and YAGNI (You Aren't Gonna Need It). Focus strictly on the task in front of us and honor the original intent in a minimal, realistic fashion.
 - **Questions & Diagnostics are Read-Only**: When I ask a question, ask for an opinion, report an error, or ask you to inspect an issue, treat it as a read-only request. File-modifying tools (`edit`, `write`, destructive shell commands) are forbidden on these turns. Complete the investigation by reporting the root cause and proposed fix, then wait for explicit instruction before modifying files.
-- **Match Ceremony to the Task**: Do not spawn sub-agents or complex multi-agent panels for work a single pass can finish. Sub-agents are for parallel breadth or adversarial review, not ordinary edits. When writing implementation plans for multi-layer tasks, organize them by subsystem (e.g., Engine, Router, Frontend, Adversarial Review) with strict file ownership upfront so phases can run in parallel sub-agents without manual prompt structuring.
-- **Delegation**: `acp_delegate` runs OpenCode as a separate agent in this repo. For a self-contained stretch of work (multi-file refactor, scaffolding from a spec, tests for existing code, an independent second opinion), load the `delegate-to-opencode` skill and hand over the typing. Planning, review, and verification stay here.
+- **Match Ceremony to the Task**: Do not spawn complex multi-agent panels for work a single pass can finish. However, proactively use subagents whenever a task requires digging, codebase recon, or doc lookups to protect the primary session context. When writing implementation plans for multi-layer tasks, organize them by subsystem (e.g., Engine, Router, Frontend, Adversarial Review) with strict file ownership upfront so phases can run in parallel subagents without manual prompt structuring.
+
+---
+
+## Model selection and subagents
+
+- **Subagents for Digging**: Offload investigative work, broad file searches, or external research to subagents (like `scout` or `librarian`) instead of dumping large discovery outputs into the main session.
+- **Scout Model**: Use cheap or free models like `opencode-go/beam-free` for `scout` runs to keep broad discovery lightweight.
+- **Amazon Bedrock**: Access Bedrock models directly through Pi (`amazon-bedrock/*`). Bedrock environment variables are exposed when running via `pi-bedrock`.
+- **Subagent model resolution**: If a configured Bedrock subagent model fails or reports unknown, fall back to direct Pi providers such as OpenCode Go (`opencode-go/deepseek-v4.1-flash`) or Antigravity (`antigravity/gemini-3.8-flash` or `antigravity/gemini-3.7-flash`).
+- **Subagent execution mode**: Always run subagents in the background. Never pass `async: false` to `subagent` because in-process foreground execution causes Bun runtime lock collisions.
 
 ---
 
@@ -41,7 +50,7 @@ I focus on building complex systems as simply as possible. My ideal solution is 
 
 ## UI & User Experience
 
-- **Zero Developer Leaks in UI**: Never expose internal library names (e.g., `@t3-oss/env-core`, `TanStack Start`, `Zod`), environment variable names (`ANTHROPIC_API_KEY`), prompt context, or configuration audits in end-user interfaces, badges, dialogs, or helper copy.
+- **Zero Developer Leaks in UI**: Never expose architecture concepts, backend codenames, model/vendor names, protocol/transport details, library names, environment variables, or prompt context in end-user interfaces, badges, placeholders, or copy. User-facing text must strictly reflect the end-user's workflow and domain model, completely decoupled from whatever technical stack or backend implementation details you are working on at the time. Treat assistant or automated features as native product tools, not technical or AI showcases.
 - **Diagnostics Belong in Server Logs**: Missing secrets, unconfigured APIs, schema validation errors, and stack traces must only be logged on the server (`console.error`). Never expose them in browser DOM, toasts, or modals.
 - **Human-Safe Failure States**: When an unconfigured or failing action is triggered in the UI, show a plain, non-technical notice ("Something went wrong."). Never build debug dialogs or setup checklists unless explicitly asked to build an authenticated admin or developer settings page.
 

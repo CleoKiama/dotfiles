@@ -9,7 +9,8 @@
     },
     "codebase-memory": {
       "command": "codebase-memory-mcp",
-      "exposure": "direct"
+      "exposure": "direct",
+      "enabled": false
     },
     "axiom-logs": {
       "url": "https://mcp.axiom.co/mcp",

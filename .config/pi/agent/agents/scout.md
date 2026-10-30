@@ -1,7 +1,7 @@
 ---
 name: scout
 description: Fast codebase recon that returns compressed context for handoff to other agents
-tools: read, grep, find, ls, bash, write, contact_supervisor, mcp:codebase-memory, mcp:context7
+tools: read, grep, find, ls, bash, write, contact_supervisor, mcp:context7
 systemPromptMode: replace
 inheritProjectContext: true
 inheritSkills: false

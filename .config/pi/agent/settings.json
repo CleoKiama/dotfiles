@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "1.4.0",
   "theme": "dark",
-  "defaultProvider": "antigravity",
-  "defaultModel": "gemini-3.8-flash",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4.1-flash",
   "defaultThinkingLevel": "high",
   "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\"",
   "npmCommand": [
@@ -16,22 +16,11 @@
     "keepRecentTokens": 20000
   },
   "enabledModels": [
+    "opencode-go/*",
+    "opencode/*",
     "antigravity/*",
-    "amazon-bedrock/*",
-    "acp/opencode"
+    "amazon-bedrock/*"
   ],
-  "acp": {
-    "autoApproveTools": false,
-    "agents": {
-      "opencode": {
-        "name": "OpenCode",
-        "command": "opencode",
-        "args": [
-          "acp"
-        ]
-      }
-    }
-  },
   "extensions": [
     "~/.config/pi/agent/extensions/custom-compaction.ts"
   ],
@@ -47,31 +36,31 @@
     "npm:@juicesharp/rpiv-ask-user-question",
     "git:github.com/Rahularya01/pi-antigravity",
     "npm:pi-subagents",
-    "npm:pi-web-access",
-    "npm:pi-acp-provider",
-    "npm:pi-acp-delegate"
+    "npm:pi-web-access"
   ],
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "subagents": {
+    "forceTopLevelAsync": true,
+    "asyncByDefault": true,
     "agentOverrides": {
       "scout": {
-        "model": "antigravity/gemini-3.8-flash",
+        "model": "opencode-go/beam-free",
         "thinking": "low"
       },
       "delegate": {
-        "model": "antigravity/gemini-3.8-flash",
+        "model": "opencode-go/beam-free",
         "thinking": "low"
       },
       "librarian": {
-        "model": "antigravity/gemini-3.7-flash",
+        "model": "opencode-go/deepseek-v4.1-flash",
         "thinking": "high"
       },
       "worker": {
-        "model": "antigravity/gemini-3.7-flash",
+        "model": "opencode-go/deepseek-v4.1-flash",
         "thinking": "high"
       },
       "researcher": {
-        "model": "antigravity/gemini-3.8-flash"
+        "model": "opencode-go/deepseek-v4.1-flash"
       },
       "reviewer": {
         "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
