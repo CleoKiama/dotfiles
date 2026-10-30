@@ -1,0 +1,5 @@
+{{- if eq .chezmoi.hostname "astra" }}
+{{ includeTemplate "tmux-remote.conf" . }}
+{{- else }}
+{{ includeTemplate "tmux-full.conf" . }}
+{{- end }}

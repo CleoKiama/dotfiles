@@ -1,55 +1,60 @@
-## Welcome to my dotfiles repository! This repository contains configuration files and scripts to set up and customize my development environment.
+# dotfiles
 
-## Getting Started
+Personal configuration managed with [chezmoi](https://www.chezmoi.io/).
+The repo is the chezmoi source state, so files use the `dot_` naming
+(`dot_zshrc` becomes `~/.zshrc`).
 
-To use these dotfiles, follow the instructions below.
+## Machines
 
-### Prerequisites
+- `nebula`: Artix desktop, primary machine.
+- `astra`: remote box, reached over SSH. Desktop-only configs
+  (window managers, terminal emulators, fonts, wallpaper) are skipped
+  there by `.chezmoiignore`.
 
-- Ensure you have the necessary tools installed on your system, such as Git, a terminal emulator, and any other dependencies required by the configurations.
+## Bootstrap a machine
 
-### Installation
+```sh
+# 1. Get the age key that decrypts tracked secrets (copy from nebula)
+mkdir -p ~/.config/chezmoi
+scp nebula:~/.config/chezmoi/key.txt ~/.config/chezmoi/key.txt
 
-1. **Clone the repository:**
+# 2. Clone and apply
+chezmoi init --apply git@github.com:CleoKiama/dotfiles.git
+```
 
-   ```bash
-   git clone https://github.com/CleoKiama/dotfiles.git
-   cd dotfiles
-   ```
+`.chezmoi.toml.tmpl` writes the age settings on first init, so no manual
+config is needed. On a machine without the key, encrypted files fail to
+decrypt; copy the key first.
 
-2. **Run the setup script:**
+## Daily use
 
-   Depending on the setup script provided in the repository, you may need to run a specific script to set up the configurations. For example:
+```sh
+chezmoi edit --apply ~/.zshrc   # edit the source, write it through
+chezmoi add ~/.zshrc            # import a live change back into the source
+chezmoi re-add                  # import all changed live files
+chezmoi diff                    # preview what apply would change
+chezmoi apply                   # write the source state to $HOME
+chezmoi update                  # pull + apply
+chezmoi cd                      # shell in the source repo
+```
 
-   ```bash
-   ./setup.sh
-   ```
+## Layout
 
-### Customization
+```text
+dot_zshrc, dot_bashrc, dot_gitconfig, dot_tmux.conf.tmpl
+dot_config/          -> ~/.config
+scripts/             -> ~/scripts
+assets/              -> ~/assets (wallpaper)
+.chezmoitemplates/   shared tmux variants, not target files
+.chezmoiignore       repo-only files + astra exclusions
+.chezmoi.toml.tmpl   age encryption config for new machines
+```
 
-Feel free to customize the configurations to suit your preferences. You can modify the files directly or create your own variants.
+Secrets (`.gitconfig-thegoodco`, opencode keys) are tracked as
+`encrypted_*.age` and decrypt with `~/.config/chezmoi/key.txt`.
+Package lists (`pkglist*.txt`) are reference only; they are not applied.
 
-## Structure
+## Packages
 
-Here's a brief overview of the repository structure:
-
-- **`lua/`**: Contains Lua configuration files.
-- **`shell/`**: Contains Shell scripts and configuration files.
-- **`glsl/`**: Contains GLSL scripts and configuration files.
-- **`setup.sh`**: Script to set up the dotfiles.
-
-## Contributing
-
-If you have any suggestions or improvements, feel free to open an issue or submit a pull request. Contributions are welcome!
-
-## License
-
-This repository is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-If you have any questions or need further assistance, feel free to reach out to me on GitHub.
-
----
-
-Thank you for checking out my dotfiles repository!
+`pkglist.txt` and `pkglist-aur.txt` are snapshots of explicitly installed
+packages. Regenerate with `arch-restore.sh`; reinstall manually.

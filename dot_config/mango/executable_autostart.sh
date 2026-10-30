@@ -33,7 +33,6 @@ gsettings set org.gnome.desktop.interface text-scaling-factor 1.15
 gnome-keyring-daemon --start --components=secrets,ssh,pkcs11 >/dev/null 2>&1
 export $(gnome-keyring-daemon --start --components=secrets,ssh,pkcs11 2>/dev/null)
 
-waybar  >/dev/null 2>&1 &
 
 swaync  >/dev/null 2>&1 &
 

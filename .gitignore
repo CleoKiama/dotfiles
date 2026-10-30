@@ -1,9 +1,10 @@
 __try.lua
 target/
-.gitconfig-thegoodco
 mpris.so
 __pycache__/
 *.pyc
 .pi/
-.config/sunsetr/geo.toml
+dot_config/sunsetr/geo.toml
 
+# Plaintext secrets stay in $HOME; encrypted copies are tracked
+dot_gitconfig-thegoodco

@@ -1,0 +1,29 @@
+# Repo bookkeeping, not dotfiles
+README.md
+LICENCE
+pkglist.txt
+pkglist-aur.txt
+arch-restore.sh
+
+{{- if eq .chezmoi.hostname "astra" }}
+# Desktop-only configs; astra is reached over SSH
+.config/alacritty.toml
+.config/fontconfig
+.config/ghostty
+.config/hypr
+.config/hyprlock
+.config/kanata
+.config/kitty
+.config/mango
+.config/mpv
+.config/niri
+.config/rofi
+.config/sunsetr
+.config/swaync
+.config/waybar
+.config/wlogout
+.config/systemd/user/battery-watcher.service
+.config/systemd/user/kanata.service
+.config/systemd/user/default.target.wants
+assets
+{{- end }}
